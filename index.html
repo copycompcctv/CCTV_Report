@@ -589,7 +589,8 @@ function cloudRow(r){return {id:r.id,owner_id:r.ownerId||currentUser.id,customer
 async function saveCloudNow(forceId){
   if(!cloudReady||!currentUser)throw new Error('Belum login ke database online');
   clearTimeout(cloudTimer);
-  var ids=forceId?[forceId]:Object.keys(cloudPending);
+  var ids=Object.keys(cloudPending);
+  if(forceId&&ids.indexOf(forceId)<0)ids.push(forceId);
   if(!ids.length)ids=[cur().id];
   var rows=[];
   ids.forEach(function(id){var r=db.reports.filter(function(x){return x.id===id})[0];if(r){var owner=r.ownerId||currentUser.id,payload=JSON.parse(JSON.stringify(r));payload.ownerId=owner;rows.push(cloudRow(payload))}});
