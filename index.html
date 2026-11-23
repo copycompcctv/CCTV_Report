@@ -339,7 +339,7 @@ function normReport(r){
     x=x||{};var items=(Array.isArray(x.items)?x.items:[]).map(normItem),groups=[];
     items.forEach(function(it){
       if(it.kind!=='structured') return;
-      var job=it.job==='Servis Lainnya'?(it.jobCustom||'Servis Lainnya'):it.job||x.job||x.title||'Pasang Baru';
+      var job=x.job||(x.title&&x.title!=='Rincian pekerjaan'?x.title:'')||(it.job==='Servis Lainnya'?(it.jobCustom||'Servis Lainnya'):it.job)||'Pasang Baru';
       var g=groups[groups.length-1];if(!g||g.job!==job){g={id:uid(),job:job,title:'',bold:true,items:[]};groups.push(g)}g.items.push(it);
     });
     var plain=items.filter(function(it){return it.kind!=='structured'});
