@@ -101,7 +101,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .chip.pri{border-color:var(--accent);color:var(--accent)}
 .bubble{background:var(--surface2);border-radius:10px;padding:14px;font:14px/1.6 var(--f-mono);white-space:pre-wrap;overflow-wrap:anywhere;margin:0;user-select:text;-webkit-user-select:text}
 .stats{color:var(--muted);font-size:13px;font-variant-numeric:tabular-nums}
-.actions{display:flex;gap:10px;flex-wrap:wrap}
+.actions{display:flex;gap:10px;flex-wrap:wrap}.actions .save-report-btn{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:700}
 .actions>*{flex:1 1 11rem}
 .catgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(10rem,1fr));gap:10px}
 .catfoot{display:flex;gap:10px;justify-content:space-between;align-items:center;margin-top:8px;flex-wrap:wrap}
@@ -240,7 +240,7 @@ details summary{cursor:pointer;font-weight:600;min-height:40px;display:flex;alig
         <pre id="out" class="bubble"></pre>
         <div id="stats" class="stats"></div>
         <div class="actions">
-          <button type="button" class="btn" data-act="save-report">Simpan laporan</button>
+          <button type="button" class="btn save-report-btn" data-act="save-report">Simpan laporan</button>
           <button type="button" class="btn" data-act="copy">Salin teks</button>
           <a id="wa" class="btn wa" href="https://wa.me/" target="_blank" rel="noopener">Kirim lewat WhatsApp</a>
           <button type="button" class="btn ghost" data-act="pdf">Unduh PDF</button>
@@ -570,21 +570,53 @@ function arm(b,key,txt){
   setTimeout(function(){if(armed===key){armed=null;if(b.isConnected)b.textContent=b.dataset.o}},3000);
   return false;
 }
-function sharePdf(btn){
+async function sharePdf(btn){
   var old=btn?btn.textContent:'';
   if(btn){btn.disabled=true;btn.textContent='Menyiapkan PDF...'}
   function finish(){if(btn){btn.disabled=false;btn.textContent=old}}
+  var url=null;
   try{
     var r=cur(),name=pdfName(r),bytes=buildPdf(r,db.kop);
     var blob=new Blob([bytes],{type:'application/pdf'});
-    var url=URL.createObjectURL(blob);
+    // On supported Chromium browsers, show a real Save As dialog.
+    if(window.showSaveFilePicker){
+      try{
+        var handle=await window.showSaveFilePicker({
+          suggestedName:name,
+          types:[{description:'Dokumen PDF',accept:{'application/pdf':['.pdf']}}]
+        });
+        var writable=await handle.createWritable();
+        await writable.write(blob);
+        await writable.close();
+        toast('PDF berhasil disimpan: '+name);
+        finish();
+        return;
+      }catch(pickErr){
+        if(pickErr&&pickErr.name==='AbortError'){
+          toast('Penyimpanan PDF dibatalkan. Tidak ada file yang disimpan.');
+          finish();
+          return;
+        }
+        // If the Save As API is unavailable/blocked, continue to download fallback.
+      }
+    }
+    if(navigator.msSaveOrOpenBlob){
+      navigator.msSaveOrOpenBlob(blob,name);
+      toast('Pilih lokasi untuk menyimpan PDF: '+name);
+      finish();
+      return;
+    }
+    url=URL.createObjectURL(blob);
     var a=document.createElement('a');
-    a.href=url;a.download=name;a.style.display='none';
-    document.body.appendChild(a);a.click();a.remove();
-    toast('PDF sedang diunduh: '+name+'. Periksa folder Downloads.');
-    setTimeout(function(){URL.revokeObjectURL(url)},120000);
+    a.href=url;a.download=name;a.rel='noopener';a.style.position='fixed';a.style.left='-9999px';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function(){a.remove()},1000);
+    toast('Unduhan PDF dimulai. Jika tidak muncul, izinkan download untuk situs ini lalu coba lagi.');
+    setTimeout(function(){if(url)URL.revokeObjectURL(url)},180000);
     finish();
   }catch(e){
+    if(url)URL.revokeObjectURL(url);
     toast('PDF gagal dibuat: '+(e&&e.message?e.message:'periksa data laporan'));
     finish();
   }
