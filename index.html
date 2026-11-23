@@ -262,9 +262,14 @@ function itemLine(it){
   var name=(it.itemName==='Isi sendiri'?it.customName:it.itemName||'').trim();
   var note=(it.note||'').trim();
   if(!name&&!note) return '';
-  var line=name;
-  if(note) line+=(line?' : ':'')+note;
-  if(it.unit&&it.unit!=='-') line+=(line?' ':'')+it.unit;
+  var line=name, shown=note;
+  if(it.unit==='Meter'&&note){
+    var p=parseExpr(note);
+    if(p.ok) shown=p.terms.join('+')+' = '+fmt(p.total)+' M';
+  }
+  if(shown) line+=(line?' : ':'')+shown;
+  if(it.unit==='Pcs') line+=(line?' ':'')+'Pcs';
+  else if(it.unit==='Meter'&&!parseExpr(note).ok) line+=(line?' ':'')+'Meter';
   return line;
 }
 function structure(r){
