@@ -616,13 +616,11 @@ function itemHTML(it,idx){
 }
 function sectionHTML(s){
   var id=esc(s.id);
-  var chips='<div class="chips" role="group" aria-label="Tambah baris"><button type="button" class="chip pri" data-act="add-structured">+ Tambah item pekerjaan / barang</button><button type="button" class="chip" data-act="add-blank">+ Catatan bebas</button>'
-   +db.catalog.map(function(c){return '<button type="button" class="chip" data-act="add-cat" data-cid="'+esc(c.id)+'">+ '+esc(c.label)+'</button>'}).join('')+'</div>';
   return '<section class="card" data-sec="'+id+'">'
    +'<div class="sec-head"><input id="title-'+id+'" data-f="title" value="'+esc(s.title)+'" placeholder="Judul seksi (boleh kosong)" aria-label="Judul seksi" autocomplete="off">'
    +'<button type="button" class="mini" data-act="bold" aria-pressed="'+(!!s.bold)+'">Tebal</button>'
    +'<button type="button" class="mini danger" data-act="del-sec">Hapus</button></div>'
-   +s.items.map(itemHTML).join('')+chips+'</section>';
+   +s.items.map(itemHTML).join('')+'</section>';
 }
 function render(){
   var r=cur();
@@ -632,8 +630,7 @@ function render(){
    +'<div><label class="lbl" for="tech">Teknisi</label><input id="tech" data-f="tech" value="'+esc(r.tech)+'" placeholder="nama Anda" autocomplete="off"></div></div>'
    +'<div><label class="lbl" for="address">Alamat</label><input id="address" data-f="address" value="'+esc(r.address)+'" placeholder="boleh kosong" autocomplete="off"></div>'
    +'<label class="check"><input id="showMeta" type="checkbox" data-f="showMeta"'+(r.showMeta?' checked':'')+'><span>Cantumkan tanggal dan alamat di teks WhatsApp</span></label></div>'
-   +r.sections.map(sectionHTML).join('')
-   +'<button type="button" class="btn ghost full" data-act="add-sec">+ Tambah seksi</button>';
+   +r.sections.map(sectionHTML).join('');
   renderNote();updateOut();
 }
 function renderNote(){var r=cur();$('note').hidden=!(r.example&&view==='isi')}
