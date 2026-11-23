@@ -143,6 +143,7 @@ details summary{cursor:pointer;font-weight:600;min-height:40px;display:flex;alig
 .structured-item{background:var(--surface2);border:1px solid var(--line)}
 @media (max-width:520px){.structured-grid{grid-template-columns:1fr}}
 @media (prefers-reduced-motion: reduce){.toast{transition:none}}
+.item-actions{display:flex;justify-content:flex-start;margin-top:12px}.out-heading{display:flex;align-items:center;gap:14px;flex-wrap:wrap}.out-heading strong{font-size:18px;font-weight:500;color:#4d145c}.structured-item{padding:12px;border-radius:9px}.structured-item .item-top{margin-bottom:10px}.structured-item .lbl{margin-bottom:6px}
 </style>
 </head>
 <body>
@@ -234,7 +235,7 @@ details summary{cursor:pointer;font-weight:600;min-height:40px;display:flex;alig
 
     <aside id="v-hasil">
       <div class="card stack">
-        <span class="lbl" style="margin:0">Buat Laporan</span>
+        <div class="out-heading"><span class="lbl" style="margin:0">TEKS UNTUK ATASAN</span><strong>Buat Laporan</strong></div>
         <pre id="out" class="bubble"></pre>
         <div id="stats" class="stats"></div>
         <div class="actions">
@@ -303,7 +304,7 @@ function structure(r){
   });
   var meta=[];
   if(r.showMeta){ if((r.address||'').trim()) meta.push(r.address.trim()); var d=fmtDate(r.date); if(d) meta.push(d); }
-  return {name:(r.customer||'').trim(),meta:meta,secs:secs};
+  return {name:(r.customer||'').trim(),meta:meta,secs:secs,catatan:(r.catatan||'').trim()};
 }
 function buildText(r){
   var st=structure(r), out=[];
@@ -314,6 +315,7 @@ function buildText(r){
     if(s.title) out.push(s.bold?'*'+s.title+'*':s.title);
     s.lines.forEach(function(l){out.push('- '+l)});
   });
+  if(st.catatan){out.push('');out.push('Catatan: '+st.catatan)}
   return out.join('\n');
 }
 function totalCable(r){
@@ -331,7 +333,7 @@ function normItem(it){
 }
 function normReport(r){
   if(!r||typeof r!=='object') return null;
-  return {id:str(r.id)||uid(),example:!!r.example,customer:str(r.customer),address:str(r.address),tech:str(r.tech),date:str(r.date),
+  return {id:str(r.id)||uid(),example:!!r.example,customer:str(r.customer),address:str(r.address),tech:str(r.tech),date:str(r.date),catatan:str(r.catatan),
     showMeta:!!r.showMeta,updatedAt:+r.updatedAt||Date.now(),
     sections:(Array.isArray(r.sections)?r.sections:[]).map(function(x){
       x=x||{};
@@ -364,7 +366,7 @@ var DEFAULT_CATALOG=[
 ];
 function blankReport(){
   return {id:uid(),example:false,customer:'',address:'',tech:'',date:todayISO(),showMeta:false,updatedAt:Date.now(),
-    sections:[{id:uid(),title:'Rincian pekerjaan',bold:true,items:[]}]};
+    catatan:'',sections:[{id:uid(),title:'Rincian pekerjaan',bold:true,items:[mk('structured')]}]};
 }
 function sampleReports(){
   var a={id:uid(),example:true,customer:'H. Jamal',address:'',tech:'',date:todayISO(),showMeta:false,updatedAt:Date.now(),sections:[
@@ -473,6 +475,7 @@ function buildPdf(r,kop){
     });
     y-=10;
   });
+  if(s.catatan){need(34);y-=4;T('Catatan',M,y,10.5,'F2',ACC);y-=16;wrapText(s.catatan,10.5,CW,false).forEach(function(ln){need(16);T(ln,M,y,10.5,'F1',INK);y-=15})}
   var tc=totalCable(r);
   if(tc>0){need(34);y-=2;L(M,y+14,PW-M,y+14,0.5,RULE);y-=6;T('Total kabel',M,y,10.5,'F2',INK);T(fmt(tc)+' M',M+80,y,10.5,'F2',INK);y-=15}
   var n=pages.length,foot=latin([kn,ktag].filter(Boolean).join(' - '));
@@ -620,7 +623,8 @@ function sectionHTML(s){
    +'<div class="sec-head"><input id="title-'+id+'" data-f="title" value="'+esc(s.title)+'" placeholder="Judul seksi (boleh kosong)" aria-label="Judul seksi" autocomplete="off">'
    +'<button type="button" class="mini" data-act="bold" aria-pressed="'+(!!s.bold)+'">Tebal</button>'
    +'<button type="button" class="mini danger" data-act="del-sec">Hapus</button></div>'
-   +s.items.map(itemHTML).join('')+'</section>';
+   +s.items.map(itemHTML).join('')
+   +'<div class="item-actions"><button type="button" class="btn small" data-act="add-structured">+ Tambah item</button></div></section>';
 }
 function render(){
   var r=cur();
@@ -628,9 +632,10 @@ function render(){
    '<div class="card stack"><div><label class="lbl" for="customer">Pelanggan</label><input id="customer" data-f="customer" value="'+esc(r.customer)+'" placeholder="Nama Pelanggan" autocomplete="off"></div>'
    +'<div class="two"><div><label class="lbl" for="date">Tanggal</label><input id="date" type="date" data-f="date" value="'+esc(r.date)+'"></div>'
    +'<div><label class="lbl" for="tech">Teknisi</label><input id="tech" data-f="tech" value="'+esc(r.tech)+'" placeholder="Nama Teknisi" autocomplete="off"></div></div>'
-   +'<div><label class="lbl" for="address">Alamat</label><input id="address" data-f="address" value="'+esc(r.address)+'" placeholder="boleh kosong" autocomplete="off"></div>'
+   +'<div><label class="lbl" for="address">Alamat</label><input id="address" data-f="address" value="'+esc(r.address)+'" placeholder="Alamat Pelanggan" autocomplete="off"></div>'
    +'<label class="check"><input id="showMeta" type="checkbox" data-f="showMeta"'+(r.showMeta?' checked':'')+'><span>Cantumkan tanggal dan alamat di teks WhatsApp</span></label></div>'
-   +r.sections.map(sectionHTML).join('');
+   +r.sections.map(function(sec){if(!sec.items.length)sec.items.push(mk('structured'));return sectionHTML(sec)}).join('')
+   +'<div class="card stack"><label class="lbl" for="catatan">Catatan</label><textarea id="catatan" data-f="catatan" rows="3" placeholder="Catatan tambahan (opsional)">'+esc(r.catatan||'')+'</textarea></div>';
   renderNote();updateOut();
 }
 function renderNote(){var r=cur();$('note').hidden=!(r.example&&view==='isi')}
@@ -716,7 +721,7 @@ document.addEventListener('input',function(e){
     save();return;
   }
   var r=cur();
-  if(f==='customer'||f==='address'||f==='date'||f==='showMeta'||f==='tech'){r[f]=v;if(f==='tech')db.lastTech=v}
+  if(f==='customer'||f==='address'||f==='date'||f==='showMeta'||f==='tech'||f==='catatan'){r[f]=v;if(f==='tech')db.lastTech=v}
   else{
     var sec=getSec(t);if(!sec)return;
     if(f==='title')sec.title=v;
