@@ -182,11 +182,23 @@ details summary{cursor:pointer;font-weight:600;min-height:40px;display:flex;alig
 
       <section id="v-barang" hidden>
         <div class="stack">
+          <p class="hint">Daftar barang menjadi tombol cepat di halaman Isi. Pilih barang, lalu isi keterangannya, misalnya Kabel dengan 100 meter. Tambah, ubah, atau hapus sesuai kebutuhan.</p>
           <div class="card stack">
-            <strong>Daftar Item Pekerjaan</strong>
-            <p class="hint">Pilihan ini tersedia pada setiap baris laporan. Pilih “Isi sendiri” jika nama item tidak ada di daftar.</p>
-            <div id="cats" class="chips"></div>
+            <span class="lbl" style="margin:0">Tambah barang</span>
+            <div class="catgrid">
+              <div><label class="lbl" for="nl">Nama barang</label><input id="nl" autocomplete="off" placeholder="mis. Duradus"></div>
+              <div><label class="lbl" for="nn">Keterangan bawaan</label><input id="nn" autocomplete="off" placeholder="boleh kosong"></div>
+              <div><label class="lbl" for="nk">Jenis</label>
+                <select id="nk">
+                  <option value="qty">Barang + keterangan</option>
+                  <option value="cable">Kabel (hitung meter)</option>
+                  <option value="text">Teks bebas</option>
+                </select>
+              </div>
+            </div>
+            <button type="button" class="btn" data-act="cat-add">Tambah ke daftar</button>
           </div>
+          <div id="cats" class="stack"></div>
           <details class="card">
             <summary>Kop PDF</summary>
             <div class="stack">
@@ -228,7 +240,7 @@ details summary{cursor:pointer;font-weight:600;min-height:40px;display:flex;alig
           <a id="wa" class="btn wa" href="https://wa.me/" target="_blank" rel="noopener">Kirim lewat WhatsApp</a>
           <button type="button" class="btn ghost" data-act="pdf">Simpan atau bagikan PDF</button>
         </div>
-        <p class="hint">Tombol WhatsApp membuka WhatsApp dengan teks sudah terisi. Pilih kontak atasan lalu kirim. PDF memakai kop dari tab Barang; jika berbagi file tidak didukung, PDF akan diunduh.</p>
+        <p class="hint">Tombol WhatsApp membuka WhatsApp dengan teks sudah terisi. Pilih kontak atasan lalu kirim. PDF memakai kop dari tab Barang.</p>
       </div>
     </aside>
   </div>
@@ -256,21 +268,24 @@ function parseExpr(s){
   var total=terms.reduce(function(a,t){return a+parseFloat(t)},0);
   return {ok:true,terms:terms.map(function(t){return t.replace(/\./g,',')}),total:total};
 }
-var ITEM_OPTIONS=['DVR','NVR','Kamera Indoor','Kamera Outdoor','Hardisk','PSU','Adaptor','Kabel CCTV','Kabel LAN','Duradus','Jack BNC','Jack DC','Stopkontak','Isi sendiri','Streker Male','Streker Female','Kabel Listrik'];
-function mk(kind,o){return Object.assign({id:uid(),itemName:'',customName:'',note:'',unit:'-',join:false},o||{})}
+function mk(kind,o){return Object.assign({id:uid(),kind:kind,label:'',text:'',qty:'',expr:'',colon:true,join:false},o||{})}
 function itemLine(it){
-  var name=(it.itemName==='Isi sendiri'?it.customName:it.itemName||'').trim();
-  var note=(it.note||'').trim();
-  if(!name&&!note) return '';
-  var line=name, shown=note;
-  if(it.unit==='Meter'&&note){
-    var p=parseExpr(note);
-    if(p.ok) shown=p.terms.join('+')+' = '+fmt(p.total)+' M';
+  var label=(it.label||'').trim();
+  if(it.kind==='text') return (it.text||'').replace(/[ \t]+$/gm,'').trim();
+  if(it.kind==='qty'){
+    var q=(it.qty||'').trim();
+    if(!label&&!q) return '';
+    if(!q) return label;
+    if(!label) return q;
+    return label+(it.colon===false?' ':' : ')+q;
   }
-  if(shown) line+=(line?' : ':'')+shown;
-  if(it.unit==='Pcs') line+=(line?' ':'')+'Pcs';
-  else if(it.unit==='Meter'&&note&&!parseExpr(note).ok) line+=(line?' ':'')+'Meter';
-  return line;
+  var e=(it.expr||'').trim();
+  if(!label&&!e) return '';
+  if(!e) return label;
+  var p=parseExpr(e), val;
+  if(!p.ok) val=e;
+  else val=p.terms.length>1?p.terms.join('+')+' = '+fmt(p.total)+' M':fmt(p.total)+' M';
+  return label?label+' : '+val:val;
 }
 function structure(r){
   var secs=[];
@@ -301,21 +316,15 @@ function buildText(r){
 function totalCable(r){
   var t=0;
   r.sections.forEach(function(s){s.items.forEach(function(it){
-    if(it.unit==='Meter'){var p=parseExpr(it.note); if(p.ok) t+=p.total}
+    if(it.kind==='cable'){var p=parseExpr(it.expr); if(p.ok) t+=p.total}
   })});
   return t;
 }
 function str(v){return typeof v==='string'?v:(v==null?'':String(v))}
 function normItem(it){
   it=it||{};
-  if(it.itemName!==undefined){
-    return {id:str(it.id)||uid(),itemName:str(it.itemName),customName:str(it.customName),note:str(it.note),unit:['Pcs','Meter','-'].indexOf(it.unit)>=0?it.unit:'-',join:!!it.join};
-  }
-  var oldKind=it.kind, name='', custom='', note='', unit='-';
-  if(oldKind==='text'){name='Isi sendiri';custom=str(it.text); }
-  else if(oldKind==='cable'){name=str(it.label);note=str(it.expr);unit='Meter';}
-  else {name=str(it.label);note=str(it.qty);unit='Pcs';}
-  return {id:str(it.id)||uid(),itemName:name,customName:custom,note:note,unit:unit,join:!!it.join};
+  return {id:str(it.id)||uid(),kind:['text','qty','cable'].indexOf(it.kind)>=0?it.kind:'text',
+    label:str(it.label),text:str(it.text),qty:str(it.qty),expr:str(it.expr),colon:it.colon!==false,join:!!it.join};
 }
 function normReport(r){
   if(!r||typeof r!=='object') return null;
@@ -506,7 +515,7 @@ function loadDb(){
   try{d=raw?JSON.parse(raw):null}catch(e){d=null}
   var reports=d&&Array.isArray(d.reports)?d.reports.map(normReport).filter(Boolean):[];
   var catalog=d&&Array.isArray(d.catalog)?d.catalog.map(normCat).filter(Boolean):DEFAULT_CATALOG.map(function(c){return normCat(c)});
-  if(!reports.length) reports=sampleReports().map(normReport);
+  if(!reports.length) reports=sampleReports();
   var cid=d&&reports.some(function(r){return r.id===d.currentId})?d.currentId:reports[0].id;
   return {reports:reports,catalog:catalog,currentId:cid,kop:normKop(d&&d.kop),lastTech:str(d&&d.lastTech)};
 }
@@ -545,20 +554,15 @@ function sharePdf(){
   var r=cur(),name=pdfName(r),bytes=buildPdf(r,db.kop);
   var blob=new Blob([bytes],{type:'application/pdf'});
   function download(){
-    try{
-      var u=URL.createObjectURL(blob),a=document.createElement('a');
-      a.href=u;a.download=name;a.style.display='none';document.body.appendChild(a);a.click();a.remove();
-      setTimeout(function(){URL.revokeObjectURL(u)},60000);
-      toast('PDF berhasil dibuat. Periksa folder Unduhan.');
-    }catch(err){
-      var viewUrl=URL.createObjectURL(blob);window.open(viewUrl,'_blank','noopener');
-      toast('PDF dibuka di tab baru. Gunakan menu browser untuk menyimpan.');
-    }
+    var u=URL.createObjectURL(blob),a=document.createElement('a');
+    a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();
+    setTimeout(function(){URL.revokeObjectURL(u)},20000);
+    toast('PDF dibuat: '+name);
   }
   try{
     var file=new File([blob],name,{type:'application/pdf'});
-    if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){
-      navigator.share({files:[file],title:name}).then(function(){toast('Menu berbagi PDF dibuka')}).catch(function(e){if(!e||e.name!=='AbortError')download()});
+    if(navigator.canShare&&navigator.canShare({files:[file]})){
+      navigator.share({files:[file],title:name}).catch(function(e){if(!e||e.name!=='AbortError')download()});
       return;
     }
   }catch(e){}
@@ -576,22 +580,29 @@ function updCalc(it){var el=$('tot-'+it.id);if(!el)return;var c=calcInfo(it);el.
 
 function fieldsHTML(it){
   var id=esc(it.id);
-  var opts='<option value="">Pilih item pekerjaan</option>'+ITEM_OPTIONS.map(function(v){return '<option value="'+esc(v)+'"'+(it.itemName===v?' selected':'')+'>'+esc(v)+'</option>'}).join('');
-  var custom=it.itemName==='Isi sendiri'?'<input data-f="customName" value="'+esc(it.customName)+'" placeholder="Ketik nama item sendiri" aria-label="Nama item sendiri" autocomplete="off">':'';
-  return '<div><label class="lbl" for="name-'+id+'">Item pekerjaan</label><select id="name-'+id+'" data-f="itemName">'+opts+'</select>'+custom+'</div>'
-    +'<div><label class="lbl" for="note-'+id+'">Keterangan</label><input id="note-'+id+'" data-f="note" value="'+esc(it.note)+'" placeholder="Isi keterangan bebas (boleh kosong)" autocomplete="off"></div>'
-    +'<div><label class="lbl" for="unit-'+id+'">Satuan</label><select id="unit-'+id+'" data-f="unit"><option value="Pcs"'+(it.unit==='Pcs'?' selected':'')+'>Pcs</option><option value="Meter"'+(it.unit==='Meter'?' selected':'')+'>Meter</option><option value="-"'+(it.unit==='-'?' selected':'')+'>- (tanpa satuan)</option></select></div>';
+  if(it.kind==='text') return '<textarea id="foc-'+id+'" data-f="text" rows="2" aria-label="Isi baris" placeholder="mis. DVR 4 Ch + HDD 500 Gb">'+esc(it.text)+'</textarea>';
+  var lab='<input id="lab-'+id+'" data-f="label" value="'+esc(it.label)+'" placeholder="Nama barang" aria-label="Nama barang" autocomplete="off">';
+  if(it.kind==='qty') return lab+'<input id="val-'+id+'" data-f="qty" value="'+esc(it.qty)+'" placeholder="Keterangan, mis. 100 meter" aria-label="Keterangan" autocomplete="off">';
+  return lab+'<input id="val-'+id+'" class="mono" data-f="expr" value="'+esc(it.expr)+'" inputmode="tel" placeholder="50+10+5" aria-label="Panjang kabel dalam meter" autocomplete="off">';
 }
 function itemHTML(it,idx){
+  var kinds=[['text','Teks'],['qty','Barang'],['cable','Kabel']];
+  var c=it.kind==='cable'?calcInfo(it):null;
   return '<div class="item" data-item="'+esc(it.id)+'">'
+   +'<div class="item-top"><div class="seg" role="group" aria-label="Jenis baris">'
+   +kinds.map(function(k){return '<button type="button" data-act="kind" data-kind="'+k[0]+'" aria-pressed="'+(it.kind===k[0])+'">'+k[1]+'</button>'}).join('')
+   +'</div><span class="sp"></span>'
+   +(it.kind==='qty'?'<button type="button" class="mini" data-act="colon" aria-pressed="'+(it.colon!==false)+'">Titik dua</button>':'')
+   +(idx>0?'<button type="button" class="mini" data-act="join" aria-pressed="'+(!!it.join)+'">Gabung ke atas</button>':'')
+   +'<button type="button" class="mini danger" data-act="del-item" aria-label="Hapus baris">Hapus</button></div>'
    +'<div class="fields">'+fieldsHTML(it)+'</div>'
-   +'<div class="item-top">'+(idx>0?'<button type="button" class="mini" data-act="join" aria-pressed="'+(!!it.join)+'">Gabung ke atas</button>':'<span class="sp"></span>')
-   +'<button type="button" class="mini danger" data-act="del-item" aria-label="Hapus item">Hapus</button></div>'
+   +(c?'<div class="calc '+c[1]+'" id="tot-'+esc(it.id)+'">'+esc(c[0])+'</div>':'')
    +'</div>';
 }
 function sectionHTML(s){
   var id=esc(s.id);
-  var chips='<div class="chips"><button type="button" class="chip pri" data-act="add-blank">+ Tambah item pekerjaan</button></div>';
+  var chips='<div class="chips" role="group" aria-label="Tambah baris"><button type="button" class="chip pri" data-act="add-blank">+ Baris bebas</button>'
+   +db.catalog.map(function(c){return '<button type="button" class="chip" data-act="add-cat" data-cid="'+esc(c.id)+'">+ '+esc(c.label)+'</button>'}).join('')+'</div>';
   return '<section class="card" data-sec="'+id+'">'
    +'<div class="sec-head"><input id="title-'+id+'" data-f="title" value="'+esc(s.title)+'" placeholder="Judul seksi (boleh kosong)" aria-label="Judul seksi" autocomplete="off">'
    +'<button type="button" class="mini" data-act="bold" aria-pressed="'+(!!s.bold)+'">Tebal</button>'
@@ -645,7 +656,7 @@ function catRowHTML(c){
    +'<button type="button" class="mini danger" data-act="cat-del">Hapus</button></div></div>';
 }
 function renderCatalog(){
-  $('cats').innerHTML=ITEM_OPTIONS.map(function(v){return '<span class="chip">'+esc(v)+'</span>'}).join('');
+  $('cats').innerHTML=db.catalog.length?db.catalog.map(catRowHTML).join(''):'<p class="empty">Daftar barang kosong. Tambah barang pertama di atas.</p>';
   $('kn').value=db.kop.name;$('kt').value=db.kop.tag;$('ka').value=db.kop.addr;
 }
 
@@ -702,7 +713,6 @@ document.addEventListener('input',function(e){
   changed();
 });
 $('sq').addEventListener('input',renderHistory);
-document.addEventListener('change',function(e){if(e.target&&e.target.matches('select[data-f]'))e.target.dispatchEvent(new Event('input',{bubbles:true}))});
 
 /* ---------- Klik ---------- */
 document.addEventListener('click',function(e){
@@ -713,15 +723,28 @@ document.addEventListener('click',function(e){
     case 'new':{var n=blankReport();n.tech=db.lastTech||'';db.reports.push(n);db.currentId=n.id;save();setView('isi');focusEl('customer');break}
     case 'dismiss-note':r.example=false;renderNote();save();break;
     case 'dismiss-install':try{localStorage.setItem('laporan-cctv-install','1')}catch(x){}$('install').hidden=true;break;
-    case 'kind':case 'colon':break;
+    case 'kind':{
+      it=getItem(b);if(!it)break;
+      var k=b.dataset.kind;
+      if(k===it.kind)break;
+      if(k==='text'&&!it.text.trim())it.text=itemLine(it);
+      it.kind=k;changed();render();break;
+    }
+    case 'colon':it=getItem(b);if(it){it.colon=it.colon===false;changed();render()}break;
     case 'join':it=getItem(b);if(it){it.join=!it.join;changed();render()}break;
     case 'del-item':{
       sec=getSec(b);it=getItem(b);if(!sec||!it)break;
       if(!arm(b,'i:'+it.id,'Yakin?'))break;
       sec.items=sec.items.filter(function(x){return x!==it});changed();render();break;
     }
-    case 'add-blank':{sec=getSec(b);if(!sec)break;it=mk('entry');sec.items.push(it);changed();render();break}
-    case 'add-cat':break;
+    case 'add-blank':{sec=getSec(b);if(!sec)break;it=mk('text',{text:''});sec.items.push(it);changed();render();focusItem(it);break}
+    case 'add-cat':{
+      sec=getSec(b);c=db.catalog.filter(function(x){return x.id===b.dataset.cid})[0];if(!sec||!c)break;
+      if(c.kind==='text')it=mk('text',{text:c.label+' '+(c.note||'')});
+      else if(c.kind==='cable')it=mk('cable',{label:c.label});
+      else it=mk('qty',{label:c.label,qty:c.note||'',colon:c.colon!==false});
+      sec.items.push(it);changed();render();focusItem(it);break;
+    }
     case 'add-sec':{var s={id:uid(),title:'',bold:false,items:[]};r.sections.push(s);changed();render();focusEl('title-'+s.id);break}
     case 'bold':sec=getSec(b);if(sec){sec.bold=!sec.bold;changed();render()}break;
     case 'del-sec':{
