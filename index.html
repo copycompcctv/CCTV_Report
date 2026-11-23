@@ -654,7 +654,7 @@ function changed(){var r=cur();r.updatedAt=Date.now();if(r.example){r.example=fa
 function updateOut(){
   var r=cur(),t=buildText(r),s=structure(r),n=0,tc=totalCable(r);
   s.secs.forEach(function(x){n+=x.lines.length});
-  $('out').textContent=t||'Laporan masih kosong. Isi di tab Isi.';
+  $('out').textContent=t||'Laporan masih kosong. Silakan isi melalui menu Isi Laporan.';
   $('stats').textContent=n+' baris'+(tc>0?' · Total kabel '+fmt(tc)+' M':'');
   $('wa').href='https://wa.me/'+(t?'?text='+encodeURIComponent(t):'');
 }
