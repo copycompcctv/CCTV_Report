@@ -116,7 +116,7 @@ details summary{cursor:pointer;font-weight:600;min-height:40px;display:flex;alig
   position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--surface);border-top:1px solid var(--line);
   padding:6px max(16px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
 }
-.tabs-in{max-width:640px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.tabs-in{max-width:640px;margin:0 auto;display:grid;grid-template-columns:repeat(2,minmax(0,180px));gap:8px}
 .tab{min-height:48px;border:0;background:transparent;color:var(--muted);font-weight:600;font-size:13px;border-radius:8px}
 .tab[aria-current="page"]{color:var(--accent);background:var(--accent-soft)}
 .toast{
@@ -129,7 +129,7 @@ details summary{cursor:pointer;font-weight:600;min-height:40px;display:flex;alig
   body{padding-block:22px 48px}
   .wrap{max-width:1120px}
   .tabs{position:static;border:1px solid var(--line);border-radius:10px;padding:6px}
-  .tabs-in{max-width:none;grid-template-columns:repeat(3,minmax(0,150px));justify-content:start}
+  .tabs-in{max-width:none;grid-template-columns:repeat(2,minmax(0,180px));justify-content:start}
   .tab-hasil{display:none}
   .cols{grid-template-columns:minmax(0,1fr) 400px;gap:24px;align-items:start}
   #v-hasil{position:sticky;top:16px}
@@ -138,6 +138,10 @@ details summary{cursor:pointer;font-weight:600;min-height:40px;display:flex;alig
   .catcard .catgrid,.catcard .catfoot{display:contents}
   .catcard .catfoot>*{margin-bottom:0}
 }
+.structured-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;min-width:0}
+.structured-grid>div{min-width:0}
+.structured-item{background:var(--surface2);border:1px solid var(--line)}
+@media (max-width:520px){.structured-grid{grid-template-columns:1fr}}
 @media (prefers-reduced-motion: reduce){.toast{transition:none}}
 </style>
 </head>
@@ -160,10 +164,8 @@ details summary{cursor:pointer;font-weight:600;min-height:40px;display:flex;alig
 
   <nav class="tabs" aria-label="Menu utama">
     <div class="tabs-in">
-      <button type="button" class="tab" data-act="view" data-v="isi">Isi</button>
-      <button type="button" class="tab tab-hasil" data-act="view" data-v="hasil">Hasil</button>
-      <button type="button" class="tab" data-act="view" data-v="barang">Barang</button>
-      <button type="button" class="tab" data-act="view" data-v="riwayat">Riwayat</button>
+      <button type="button" class="tab" data-act="view" data-v="isi">Isi Laporan</button>
+      <button type="button" class="tab" data-act="view" data-v="riwayat">History Laporan</button>
     </div>
   </nav>
 
@@ -230,7 +232,7 @@ details summary{cursor:pointer;font-weight:600;min-height:40px;display:flex;alig
       </section>
     </div>
 
-    <aside id="v-hasil" hidden>
+    <aside id="v-hasil">
       <div class="card stack">
         <span class="lbl" style="margin:0">Teks untuk atasan</span>
         <pre id="out" class="bubble"></pre>
@@ -268,9 +270,10 @@ function parseExpr(s){
   var total=terms.reduce(function(a,t){return a+parseFloat(t)},0);
   return {ok:true,terms:terms.map(function(t){return t.replace(/\./g,',')}),total:total};
 }
-function mk(kind,o){return Object.assign({id:uid(),kind:kind,label:'',text:'',qty:'',expr:'',colon:true,join:false},o||{})}
+function mk(kind,o){return Object.assign({id:uid(),kind:kind,label:'',text:'',qty:'',expr:'',colon:true,join:false,job:'Pasang Baru',jobCustom:'',item:'DVR',itemCustom:'',note:'',unit:'Pcs'},o||{})}
 function itemLine(it){
   var label=(it.label||'').trim();
+  if(it.kind==='structured'){var j=it.job==='Servis Lainnya'?(it.jobCustom||'Servis Lainnya'):it.job;var nm=it.item==='Isi Sendiri'?(it.itemCustom||''):it.item;return [j,nm,it.note,it.unit&&it.unit!=='-'?it.unit:''].filter(Boolean).join(' - ')}
   if(it.kind==='text') return (it.text||'').replace(/[ \t]+$/gm,'').trim();
   if(it.kind==='qty'){
     var q=(it.qty||'').trim();
@@ -323,8 +326,8 @@ function totalCable(r){
 function str(v){return typeof v==='string'?v:(v==null?'':String(v))}
 function normItem(it){
   it=it||{};
-  return {id:str(it.id)||uid(),kind:['text','qty','cable'].indexOf(it.kind)>=0?it.kind:'text',
-    label:str(it.label),text:str(it.text),qty:str(it.qty),expr:str(it.expr),colon:it.colon!==false,join:!!it.join};
+  return {id:str(it.id)||uid(),kind:['text','qty','cable','structured'].indexOf(it.kind)>=0?it.kind:'text',
+    label:str(it.label),text:str(it.text),qty:str(it.qty),expr:str(it.expr),colon:it.colon!==false,join:!!it.join,job:str(it.job)||'Pasang Baru',jobCustom:str(it.jobCustom),item:str(it.item)||'DVR',itemCustom:str(it.itemCustom),note:str(it.note),unit:str(it.unit)||'Pcs'};
 }
 function normReport(r){
   if(!r||typeof r!=='object') return null;
@@ -361,7 +364,7 @@ var DEFAULT_CATALOG=[
 ];
 function blankReport(){
   return {id:uid(),example:false,customer:'',address:'',tech:'',date:todayISO(),showMeta:false,updatedAt:Date.now(),
-    sections:[{id:uid(),title:'Khusus CCTV',bold:true,items:[]},{id:uid(),title:'Instalasi Listrik',bold:false,items:[]}]};
+    sections:[{id:uid(),title:'Rincian pekerjaan',bold:true,items:[]}]};
 }
 function sampleReports(){
   var a={id:uid(),example:true,customer:'H. Jamal',address:'',tech:'',date:todayISO(),showMeta:false,updatedAt:Date.now(),sections:[
@@ -580,12 +583,24 @@ function updCalc(it){var el=$('tot-'+it.id);if(!el)return;var c=calcInfo(it);el.
 
 function fieldsHTML(it){
   var id=esc(it.id);
+  if(it.kind==='structured'){
+    var jobs=['Pasang Baru','Servis Kamera','Servis Lainnya'];
+    var items=['DVR','NVR','Kamera Indoor','Kamera Outdoor','Hardisk','PSU','Adaptor','Kabel CCTV','Kabel LAN','Duradus','Jack BNC','Jack DC','Stopkontak','Streker Male','Streker Female','Kabel Listrik','TC Duck','Isi Sendiri'];
+    return '<div class="structured-grid">'
+      +'<div><label class="lbl" for="job-'+id+'">Item pekerjaan</label><select id="job-'+id+'" data-f="job">'+jobs.map(function(v){return '<option'+(it.job===v?' selected':'')+'>'+v+'</option>'}).join('')+'</select></div>'
+      +(it.job==='Servis Lainnya'?'<div><label class="lbl" for="jobc-'+id+'">Jenis pekerjaan</label><input id="jobc-'+id+'" data-f="jobCustom" value="'+esc(it.jobCustom)+'" placeholder="Tuliskan pekerjaan" autocomplete="off"></div>':'')
+      +'<div><label class="lbl" for="item-'+id+'">Item barang</label><select id="item-'+id+'" data-f="item">'+items.map(function(v){return '<option'+(it.item===v?' selected':'')+'>'+v+'</option>'}).join('')+'</select></div>'
+      +(it.item==='Isi Sendiri'?'<div><label class="lbl" for="itemc-'+id+'">Nama barang</label><input id="itemc-'+id+'" data-f="itemCustom" value="'+esc(it.itemCustom)+'" placeholder="Ketik nama barang" autocomplete="off"></div>':'')
+      +'<div><label class="lbl" for="note-'+id+'">Keterangan</label><input id="note-'+id+'" data-f="note" value="'+esc(it.note)+'" placeholder="Isi keterangan" autocomplete="off"></div>'
+      +'<div><label class="lbl" for="unit-'+id+'">Satuan</label><select id="unit-'+id+'" data-f="unit">'+['Pcs','Meter','-'].map(function(v){return '<option'+(it.unit===v?' selected':'')+'>'+v+'</option>'}).join('')+'</select></div></div>';
+  }
   if(it.kind==='text') return '<textarea id="foc-'+id+'" data-f="text" rows="2" aria-label="Isi baris" placeholder="mis. DVR 4 Ch + HDD 500 Gb">'+esc(it.text)+'</textarea>';
   var lab='<input id="lab-'+id+'" data-f="label" value="'+esc(it.label)+'" placeholder="Nama barang" aria-label="Nama barang" autocomplete="off">';
   if(it.kind==='qty') return lab+'<input id="val-'+id+'" data-f="qty" value="'+esc(it.qty)+'" placeholder="Keterangan, mis. 100 meter" aria-label="Keterangan" autocomplete="off">';
   return lab+'<input id="val-'+id+'" class="mono" data-f="expr" value="'+esc(it.expr)+'" inputmode="tel" placeholder="50+10+5" aria-label="Panjang kabel dalam meter" autocomplete="off">';
 }
 function itemHTML(it,idx){
+  if(it.kind==='structured') return '<div class="item structured-item" data-item="'+esc(it.id)+'"><div class="item-top"><strong>Rincian barang / pekerjaan</strong><span class="sp"></span><button type="button" class="mini danger" data-act="del-item">Hapus</button></div>'+fieldsHTML(it)+'</div>';
   var kinds=[['text','Teks'],['qty','Barang'],['cable','Kabel']];
   var c=it.kind==='cable'?calcInfo(it):null;
   return '<div class="item" data-item="'+esc(it.id)+'">'
@@ -601,7 +616,7 @@ function itemHTML(it,idx){
 }
 function sectionHTML(s){
   var id=esc(s.id);
-  var chips='<div class="chips" role="group" aria-label="Tambah baris"><button type="button" class="chip pri" data-act="add-blank">+ Baris bebas</button>'
+  var chips='<div class="chips" role="group" aria-label="Tambah baris"><button type="button" class="chip pri" data-act="add-structured">+ Tambah item pekerjaan / barang</button><button type="button" class="chip" data-act="add-blank">+ Catatan bebas</button>'
    +db.catalog.map(function(c){return '<button type="button" class="chip" data-act="add-cat" data-cid="'+esc(c.id)+'">+ '+esc(c.label)+'</button>'}).join('')+'</div>';
   return '<section class="card" data-sec="'+id+'">'
    +'<div class="sec-head"><input id="title-'+id+'" data-f="title" value="'+esc(s.title)+'" placeholder="Judul seksi (boleh kosong)" aria-label="Judul seksi" autocomplete="off">'
@@ -676,14 +691,13 @@ function renderHistory(){
 
 /* ---------- Navigasi ---------- */
 function setView(v,keepScroll){
-  if(wide()&&v==='hasil')v='isi';
+  if(v==='hasil'||v==='barang')v='isi';
   view=v;
-  ['isi','barang','riwayat'].forEach(function(n){$('v-'+n).hidden=n!==v});
-  $('v-hasil').hidden=wide()?v!=='isi':v!=='hasil';
+  ['isi','riwayat'].forEach(function(n){$('v-'+n).hidden=n!==v});
+  $('v-hasil').hidden=false;
   document.querySelectorAll('.tab').forEach(function(b){if(b.dataset.v===v)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});
   if(v==='isi')render();
   if(v==='hasil')updateOut();
-  if(v==='barang')renderCatalog();
   if(v==='riwayat')renderHistory();
   renderNote();
   if(!keepScroll)window.scrollTo(0,0);
@@ -692,6 +706,7 @@ if(mq.addEventListener)mq.addEventListener('change',function(){setView(view,true
 else if(mq.addListener)mq.addListener(function(){setView(view,true)});
 
 /* ---------- Input ---------- */
+document.addEventListener('change',function(e){var t=e.target,f=t.dataset&&t.dataset.f;if(f==='job'||f==='item'||f==='unit'){var sec=getSec(t),it=getItem(t);if(!sec||!it)return;it[f]=t.value;changed();render()}});
 document.addEventListener('input',function(e){
   var t=e.target,f=t.dataset&&t.dataset.f;
   if(!f) return;
@@ -738,6 +753,7 @@ document.addEventListener('click',function(e){
       sec.items=sec.items.filter(function(x){return x!==it});changed();render();break;
     }
     case 'add-blank':{sec=getSec(b);if(!sec)break;it=mk('text',{text:''});sec.items.push(it);changed();render();focusItem(it);break}
+    case 'add-structured':{sec=getSec(b);if(!sec)break;it=mk('structured');sec.items.push(it);changed();render();break}
     case 'add-cat':{
       sec=getSec(b);c=db.catalog.filter(function(x){return x.id===b.dataset.cid})[0];if(!sec||!c)break;
       if(c.kind==='text')it=mk('text',{text:c.label+' '+(c.note||'')});
