@@ -1016,7 +1016,7 @@ $('signupBtn').addEventListener('click',async function(){
   var email=$('authEmail').value.trim(),password=$('authPassword').value;
   if(!email||password.length<6){authMessage('Isi email dan password minimal 6 karakter.');return}
   authMessage('Membuat akun...',true);
-  var result=await sb.auth.signUp({email:email,password:password,options:{data:{display_name:email.split('@')[0]}}});
+  var result=await sb.auth.signUp({email:email,password:password,options:{data:{display_name:email.split('@')[0]},emailRedirectTo:window.location.origin+window.location.pathname}});
   if(result.error){authMessage(result.error.message);return}
   if(result.data.session){authMessage('Akun dibuat. Memuat aplikasi...',true);await enterApp(result.data.user)}
   else authMessage('Akun dibuat. Periksa email untuk konfirmasi, lalu login. Akun baru berstatus Teknisi.',true);
