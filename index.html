@@ -144,6 +144,7 @@ details summary{cursor:pointer;font-weight:600;min-height:40px;display:flex;alig
 @media (max-width:520px){.structured-grid{grid-template-columns:1fr}}
 @media (prefers-reduced-motion: reduce){.toast{transition:none}}
 .item-actions{display:flex;justify-content:flex-start;margin-top:12px}.out-heading{display:flex;align-items:center;gap:14px;flex-wrap:wrap}.out-heading strong{font-size:18px;font-weight:500;color:#4d145c}.structured-item{padding:12px;border-radius:9px}.structured-item .item-top{margin-bottom:10px}.structured-item .lbl{margin-bottom:6px}
+.brand .sub{max-width:560px}.sec-head{align-items:center}.sec-head select{flex:1;min-width:160px}.structured-item .item-top strong{font-weight:600}
 </style>
 </head>
 <body>
@@ -235,7 +236,7 @@ details summary{cursor:pointer;font-weight:600;min-height:40px;display:flex;alig
 
     <aside id="v-hasil">
       <div class="card stack">
-        <div class="out-heading"><span class="lbl" style="margin:0">TEKS UNTUK ATASAN</span><strong>Buat Laporan</strong></div>
+        <div class="out-heading"><span class="lbl" style="margin:0">Isi Laporan</span></div>
         <pre id="out" class="bubble"></pre>
         <div id="stats" class="stats"></div>
         <div class="actions">
@@ -258,7 +259,7 @@ var KEY='laporan-cctv-v2';
 
 // ==LOGIC==
 var MONTHS=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
-var DEFAULT_KOP={name:'Copy Computer',tag:'serving technology better',addr:'Jl. Sicengkir RW 6 Troso, Kec. Pecangaan, Kab. Jepara 59462'};
+var DEFAULT_KOP={name:'Copy Computer',tag:'',addr:'Jl Sicengkir No. 3 Troso. Kec. Pecangaan Kab Jepara 59462'};
 function uid(){return Math.random().toString(36).slice(2,9)+Date.now().toString(36).slice(-3)}
 function todayISO(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 function fmtDate(iso){var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(iso||'');if(!m)return '';return (+m[3])+' '+MONTHS[+m[2]-1]+' '+m[1]}
@@ -274,7 +275,7 @@ function parseExpr(s){
 function mk(kind,o){return Object.assign({id:uid(),kind:kind,label:'',text:'',qty:'',expr:'',colon:true,join:false,job:'Pasang Baru',jobCustom:'',item:'DVR',itemCustom:'',note:'',unit:'Pcs'},o||{})}
 function itemLine(it){
   var label=(it.label||'').trim();
-  if(it.kind==='structured'){var j=it.job==='Servis Lainnya'?(it.jobCustom||'Servis Lainnya'):it.job;var nm=it.item==='Isi Sendiri'?(it.itemCustom||''):it.item;return [j,nm,it.note,it.unit&&it.unit!=='-'?it.unit:''].filter(Boolean).join(' - ')}
+  if(it.kind==='structured'){var nm=it.item==='Isi Sendiri'?(it.itemCustom||''):it.item;var detail=(it.note||'').trim();var unit=it.unit&&it.unit!=='-'?it.unit:'';return [nm,detail].filter(Boolean).join(' : ')+(unit?' '+unit:'')}
   if(it.kind==='text') return (it.text||'').replace(/[ \t]+$/gm,'').trim();
   if(it.kind==='qty'){
     var q=(it.qty||'').trim();
@@ -299,8 +300,8 @@ function structure(r){
       var l=itemLine(it); if(!l) return;
       if(it.join&&lines.length&&i>0) lines[lines.length-1]+=' + '+l; else lines.push(l);
     });
-    var title=(s.title||'').trim();
-    if(title||lines.length) secs.push({title:title,bold:!!s.bold,lines:lines});
+    var title=(s.job||s.title||'').trim();
+    if(title||lines.length) secs.push({title:title,bold:true,lines:lines});
   });
   var meta=[];
   if(r.showMeta){ if((r.address||'').trim()) meta.push(r.address.trim()); var d=fmtDate(r.date); if(d) meta.push(d); }
@@ -333,12 +334,20 @@ function normItem(it){
 }
 function normReport(r){
   if(!r||typeof r!=='object') return null;
-  return {id:str(r.id)||uid(),example:!!r.example,customer:str(r.customer),address:str(r.address),tech:str(r.tech),date:str(r.date),catatan:str(r.catatan),
-    showMeta:!!r.showMeta,updatedAt:+r.updatedAt||Date.now(),
-    sections:(Array.isArray(r.sections)?r.sections:[]).map(function(x){
-      x=x||{};
-      return {id:str(x.id)||uid(),title:str(x.title),bold:!!x.bold,items:(Array.isArray(x.items)?x.items:[]).map(normItem)};
-    })};
+  var sections=[];
+  (Array.isArray(r.sections)?r.sections:[]).forEach(function(x){
+    x=x||{};var items=(Array.isArray(x.items)?x.items:[]).map(normItem),groups=[];
+    items.forEach(function(it){
+      if(it.kind!=='structured') return;
+      var job=it.job==='Servis Lainnya'?(it.jobCustom||'Servis Lainnya'):it.job||x.job||x.title||'Pasang Baru';
+      var g=groups[groups.length-1];if(!g||g.job!==job){g={id:uid(),job:job,title:'',bold:true,items:[]};groups.push(g)}g.items.push(it);
+    });
+    var plain=items.filter(function(it){return it.kind!=='structured'});
+    if(plain.length) sections.push({id:str(x.id)||uid(),title:str(x.title),job:str(x.job),bold:!!x.bold,items:plain});
+    groups.forEach(function(g){sections.push(g)});
+    if(!items.length) sections.push({id:str(x.id)||uid(),title:str(x.title),job:str(x.job)||'Pasang Baru',bold:true,items:[]});
+  });
+  return {id:str(r.id)||uid(),example:!!r.example,customer:str(r.customer),address:str(r.address),tech:str(r.tech),date:str(r.date),catatan:str(r.catatan),showMeta:!!r.showMeta,updatedAt:+r.updatedAt||Date.now(),sections:sections};
 }
 function normCat(c){
   if(!c||typeof c!=='object') return null;
@@ -366,7 +375,7 @@ var DEFAULT_CATALOG=[
 ];
 function blankReport(){
   return {id:uid(),example:false,customer:'',address:'',tech:'',date:todayISO(),showMeta:false,updatedAt:Date.now(),
-    catatan:'',sections:[{id:uid(),title:'Rincian pekerjaan',bold:true,items:[mk('structured')]}]};
+    catatan:'',sections:[{id:uid(),title:'',job:'Pasang Baru',bold:true,items:[mk('structured',{item:'Isi Sendiri'})]}]};
 }
 function sampleReports(){
   var a={id:uid(),example:true,customer:'H. Jamal',address:'',tech:'',date:todayISO(),showMeta:false,updatedAt:Date.now(),sections:[
@@ -539,7 +548,7 @@ function setStatus(){
   var el=$('status');
   el.textContent='';el.hidden=true;
   el.className='sub'+(storageOk?'':' bad');
-  $('brand').textContent=[db.kop.name,db.kop.tag].filter(Boolean).join(' · ');
+  db.kop.tag='';db.kop.addr='Jl Sicengkir No. 3 Troso. Kec. Pecangaan Kab Jepara 59462';$('brand').textContent=[db.kop.name,db.kop.addr].filter(Boolean).join(' · ');
 }
 function save(){clearTimeout(st);st=setTimeout(function(){try{localStorage.setItem(KEY,JSON.stringify(db));storageOk=true}catch(e){storageOk=false}setStatus()},200)}
 function toast(m){var t=$('toast');t.textContent=m;t.classList.add('on');clearTimeout(tt);tt=setTimeout(function(){t.classList.remove('on')},2600)}
@@ -587,11 +596,8 @@ function updCalc(it){var el=$('tot-'+it.id);if(!el)return;var c=calcInfo(it);el.
 function fieldsHTML(it){
   var id=esc(it.id);
   if(it.kind==='structured'){
-    var jobs=['Pasang Baru','Servis Kamera','Servis Lainnya'];
     var items=['DVR','NVR','Kamera Indoor','Kamera Outdoor','Hardisk','PSU','Adaptor','Kabel CCTV','Kabel LAN','Duradus','Jack BNC','Jack DC','Stopkontak','Streker Male','Streker Female','Kabel Listrik','TC Duck','Isi Sendiri'];
     return '<div class="structured-grid">'
-      +'<div><label class="lbl" for="job-'+id+'">Item pekerjaan</label><select id="job-'+id+'" data-f="job">'+jobs.map(function(v){return '<option'+(it.job===v?' selected':'')+'>'+v+'</option>'}).join('')+'</select></div>'
-      +(it.job==='Servis Lainnya'?'<div><label class="lbl" for="jobc-'+id+'">Jenis pekerjaan</label><input id="jobc-'+id+'" data-f="jobCustom" value="'+esc(it.jobCustom)+'" placeholder="Tuliskan pekerjaan" autocomplete="off"></div>':'')
       +'<div><label class="lbl" for="item-'+id+'">Item barang</label><select id="item-'+id+'" data-f="item">'+items.map(function(v){return '<option'+(it.item===v?' selected':'')+'>'+v+'</option>'}).join('')+'</select></div>'
       +(it.item==='Isi Sendiri'?'<div><label class="lbl" for="itemc-'+id+'">Nama barang</label><input id="itemc-'+id+'" data-f="itemCustom" value="'+esc(it.itemCustom)+'" placeholder="Ketik nama barang" autocomplete="off"></div>':'')
       +'<div><label class="lbl" for="note-'+id+'">Keterangan</label><input id="note-'+id+'" data-f="note" value="'+esc(it.note)+'" placeholder="Isi keterangan" autocomplete="off"></div>'
@@ -603,7 +609,7 @@ function fieldsHTML(it){
   return lab+'<input id="val-'+id+'" class="mono" data-f="expr" value="'+esc(it.expr)+'" inputmode="tel" placeholder="50+10+5" aria-label="Panjang kabel dalam meter" autocomplete="off">';
 }
 function itemHTML(it,idx){
-  if(it.kind==='structured') return '<div class="item structured-item" data-item="'+esc(it.id)+'"><div class="item-top"><strong>Rincian barang / pekerjaan</strong><span class="sp"></span><button type="button" class="mini danger" data-act="del-item">Hapus</button></div>'+fieldsHTML(it)+'</div>';
+  if(it.kind==='structured') return '<div class="item structured-item" data-item="'+esc(it.id)+'"><div class="item-top"><strong>Item barang</strong><span class="sp"></span><button type="button" class="mini danger" data-act="del-item">Hapus</button></div>'+fieldsHTML(it)+'</div>';
   var kinds=[['text','Teks'],['qty','Barang'],['cable','Kabel']];
   var c=it.kind==='cable'?calcInfo(it):null;
   return '<div class="item" data-item="'+esc(it.id)+'">'
@@ -618,13 +624,12 @@ function itemHTML(it,idx){
    +'</div>';
 }
 function sectionHTML(s){
-  var id=esc(s.id);
+  var id=esc(s.id),jobs=['Pasang Baru','Servis Kamera','Servis Lainnya'];
   return '<section class="card" data-sec="'+id+'">'
-   +'<div class="sec-head"><input id="title-'+id+'" data-f="title" value="'+esc(s.title)+'" placeholder="Judul seksi (boleh kosong)" aria-label="Judul seksi" autocomplete="off">'
-   +'<button type="button" class="mini" data-act="bold" aria-pressed="'+(!!s.bold)+'">Tebal</button>'
-   +'<button type="button" class="mini danger" data-act="del-sec">Hapus</button></div>'
+   +'<div class="sec-head"><label class="lbl" for="jobsec-'+id+'">Item pekerjaan</label><select id="jobsec-'+id+'" data-f="job">'+jobs.map(function(v){return '<option'+((s.job||s.title||'Pasang Baru')===v?' selected':'')+'>'+v+'</option>'}).join('')+'</select>'
+   +'<button type="button" class="mini danger" data-act="del-sec">Hapus pekerjaan</button></div>'
    +s.items.map(itemHTML).join('')
-   +'<div class="item-actions"><button type="button" class="btn small" data-act="add-structured">+ Tambah item</button></div></section>';
+   +'<div class="item-actions"><button type="button" class="btn small" data-act="add-structured">+ Tambah barang</button></div></section>';
 }
 function render(){
   var r=cur();
@@ -634,7 +639,8 @@ function render(){
    +'<div><label class="lbl" for="tech">Teknisi</label><input id="tech" data-f="tech" value="'+esc(r.tech)+'" placeholder="Nama Teknisi" autocomplete="off"></div></div>'
    +'<div><label class="lbl" for="address">Alamat</label><input id="address" data-f="address" value="'+esc(r.address)+'" placeholder="Alamat Pelanggan" autocomplete="off"></div>'
    +'<label class="check"><input id="showMeta" type="checkbox" data-f="showMeta"'+(r.showMeta?' checked':'')+'><span>Cantumkan tanggal dan alamat di teks WhatsApp</span></label></div>'
-   +r.sections.map(function(sec){if(!sec.items.length)sec.items.push(mk('structured'));return sectionHTML(sec)}).join('')
+   +r.sections.map(function(sec){if(!sec.items.length)sec.items.push(mk('structured',{item:'Isi Sendiri'}));return sectionHTML(sec)}).join('')
+   +'<div class="item-actions"><button type="button" class="btn" data-act="add-sec">+ Tambah pekerjaan</button></div>'
    +'<div class="card stack"><label class="lbl" for="catatan">Catatan</label><textarea id="catatan" data-f="catatan" rows="3" placeholder="Catatan tambahan (opsional)">'+esc(r.catatan||'')+'</textarea></div>';
   renderNote();updateOut();
 }
@@ -725,6 +731,7 @@ document.addEventListener('input',function(e){
   else{
     var sec=getSec(t);if(!sec)return;
     if(f==='title')sec.title=v;
+    else if(f==='job'){sec.job=v;sec.title='';}
     else{var it=getItem(t);if(!it)return;it[f]=v;if(f==='expr')updCalc(it)}
   }
   changed();
@@ -755,7 +762,7 @@ document.addEventListener('click',function(e){
       sec.items=sec.items.filter(function(x){return x!==it});changed();render();break;
     }
     case 'add-blank':{sec=getSec(b);if(!sec)break;it=mk('text',{text:''});sec.items.push(it);changed();render();focusItem(it);break}
-    case 'add-structured':{sec=getSec(b);if(!sec)break;it=mk('structured');sec.items.push(it);changed();render();break}
+    case 'add-structured':{sec=getSec(b);if(!sec)break;it=mk('structured',{item:'Isi Sendiri'});sec.items.push(it);changed();render();break}
     case 'add-cat':{
       sec=getSec(b);c=db.catalog.filter(function(x){return x.id===b.dataset.cid})[0];if(!sec||!c)break;
       if(c.kind==='text')it=mk('text',{text:c.label+' '+(c.note||'')});
@@ -763,7 +770,7 @@ document.addEventListener('click',function(e){
       else it=mk('qty',{label:c.label,qty:c.note||'',colon:c.colon!==false});
       sec.items.push(it);changed();render();focusItem(it);break;
     }
-    case 'add-sec':{var s={id:uid(),title:'',bold:false,items:[]};r.sections.push(s);changed();render();focusEl('title-'+s.id);break}
+    case 'add-sec':{var s={id:uid(),title:'',job:'Pasang Baru',bold:true,items:[mk('structured',{item:'Isi Sendiri'})]};r.sections.push(s);changed();render();break}
     case 'bold':sec=getSec(b);if(sec){sec.bold=!sec.bold;changed();render()}break;
     case 'del-sec':{
       sec=getSec(b);if(!sec)break;
