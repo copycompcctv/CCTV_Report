@@ -269,7 +269,7 @@ function itemLine(it){
   }
   if(shown) line+=(line?' : ':'')+shown;
   if(it.unit==='Pcs') line+=(line?' ':'')+'Pcs';
-  else if(it.unit==='Meter'&&!parseExpr(note).ok) line+=(line?' ':'')+'Meter';
+  else if(it.unit==='Meter'&&note&&!parseExpr(note).ok) line+=(line?' ':'')+'Meter';
   return line;
 }
 function structure(r){
