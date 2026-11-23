@@ -554,11 +554,11 @@ function buildPdf(r,kop){
 var $=function(id){return document.getElementById(id)};
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 var CAT_KINDS=[['qty','Barang + keterangan'],['cable','Kabel (hitung meter)'],['text','Teks bebas']];
-var storageOk=true;
+var storageOk=true,hadLocalDb=false;
 
 function loadDb(){
   var raw=null,d=null;
-  try{raw=localStorage.getItem(KEY)}catch(e){storageOk=false}
+  try{raw=localStorage.getItem(KEY);hadLocalDb=!!raw}catch(e){storageOk=false}
   try{d=raw?JSON.parse(raw):null}catch(e){d=null}
   var reports=d&&Array.isArray(d.reports)?d.reports.map(normReport).filter(Boolean):[];
   var catalog=d&&Array.isArray(d.catalog)?d.catalog.map(normCat).filter(Boolean):DEFAULT_CATALOG.map(function(c){return normCat(c)});
@@ -586,18 +586,19 @@ function setStatus(){
   }else{el.textContent='';el.hidden=true;$('logoutBtn').hidden=true}
 }
 function cloudRow(r){return {id:r.id,owner_id:r.ownerId||currentUser.id,customer:r.customer||'',address:r.address||'',report_date:r.date||null,payload:r}}
+async function saveCloudNow(){
+  if(!cloudReady||!currentUser)throw new Error('Belum login ke database online');
+  clearTimeout(cloudTimer);
+  var r=cur(),owner=r.ownerId||currentUser.id,payload=JSON.parse(JSON.stringify(r));payload.ownerId=owner;
+  var result=await sb.from('reports').upsert(cloudRow(payload),{onConflict:'id'});
+  if(result.error)throw result.error;r.ownerId=owner;
+  var settings=await sb.from('user_settings').upsert({user_id:currentUser.id,catalog:db.catalog,kop:db.kop,last_tech:db.lastTech||''},{onConflict:'user_id'});
+  if(settings.error)throw settings.error;
+}
 function queueCloudSave(){
   if(!cloudReady||!currentUser)return;
   clearTimeout(cloudTimer);
-  cloudTimer=setTimeout(async function(){
-    try{
-      var r=cur(),owner=r.ownerId||currentUser.id,payload=JSON.parse(JSON.stringify(r));payload.ownerId=owner;
-      var result=await sb.from('reports').upsert(cloudRow(payload),{onConflict:'id'});
-      if(result.error)throw result.error;r.ownerId=owner;
-      var settings=await sb.from('user_settings').upsert({user_id:currentUser.id,catalog:db.catalog,kop:db.kop,last_tech:db.lastTech||''},{onConflict:'user_id'});
-      if(settings.error)throw settings.error;
-    }catch(e){console.error('Supabase sync:',e);toast('Sinkronisasi gagal: '+(e.message||'periksa koneksi'))}
-  },650);
+  cloudTimer=setTimeout(function(){saveCloudNow().catch(function(e){console.error('Supabase sync:',e);toast('Sinkronisasi gagal: '+(e.message||'periksa koneksi'))})},650);
 }
 function saveNow(){
   clearTimeout(st);
@@ -873,8 +874,11 @@ document.addEventListener('click',function(e){
     }
     case 'save-report':{
       var ok=saveNow();
-      if(ok){toast('Laporan berhasil disimpan di History pada perangkat ini.');renderHistory()}
-      else toast('Gagal menyimpan. Penyimpanan browser mungkin penuh atau diblokir.');
+      if(ok){
+        renderHistory();
+        if(cloudReady){toast('Menyimpan laporan ke database online...');saveCloudNow().then(function(){toast('Laporan tersimpan di database online.')}).catch(function(e){toast('Gagal menyimpan online: '+e.message)})}
+        else toast('Laporan tersimpan di perangkat ini.');
+      }else toast('Gagal menyimpan. Penyimpanan browser mungkin penuh atau diblokir.');
       break;
     }
     case 'pdf':sharePdf(b);break;
@@ -962,7 +966,7 @@ async function loadCloud(){
     db.reports=rr.data.map(function(row){var x=normReport(row.payload)||blankReport();x.id=row.id;x.ownerId=row.owner_id;x.updatedAt=+x.updatedAt||Date.parse(row.updated_at)||Date.now();return x});
     db.currentId=db.reports.some(function(x){return x.id===local.currentId})?local.currentId:db.reports[0].id;
   }else{
-    db.reports=local.reports.map(function(x){x.ownerId=currentUser.id;return x});
+    db.reports=(currentProfile.role==='admin'&&hadLocalDb?local.reports:[blankReport()]).map(function(x){x.ownerId=currentUser.id;return x});
     if(!db.reports.length)db.reports=[blankReport()];
     db.currentId=db.reports.some(function(x){return x.id===local.currentId})?local.currentId:db.reports[0].id;
     var initial=await sb.from('reports').upsert(db.reports.map(cloudRow),{onConflict:'id'});if(initial.error)throw initial.error;
