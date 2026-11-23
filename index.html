@@ -153,7 +153,7 @@ details summary{cursor:pointer;font-weight:600;min-height:40px;display:flex;alig
       <div>
         <h1>Laporan Teknisi</h1>
         <p class="sub" id="brand"></p>
-        <p id="status" class="sub"></p>
+        <p id="status" class="sub" hidden></p>
       </div>
     </div>
     <div class="hbtns">
@@ -189,7 +189,7 @@ details summary{cursor:pointer;font-weight:600;min-height:40px;display:flex;alig
             <span class="lbl" style="margin:0">Tambah barang</span>
             <div class="catgrid">
               <div><label class="lbl" for="nl">Nama barang</label><input id="nl" autocomplete="off" placeholder="mis. Duradus"></div>
-              <div><label class="lbl" for="nn">Keterangan bawaan</label><input id="nn" autocomplete="off" placeholder="boleh kosong"></div>
+              <div><label class="lbl" for="nn">Keterangan bawaan</label><input id="nn" autocomplete="off" placeholder="Alamat Pelanggan"></div>
               <div><label class="lbl" for="nk">Jenis</label>
                 <select id="nk">
                   <option value="qty">Barang + keterangan</option>
@@ -234,7 +234,7 @@ details summary{cursor:pointer;font-weight:600;min-height:40px;display:flex;alig
 
     <aside id="v-hasil">
       <div class="card stack">
-        <span class="lbl" style="margin:0">Teks untuk atasan</span>
+        <span class="lbl" style="margin:0">Buat Laporan</span>
         <pre id="out" class="bubble"></pre>
         <div id="stats" class="stats"></div>
         <div class="actions">
@@ -534,7 +534,7 @@ function cur(){
 }
 function setStatus(){
   var el=$('status');
-  el.textContent=storageOk?'Tersimpan otomatis di perangkat ini':'Browser ini tidak bisa menyimpan. Laporan hilang saat halaman ditutup.';
+  el.textContent='';el.hidden=true;
   el.className='sub'+(storageOk?'':' bad');
   $('brand').textContent=[db.kop.name,db.kop.tag].filter(Boolean).join(' · ');
 }
@@ -625,9 +625,9 @@ function sectionHTML(s){
 function render(){
   var r=cur();
   $('form').innerHTML=
-   '<div class="card stack"><div><label class="lbl" for="customer">Pelanggan</label><input id="customer" data-f="customer" value="'+esc(r.customer)+'" placeholder="mis. H. Jamal" autocomplete="off"></div>'
+   '<div class="card stack"><div><label class="lbl" for="customer">Pelanggan</label><input id="customer" data-f="customer" value="'+esc(r.customer)+'" placeholder="Nama Pelanggan" autocomplete="off"></div>'
    +'<div class="two"><div><label class="lbl" for="date">Tanggal</label><input id="date" type="date" data-f="date" value="'+esc(r.date)+'"></div>'
-   +'<div><label class="lbl" for="tech">Teknisi</label><input id="tech" data-f="tech" value="'+esc(r.tech)+'" placeholder="nama Anda" autocomplete="off"></div></div>'
+   +'<div><label class="lbl" for="tech">Teknisi</label><input id="tech" data-f="tech" value="'+esc(r.tech)+'" placeholder="Nama Teknisi" autocomplete="off"></div></div>'
    +'<div><label class="lbl" for="address">Alamat</label><input id="address" data-f="address" value="'+esc(r.address)+'" placeholder="boleh kosong" autocomplete="off"></div>'
    +'<label class="check"><input id="showMeta" type="checkbox" data-f="showMeta"'+(r.showMeta?' checked':'')+'><span>Cantumkan tanggal dan alamat di teks WhatsApp</span></label></div>'
    +r.sections.map(sectionHTML).join('');
