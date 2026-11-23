@@ -1,0 +1,16 @@
+{
+  "name": "Laporan Teknisi CCTV",
+  "short_name": "Laporan CCTV",
+  "description": "Laporan pekerjaan teknisi CCTV, Copy Computer",
+  "lang": "id",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#F1F4F6",
+  "theme_color": "#0A6C8B",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
