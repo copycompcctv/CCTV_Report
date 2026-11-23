@@ -286,7 +286,7 @@ details summary{cursor:pointer;font-weight:600;min-height:40px;display:flex;alig
 var SUPABASE_URL='https://ogolkyowgvypstjmxxde.supabase.co';
 var SUPABASE_PUBLISHABLE_KEY='sb_publishable_8NQAMLU4WhrHfn5nwf4gjQ_rr9egknn';
 var sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
-var currentUser=null,currentProfile=null,cloudReady=false,cloudTimer=null,realtimeChannel=null;
+var currentUser=null,currentProfile=null,cloudReady=false,cloudTimer=null,realtimeChannel=null,cloudPending={};
 var KEY='laporan-cctv-v2';
 
 // ==LOGIC==
@@ -586,17 +586,22 @@ function setStatus(){
   }else{el.textContent='';el.hidden=true;$('logoutBtn').hidden=true}
 }
 function cloudRow(r){return {id:r.id,owner_id:r.ownerId||currentUser.id,customer:r.customer||'',address:r.address||'',report_date:r.date||null,payload:r}}
-async function saveCloudNow(){
+async function saveCloudNow(forceId){
   if(!cloudReady||!currentUser)throw new Error('Belum login ke database online');
   clearTimeout(cloudTimer);
-  var r=cur(),owner=r.ownerId||currentUser.id,payload=JSON.parse(JSON.stringify(r));payload.ownerId=owner;
-  var result=await sb.from('reports').upsert(cloudRow(payload),{onConflict:'id'});
-  if(result.error)throw result.error;r.ownerId=owner;
+  var ids=forceId?[forceId]:Object.keys(cloudPending);
+  if(!ids.length)ids=[cur().id];
+  var rows=[];
+  ids.forEach(function(id){var r=db.reports.filter(function(x){return x.id===id})[0];if(r){var owner=r.ownerId||currentUser.id,payload=JSON.parse(JSON.stringify(r));payload.ownerId=owner;rows.push(cloudRow(payload))}});
+  if(rows.length){var result=await sb.from('reports').upsert(rows,{onConflict:'id'});if(result.error)throw result.error;
+    rows.forEach(function(row){var r=db.reports.filter(function(x){return x.id===row.id})[0];if(r)r.ownerId=row.owner_id;delete cloudPending[row.id]});
+  }
   var settings=await sb.from('user_settings').upsert({user_id:currentUser.id,catalog:db.catalog,kop:db.kop,last_tech:db.lastTech||''},{onConflict:'user_id'});
   if(settings.error)throw settings.error;
 }
 function queueCloudSave(){
   if(!cloudReady||!currentUser)return;
+  cloudPending[cur().id]=true;
   clearTimeout(cloudTimer);
   cloudTimer=setTimeout(function(){saveCloudNow().catch(function(e){console.error('Supabase sync:',e);toast('Sinkronisasi gagal: '+(e.message||'periksa koneksi'))})},650);
 }
@@ -876,7 +881,7 @@ document.addEventListener('click',function(e){
       var ok=saveNow();
       if(ok){
         renderHistory();
-        if(cloudReady){toast('Menyimpan laporan ke database online...');saveCloudNow().then(function(){toast('Laporan tersimpan di database online.')}).catch(function(e){toast('Gagal menyimpan online: '+e.message)})}
+        if(cloudReady){toast('Menyimpan laporan ke database online...');saveCloudNow(cur().id).then(function(){toast('Laporan tersimpan di database online.')}).catch(function(e){toast('Gagal menyimpan online: '+e.message)})}
         else toast('Laporan tersimpan di perangkat ini.');
       }else toast('Gagal menyimpan. Penyimpanan browser mungkin penuh atau diblokir.');
       break;
@@ -908,7 +913,7 @@ document.addEventListener('click',function(e){
       if(!db.reports.length){db.reports.push(blankReport())}
       if(db.currentId===id)db.currentId=db.reports[0].id;
       save();
-      if(cloudReady)sb.from('reports').delete().eq('id',id).then(function(x){if(x.error)toast('Gagal menghapus di cloud: '+x.error.message)});
+      if(cloudReady){delete cloudPending[id];sb.from('reports').delete().eq('id',id).then(function(x){if(x.error)toast('Gagal menghapus di cloud: '+x.error.message)})}
       renderHistory();break;
     }
     case 'bk-copy':{
