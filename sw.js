@@ -1,6 +1,6 @@
 /* Service worker: membuat aplikasi bisa dibuka tanpa sinyal.
    Naikkan angka versi di bawah setiap kali index.html diubah, supaya HP mengambil versi baru. */
-var CACHE = 'laporan-cctv-v8';
+var CACHE = 'laporan-cctv-v9';
 var SHELL = ['./', 'index.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png'];
 
 self.addEventListener('install', function (e) {
@@ -25,12 +25,14 @@ self.addEventListener('fetch', function (e) {
   if (!ok) return;
   e.respondWith(
     caches.open(CACHE).then(function (cache) {
-      return cache.match(req, { ignoreSearch: true }).then(function (hit) {
-        var net = fetch(req).then(function (res) {
-          if (res && (res.ok || res.type === 'opaque')) cache.put(req, res.clone());
-          return res;
-        }).catch(function () { return hit || cache.match('index.html'); });
-        return hit || net;
+      // Always check the network first so GitHub Pages updates are not hidden by an old cached app.
+      return fetch(req).then(function (res) {
+        if (res && (res.ok || res.type === 'opaque')) cache.put(req, res.clone());
+        return res;
+      }).catch(function () {
+        return cache.match(req, { ignoreSearch: true }).then(function (hit) {
+          return hit || cache.match('index.html');
+        });
       });
     })
   );
