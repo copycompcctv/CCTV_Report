@@ -242,9 +242,8 @@ details summary{cursor:pointer;font-weight:600;min-height:40px;display:flex;alig
         <div class="actions">
           <button type="button" class="btn" data-act="copy">Salin teks</button>
           <a id="wa" class="btn wa" href="https://wa.me/" target="_blank" rel="noopener">Kirim lewat WhatsApp</a>
-          <button type="button" class="btn ghost" data-act="pdf">Simpan atau bagikan PDF</button>
+          <button type="button" class="btn ghost" data-act="pdf">Unduh PDF</button>
         </div>
-        <p class="hint">Tombol WhatsApp membuka WhatsApp dengan teks sudah terisi. Pilih kontak atasan lalu kirim. PDF memakai kop dari tab Barang.</p>
       </div>
     </aside>
   </div>
@@ -565,23 +564,38 @@ function arm(b,key,txt){
   setTimeout(function(){if(armed===key){armed=null;if(b.isConnected)b.textContent=b.dataset.o}},3000);
   return false;
 }
-function sharePdf(){
-  var r=cur(),name=pdfName(r),bytes=buildPdf(r,db.kop);
-  var blob=new Blob([bytes],{type:'application/pdf'});
-  function download(){
-    var u=URL.createObjectURL(blob),a=document.createElement('a');
-    a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();
-    setTimeout(function(){URL.revokeObjectURL(u)},20000);
-    toast('PDF dibuat: '+name);
-  }
+function sharePdf(btn){
+  var old=btn?btn.textContent:'';
+  if(btn){btn.disabled=true;btn.textContent='Membuat PDF...'}
+  function finish(){if(btn){btn.disabled=false;btn.textContent=old}}
   try{
-    var file=new File([blob],name,{type:'application/pdf'});
-    if(navigator.canShare&&navigator.canShare({files:[file]})){
-      navigator.share({files:[file],title:name}).catch(function(e){if(!e||e.name!=='AbortError')download()});
-      return;
+    var r=cur(),name=pdfName(r),bytes=buildPdf(r,db.kop);
+    var blob=new Blob([bytes],{type:'application/pdf'});
+    function download(){
+      var u=URL.createObjectURL(blob),a=document.createElement('a');
+      a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();
+      setTimeout(function(){URL.revokeObjectURL(u)},60000);
+      toast('PDF siap. Periksa folder Download: '+name);
+      finish();
     }
-  }catch(e){}
-  download();
+    try{
+      var file=new File([blob],name,{type:'application/pdf'});
+      if(navigator.canShare&&navigator.canShare({files:[file]})){
+        navigator.share({files:[file],title:name}).then(function(){
+          toast('PDF dibagikan.');finish();
+        },function(e){
+          if(e&&e.name==='AbortError')toast('Berbagi dibatalkan. PDF belum disimpan. Klik Unduh PDF untuk mengunduh.');
+          else download();
+          finish();
+        });
+        return;
+      }
+    }catch(e){}
+    download();
+  }catch(e){
+    toast('PDF gagal dibuat: '+(e&&e.message?e.message:'periksa data laporan'));
+    finish();
+  }
 }
 
 /* ---------- Halaman Isi ---------- */
@@ -784,7 +798,7 @@ document.addEventListener('click',function(e){
         else{try{var rg=document.createRange();rg.selectNodeContents($('out'));var sl=window.getSelection();sl.removeAllRanges();sl.addRange(rg)}catch(x){}toast('Tekan lama teks lalu pilih Salin')}
       });break;
     }
-    case 'pdf':sharePdf();break;
+    case 'pdf':sharePdf(b);break;
     case 'cat-add':{
       var lab=$('nl').value.trim();if(!lab){toast('Isi nama barang dulu');focusEl('nl');break}
       db.catalog.push({id:uid(),label:lab,note:$('nn').value.trim(),kind:$('nk').value,colon:true});
