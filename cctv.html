@@ -835,7 +835,7 @@ function renderCatalog(){
 /* ---------- Riwayat ---------- */
 function renderHistory(){
   var q=($('sq').value||'').toLowerCase().trim();
-  var list=db.reports.filter(function(r){return r.saved!==false && String(r.customer||'').trim()}).slice().sort(function(a,b){return (b.createdAt||0)-(a.createdAt||0)}).filter(function(r){return !q||(r.customer+' '+r.address).toLowerCase().indexOf(q)>=0});
+  var list=db.reports.filter(function(r){return r.saved!==false && String(r.customer||'').trim()}).slice().sort(function(a,b){var da=String(a.date||''),dbb=String(b.date||'');if(da!==dbb)return dbb.localeCompare(da);return (b.createdAt||0)-(a.createdAt||0)}).filter(function(r){return !q||(r.customer+' '+r.address).toLowerCase().indexOf(q)>=0});
   $('hist').innerHTML=list.length?list.map(function(r){
     var s=structure(r),n=0,tc=totalCable(r);s.secs.forEach(function(x){n+=x.lines.length});
     var id=esc(r.id),d=fmtDate(r.date);
