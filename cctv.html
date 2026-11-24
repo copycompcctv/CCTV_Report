@@ -842,8 +842,20 @@ function renderHistory(){
     return '<article class="card hrow'+(r.id===db.currentId?' cur':'')+'" data-rid="'+id+'">'
      +'<div><strong>'+esc((r.customer||'').trim()||'Tanpa nama')+'</strong>'+(r.example?'<span class="tag">Contoh</span>':'')
      +'<div class="hmeta">'+esc([d,n+' baris',tc>0?'kabel '+fmt(tc)+' M':''].filter(Boolean).join(' · '))+'</div></div>'
-     +'<div class="hact"><button type="button" class="mini" data-act="h-edit">Edit</button><button type="button" class="mini" data-act="h-open">Buka</button><button type="button" class="mini" data-act="h-dup">Duplikat</button><button type="button" class="mini danger" data-act="h-del">Hapus</button></div></article>';
+     +'<div class="hact"><button type="button" class="mini" data-act="h-detail">Lihat laporan</button><button type="button" class="mini" data-act="h-edit">Edit</button><button type="button" class="mini" data-act="h-open">Buka</button><button type="button" class="mini" data-act="h-dup">Duplikat</button><button type="button" class="mini danger" data-act="h-del">Hapus</button></div></article>';
   }).join(''):'<p class="empty">Tidak ada laporan yang cocok.</p>';
+}
+
+
+function showReportPopup(title,body){
+ var old=document.getElementById('reportDetailPopup');if(old)old.remove();
+ var box=document.createElement('div');box.id='reportDetailPopup';
+ box.style.cssText='position:fixed;inset:0;z-index:99999;background:rgba(15,23,42,.65);display:flex;align-items:center;justify-content:center;padding:16px';
+ box.innerHTML='<section style="background:#fff;color:#182335;width:min(760px,100%);max-height:88vh;overflow:auto;border-radius:14px;padding:20px;box-shadow:0 12px 40px #0004"><div style="display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:2px solid #14243b;padding-bottom:12px"><div style="display:flex;align-items:center;gap:12px"><img src="logo-copy-computer.PNG" style="width:54px;height:54px;object-fit:contain"><div><b style="font-size:18px">COPY COMPUTER</b><div style="font-size:12px">Detail '+esc(title)+'</div></div></div><button type="button" data-close-detail style="padding:8px 14px;border:0;border-radius:8px;background:#eaf0fb;cursor:pointer">Tutup</button></div><pre style="white-space:pre-wrap;overflow-wrap:anywhere;font:14px/1.6 Arial,sans-serif;margin:16px 0 0"></pre></section>';
+ box.querySelector('pre').textContent=body||'Detail laporan tidak tersedia.';
+ box.querySelector('[data-close-detail]').onclick=function(){box.remove()};
+ box.addEventListener('click',function(e){if(e.target===box)box.remove()});
+ document.body.appendChild(box);
 }
 
 /* ---------- Navigasi ---------- */
@@ -979,6 +991,7 @@ document.addEventListener('click',function(e){
       if(!arm(b,'c:'+c.id,'Yakin hapus?'))break;
       db.catalog=db.catalog.filter(function(x){return x!==c});save();renderCatalog();break;
     }
+    case 'h-detail':{id=b.closest('[data-rid]').dataset.rid;var rr=db.reports.find(function(x){return String(x.id)===String(id)});if(rr)showReportPopup('Laporan CCTV',buildText(rr));break;}
     case 'h-edit':id=b.closest('[data-rid]').dataset.rid;db.currentId=id;isReadOnly=false;setView('isi');toast('Mode edit aktif. Perubahan tersimpan setelah menekan Simpan laporan.');break;
     case 'h-open':id=b.closest('[data-rid]').dataset.rid;db.currentId=id;isReadOnly=true;save();setView('isi');break;
     case 'h-dup':{
