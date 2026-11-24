@@ -69,6 +69,7 @@ button,.actions{display:none!important}
 <div class="panel noprint"><h2>3. Pembayaran</h2>
 <div class="row"><div class="field"><label>Uang muka (Rp)</label><input id="downPayment" inputmode="numeric" placeholder="Kosongkan jika tidak ada"></div><div class="field"><label>Catatan pembayaran</label><input id="paymentNote" placeholder="Tunai / transfer (opsional)"></div></div>
 <div class="notice">Harga satuan dan nominal awal sengaja dikosongkan. Isi harga tiap pekerjaan; subtotal dan total akan dihitung otomatis.</div>
+<div class="total payment-summary"><div class="totalrow"><span>Uang muka</span><b id="dpTotal">Rp 0</b></div><div class="totalrow grand"><span>Sisa tagihan</span><span id="balance">Rp 0</span></div></div>
 <div class="actions"><button id="saveBtn" type="button">Simpan Nota</button><button id="printBtn" class="secondary" type="button">Cetak / PDF</button></div>
 </div>
 </section>
@@ -77,7 +78,7 @@ button,.actions{display:none!important}
 <h2 class="noprint">4. Rincian tagihan</h2><div class="muted" id="invoiceMeta"></div><div id="printCustomer" style="margin:12px 0;line-height:1.7"></div>
 <div id="items"></div>
 <div class="actions noprint"><button id="addItem" class="secondary" type="button">+ Tambah baris</button></div>
-<div class="total"><div class="totalrow"><span>Total tagihan</span><b id="grandTotal">Rp 0</b></div><div class="totalrow"><span>Uang muka</span><b id="dpTotal">Rp 0</b></div><div class="totalrow grand"><span>Sisa tagihan</span><span id="balance">Rp 0</span></div></div>
+<div class="total"><div class="totalrow"><span>Total tagihan</span><b id="grandTotal">Rp 0</b></div></div>
 <div id="printExtra" style="margin-top:14px"></div>
 </div>
 <div class="panel history noprint"><h2>Riwayat nota tersimpan</h2><div id="invoiceList" class="empty">Belum ada nota.</div></div>
