@@ -388,7 +388,7 @@ function normReport(r){
     groups.forEach(function(g){sections.push(g)});
     if(!items.length) sections.push({id:str(x.id)||uid(),title:str(x.title),job:str(x.job)||'Pasang Baru',bold:true,items:[]});
   });
-  return {id:str(r.id)||uid(),ownerId:str(r.ownerId),example:!!r.example,customer:str(r.customer),address:str(r.address),tech:str(r.tech),date:str(r.date),createdAt:+r.createdAt||Date.parse(r.created_at)||+r.updatedAt||Date.now(),catatan:str(r.catatan),showMeta:!!r.showMeta,updatedAt:+r.updatedAt||Date.now(),attachments:Array.isArray(r.attachments)?r.attachments.filter(function(a){return a&&a.path}).map(function(a){return {path:str(a.path),name:str(a.name),type:str(a.type),size:+a.size||0}}):[],sections:sections};
+  return {id:str(r.id)||uid(),ownerId:str(r.ownerId),example:!!r.example,customer:str(r.customer),address:str(r.address),tech:str(r.tech),date:str(r.date),createdAt:+r.createdAt||Date.parse(r.created_at)||(r.date?new Date(r.date+'T00:00:00').getTime():0)||Date.now(),catatan:str(r.catatan),showMeta:!!r.showMeta,updatedAt:+r.updatedAt||Date.now(),attachments:Array.isArray(r.attachments)?r.attachments.filter(function(a){return a&&a.path}).map(function(a){return {path:str(a.path),name:str(a.name),type:str(a.type),size:+a.size||0}}):[],sections:sections};
 }
 function normCat(c){
   if(!c||typeof c!=='object') return null;
@@ -1047,11 +1047,11 @@ function authMessage(message,ok){var el=$('authMessage');el.textContent=message|
 async function loadCloud(){
   var p=await sb.from('profiles').select('id,display_name,role').eq('id',currentUser.id).single();
   if(p.error)throw p.error;currentProfile=p.data;
-  var rr=await sb.from('reports').select('id,owner_id,payload,updated_at').order('updated_at',{ascending:false});
+  var rr=await sb.from('reports').select('id,owner_id,payload,created_at,updated_at').order('created_at',{ascending:false});
   if(rr.error)throw rr.error;
   var local=db;
   if(rr.data&&rr.data.length){
-    db.reports=rr.data.map(function(row){var x=normReport(row.payload)||blankReport();x.id=row.id;x.ownerId=row.owner_id;x.createdAt=+x.createdAt||Date.parse(row.created_at)||Date.parse(row.updated_at)||Date.now();x.updatedAt=+x.updatedAt||Date.parse(row.updated_at)||Date.now();return x});
+    db.reports=rr.data.map(function(row){var x=normReport(row.payload)||blankReport();x.id=row.id;x.ownerId=row.owner_id;x.createdAt=+x.createdAt||Date.parse(row.created_at)||(x.date?new Date(x.date+'T00:00:00').getTime():0)||Date.now();x.updatedAt=+x.updatedAt||Date.parse(row.updated_at)||Date.now();return x});
     db.currentId=db.reports.some(function(x){return x.id===local.currentId})?local.currentId:db.reports[0].id;
   }else{
     db.reports=(currentProfile.role==='admin'&&hadLocalDb?local.reports.filter(function(x){return x.saved!==false}):[]).map(function(x){x.ownerId=currentUser.id;return x});
@@ -1067,9 +1067,9 @@ async function loadCloud(){
 }
 async function refreshCloudHistory(){
   if(!cloudReady)return;
-  var rr=await sb.from('reports').select('id,owner_id,payload,updated_at').order('updated_at',{ascending:false});if(rr.error){console.error(rr.error);return}
+  var rr=await sb.from('reports').select('id,owner_id,payload,created_at,updated_at').order('created_at',{ascending:false});if(rr.error){console.error(rr.error);return}
   var local=db.reports.slice(),merged=(rr.data||[]).map(function(row){
-    var remote=normReport(row.payload)||blankReport();remote.id=row.id;remote.ownerId=row.owner_id;remote.createdAt=+remote.createdAt||Date.parse(row.created_at)||Date.parse(row.updated_at)||Date.now();remote.updatedAt=+remote.updatedAt||Date.parse(row.updated_at)||Date.now();
+    var remote=normReport(row.payload)||blankReport();remote.id=row.id;remote.ownerId=row.owner_id;remote.createdAt=+remote.createdAt||Date.parse(row.created_at)||(remote.date?new Date(remote.date+'T00:00:00').getTime():0)||Date.now();remote.updatedAt=+remote.updatedAt||Date.parse(row.updated_at)||Date.now();
     var old=local.filter(function(x){return x.id===remote.id})[0];return old&&old.updatedAt>remote.updatedAt?old:remote;
   });
   local.forEach(function(old){if(!merged.some(function(x){return x.id===old.id})&&old.updatedAt>Date.now()-12000)merged.push(old)});
