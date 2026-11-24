@@ -58,6 +58,7 @@ const SUPABASE_URL='https://ogolkyowgvypstjmxxde.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY='sb_publishable_8NQAMLU4WhrHfn5nwf4gjQ_rr9egknn';
 const SERVICE_EMAIL='servis@copycomputer.app';
 const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+const $=id=>document.getElementById(id);
 let cloudReady=false,serviceChannel=null;
 async function saveCloudRows(kind,list){if(!cloudReady)return;if(!list.length)return;const rows=list.map(item=>({id:kind+':'+String(item.id),record_type:kind,payload:item,updated_at:new Date().toISOString()}));const {error}=await sb.from('service_records').upsert(rows,{onConflict:'id'});if(error)throw error}
 async function deleteCloudRow(kind,id){if(!cloudReady)return;const {error}=await sb.from('service_records').delete().eq('id',kind+':'+String(id));if(error)throw error}
@@ -68,7 +69,6 @@ async function loginService(password){$('serviceLoginError').textContent='';$('s
 $('serviceLoginForm').addEventListener('submit',e=>{e.preventDefault();loginService($('servicePassword').value)});
 async function logoutService(){cloudReady=false;if(serviceChannel){await sb.removeChannel(serviceChannel);serviceChannel=null}await sb.auth.signOut();$('appShell').style.display='none';$('serviceLogin').style.display='flex';$('servicePassword').value=''}
 async function restoreServiceSession(){try{const {data}=await sb.auth.getSession();if(data.session&&data.session.user.email===SERVICE_EMAIL){await loadServiceCloud(true);cloudReady=true;$('serviceLogin').style.display='none';$('appShell').style.display='block';serviceChannel=sb.channel('service-records-live').on('postgres_changes',{event:'*',schema:'public',table:'service_records'},()=>{if(cloudReady)loadServiceCloud(false).catch(e=>console.error(e))}).subscribe()}}catch(e){console.error(e)}}
-const $=id=>document.getElementById(id);
 const KEY='cc_servisan_demo_v1';let jobs=JSON.parse(localStorage.getItem(KEY)||'[]'),editing=null;
 const ORDER_KEY='cc_servisan_orders_v1';let orders=JSON.parse(localStorage.getItem(ORDER_KEY)||'[]');
 function showServiceView(){$('orderPanel').style.display='none';$('serviceView').style.display='block';window.scrollTo({top:0,behavior:'smooth'});}
