@@ -878,7 +878,7 @@ document.addEventListener('change',function(e){
   if(e.target&&e.target.id==='attachmentInput'){
     var r=cur(),files=Array.prototype.slice.call(e.target.files||[]),current=pendingFiles[r.id]||[];
     files.forEach(function(file){
-      if(!file.type.match(/^(image\\/(jpeg|png|webp|heic|heif)|video\\/(mp4|quicktime|webm))$/)){toast('Format file tidak didukung: '+file.name);return}
+      if(!file.type.match(/^(image\/(jpeg|png|webp|heic|heif)|video\/(mp4|quicktime|webm))$/)){toast('Format file tidak didukung: '+file.name);return}
       if(file.size>(file.type.indexOf('video/')===0?80:12)*1024*1024){toast('Ukuran file terlalu besar: '+file.name);return}
       if(current.length>=8){toast('Maksimal 8 lampiran per laporan');return}
       current.push(file);
@@ -890,8 +890,16 @@ $('sq').addEventListener('input',renderHistory);
 $('wa').addEventListener('click',async function(e){
   if(!navigator.share||!navigator.canShare)return;
   e.preventDefault();var reportText=buildText(cur());if(!reportText){toast('Laporan masih kosong');return}
-  try{var response=await fetch('logo-copy-computer.PNG');if(!response.ok)throw new Error('Logo tidak dapat dimuat');var blob=await response.blob();var file=new File([blob],'Copy-Computer.png',{type:'image/png'});var payload={title:'Laporan Copy Computer',text:reportText,files:[file]};
-    if(navigator.canShare({files:[file]})){await navigator.share(payload)}else{window.open('https://wa.me/?text='+encodeURIComponent(reportText),'_blank','noopener')}
+  try{
+    var response=await fetch('logo-copy-computer.PNG');if(!response.ok)throw new Error('Logo tidak dapat dimuat');
+    var blob=await response.blob(),shareFiles=[new File([blob],'Copy-Computer.png',{type:'image/png'})],report=cur();
+    for(var ai=0;ai<(report.attachments||[]).length;ai++){
+      var signed=await sb.storage.from('report-attachments').createSignedUrl(report.attachments[ai].path,300);
+      if(signed.error)continue;var fr=await fetch(signed.data.signedUrl);if(!fr.ok)continue;
+      var fb=await fr.blob();shareFiles.push(new File([fb],report.attachments[ai].name||('Lampiran-'+(ai+1)),{type:fb.type||report.attachments[ai].type}));
+    }
+    var payload={title:'Laporan Copy Computer',text:reportText,files:shareFiles};
+    if(navigator.canShare({files:shareFiles})){await navigator.share(payload)}else{window.open('https://wa.me/?text='+encodeURIComponent(reportText),'_blank','noopener')}
   }catch(err){if(err&&err.name==='AbortError')return;window.open('https://wa.me/?text='+encodeURIComponent(reportText),'_blank','noopener')}
 });
 
@@ -942,13 +950,28 @@ document.addEventListener('click',function(e){
       });break;
     }
     case 'save-report':{
-      cur().saved=true;var ok=saveNow();
-      if(ok){
-        renderHistory();
-        if(cloudReady){toast('Menyimpan laporan ke database online...');saveCloudNow(cur().id).then(function(){toast('Laporan tersimpan di database online.')}).catch(function(e){toast('Gagal menyimpan online: '+e.message)})}
-        else toast('Laporan tersimpan di perangkat ini.');
-      }else toast('Gagal menyimpan. Penyimpanan browser mungkin penuh atau diblokir.');
-      break;
+      (async function(){
+        var report=cur();report.saved=true;
+        try{
+          await uploadPendingAttachments(report);
+          if(!saveNow())throw new Error('Penyimpanan perangkat penuh atau diblokir');
+          renderHistory();
+          if(cloudReady){toast('Menyimpan laporan dan lampiran ke database online...');await saveCloudNow(report.id);toast('Laporan dan lampiran berhasil disimpan online.')}
+          else toast('Laporan tersimpan di perangkat ini.');
+          renderAttachments();
+        }catch(err){toast('Gagal menyimpan: '+(err.message||'periksa koneksi dan pengaturan Storage'))}
+      })();break;
+    }
+    case 'remove-pending':{
+      var pending=pendingFiles[r.id]||[],pi=+b.dataset.index;
+      pending.splice(pi,1);pendingFiles[r.id]=pending;renderAttachments();break;
+    }
+    case 'remove-attachment':{
+      var ai=+b.dataset.index,att=(r.attachments||[])[ai];if(!att)break;
+      (async function(){try{
+        var del=await sb.storage.from('report-attachments').remove([att.path]);if(del.error)throw del.error;
+        r.attachments.splice(ai,1);saveNow();if(cloudReady)await saveCloudNow(r.id);renderAttachments();toast('Lampiran dihapus');
+      }catch(err){toast('Gagal menghapus lampiran: '+err.message)}})();break;
     }
     case 'pdf':sharePdf(b);break;
     case 'cat-add':{
