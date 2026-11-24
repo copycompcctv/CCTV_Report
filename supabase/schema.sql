@@ -102,6 +102,12 @@ create policy "reports_read_owner_or_admin"
   on public.reports for select to authenticated
   using (owner_id = (select auth.uid()) or (select public.current_user_is_admin()));
 
+-- Akun servis juga perlu membaca laporan CCTV untuk membuat nota tagihan.
+drop policy if exists "reports_read_service_account" on public.reports;
+create policy "reports_read_service_account"
+  on public.reports for select to authenticated
+  using ((auth.jwt() ->> 'email') = 'servis@copycomputer.app');
+
 drop policy if exists "reports_insert_owner_or_admin" on public.reports;
 create policy "reports_insert_owner_or_admin"
   on public.reports for insert to authenticated
