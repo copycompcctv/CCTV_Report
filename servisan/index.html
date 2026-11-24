@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Servisan | Copy Computer</title>
+<style>
+:root{--navy:#14243b;--blue:#2563eb;--bg:#f3f6fb;--line:#e4e9f1;--muted:#718096;--green:#16845b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font:14px/1.5 system-ui,-apple-system,Segoe UI,sans-serif;color:#182335}
+header{background:#fff;border-bottom:1px solid var(--line);padding:12px max(18px,calc((100% - 1180px)/2));display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:5}
+header img{width:58px;height:58px;object-fit:contain}header strong{font-size:17px;color:var(--navy)}header small{display:block;color:var(--muted)}
+.wrap{max-width:1180px;margin:26px auto;padding:0 18px}.top{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:20px}h1{font-size:25px;margin:0;color:var(--navy)}.sub{color:var(--muted);margin-top:4px}
+button,.btn{border:0;border-radius:10px;padding:10px 15px;background:var(--blue);color:white;font-weight:650;cursor:pointer}.btn.secondary,button.secondary{background:#eaf0fb;color:#24436e}.btn.dark{background:var(--navy)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}.stat,.panel{background:white;border:1px solid var(--line);border-radius:15px;padding:16px}.stat small{color:var(--muted)}.stat b{display:block;font-size:25px;color:var(--navy);margin-top:4px}
+.layout{display:grid;grid-template-columns:1.05fr .95fr;gap:16px}.panel h2{font-size:16px;margin:0 0 14px;color:var(--navy)}.fieldgrid{display:grid;grid-template-columns:1fr 1fr;gap:11px}.field{display:flex;flex-direction:column;gap:5px}.field.full{grid-column:1/-1}label{font-size:12px;font-weight:700;color:#536176}input,select,textarea{width:100%;border:1px solid #dbe2ec;border-radius:9px;padding:10px;font:inherit;background:#fff;color:#182335}textarea{min-height:74px;resize:vertical}.checks{display:grid;grid-template-columns:1fr 1fr;gap:8px}.checks label{font-weight:500;display:flex;gap:8px;align-items:center;background:#f7f9fc;padding:8px;border-radius:8px}.checks input{width:auto}.section{font-size:12px;color:#66758a;font-weight:800;margin:16px 0 8px;text-transform:uppercase;letter-spacing:.05em}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}.toolbar{display:flex;gap:8px;margin-bottom:12px}.toolbar input{flex:1}.job{border:1px solid var(--line);border-radius:12px;padding:13px;margin:10px 0}.jobhead{display:flex;justify-content:space-between;gap:10px}.ticket{font-weight:800;color:var(--blue)}.job p{margin:5px 0;color:#566477}.pill{display:inline-block;padding:3px 8px;border-radius:30px;background:#fff4d8;color:#8a5c00;font-size:11px;font-weight:700}.jobactions{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap}.jobactions button{font-size:12px;padding:7px 10px}.empty{text-align:center;color:var(--muted);padding:32px 10px}
+@media(max-width:850px){.layout{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}@media(max-width:480px){.fieldgrid,.checks{grid-template-columns:1fr}.wrap{margin:18px auto;padding:0 12px}.stat{padding:12px}h1{font-size:22px}}
+@media print{header,.top button,.stats,.layout .panel:first-child,.toolbar,.jobactions{display:none!important}body{background:white}.wrap{margin:0;max-width:none}.layout{display:block}.panel{border:0;padding:0}.job{break-inside:avoid}}
+</style></head>
+<body>
+<header><img src="../logo-copy-computer.PNG" alt="Logo Copy Computer"><div><strong>COPY COMPUTER</strong><small>Servis Laptop • PC • Perakitan</small></div></header>
+<main class="wrap">
+<div class="top"><div><h1>Manajemen Servisan</h1><div class="sub">Penerimaan barang, antrean, dan riwayat perbaikan</div></div><button onclick="document.getElementById('nama').focus()">＋ Servisan Baru</button></div>
+<div class="stats"><div class="stat"><small>Total masuk</small><b id="total">0</b></div><div class="stat"><small>Menunggu</small><b id="wait">0</b></div><div class="stat"><small>Dikerjakan</small><b id="work">0</b></div><div class="stat"><small>Siap diambil</small><b id="done">0</b></div></div>
+<div class="layout">
+<section class="panel"><h2 id="formTitle">Form Penerimaan Servisan</h2><form id="jobForm">
+<div class="fieldgrid">
+<div class="field"><label>Nama pelanggan *</label><input id="nama" required placeholder="Nama lengkap"></div>
+<div class="field"><label>No. WhatsApp</label><input id="wa" placeholder="08xxxxxxxxxx"></div>
+<div class="field"><label>Jenis perangkat</label><select id="jenis"><option>Laptop</option><option>PC Desktop</option><option>All-in-One</option><option>Lainnya</option></select></div>
+<div class="field"><label>Merek / Model</label><input id="model" placeholder="Contoh: ASUS VivoBook"></div>
+<div class="field"><label>Serial Number</label><input id="serial" placeholder="Jika tersedia"></div>
+<div class="field"><label>Kelengkapan utama</label><input id="lain" placeholder="Mis. tas, mouse, dll"></div>
+<div class="field full"><label>Keluhan pelanggan *</label><textarea id="keluhan" required placeholder="Ceritakan kerusakan atau keluhan..."></textarea></div>
+</div>
+<div class="section">Kelengkapan yang dititipkan</div><div class="checks" id="access">
+<label><input type="checkbox" value="Charger / adaptor">Charger / adaptor</label><label><input type="checkbox" value="Tas laptop">Tas laptop</label><label><input type="checkbox" value="Mouse">Mouse</label><label><input type="checkbox" value="Kabel power">Kabel power</label><label><input type="checkbox" value="Baterai">Baterai</label><label><input type="checkbox" value="Lainnya">Lainnya</label></div>
+<div class="section">Pemeriksaan kondisi awal</div><div class="checks" id="condition">
+<label><input type="checkbox" value="LCD normal">LCD normal</label><label><input type="checkbox" value="LCD bergaris/pecah">LCD bergaris/pecah</label><label><input type="checkbox" value="Keyboard">Keyboard</label><label><input type="checkbox" value="Touchpad / mouse">Touchpad / mouse</label><label><input type="checkbox" value="Speaker">Speaker</label><label><input type="checkbox" value="Wi-Fi">Wi-Fi</label><label><input type="checkbox" value="Port USB/HDMI">Port USB/HDMI</label><label><input type="checkbox" value="Body lecet/penyok">Body lecet/penyok</label></div>
+<div class="field" style="margin-top:12px"><label>Catatan kondisi / aksesori lain</label><textarea id="catatan" placeholder="Contoh: lecet di sudut kiri, charger bukan bawaan..."></textarea></div>
+<div class="actions"><button type="submit" id="saveBtn">Simpan Penerimaan</button><button type="button" class="secondary" onclick="resetForm()">Bersihkan</button></div>
+</form></section>
+<section class="panel"><h2>Antrean & Riwayat Servis</h2><div class="toolbar"><input id="search" placeholder="Cari tiket / nama / perangkat..." oninput="render()"><select id="filter" onchange="render()" style="max-width:145px"><option value="">Semua status</option><option>Menunggu pemeriksaan</option><option>Sedang dikerjakan</option><option>Menunggu sparepart</option><option>Menunggu persetujuan</option><option>Selesai - siap diambil</option><option>Sudah diambil</option></select></div><div id="jobs"></div></section>
+</div><p class="sub" style="text-align:center;margin:18px 0">Tampilan percobaan • Data tersimpan di browser perangkat ini saja.</p>
+</main>
+<script>
+const KEY='cc_servisan_demo_v1';let jobs=JSON.parse(localStorage.getItem(KEY)||'[]'),editing=null;
+const $=id=>document.getElementById(id);
+function checks(id){return [...document.querySelectorAll('#'+id+' input:checked')].map(x=>x.value)}
+function setChecks(id,vals=[]){document.querySelectorAll('#'+id+' input').forEach(x=>x.checked=vals.includes(x.value))}
+function persist(){localStorage.setItem(KEY,JSON.stringify(jobs));render()}
+function resetForm(){editing=null;$('jobForm').reset();setChecks('access');setChecks('condition');$('formTitle').textContent='Form Penerimaan Servisan';$('saveBtn').textContent='Simpan Penerimaan'}
+$('jobForm').addEventListener('submit',e=>{e.preventDefault();let d={nama:$('nama').value,wa:$('wa').value,jenis:$('jenis').value,model:$('model').value,serial:$('serial').value,lain:$('lain').value,keluhan:$('keluhan').value,access:checks('access'),condition:checks('condition'),catatan:$('catatan').value};if(editing!==null){jobs=jobs.map(j=>j.id===editing?{...j,...d}:j)}else{let n=jobs.length?Math.max(...jobs.map(j=>j.no))+1:1;jobs.unshift({id:Date.now(),no:n,ticket:'SRV-'+String(n).padStart(4,'0'),date:new Date().toLocaleString('id-ID'),status:'Menunggu pemeriksaan',...d})}persist();resetForm();alert('Data servisan tersimpan di browser ini.')});
+function edit(id){let j=jobs.find(x=>x.id===id);if(!j)return;editing=id;['nama','wa','jenis','model','serial','lain','keluhan','catatan'].forEach(k=>$(k).value=j[k]||'');setChecks('access',j.access);setChecks('condition',j.condition);$('formTitle').textContent='Edit '+j.ticket;$('saveBtn').textContent='Simpan Perubahan';window.scrollTo({top:0,behavior:'smooth'})}
+function status(id){let j=jobs.find(x=>x.id===id);let opts=['Menunggu pemeriksaan','Sedang dikerjakan','Menunggu sparepart','Menunggu persetujuan','Selesai - siap diambil','Sudah diambil'];let v=prompt('Ubah status:\n'+opts.map((s,i)=>(i+1)+'. '+s).join('\n'),String(opts.indexOf(j.status)+1));if(v&&opts[+v-1]){j.status=opts[+v-1];persist()}}
+function receipt(j){let w=window.open('','_blank');w.document.write('<html><head><title>'+j.ticket+'</title><style>body{font:14px Arial;padding:28px}h2{margin-bottom:4px}.muted{color:#555}hr{border:0;border-top:1px solid #bbb}</style></head><body><h2>COPY COMPUTER</h2><div class="muted">BUKTI PENERIMAAN SERVIS</div><hr><h3>'+j.ticket+'</h3><p>Tanggal: '+j.date+'</p><p>Pelanggan: '+j.nama+'<br>WhatsApp: '+(j.wa||'-')+'</p><p>Perangkat: '+j.jenis+' '+(j.model||'')+'<br>Serial: '+(j.serial||'-')+'</p><p>Keluhan: '+j.keluhan+'</p><p>Kelengkapan: '+(j.access.join(', ')||'-')+'</p><p>Kondisi awal: '+(j.condition.join(', ')||'-')+'</p><p>Catatan: '+(j.catatan||'-')+'</p><p>Status: '+j.status+'</p><hr><p>Terima kasih telah mempercayakan perangkat Anda kepada Copy Computer.</p><br><p>Pelanggan __________________ &nbsp;&nbsp; Petugas __________________</p><script>window.onload=()=>window.print()<\/script></body></html>');w.document.close()}
+function del(id){if(confirm('Hapus data servisan ini?')){jobs=jobs.filter(j=>j.id!==id);persist()}}
+function render(){let q=$('search').value.toLowerCase(),f=$('filter').value;let shown=jobs.filter(j=>(!f||j.status===f)&&[j.ticket,j.nama,j.model,j.keluhan].join(' ').toLowerCase().includes(q));$('total').textContent=jobs.length;$('wait').textContent=jobs.filter(j=>j.status==='Menunggu pemeriksaan').length;$('work').textContent=jobs.filter(j=>j.status==='Sedang dikerjakan').length;$('done').textContent=jobs.filter(j=>j.status==='Selesai - siap diambil').length;$('jobs').innerHTML=shown.length?shown.map(j=>'<article class="job"><div class="jobhead"><div><div class="ticket">'+j.ticket+'</div><b>'+esc(j.nama)+'</b></div><span class="pill">'+j.status+'</span></div><p>'+esc(j.jenis+' '+(j.model||''))+' • '+esc(j.date)+'</p><p>Keluhan: '+esc(j.keluhan)+'</p><div class="jobactions"><button onclick="edit('+j.id+')">Edit</button><button class="secondary" onclick="status('+j.id+')">Ubah status</button><button class="dark" onclick="receipt(jobs.find(x=>x.id==='+j.id+'))">Cetak nota</button><button style="background:#fee;color:#a22" onclick="del('+j.id+')">Hapus</button></div></article>').join(''):'<div class="empty">Belum ada data servisan.<br>Isi form untuk mencoba penerimaan pertama.</div>'}
+function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+render();
+</script></body></html>
