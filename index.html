@@ -291,7 +291,7 @@ var KEY='laporan-cctv-v2';
 
 // ==LOGIC==
 var MONTHS=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
-var DEFAULT_KOP={name:'Copy Computer',tag:'',addr:'Jl Sicengkir No. 3 Troso, Kec. Pecangaan Kab Jepara 59462'};
+var DEFAULT_KOP={name:'Copy Computer',tag:'',addr:'Jl. Sicengkir No. 3 Troso, Kec. Pecangaan Kab. Jepara 59462'};
 function uid(){return Math.random().toString(36).slice(2,9)+Date.now().toString(36).slice(-3)}
 function todayISO(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 function fmtDate(iso){var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(iso||'');if(!m)return '';return (+m[3])+' '+MONTHS[+m[2]-1]+' '+m[1]}
@@ -578,7 +578,7 @@ function cur(){
 }
 function setStatus(){
   var el=$('status');
-  db.kop.tag='';db.kop.addr='Jl Sicengkir No. 3 Troso, Kec. Pecangaan Kab Jepara 59462';
+  db.kop.tag='';db.kop.addr='Jl. Sicengkir No. 3 Troso, Kec. Pecangaan Kab. Jepara 59462';
   $('brand').textContent=[db.kop.name,db.kop.addr].filter(Boolean).join(' · ');
   if(currentUser&&currentProfile){
     el.textContent=(currentProfile.display_name||currentUser.email||'Pengguna')+' · '+(currentProfile.role==='admin'?'Admin':'Teknisi')+' · Online';
