@@ -473,7 +473,8 @@ function pdfName(r){
   var base=cleanName(r.customer).replace(/[^A-Za-z0-9]+/g,'-').replace(/^-+|-+$/g,'')||'laporan';
   return 'Laporan-'+base+'-'+(r.date||todayISO())+'.pdf';
 }
-function buildPdf(r,kop){
+async function loadLogoForPdf(){try{var img=new Image();img.crossOrigin='anonymous';img.src='logo-copy-computer.PNG';await new Promise(function(resolve,reject){img.onload=resolve;img.onerror=reject});var c=document.createElement('canvas');c.width=img.naturalWidth;c.height=img.naturalHeight;var ctx=c.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,c.width,c.height);ctx.drawImage(img,0,0);var data=atob(c.toDataURL('image/jpeg',0.94).split(',')[1]),bytes=new Uint8Array(data.length);for(var i=0;i<data.length;i++)bytes[i]=data.charCodeAt(i);return {bytes:bytes,width:c.width,height:c.height}}catch(e){console.warn('Logo PDF tidak dapat dimuat',e);return null}}
+function buildPdf(r,kop,logoJpeg){
   var PW=595.28,PH=841.89,M=50,CW=PW-2*M;
   var ACC='0.039 0.424 0.545',INK='0.075 0.125 0.169',MUTE='0.35 0.40 0.45',RULE='0.82 0.86 0.89';
   var pages=[],ops,y;
@@ -484,9 +485,16 @@ function buildPdf(r,kop){
   newPage();
   kop=kop||{};
   var kn=latin(kop.name||''),ktag=latin(kop.tag||''),kad=latin(kop.addr||'');
-  if(kn){y-=18;T('CC',M,y,25,'F2',ACC);T('COPY COMPUTER',M+42,y+2,18,'F2',ACC);y-=16;}
-  if(ktag){y-=16;T(ktag,M,y,10,'F3',MUTE)}
-  if(kad){kad.split('\n').forEach(function(p){wrapText(p,9,CW,false).forEach(function(ln){y-=12.5;T(ln,M,y,9,'F1',MUTE)})})}
+  if(kn){
+    if(logoJpeg&&logoJpeg.bytes&&logoJpeg.width&&logoJpeg.height){
+      var boxW=74,boxH=48,scale=Math.min(boxW/logoJpeg.width,boxH/logoJpeg.height),iw=logoJpeg.width*scale,ih=logoJpeg.height*scale;
+      ops.push('q '+iw.toFixed(2)+' 0 0 '+ih.toFixed(2)+' '+M+' '+(PH-M-ih).toFixed(2)+' cm /Logo Do Q');
+      T(kn,M+86,PH-M-20,17,'F2',ACC);
+      if(kad)kad.split('\\n').forEach(function(p,i){wrapText(p,9,CW-90,false).forEach(function(ln,j){T(ln,M+86,PH-M-36-(i*22+j*12),9,'F1',MUTE)})});
+      y=PH-M-ih-18;
+    }else{y-=18;T(kn,M,y,18,'F2',ACC);y-=16;if(kad)wrapText(kad,9,CW,false).forEach(function(ln){y-=12.5;T(ln,M,y,9,'F1',MUTE)});}
+  }
+  if(ktag){y-=12;T(ktag,M,y,10,'F3',MUTE)}
   y-=10;L(M,y,PW-M,y,1.5,ACC);y-=30;
   T('LAPORAN PEKERJAAN',M,y,13,'F2',INK);y-=24;
   var rows=[['Pelanggan',cleanName(r.customer)],['Tanggal',fmtDate(r.date)],['Alamat',(r.address||'').trim()],['Teknisi',(r.tech||'').trim()]]
@@ -527,7 +535,7 @@ function buildPdf(r,kop){
     var pg='Halaman '+(i+1)+' dari '+n;
     T(pg,PW-M-tw(pg,8,false),28,8,'F1',MUTE);
   });
-  var objs=[null],kids=[];
+  var objs=[null],kids=[],imageObj=logoJpeg&&logoJpeg.bytes?6+2*n:0;
   objs[1]='<< /Type /Catalog /Pages 2 0 R >>';
   pages.forEach(function(p,i){kids.push((6+2*i)+' 0 R')});
   objs[2]='<< /Type /Pages /Kids ['+kids.join(' ')+'] /Count '+n+' >>';
@@ -536,9 +544,10 @@ function buildPdf(r,kop){
   objs[5]='<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Oblique /Encoding /WinAnsiEncoding >>';
   pages.forEach(function(p,i){
     var content=p.join('\n');
-    objs[6+2*i]='<< /Type /Page /Parent 2 0 R /MediaBox [0 0 '+PW+' '+PH+'] /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R >> >> /Contents '+(7+2*i)+' 0 R >>';
+    objs[6+2*i]='<< /Type /Page /Parent 2 0 R /MediaBox [0 0 '+PW+' '+PH+'] /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R >> '+(imageObj?'/XObject << /Logo '+imageObj+' 0 R >> ':'')+'>> /Contents '+(7+2*i)+' 0 R >>';
     objs[7+2*i]='<< /Length '+content.length+' >>\nstream\n'+content+'\nendstream';
   });
+  if(imageObj){var jpg='';for(var ji=0;ji<logoJpeg.bytes.length;ji+=8192)jpg+=String.fromCharCode.apply(null,logoJpeg.bytes.subarray(ji,ji+8192));objs[imageObj]='<< /Type /XObject /Subtype /Image /Width '+logoJpeg.width+' /Height '+logoJpeg.height+' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length '+jpg.length+' >>\\nstream\\n'+jpg+'\\nendstream';}
   var out='%PDF-1.4\n%\xE2\xE3\xCF\xD3\n',offs=[],i;
   for(i=1;i<objs.length;i++){offs[i]=out.length;out+=i+' 0 obj\n'+objs[i]+'\nendobj\n'}
   var xref=out.length;
@@ -633,7 +642,7 @@ async function sharePdf(btn){
   function finish(){if(btn){btn.disabled=false;btn.textContent=old}}
   var url=null;
   try{
-    var r=cur(),name=pdfName(r),bytes=buildPdf(r,db.kop);
+    var r=cur(),name=pdfName(r),logo=await loadLogoForPdf(),bytes=buildPdf(r,db.kop,logo);
     var blob=new Blob([bytes],{type:'application/pdf'});
     // On supported Chromium browsers, show a real Save As dialog.
     if(window.showSaveFilePicker){
