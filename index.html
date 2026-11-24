@@ -839,7 +839,7 @@ function renderHistory(){
     return '<article class="card hrow'+(r.id===db.currentId?' cur':'')+'" data-rid="'+id+'">'
      +'<div><strong>'+esc((r.customer||'').trim()||'Tanpa nama')+'</strong>'+(r.example?'<span class="tag">Contoh</span>':'')
      +'<div class="hmeta">'+esc([d,n+' baris',tc>0?'kabel '+fmt(tc)+' M':''].filter(Boolean).join(' · '))+'</div></div>'
-     +'<div class="hact"><button type="button" class="mini" data-act="h-open">Buka</button><button type="button" class="mini" data-act="h-dup">Duplikat</button><button type="button" class="mini danger" data-act="h-del">Hapus</button></div></article>';
+     +'<div class="hact"><button type="button" class="mini" data-act="h-edit">Edit</button><button type="button" class="mini" data-act="h-open">Buka</button><button type="button" class="mini" data-act="h-dup">Duplikat</button><button type="button" class="mini danger" data-act="h-del">Hapus</button></div></article>';
   }).join(''):'<p class="empty">Tidak ada laporan yang cocok.</p>';
 }
 
@@ -992,6 +992,7 @@ document.addEventListener('click',function(e){
       if(!arm(b,'c:'+c.id,'Yakin hapus?'))break;
       db.catalog=db.catalog.filter(function(x){return x!==c});save();renderCatalog();break;
     }
+    case 'h-edit':id=b.closest('[data-rid]').dataset.rid;db.currentId=id;isReadOnly=false;setView('isi');toast('Mode edit aktif. Perubahan tersimpan setelah menekan Simpan laporan.');break;
     case 'h-open':id=b.closest('[data-rid]').dataset.rid;db.currentId=id;isReadOnly=true;save();setView('isi');break;
     case 'h-dup':{
       id=b.closest('[data-rid]').dataset.rid;
