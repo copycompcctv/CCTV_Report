@@ -29,6 +29,7 @@ main{max-width:1050px;margin:52px auto;padding:0 22px}
 .module:hover{transform:translateY(-3px);box-shadow:0 14px 32px rgba(20,36,59,.1)}
 .symbol{width:54px;height:54px;border-radius:14px;display:grid;place-items:center;background:#e7f3f8;color:var(--teal);font-size:27px;font-weight:800;margin-bottom:20px}
 .module.service .symbol{background:#edf2ff;color:var(--blue)}
+.module.invoice{grid-column:1/-1;min-height:180px}.module.invoice .symbol{background:#e9f7ef;color:#16845b}
 .module h2{font-size:23px;margin:0 0 8px}
 .module p{margin:0;color:var(--muted);max-width:42ch}
 .go{margin-top:auto;padding-top:24px;color:var(--blue);font-weight:750}
@@ -58,6 +59,12 @@ footer{text-align:center;color:var(--muted);font-size:12px;margin:32px 0 24px}
 <h2>Manajemen Servis</h2>
 <p>Penerimaan laptop, PC, printer, monitor, proyektor, antrean perbaikan, dan pesanan khusus.</p>
 <span class="go">Buka Manajemen Servis →</span>
+</a>
+<a class="module invoice" href="./nota.html">
+<div class="symbol" aria-hidden="true">Rp</div>
+<h2>Nota Tagihan</h2>
+<p>Membuat nota dari laporan CCTV atau servisan, mengisi harga sendiri, menghitung total otomatis, dan mencetak nota berlogo Copy Computer.</p>
+<span class="go">Buka Nota Tagihan →</span>
 </a>
 </nav>
 <footer>© Copy Computer</footer>
