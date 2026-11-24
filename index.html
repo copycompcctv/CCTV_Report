@@ -151,7 +151,7 @@ details summary{cursor:pointer;font-weight:600;min-height:40px;display:flex;alig
 @media (max-width:520px){.structured-grid{grid-template-columns:1fr}}
 @media (prefers-reduced-motion: reduce){.toast{transition:none}}
 .item-actions{display:flex;justify-content:flex-start;margin-top:12px}.out-heading{display:flex;align-items:center;gap:14px;flex-wrap:wrap}.out-heading strong{font-size:18px;font-weight:500;color:#4d145c}.structured-item{padding:12px;border-radius:9px}.structured-item .item-top{margin-bottom:10px}.structured-item .lbl{margin-bottom:6px}
-.brand .sub{max-width:560px}.sec-head{align-items:center}.sec-head select{flex:1;min-width:160px}.structured-item .item-top strong{font-weight:600}
+.attachment-list{display:grid;gap:8px}.attachment-entry{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px;border:1px solid var(--line);border-radius:8px}.attachment-entry img{width:76px;height:60px;object-fit:cover;border-radius:6px}.attachment-entry video{width:120px;max-height:76px;border-radius:6px}.attachment-entry a{color:var(--accent);font-weight:600}.brand .sub{max-width:560px}.sec-head{align-items:center}.sec-head select{flex:1;min-width:160px}.structured-item .item-top strong{font-weight:600}
 </style>
 </head>
 <body>
@@ -379,7 +379,7 @@ function normReport(r){
     groups.forEach(function(g){sections.push(g)});
     if(!items.length) sections.push({id:str(x.id)||uid(),title:str(x.title),job:str(x.job)||'Pasang Baru',bold:true,items:[]});
   });
-  return {id:str(r.id)||uid(),ownerId:str(r.ownerId),example:!!r.example,customer:str(r.customer),address:str(r.address),tech:str(r.tech),date:str(r.date),catatan:str(r.catatan),showMeta:!!r.showMeta,updatedAt:+r.updatedAt||Date.now(),sections:sections};
+  return {id:str(r.id)||uid(),ownerId:str(r.ownerId),example:!!r.example,customer:str(r.customer),address:str(r.address),tech:str(r.tech),date:str(r.date),catatan:str(r.catatan),showMeta:!!r.showMeta,updatedAt:+r.updatedAt||Date.now(),attachments:Array.isArray(r.attachments)?r.attachments.filter(function(a){return a&&a.path}).map(function(a){return {path:str(a.path),name:str(a.name),type:str(a.type),size:+a.size||0}}):[],sections:sections};
 }
 function normCat(c){
   if(!c||typeof c!=='object') return null;
@@ -576,7 +576,7 @@ function loadDb(){
   return {reports:reports,catalog:catalog,currentId:cid,kop:normKop(d&&d.kop),lastTech:str(d&&d.lastTech)};
 }
 var db=loadDb();
-var view='isi',armed=null,st=null,tt=null,deferred=null;
+var view='isi',armed=null,st=null,tt=null,deferred=null,pendingFiles={};
 var mq=window.matchMedia?window.matchMedia('(min-width: 960px)'):{matches:false};
 function wide(){return !!mq.matches}
 
@@ -756,6 +756,32 @@ function render(){
   }else{var saveBtn=document.querySelector('[data-act="save-report"]');if(saveBtn)saveBtn.hidden=false;}
   renderNote();updateOut();
 }
+async function renderAttachments(){
+  var box=$('attachmentList');if(!box)return;var r=cur(),html='';
+  (r.attachments||[]).forEach(function(a,i){
+    html+='<div class="attachment-entry" data-att-index="'+i+'"><span>Memuat '+esc(a.name||'Lampiran')+'...</span></div>';
+  });
+  (pendingFiles[r.id]||[]).forEach(function(f,i){html+='<div class="attachment-entry"><span>Belum diunggah: '+esc(f.name)+' ('+Math.round(f.size/1024)+' KB)</span><button type="button" class="mini danger" data-act="remove-pending" data-index="'+i+'">Batal</button></div>'});
+  box.innerHTML=html||'<span class="hint">Belum ada lampiran.</span>';
+  (r.attachments||[]).forEach(async function(a,i){
+    try{var res=await sb.storage.from('report-attachments').createSignedUrl(a.path,3600);if(res.error)throw res.error;
+      var el=box.querySelector('[data-att-index="'+i+'"]');if(!el)return;
+      var media=a.type.indexOf('image/')===0?'<img src="'+esc(res.data.signedUrl)+'" alt="'+esc(a.name)+'">':(a.type.indexOf('video/')===0?'<video src="'+esc(res.data.signedUrl)+'" controls playsinline></video>':'');
+      el.innerHTML=media+'<a href="'+esc(res.data.signedUrl)+'" target="_blank" rel="noopener">'+esc(a.name||'Lampiran')+'</a><button type="button" class="mini danger" data-act="remove-attachment" data-index="'+i+'">Hapus</button>';
+    }catch(e){var el=box.querySelector('[data-att-index="'+i+'"]');if(el)el.innerHTML='<span>'+esc(a.name||'Lampiran')+' (gagal dimuat)</span>'}
+  });
+}
+async function uploadPendingAttachments(r){
+  var files=pendingFiles[r.id]||[];if(!files.length)return;
+  if(!cloudReady||!currentUser)throw new Error('Login online diperlukan untuk mengunggah lampiran');
+  for(var i=0;i<files.length;i++){
+    var file=files[i],safe=file.name.replace(/[^a-zA-Z0-9._-]+/g,'_').slice(-90),path=currentUser.id+'/'+r.id+'/'+uid()+'-'+safe;
+    var up=await sb.storage.from('report-attachments').upload(path,file,{contentType:file.type,upsert:false});
+    if(up.error)throw up.error;
+    r.attachments=r.attachments||[];r.attachments.push({path:path,name:file.name,type:file.type,size:file.size});
+  }
+  delete pendingFiles[r.id];
+}
 function renderNote(){var r=cur();$('note').hidden=!(r.example&&view==='isi')}
 function focusEl(id,end){
   var el=$(id);if(!el)return;el.focus();
@@ -847,6 +873,18 @@ document.addEventListener('input',function(e){
     else{var it=getItem(t);if(!it)return;it[f]=v;if(f==='expr')updCalc(it)}
   }
   changed();
+});
+document.addEventListener('change',function(e){
+  if(e.target&&e.target.id==='attachmentInput'){
+    var r=cur(),files=Array.prototype.slice.call(e.target.files||[]),current=pendingFiles[r.id]||[];
+    files.forEach(function(file){
+      if(!file.type.match(/^(image\\/(jpeg|png|webp|heic|heif)|video\\/(mp4|quicktime|webm))$/)){toast('Format file tidak didukung: '+file.name);return}
+      if(file.size>(file.type.indexOf('video/')===0?80:12)*1024*1024){toast('Ukuran file terlalu besar: '+file.name);return}
+      if(current.length>=8){toast('Maksimal 8 lampiran per laporan');return}
+      current.push(file);
+    });
+    pendingFiles[r.id]=current;renderAttachments();e.target.value='';
+  }
 });
 $('sq').addEventListener('input',renderHistory);
 $('wa').addEventListener('click',async function(e){
