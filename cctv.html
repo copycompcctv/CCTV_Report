@@ -1,0 +1,1119 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Laporan CCTV | Copy Computer</title>
+<meta name="description" content="Laporan pekerjaan teknisi CCTV, Copy Computer">
+<meta name="theme-color" content="#0A6C8B">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Laporan CCTV">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: lembar kerja satu kolom di HP (tab bawah Isi / Hasil / Barang / Riwayat). Di layar lebar: form di kiri, hasil teks di kanan, tab di atas. */
+:root{
+  --bg:#F1F4F6; --surface:#FFFFFF; --surface2:#E8EDF1; --ink:#13202B; --muted:#56677A; --line:#D0D9E0;
+  --accent:#0A6C8B; --accent-ink:#FFFFFF; --accent-soft:#D9EEF4;
+  --wa:#1B7F4B; --wa-ink:#FFFFFF; --warn:#9A5208; --danger:#B3261E;
+  --f-body:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --f-display:'IBM Plex Sans Condensed','IBM Plex Sans',system-ui,sans-serif;
+  --f-mono:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E1419; --surface:#161E25; --surface2:#1E2831; --ink:#E6EDF2; --muted:#9BABB8; --line:#2B3843;
+    --accent:#5CC2DE; --accent-ink:#06222B; --accent-soft:#12323D;
+    --wa:#5FCB8F; --wa-ink:#06210F; --warn:#E5A35B; --danger:#F08A82;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E1419; --surface:#161E25; --surface2:#1E2831; --ink:#E6EDF2; --muted:#9BABB8; --line:#2B3843;
+  --accent:#5CC2DE; --accent-ink:#06222B; --accent-soft:#12323D;
+  --wa:#5FCB8F; --wa-ink:#06210F; --warn:#E5A35B; --danger:#F08A82;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--bg); color:var(--ink); font:15px/1.45 var(--f-body);
+  padding-block:14px 112px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+}
+.wrap{max-width:640px;margin:0 auto;display:grid;gap:14px}
+.auth-gate{max-width:480px;margin:7vh auto 0;padding:0 16px}
+.auth-card{display:grid;gap:18px}
+.auth-brand{display:flex;align-items:center;gap:12px}
+.auth-brand h1{font-size:23px}
+.auth-mark{width:58px;height:58px;flex:none;display:grid;place-items:center}.auth-mark img{width:100%;height:100%;object-fit:contain;display:block}
+.auth-message{min-height:20px;color:var(--danger);font-size:14px}
+.auth-message.ok{color:var(--wa)}
+.cols{display:grid;gap:14px;min-width:0}
+.main{min-width:0}
+.stack{display:grid;gap:12px;min-width:0}
+h1{font:600 24px/1.1 var(--f-display);letter-spacing:-.01em;margin:0;text-wrap:balance}
+.top{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.brand{display:flex;gap:12px;align-items:center;min-width:0}
+.mark{width:64px;height:auto;max-height:64px;object-fit:contain;flex:none;display:block}
+.hbtns{display:flex;gap:8px;flex-wrap:wrap}
+.sub{margin:3px 0 0;color:var(--muted);font-size:13px}
+.sub.bad{color:var(--danger)}
+.hint{margin:0;color:var(--muted);font-size:14px;max-width:65ch}
+.lbl{display:block;margin:0 0 4px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+input,textarea,select{
+  font:inherit;font-size:16px;color:var(--ink);background:var(--surface);
+  border:1px solid var(--line);border-radius:8px;padding:10px 12px;width:100%;min-width:0;min-height:44px;
+}
+textarea{resize:vertical;line-height:1.4}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button{font:inherit;color:inherit;cursor:pointer}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;min-width:0}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(9.5rem,1fr));gap:10px}
+.two>div,.catgrid>div{min-width:0}
+.check{display:flex;gap:10px;align-items:center;font-size:14px;min-height:40px}
+.check input{width:22px;height:22px;min-height:0;flex:none;accent-color:var(--accent)}
+.note{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:var(--accent-soft);border-radius:8px;padding:10px 12px;font-size:14px}
+.btn{min-height:48px;padding:0 18px;border:0;border-radius:9px;background:var(--accent);color:var(--accent-ink);font-weight:600;display:inline-flex;align-items:center;justify-content:center;text-decoration:none}
+.btn.small{min-height:40px;padding:0 14px;font-size:14px}
+.btn.ghost{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+.btn.wa{background:var(--wa);color:var(--wa-ink)}.btn.wa-btn{gap:8px;white-space:nowrap}.wa-icon{display:block;width:23px;height:23px;flex:0 0 23px}
+.btn.full{width:100%}
+.link{background:none;border:0;color:var(--accent);text-decoration:underline;min-height:40px;padding:0 6px}
+.mini{min-height:40px;padding:0 12px;border-radius:7px;border:1px solid var(--line);background:var(--surface);font-size:14px}
+.mini[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.mini.danger,.danger{color:var(--danger)}
+.sec-head{display:flex;gap:8px;align-items:center;margin-bottom:10px}
+.sec-head input{flex:1 1 auto}
+.item{background:var(--surface2);border-radius:8px;padding:10px;display:grid;gap:8px;margin-bottom:8px}
+.item-top{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.sp{flex:1 1 0}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:7px;overflow:hidden;background:var(--surface)}
+.seg button{border:0;background:transparent;min-height:40px;padding:0 12px;font-size:14px}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);font-weight:600}
+.fields{display:flex;gap:8px;flex-wrap:wrap}
+.fields>*{flex:1 1 9rem;min-width:0}
+.mono{font-family:var(--f-mono)}
+.calc{font:500 14px var(--f-mono);color:var(--accent)}
+.calc.warn{color:var(--warn)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.chip{min-height:40px;padding:0 14px;border-radius:20px;border:1px solid var(--line);background:var(--surface);white-space:nowrap;font-size:14px}
+.chip.pri{border-color:var(--accent);color:var(--accent)}
+.bubble{background:var(--surface2);border-radius:10px;padding:14px;font:14px/1.6 var(--f-mono);white-space:pre-wrap;overflow-wrap:anywhere;margin:0;user-select:text;-webkit-user-select:text}
+.stats{color:var(--muted);font-size:13px;font-variant-numeric:tabular-nums}
+.actions{display:flex;gap:10px;flex-wrap:wrap}.actions .save-report-btn{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:700}
+.actions>*{flex:1 1 11rem}
+.catgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(10rem,1fr));gap:10px}
+.catfoot{display:flex;gap:10px;justify-content:space-between;align-items:center;margin-top:8px;flex-wrap:wrap}
+.hrow{display:grid;gap:10px}
+.hrow.cur{border-color:var(--accent)}
+.hmeta{color:var(--muted);font-size:13px;font-variant-numeric:tabular-nums}
+.tag{display:inline-block;margin-left:6px;padding:1px 8px;border-radius:10px;background:var(--accent-soft);color:var(--accent);font-size:12px;font-weight:600}
+.hact{display:flex;gap:8px;flex-wrap:wrap}
+details summary{cursor:pointer;font-weight:600;min-height:40px;display:flex;align-items:center}
+.empty{color:var(--muted);margin:0}
+.tabs{
+  position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--surface);border-top:1px solid var(--line);
+  padding:6px max(16px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
+}
+.tabs-in{max-width:640px;margin:0 auto;display:grid;grid-template-columns:repeat(2,minmax(0,180px));gap:8px}
+.tab{min-height:48px;border:0;background:transparent;color:var(--muted);font-weight:600;font-size:13px;border-radius:8px}
+.tab[aria-current="page"]{color:var(--accent);background:var(--accent-soft)}
+.toast{
+  position:fixed;left:50%;transform:translateX(-50%);bottom:calc(76px + env(safe-area-inset-bottom,0px));z-index:6;
+  background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:8px;font-size:14px;max-width:calc(100% - 32px);
+  opacity:0;pointer-events:none;transition:opacity .2s;text-align:center;
+}
+.toast.on{opacity:1}
+@media (min-width:960px){
+  body{padding-block:22px 48px}
+  .wrap{max-width:1120px}
+  .tabs{position:static;border:1px solid var(--line);border-radius:10px;padding:6px}
+  .tabs-in{max-width:none;grid-template-columns:repeat(2,minmax(0,180px));justify-content:start}
+  .tab-hasil{display:none}
+  .cols{grid-template-columns:minmax(0,1fr) 400px;gap:24px;align-items:start}
+  #v-hasil{position:sticky;top:16px}
+  .toast{bottom:24px}
+  .catcard{display:grid;grid-template-columns:1.3fr 1.3fr 1fr auto auto;gap:10px;align-items:end;padding:10px 14px}
+  .catcard .catgrid,.catcard .catfoot{display:contents}
+  .catcard .catfoot>*{margin-bottom:0}
+}
+.structured-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;min-width:0}
+.structured-grid>div{min-width:0}
+.structured-item{background:var(--surface2);border:1px solid var(--line)}
+@media (max-width:520px){.structured-grid{grid-template-columns:1fr}}
+@media (prefers-reduced-motion: reduce){.toast{transition:none}}
+.item-actions{display:flex;justify-content:flex-start;margin-top:12px}.out-heading{display:flex;align-items:center;gap:14px;flex-wrap:wrap}.out-heading strong{font-size:18px;font-weight:500;color:#4d145c}.structured-item{padding:12px;border-radius:9px}.structured-item .item-top{margin-bottom:10px}.structured-item .lbl{margin-bottom:6px}
+.attachment-panel{border:1px solid var(--line);border-radius:10px;padding:12px;display:grid;gap:8px}.attachment-pick{display:inline-flex;align-items:center;justify-content:center;width:max-content;max-width:100%;cursor:pointer}#attachmentInput{display:block;width:100%;max-width:100%;font:inherit;font-size:13px;color:var(--text);padding:8px;border:1px dashed var(--line);border-radius:8px;background:var(--soft)}.attachment-list{display:grid;gap:8px}.attachment-entry{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px;border:1px solid var(--line);border-radius:8px}.attachment-entry img{width:76px;height:60px;object-fit:cover;border-radius:6px}.attachment-entry video{width:120px;max-height:76px;border-radius:6px}.attachment-entry a{color:var(--accent);font-weight:600}.brand .sub{max-width:560px}.sec-head{align-items:center}.sec-head select{flex:1;min-width:160px}.structured-item .item-top strong{font-weight:600}
+</style>
+</head>
+<body>
+<section id="authGate" class="auth-gate">
+    <div class="card auth-card">
+      <div class="auth-brand"><div class="auth-mark"><img src="logo-copy-computer.PNG" alt="Logo Copy Computer"></div><div><h1>Laporan Teknisi CCTV</h1><p class="sub">Login untuk menyimpan dan membuka laporan online</p></div></div>
+      <form id="authForm" class="stack">
+        <div><label class="lbl" for="authEmail">Email</label><input id="authEmail" type="email" autocomplete="username" required placeholder="email@contoh.com"></div>
+        <div><label class="lbl" for="authPassword">Password</label><input id="authPassword" type="password" autocomplete="current-password" minlength="6" required placeholder="Minimal 6 karakter"></div>
+        <div id="authMessage" class="auth-message" role="status" aria-live="polite"></div>
+        <div class="actions"><button type="submit" class="btn">Masuk</button><button type="button" id="signupBtn" class="btn ghost">Daftar akun pertama</button></div>
+      </form>
+      <p class="hint">Akun baru otomatis menjadi Teknisi. Admin perlu mengaktifkan hak Admin melalui SQL Supabase.</p>
+      <a class="btn ghost full" href="./" style="text-align:center;text-decoration:none">← Menu Utama Copy Computer</a>
+    </div>
+  </section>
+
+  <div class="wrap" id="appRoot" hidden>
+  <header class="top">
+    <div class="brand">
+      <img class="mark" src="logo-copy-computer.PNG" alt="Logo Copy Computer">
+      <div>
+        <h1>Laporan Teknisi</h1>
+        <p class="sub" id="brand"></p>
+        <p id="status" class="sub" hidden></p>
+      </div>
+    </div>
+    <div class="hbtns">
+      <a href="./" class="btn small ghost" style="text-decoration:none">Menu Utama</a>
+      <button type="button" id="logoutBtn" class="btn small ghost" hidden>Keluar</button>
+      <button type="button" id="installBtn" class="btn small ghost" hidden>Pasang aplikasi</button>
+      <button type="button" class="btn small" data-act="new">Laporan baru</button>
+    </div>
+  </header>
+
+  <nav class="tabs" aria-label="Menu utama">
+    <div class="tabs-in">
+      <button type="button" class="tab" data-act="view" data-v="isi">Isi Laporan</button>
+      <button type="button" class="tab" data-act="view" data-v="riwayat">History Laporan</button>
+    </div>
+  </nav>
+
+  <div id="install" class="note" hidden>
+    <span>Pasang sebagai aplikasi: tekan ikon Bagikan di Safari, lalu pilih Tambah ke Layar Utama.</span>
+    <button type="button" class="link" data-act="dismiss-install">Tutup</button>
+  </div>
+  <div id="note" class="note" hidden>
+    <span>Dua laporan pertama adalah contoh dari laporan Anda. Ubah isinya, atau tekan Laporan baru untuk mulai dari kosong.</span>
+    <button type="button" class="link" data-act="dismiss-note">Mengerti</button>
+  </div>
+
+  <div class="cols">
+    <div class="main">
+      <section id="v-isi"><div id="form" class="stack"></div></section>
+
+      <section id="v-barang" hidden>
+        <div class="stack">
+          <p class="hint">Daftar barang menjadi tombol cepat di halaman Isi. Pilih barang, lalu isi keterangannya, misalnya Kabel dengan 100 meter. Tambah, ubah, atau hapus sesuai kebutuhan.</p>
+          <div class="card stack">
+            <span class="lbl" style="margin:0">Tambah barang</span>
+            <div class="catgrid">
+              <div><label class="lbl" for="nl">Nama barang</label><input id="nl" autocomplete="off" placeholder="mis. Duradus"></div>
+              <div><label class="lbl" for="nn">Keterangan bawaan</label><input id="nn" autocomplete="off" placeholder="Alamat Pelanggan"></div>
+              <div><label class="lbl" for="nk">Jenis</label>
+                <select id="nk">
+                  <option value="qty">Barang + keterangan</option>
+                  <option value="cable">Kabel (hitung meter)</option>
+                  <option value="text">Teks bebas</option>
+                </select>
+              </div>
+            </div>
+            <button type="button" class="btn" data-act="cat-add">Tambah ke daftar</button>
+          </div>
+          <div id="cats" class="stack"></div>
+          <details class="card">
+            <summary>Kop PDF</summary>
+            <div class="stack">
+              <p class="hint">Tampil di bagian atas PDF laporan.</p>
+              <div><label class="lbl" for="kn">Nama usaha</label><input id="kn" data-f="kopname" autocomplete="off"></div>
+              <div><label class="lbl" for="kt">Slogan</label><input id="kt" data-f="koptag" autocomplete="off"></div>
+              <div><label class="lbl" for="ka">Alamat</label><textarea id="ka" data-f="kopaddr" rows="2"></textarea></div>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <section id="v-riwayat" hidden>
+        <div class="stack">
+          <div><label class="lbl" for="sq">Cari pelanggan</label><input id="sq" type="search" placeholder="Nama atau alamat" autocomplete="off"></div>
+          <div id="hist" class="stack"></div>
+          <details class="card">
+            <summary>Cadangan data</summary>
+            <div class="stack">
+              <p class="hint">Data laporan utama tersimpan di akun online. Salin cadangan ini untuk arsip tambahan atau pemindahan data manual; tempel teks cadangan lalu tekan Pulihkan jika diperlukan.</p>
+              <textarea id="bk" rows="4" spellcheck="false" aria-label="Teks cadangan"></textarea>
+              <div class="actions">
+                <button type="button" class="btn ghost" data-act="bk-copy">Salin cadangan</button>
+                <button type="button" class="btn ghost" data-act="bk-restore">Pulihkan dari teks</button>
+              </div>
+            </div>
+          </details>
+        </div>
+      </section>
+    </div>
+
+    <aside id="v-hasil">
+      <div class="card stack">
+        <div class="out-heading"><span class="lbl" style="margin:0">Isi Laporan</span></div>
+        <pre id="out" class="bubble"></pre>
+        <div id="stats" class="stats"></div>
+        <div class="actions">
+          <section class="attachment-panel" aria-label="Lampiran foto dan video">
+            <div class="lbl" style="margin:0 0 8px">Lampiran Foto / Video</div>
+            <label class="btn ghost attachment-pick" for="attachmentInput">＋ Tambah foto atau video</label>
+            <input id="attachmentInput" type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,video/mp4,video/quicktime,video/webm" multiple>
+            <div class="hint">Maksimal 8 file. Foto maks. 12 MB dan video maks. 80 MB per file. Lampiran ikut tersimpan saat menekan Simpan laporan.</div>
+            <div id="attachmentList" class="attachment-list"><span class="hint">Belum ada lampiran.</span></div>
+          </section>
+          <button type="button" class="btn save-report-btn" data-act="save-report">Simpan laporan</button>
+          <button type="button" class="btn" data-act="copy">Salin teks</button>
+          <a id="wa" class="btn wa wa-btn" href="https://wa.me/" target="_blank" rel="noopener" aria-label="Kirim lewat WhatsApp" title="Kirim lewat WhatsApp">
+            <svg class="wa-icon" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+              <path d="M16 3.2A12.2 12.2 0 0 0 5.5 21.6L4 28l6.6-1.7A12.2 12.2 0 1 0 16 3.2Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+              <path d="M12.1 10.2c-.0-.7.4-1.1.9-1.1h1c.3 0 .6.2.7.6l1 2.3c.1.3.1.6-.1.8l-.8 1c-.2.2-.2.5 0 .8.8 1.3 1.9 2.4 3.3 3.1.3.2.6.1.8-.1l1-1.2c.2-.3.5-.3.8-.2l2.1 1c.4.2.6.5.5.9-.1 1-.6 1.8-1.5 2.2-1 .5-2.4.4-4.1-.3-2-.8-4.1-2.6-5.4-4.4-1.2-1.7-1.7-3.4-1.5-4.5.1-.4.5-.9 1.3-.9Z" fill="currentColor"/>
+            </svg>
+            <span>WhatsApp</span>
+          </a>
+          <button type="button" class="btn ghost" data-act="pdf">Unduh PDF</button>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function(){
+'use strict';
+var SUPABASE_URL='https://ogolkyowgvypstjmxxde.supabase.co';
+var SUPABASE_PUBLISHABLE_KEY='sb_publishable_8NQAMLU4WhrHfn5nwf4gjQ_rr9egknn';
+var sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+var currentUser=null,currentProfile=null,cloudReady=false,cloudTimer=null,realtimeChannel=null,cloudPending={},isReadOnly=false;
+var KEY='laporan-cctv-v2';
+
+// ==LOGIC==
+var MONTHS=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+var DEFAULT_KOP={name:'Copy Computer',tag:'',addr:'Jl. Sicengkir No. 3 Troso, Kec. Pecangaan Kab. Jepara 59462'};
+function uid(){return Math.random().toString(36).slice(2,9)+Date.now().toString(36).slice(-3)}
+function todayISO(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function fmtDate(iso){var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(iso||'');if(!m)return '';return (+m[3])+' '+MONTHS[+m[2]-1]+' '+m[1]}
+function fmt(n){return String(Math.round(n*100)/100).replace('.',',')}
+function parseExpr(s){
+  var c=String(s||'').replace(/\s+/g,'').replace(/,/g,'.');
+  if(!c) return {empty:true,ok:false,terms:[],total:0};
+  if(!/^\d*\.?\d+(\+\d*\.?\d+)*$/.test(c)) return {ok:false,terms:[],total:0};
+  var terms=c.split('+');
+  var total=terms.reduce(function(a,t){return a+parseFloat(t)},0);
+  return {ok:true,terms:terms.map(function(t){return t.replace(/\./g,',')}),total:total};
+}
+function mk(kind,o){return Object.assign({id:uid(),kind:kind,label:'',text:'',qty:'',expr:'',colon:true,join:false,job:'Pasang Baru',jobCustom:'',item:'DVR',itemCustom:'',note:'',unit:'Pcs'},o||{})}
+function itemLine(it){
+  var label=(it.label||'').trim();
+  if(it.kind==='structured'){var nm=it.item==='Isi Sendiri'?(it.itemCustom||''):it.item;var detail=(it.note||'').trim();var unit=it.unit&&it.unit!=='-'?it.unit:'';return [nm,detail].filter(Boolean).join(' : ')+(unit?' '+unit:'')}
+  if(it.kind==='text') return (it.text||'').replace(/[ \t]+$/gm,'').trim();
+  if(it.kind==='qty'){
+    var q=(it.qty||'').trim();
+    if(!label&&!q) return '';
+    if(!q) return label;
+    if(!label) return q;
+    return label+(it.colon===false?' ':' : ')+q;
+  }
+  var e=(it.expr||'').trim();
+  if(!label&&!e) return '';
+  if(!e) return label;
+  var p=parseExpr(e), val;
+  if(!p.ok) val=e;
+  else val=p.terms.length>1?p.terms.join('+')+' = '+fmt(p.total)+' M':fmt(p.total)+' M';
+  return label?label+' : '+val:val;
+}
+function structure(r){
+  var secs=[];
+  r.sections.forEach(function(s){
+    var lines=[];
+    s.items.forEach(function(it,i){
+      var l=itemLine(it); if(!l) return;
+      if(it.join&&lines.length&&i>0) lines[lines.length-1]+=' + '+l; else lines.push(l);
+    });
+    var title=(s.job||s.title||'').trim();
+    if(title||lines.length) secs.push({title:title,bold:true,lines:lines});
+  });
+  var meta=[];
+  if(r.showMeta){ if((r.address||'').trim()) meta.push(r.address.trim()); var d=fmtDate(r.date); if(d) meta.push(d); }
+  return {name:(r.customer||'').trim(),meta:meta,secs:secs,catatan:(r.catatan||'').trim()};
+}
+function buildText(r){
+  var st=structure(r), out=[];
+  if(st.name) out.push(st.name);
+  st.meta.forEach(function(m){out.push(m)});
+  st.secs.forEach(function(s,i){
+    if(i>0) out.push('');
+    if(s.title) out.push(s.bold?'*'+s.title+'*':s.title);
+    s.lines.forEach(function(l){out.push('- '+l)});
+  });
+  if(st.catatan){out.push('');out.push('Catatan: '+st.catatan)}
+  return out.join('\n');
+}
+function totalCable(r){
+  var t=0;
+  r.sections.forEach(function(s){s.items.forEach(function(it){
+    if(it.kind==='cable'){var p=parseExpr(it.expr); if(p.ok) t+=p.total}
+  })});
+  return t;
+}
+function str(v){return typeof v==='string'?v:(v==null?'':String(v))}
+function normItem(it){
+  it=it||{};
+  return {id:str(it.id)||uid(),kind:['text','qty','cable','structured'].indexOf(it.kind)>=0?it.kind:'text',
+    label:str(it.label),text:str(it.text),qty:str(it.qty),expr:str(it.expr),colon:it.colon!==false,join:!!it.join,job:str(it.job)||'Pasang Baru',jobCustom:str(it.jobCustom),item:str(it.item)||'DVR',itemCustom:str(it.itemCustom),note:str(it.note),unit:str(it.unit)||'Pcs'};
+}
+function normReport(r){
+  if(!r||typeof r!=='object') return null;
+  var sections=[];
+  (Array.isArray(r.sections)?r.sections:[]).forEach(function(x){
+    x=x||{};var items=(Array.isArray(x.items)?x.items:[]).map(normItem),groups=[];
+    items.forEach(function(it){
+      if(it.kind!=='structured') return;
+      var job=x.job||(x.title&&x.title!=='Rincian pekerjaan'?x.title:'')||(it.job==='Servis Lainnya'?(it.jobCustom||'Servis Lainnya'):it.job)||'Pasang Baru';
+      var g=groups[groups.length-1];if(!g||g.job!==job){g={id:uid(),job:job,title:'',bold:true,items:[]};groups.push(g)}g.items.push(it);
+    });
+    var plain=items.filter(function(it){return it.kind!=='structured'});
+    if(plain.length) sections.push({id:str(x.id)||uid(),title:str(x.title),job:str(x.job),bold:!!x.bold,items:plain});
+    groups.forEach(function(g){sections.push(g)});
+    if(!items.length) sections.push({id:str(x.id)||uid(),title:str(x.title),job:str(x.job)||'Pasang Baru',bold:true,items:[]});
+  });
+  return {id:str(r.id)||uid(),ownerId:str(r.ownerId),example:!!r.example,customer:str(r.customer),address:str(r.address),tech:str(r.tech),date:str(r.date),catatan:str(r.catatan),showMeta:!!r.showMeta,updatedAt:+r.updatedAt||Date.now(),attachments:Array.isArray(r.attachments)?r.attachments.filter(function(a){return a&&a.path}).map(function(a){return {path:str(a.path),name:str(a.name),type:str(a.type),size:+a.size||0}}):[],sections:sections};
+}
+function normCat(c){
+  if(!c||typeof c!=='object') return null;
+  return {id:str(c.id)||uid(),label:str(c.label),note:str(c.note),
+    kind:['text','qty','cable'].indexOf(c.kind)>=0?c.kind:'qty',colon:c.colon!==false};
+}
+function normKop(k){
+  k=k&&typeof k==='object'?k:{};
+  return {name:k.name!=null?str(k.name):DEFAULT_KOP.name,tag:k.tag!=null?str(k.tag):DEFAULT_KOP.tag,addr:k.addr!=null?str(k.addr):DEFAULT_KOP.addr};
+}
+var DEFAULT_CATALOG=[
+  {label:'Kamera',kind:'text',note:'',colon:true},
+  {label:'Kabel',kind:'cable',note:'',colon:true},
+  {label:'Kabel LAN',kind:'cable',note:'',colon:true},
+  {label:'Kabel Listrik',kind:'cable',note:'',colon:true},
+  {label:'DVR',kind:'qty',note:'',colon:false},
+  {label:'HDD',kind:'qty',note:'',colon:false},
+  {label:'PSU',kind:'qty',note:'',colon:false},
+  {label:'Duradus',kind:'qty',note:'',colon:true},
+  {label:'BNC',kind:'qty',note:'',colon:true},
+  {label:'DC',kind:'qty',note:'',colon:true},
+  {label:'Stopkontak 3 lubang',kind:'qty',note:'',colon:true},
+  {label:'Steker Bulat Male',kind:'qty',note:'',colon:true},
+  {label:'TC',kind:'qty',note:'',colon:false}
+];
+function blankReport(){
+  return {id:uid(),example:false,saved:false,customer:'',address:'',tech:'',date:todayISO(),showMeta:false,updatedAt:Date.now(),
+    catatan:'',sections:[{id:uid(),title:'',job:'Pasang Baru',bold:true,items:[mk('structured',{item:'Isi Sendiri'})]}]};
+}
+function sampleReports(){
+  var a={id:uid(),example:true,customer:'H. Jamal',address:'',tech:'',date:todayISO(),showMeta:false,updatedAt:Date.now(),sections:[
+    {id:uid(),title:'Khusus CCTV',bold:true,items:[
+      mk('text',{text:'Kamera 3 titik, 2 out + 1 in'}),
+      mk('cable',{label:'Kabel',expr:'50+10+5'}),
+      mk('text',{text:'DVR 4 Ch + HDD 500 Gb'}),
+      mk('qty',{label:'PSU',qty:'12V 5A',colon:false}),
+      mk('qty',{label:'Duradus',qty:'2'}),
+      mk('qty',{label:'BNC',qty:'6'}),
+      mk('qty',{label:'DC',qty:'3',join:true}),
+      mk('cable',{label:'Kabel LAN nyambung',expr:'10'})]},
+    {id:uid(),title:'Instalasi Listrik 1 titik',bold:false,items:[
+      mk('cable',{label:'Kabel Listrik',expr:'1'}),
+      mk('qty',{label:'Stopkontak 3 lubang',qty:'1'}),
+      mk('qty',{label:'Steker Bulat Male',qty:'1'})]}]};
+  var b={id:uid(),example:true,customer:'- Toko Busa -',address:'',tech:'',date:todayISO(),showMeta:false,updatedAt:Date.now()-1000,sections:[
+    {id:uid(),title:'',bold:false,items:[
+      mk('text',{text:'Pasang Kamera 4 titik\n3 Out + Mic & 1 Out'}),
+      mk('cable',{label:'Kabel',expr:'20+20+10+13'}),
+      mk('qty',{label:'Duradus',qty:'2 Besar + 1 Kecil'}),
+      mk('qty',{label:'BNC',qty:'8'}),
+      mk('qty',{label:'DC',qty:'4',join:true}),
+      mk('text',{text:'Kabel VGA Baru + Kabel Power Monitor second'}),
+      mk('text',{text:'Kabel Lan 13 M Set RJ45'}),
+      mk('qty',{label:'DVR',qty:'4 Ch',colon:false}),
+      mk('qty',{label:'HDD',qty:'1 TB',colon:false}),
+      mk('qty',{label:'TC',qty:'1 batang',colon:false})]}]};
+  return [a,b];
+}
+
+/* ---- PDF (dibuat langsung di browser, tanpa pustaka) ---- */
+var WR=[278,278,355,556,556,889,667,191,333,333,389,584,278,333,278,278,556,556,556,556,556,556,556,556,556,556,278,278,584,584,584,556,1015,667,667,722,722,667,611,778,722,278,500,667,556,833,722,778,667,778,722,667,611,722,667,944,667,667,611,278,278,278,469,556,333,556,556,500,556,556,278,556,556,222,222,500,222,833,556,556,556,556,333,500,278,556,500,722,500,500,500,334,260,334,584];
+var WB=[278,333,474,556,556,889,722,238,333,333,389,584,278,333,278,278,556,556,556,556,556,556,556,556,556,556,333,333,584,584,584,611,975,722,722,722,722,667,611,778,722,278,556,722,611,833,722,778,667,778,722,667,611,722,667,944,667,667,611,333,278,333,584,556,333,556,611,556,611,556,333,611,611,278,278,556,278,889,611,611,611,611,389,556,333,611,556,778,556,556,500,389,280,389,584];
+function latin(s){
+  return String(s==null?'':s).replace(/[‘’]/g,"'").replace(/[“”]/g,'"').replace(/[–—]/g,'-').replace(/…/g,'...').replace(/\t/g,' ').replace(/[^\n\x20-\x7E\xA0-\xFF]/g,'?');
+}
+function pesc(s){return s.replace(/\\/g,'\\\\').replace(/\(/g,'\\(').replace(/\)/g,'\\)')}
+function tw(s,size,bold){
+  var t=bold?WB:WR,w=0;
+  for(var i=0;i<s.length;i++){var c=s.charCodeAt(i);w+=(c>=32&&c<=126)?t[c-32]:556}
+  return w*size/1000;
+}
+function wrapText(s,size,maxW,bold){
+  s=latin(s);
+  var out=[],line='';
+  s.split(' ').forEach(function(word){
+    var test=line?line+' '+word:word;
+    if(tw(test,size,bold)<=maxW){line=test;return}
+    if(line){out.push(line);line=''}
+    while(tw(word,size,bold)>maxW&&word.length>1){
+      var k=word.length;
+      while(k>1&&tw(word.slice(0,k),size,bold)>maxW)k--;
+      out.push(word.slice(0,k));word=word.slice(k);
+    }
+    line=word;
+  });
+  out.push(line);
+  return out;
+}
+function cleanName(s){return String(s||'').replace(/^[\s\-–—]+|[\s\-–—]+$/g,'')}
+function pdfName(r){
+  var base=cleanName(r.customer).replace(/[^A-Za-z0-9]+/g,'-').replace(/^-+|-+$/g,'')||'laporan';
+  return 'Laporan-'+base+'-'+(r.date||todayISO())+'.pdf';
+}
+async function loadLogoForPdf(){try{var img=new Image();img.crossOrigin='anonymous';img.src='logo-copy-computer.PNG';await new Promise(function(resolve,reject){img.onload=resolve;img.onerror=reject});var c=document.createElement('canvas');c.width=img.naturalWidth;c.height=img.naturalHeight;var ctx=c.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,c.width,c.height);ctx.drawImage(img,0,0);var data=atob(c.toDataURL('image/jpeg',0.94).split(',')[1]),bytes=new Uint8Array(data.length);for(var i=0;i<data.length;i++)bytes[i]=data.charCodeAt(i);return {bytes:bytes,width:c.width,height:c.height}}catch(e){console.warn('Logo PDF tidak dapat dimuat',e);return null}}
+function buildPdf(r,kop,logoJpeg){
+  var PW=595.28,PH=841.89,M=50,CW=PW-2*M;
+  var ACC='0.039 0.424 0.545',INK='0.075 0.125 0.169',MUTE='0.35 0.40 0.45',RULE='0.82 0.86 0.89';
+  var pages=[],ops,y;
+  function newPage(){ops=[];pages.push(ops);y=PH-M}
+  function T(s,x,yy,size,f,col){ops.push('BT /'+f+' '+size+' Tf '+col+' rg '+x.toFixed(2)+' '+yy.toFixed(2)+' Td ('+pesc(latin(s))+') Tj ET')}
+  function L(x1,y1,x2,y2,w,col){ops.push(col+' RG '+w+' w '+x1.toFixed(2)+' '+y1.toFixed(2)+' m '+x2.toFixed(2)+' '+y2.toFixed(2)+' l S')}
+  function need(h){if(y-h<M+24)newPage()}
+  newPage();
+  kop=kop||{};
+  var kn=latin(kop.name||''),ktag=latin(kop.tag||''),kad=latin(kop.addr||'');
+  if(kn){
+    if(logoJpeg&&logoJpeg.bytes&&logoJpeg.width&&logoJpeg.height){
+      var boxW=74,boxH=48,scale=Math.min(boxW/logoJpeg.width,boxH/logoJpeg.height),iw=logoJpeg.width*scale,ih=logoJpeg.height*scale;
+      ops.push('q '+iw.toFixed(2)+' 0 0 '+ih.toFixed(2)+' '+M+' '+(PH-M-ih).toFixed(2)+' cm /Logo Do Q');
+      T(kn,M+86,PH-M-20,17,'F2',ACC);
+      if(kad)kad.split('\\n').forEach(function(p,i){wrapText(p,9,CW-90,false).forEach(function(ln,j){T(ln,M+86,PH-M-36-(i*22+j*12),9,'F1',MUTE)})});
+      y=PH-M-ih-18;
+    }else{y-=18;T(kn,M,y,18,'F2',ACC);y-=16;if(kad)wrapText(kad,9,CW,false).forEach(function(ln){y-=12.5;T(ln,M,y,9,'F1',MUTE)});}
+  }
+  if(ktag){y-=12;T(ktag,M,y,10,'F3',MUTE)}
+  y-=10;L(M,y,PW-M,y,1.5,ACC);y-=30;
+  T('LAPORAN PEKERJAAN',M,y,13,'F2',INK);y-=24;
+  var rows=[['Pelanggan',cleanName(r.customer)],['Tanggal',fmtDate(r.date)],['Alamat',(r.address||'').trim()],['Teknisi',(r.tech||'').trim()]]
+    .filter(function(v){return v[1]});
+  rows.forEach(function(rw){
+    var lines=wrapText(rw[1],11,CW-80,rw[0]==='Pelanggan');
+    need(16*lines.length);
+    T(rw[0],M,y,9.5,'F1',MUTE);
+    lines.forEach(function(ln){T(ln,M+80,y,11,rw[0]==='Pelanggan'?'F2':'F1',INK);y-=15});
+  });
+  y-=2;L(M,y,PW-M,y,0.75,RULE);y-=24;
+  var s=structure(r);
+  if(!s.secs.length){T('Belum ada isi laporan.',M,y,11,'F3',MUTE);y-=16}
+  s.secs.forEach(function(sec){
+    if(sec.title){need(44);T(sec.title,M,y,11.5,'F2',ACC);y-=7;L(M,y,PW-M,y,0.5,RULE);y-=17}
+    sec.lines.forEach(function(item){
+      var first=true;
+      item.split('\n').forEach(function(p){
+        wrapText(p,10.5,CW-16,false).forEach(function(ln,i){
+          need(16);
+          if(first&&i===0)T('-',M+2,y,10.5,'F1',MUTE);
+          T(ln,M+16,y,10.5,'F1',INK);y-=15;
+        });
+        first=false;
+      });
+      y-=2;
+    });
+    y-=10;
+  });
+  if(s.catatan){need(34);y-=4;T('Catatan',M,y,10.5,'F2',ACC);y-=16;wrapText(s.catatan,10.5,CW,false).forEach(function(ln){need(16);T(ln,M,y,10.5,'F1',INK);y-=15})}
+  var tc=totalCable(r);
+  if(tc>0){need(34);y-=2;L(M,y+14,PW-M,y+14,0.5,RULE);y-=6;T('Total kabel',M,y,10.5,'F2',INK);T(fmt(tc)+' M',M+80,y,10.5,'F2',INK);y-=15}
+  var n=pages.length,foot=latin([kn,ktag].filter(Boolean).join(' - '));
+  pages.forEach(function(p,i){
+    ops=p;
+    L(M,40,PW-M,40,0.5,RULE);
+    T(foot,M,28,8,'F1',MUTE);
+    var pg='Halaman '+(i+1)+' dari '+n;
+    T(pg,PW-M-tw(pg,8,false),28,8,'F1',MUTE);
+  });
+  var objs=[null],kids=[],imageObj=logoJpeg&&logoJpeg.bytes?6+2*n:0;
+  objs[1]='<< /Type /Catalog /Pages 2 0 R >>';
+  pages.forEach(function(p,i){kids.push((6+2*i)+' 0 R')});
+  objs[2]='<< /Type /Pages /Kids ['+kids.join(' ')+'] /Count '+n+' >>';
+  objs[3]='<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>';
+  objs[4]='<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>';
+  objs[5]='<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Oblique /Encoding /WinAnsiEncoding >>';
+  pages.forEach(function(p,i){
+    var content=p.join('\n');
+    objs[6+2*i]='<< /Type /Page /Parent 2 0 R /MediaBox [0 0 '+PW+' '+PH+'] /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R >> '+(imageObj?'/XObject << /Logo '+imageObj+' 0 R >> ':'')+'>> /Contents '+(7+2*i)+' 0 R >>';
+    objs[7+2*i]='<< /Length '+content.length+' >>\nstream\n'+content+'\nendstream';
+  });
+  if(imageObj){var jpg='';for(var ji=0;ji<logoJpeg.bytes.length;ji+=8192)jpg+=String.fromCharCode.apply(null,logoJpeg.bytes.subarray(ji,ji+8192));objs[imageObj]='<< /Type /XObject /Subtype /Image /Width '+logoJpeg.width+' /Height '+logoJpeg.height+' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length '+jpg.length+' >>\nstream\n'+jpg+'\nendstream';}
+  var out='%PDF-1.4\n%\xE2\xE3\xCF\xD3\n',offs=[],i;
+  for(i=1;i<objs.length;i++){offs[i]=out.length;out+=i+' 0 obj\n'+objs[i]+'\nendobj\n'}
+  var xref=out.length;
+  out+='xref\n0 '+objs.length+'\n0000000000 65535 f \n';
+  for(i=1;i<objs.length;i++)out+=String(offs[i]).padStart(10,'0')+' 00000 n \n';
+  out+='trailer\n<< /Size '+objs.length+' /Root 1 0 R >>\nstartxref\n'+xref+'\n%%EOF';
+  var u=new Uint8Array(out.length);
+  for(i=0;i<out.length;i++)u[i]=out.charCodeAt(i)&255;
+  return u;
+}
+// ==/LOGIC==
+
+var $=function(id){return document.getElementById(id)};
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+var CAT_KINDS=[['qty','Barang + keterangan'],['cable','Kabel (hitung meter)'],['text','Teks bebas']];
+var storageOk=true,hadLocalDb=false;
+
+function loadDb(){
+  var raw=null,d=null;
+  try{raw=localStorage.getItem(KEY);hadLocalDb=!!raw}catch(e){storageOk=false}
+  try{d=raw?JSON.parse(raw):null}catch(e){d=null}
+  var reports=d&&Array.isArray(d.reports)?d.reports.map(normReport).filter(Boolean):[];
+  var catalog=d&&Array.isArray(d.catalog)?d.catalog.map(normCat).filter(Boolean):DEFAULT_CATALOG.map(function(c){return normCat(c)});
+  if(!reports.length) reports=sampleReports();
+  var cid=d&&reports.some(function(r){return r.id===d.currentId})?d.currentId:reports[0].id;
+  return {reports:reports,catalog:catalog,currentId:cid,kop:normKop(d&&d.kop),lastTech:str(d&&d.lastTech)};
+}
+var db=loadDb();
+var view='isi',armed=null,st=null,tt=null,deferred=null,pendingFiles={};
+var mq=window.matchMedia?window.matchMedia('(min-width: 960px)'):{matches:false};
+function wide(){return !!mq.matches}
+
+function cur(){
+  var r=db.reports.filter(function(x){return x.id===db.currentId})[0];
+  if(!r){r=db.reports[0]||blankReport(); if(!db.reports.length) db.reports.push(r); db.currentId=r.id}
+  return r;
+}
+function setStatus(){
+  var el=$('status');
+  db.kop.tag='';db.kop.addr='Jl. Sicengkir No. 3 Troso, Kec. Pecangaan Kab. Jepara 59462';
+  $('brand').textContent=[db.kop.name,db.kop.addr].filter(Boolean).join(' · ');
+  if(currentUser&&currentProfile){
+    el.textContent=(currentProfile.display_name||currentUser.email||'Pengguna')+' · '+(currentProfile.role==='admin'?'Admin':'Teknisi')+' · Online';
+    el.hidden=false;el.className='sub'+(storageOk?'':' bad');$('logoutBtn').hidden=false;
+  }else{el.textContent='';el.hidden=true;$('logoutBtn').hidden=true}
+}
+function cloudRow(r){return {id:r.id,owner_id:r.ownerId||currentUser.id,customer:r.customer||'',address:r.address||'',report_date:r.date||null,payload:r}}
+async function saveCloudNow(forceId){
+  if(!cloudReady||!currentUser)throw new Error('Belum login ke database online');
+  clearTimeout(cloudTimer);
+  var ids=Object.keys(cloudPending);
+  if(forceId&&ids.indexOf(forceId)<0)ids.push(forceId);
+  if(!ids.length)ids=[cur().id];
+  var rows=[];
+  ids.forEach(function(id){var r=db.reports.filter(function(x){return x.id===id})[0];if(r){var owner=r.ownerId||currentUser.id,payload=JSON.parse(JSON.stringify(r));payload.ownerId=owner;rows.push(cloudRow(payload))}});
+  if(rows.length){var result=await sb.from('reports').upsert(rows,{onConflict:'id'});if(result.error)throw result.error;
+    rows.forEach(function(row){var r=db.reports.filter(function(x){return x.id===row.id})[0];if(r)r.ownerId=row.owner_id;delete cloudPending[row.id]});
+  }
+  var settings=await sb.from('user_settings').upsert({user_id:currentUser.id,catalog:db.catalog,kop:db.kop,last_tech:db.lastTech||''},{onConflict:'user_id'});
+  if(settings.error)throw settings.error;
+}
+function queueCloudSave(){
+  if(!cloudReady||!currentUser||cur().saved===false)return;
+  cloudPending[cur().id]=true;
+  clearTimeout(cloudTimer);
+  cloudTimer=setTimeout(function(){saveCloudNow().catch(function(e){console.error('Supabase sync:',e);toast('Sinkronisasi gagal: '+(e.message||'periksa koneksi'))})},650);
+}
+function savedSnapshot(){return {reports:db.reports.filter(function(r){return r.saved!==false}),catalog:db.catalog,currentId:db.currentId,kop:db.kop,lastTech:db.lastTech}}
+function saveNow(){
+  clearTimeout(st);
+  try{localStorage.setItem(KEY,JSON.stringify(savedSnapshot()));storageOk=true;setStatus();queueCloudSave();return true}
+  catch(e){storageOk=false;setStatus();return false}
+}
+function save(){clearTimeout(st);st=setTimeout(function(){try{localStorage.setItem(KEY,JSON.stringify(savedSnapshot()));storageOk=true;setStatus()}catch(e){storageOk=false;setStatus()}},200)}
+function toast(m){var t=$('toast');t.textContent=m;t.classList.add('on');clearTimeout(tt);tt=setTimeout(function(){t.classList.remove('on')},2600)}
+function copyText(t){
+  var p=navigator.clipboard&&navigator.clipboard.writeText?navigator.clipboard.writeText(t).then(function(){return true},function(){return false}):Promise.resolve(false);
+  return p.then(function(ok){
+    if(ok) return true;
+    try{var ta=document.createElement('textarea');ta.value=t;ta.style.cssText='position:fixed;opacity:0;top:0';document.body.appendChild(ta);ta.select();var r=document.execCommand('copy');ta.remove();return !!r}catch(e){return false}
+  });
+}
+function arm(b,key,txt){
+  if(armed===key){armed=null;return true}
+  armed=key;b.dataset.o=b.textContent;b.textContent=txt;
+  setTimeout(function(){if(armed===key){armed=null;if(b.isConnected)b.textContent=b.dataset.o}},3000);
+  return false;
+}
+async function sharePdf(btn){
+  var old=btn?btn.textContent:'';
+  if(btn){btn.disabled=true;btn.textContent='Menyiapkan PDF...'}
+  function finish(){if(btn){btn.disabled=false;btn.textContent=old}}
+  var url=null;
+  try{
+    var r=cur(),name=pdfName(r),logo=await loadLogoForPdf(),bytes=buildPdf(r,db.kop,logo);
+    var blob=new Blob([bytes],{type:'application/pdf'});
+    // On supported Chromium browsers, show a real Save As dialog.
+    if(window.showSaveFilePicker){
+      try{
+        var handle=await window.showSaveFilePicker({
+          suggestedName:name,
+          types:[{description:'Dokumen PDF',accept:{'application/pdf':['.pdf']}}]
+        });
+        var writable=await handle.createWritable();
+        await writable.write(blob);
+        await writable.close();
+        toast('PDF berhasil disimpan: '+name);
+        finish();
+        return;
+      }catch(pickErr){
+        if(pickErr&&pickErr.name==='AbortError'){
+          toast('Penyimpanan PDF dibatalkan. Tidak ada file yang disimpan.');
+          finish();
+          return;
+        }
+        // If the Save As API is unavailable/blocked, continue to download fallback.
+      }
+    }
+    if(navigator.msSaveOrOpenBlob){
+      navigator.msSaveOrOpenBlob(blob,name);
+      toast('Pilih lokasi untuk menyimpan PDF: '+name);
+      finish();
+      return;
+    }
+    url=URL.createObjectURL(blob);
+    var a=document.createElement('a');
+    a.href=url;a.download=name;a.rel='noopener';a.style.position='fixed';a.style.left='-9999px';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function(){a.remove()},1000);
+    toast('Unduhan PDF dimulai. Jika tidak muncul, izinkan download untuk situs ini lalu coba lagi.');
+    setTimeout(function(){if(url)URL.revokeObjectURL(url)},180000);
+    finish();
+  }catch(e){
+    if(url)URL.revokeObjectURL(url);
+    toast('PDF gagal dibuat: '+(e&&e.message?e.message:'periksa data laporan'));
+    finish();
+  }
+}
+
+/* ---------- Halaman Isi ---------- */
+function calcInfo(it){
+  var p=parseExpr(it.expr);
+  if(p.empty) return ['Isi panjang kabel, mis. 50+10+5',''];
+  if(!p.ok) return ['Lanjutkan: angka dipisah tanda +','warn'];
+  return [(p.terms.length>1?p.terms.join(' + ')+' = ':'')+fmt(p.total)+' M','ok'];
+}
+function updCalc(it){var el=$('tot-'+it.id);if(!el)return;var c=calcInfo(it);el.textContent=c[0];el.className='calc '+c[1]}
+
+function fieldsHTML(it){
+  var id=esc(it.id);
+  if(it.kind==='structured'){
+    var items=['DVR','NVR','Kamera Indoor','Kamera Outdoor','Hardisk','PSU','Adaptor','Kabel CCTV','Kabel LAN','Duradus','Jack BNC','Jack DC','Stopkontak','Streker Male','Streker Female','Kabel Listrik','TC Duck','Isi Sendiri'];
+    return '<div class="structured-grid">'
+      +'<div><label class="lbl" for="item-'+id+'">Item barang</label><select id="item-'+id+'" data-f="item">'+items.map(function(v){return '<option'+(it.item===v?' selected':'')+'>'+v+'</option>'}).join('')+'</select></div>'
+      +(it.item==='Isi Sendiri'?'<div><label class="lbl" for="itemc-'+id+'">Nama barang</label><input id="itemc-'+id+'" data-f="itemCustom" value="'+esc(it.itemCustom)+'" placeholder="Ketik nama barang" autocomplete="off"></div>':'')
+      +'<div><label class="lbl" for="note-'+id+'">Keterangan</label><input id="note-'+id+'" data-f="note" value="'+esc(it.note)+'" placeholder="Isi keterangan" autocomplete="off"></div>'
+      +'<div><label class="lbl" for="unit-'+id+'">Satuan</label><select id="unit-'+id+'" data-f="unit">'+['Pcs','Meter','-'].map(function(v){return '<option'+(it.unit===v?' selected':'')+'>'+v+'</option>'}).join('')+'</select></div></div>';
+  }
+  if(it.kind==='text') return '<textarea id="foc-'+id+'" data-f="text" rows="2" aria-label="Isi baris" placeholder="mis. DVR 4 Ch + HDD 500 Gb">'+esc(it.text)+'</textarea>';
+  var lab='<input id="lab-'+id+'" data-f="label" value="'+esc(it.label)+'" placeholder="Nama barang" aria-label="Nama barang" autocomplete="off">';
+  if(it.kind==='qty') return lab+'<input id="val-'+id+'" data-f="qty" value="'+esc(it.qty)+'" placeholder="Keterangan, mis. 100 meter" aria-label="Keterangan" autocomplete="off">';
+  return lab+'<input id="val-'+id+'" class="mono" data-f="expr" value="'+esc(it.expr)+'" inputmode="tel" placeholder="50+10+5" aria-label="Panjang kabel dalam meter" autocomplete="off">';
+}
+function itemHTML(it,idx){
+  if(it.kind==='structured') return '<div class="item structured-item" data-item="'+esc(it.id)+'"><div class="item-top"><strong>Item barang</strong><span class="sp"></span><button type="button" class="mini danger" data-act="del-item">Hapus</button></div>'+fieldsHTML(it)+'</div>';
+  var kinds=[['text','Teks'],['qty','Barang'],['cable','Kabel']];
+  var c=it.kind==='cable'?calcInfo(it):null;
+  return '<div class="item" data-item="'+esc(it.id)+'">'
+   +'<div class="item-top"><div class="seg" role="group" aria-label="Jenis baris">'
+   +kinds.map(function(k){return '<button type="button" data-act="kind" data-kind="'+k[0]+'" aria-pressed="'+(it.kind===k[0])+'">'+k[1]+'</button>'}).join('')
+   +'</div><span class="sp"></span>'
+   +(it.kind==='qty'?'<button type="button" class="mini" data-act="colon" aria-pressed="'+(it.colon!==false)+'">Titik dua</button>':'')
+   +(idx>0?'<button type="button" class="mini" data-act="join" aria-pressed="'+(!!it.join)+'">Gabung ke atas</button>':'')
+   +'<button type="button" class="mini danger" data-act="del-item" aria-label="Hapus baris">Hapus</button></div>'
+   +'<div class="fields">'+fieldsHTML(it)+'</div>'
+   +(c?'<div class="calc '+c[1]+'" id="tot-'+esc(it.id)+'">'+esc(c[0])+'</div>':'')
+   +'</div>';
+}
+function sectionHTML(s){
+  var id=esc(s.id),jobs=['Pasang Baru','Servis Kamera','Servis Lainnya'];
+  return '<section class="card" data-sec="'+id+'">'
+   +'<div class="sec-head"><label class="lbl" for="jobsec-'+id+'">Item pekerjaan</label><select id="jobsec-'+id+'" data-f="job">'+jobs.map(function(v){return '<option'+((s.job||s.title||'Pasang Baru')===v?' selected':'')+'>'+v+'</option>'}).join('')+'</select>'
+   +'<button type="button" class="mini danger" data-act="del-sec">Hapus pekerjaan</button></div>'
+   +s.items.map(itemHTML).join('')
+   +'<div class="item-actions"><button type="button" class="btn small" data-act="add-structured">+ Tambah barang</button></div></section>';
+}
+function render(){
+  var r=cur();
+  $('form').innerHTML=
+   '<div class="card stack"><div><label class="lbl" for="customer">Pelanggan</label><input id="customer" data-f="customer" value="'+esc(r.customer)+'" placeholder="Nama Pelanggan" autocomplete="off"></div>'
+   +'<div class="two"><div><label class="lbl" for="date">Tanggal</label><input id="date" type="date" data-f="date" value="'+esc(r.date)+'"></div>'
+   +'<div><label class="lbl" for="tech">Teknisi</label><input id="tech" data-f="tech" value="'+esc(r.tech)+'" placeholder="Nama Teknisi" autocomplete="off"></div></div>'
+   +'<div><label class="lbl" for="address">Alamat</label><input id="address" data-f="address" value="'+esc(r.address)+'" placeholder="Alamat Pelanggan" autocomplete="off"></div>'
+   +'<label class="check"><input id="showMeta" type="checkbox" data-f="showMeta"'+(r.showMeta?' checked':'')+'><span>Cantumkan tanggal dan alamat di teks WhatsApp</span></label></div>'
+   +r.sections.map(function(sec){if(!sec.items.length)sec.items.push(mk('structured',{item:'Isi Sendiri'}));return sectionHTML(sec)}).join('')
+   +'<div class="item-actions"><button type="button" class="btn" data-act="add-sec">+ Tambah pekerjaan</button></div>'
+   +'<div class="card stack"><label class="lbl" for="catatan">Catatan</label><textarea id="catatan" data-f="catatan" rows="3" placeholder="Catatan tambahan (opsional)">'+esc(r.catatan||'')+'</textarea></div>';
+  if(isReadOnly){
+    var banner=document.createElement('div');banner.className='card';banner.style.cssText='border-color:#0b7895;background:#eef8fb;color:#075b73';
+    banner.innerHTML='<strong>Mode lihat laporan</strong><div class="hint">Laporan tersimpan ditampilkan hanya untuk dibaca. Data tidak bisa diubah dari tampilan ini.</div><button type="button" class="btn ghost" data-act="view" data-v="riwayat">Kembali ke riwayat</button>';
+    $('form').insertBefore(banner,$('form').firstChild);
+    $('form').querySelectorAll('input,textarea,select,button').forEach(function(el){el.disabled=true});
+    var back=banner.querySelector('button');if(back)back.disabled=false;
+    var saveBtn=document.querySelector('[data-act="save-report"]');if(saveBtn)saveBtn.hidden=true;
+  }else{var saveBtn=document.querySelector('[data-act="save-report"]');if(saveBtn)saveBtn.hidden=false;}
+  renderNote();updateOut();
+}
+async function renderAttachments(){
+  var box=$('attachmentList');if(!box)return;var r=cur(),html='';
+  (r.attachments||[]).forEach(function(a,i){
+    html+='<div class="attachment-entry" data-att-index="'+i+'"><span>Memuat '+esc(a.name||'Lampiran')+'...</span></div>';
+  });
+  (pendingFiles[r.id]||[]).forEach(function(f,i){html+='<div class="attachment-entry"><span>Belum diunggah: '+esc(f.name)+' ('+Math.round(f.size/1024)+' KB)</span><button type="button" class="mini danger" data-act="remove-pending" data-index="'+i+'">Batal</button></div>'});
+  box.innerHTML=html||'<span class="hint">Belum ada lampiran.</span>';
+  (r.attachments||[]).forEach(async function(a,i){
+    try{var res=await sb.storage.from('report-attachments').createSignedUrl(a.path,3600);if(res.error)throw res.error;
+      var el=box.querySelector('[data-att-index="'+i+'"]');if(!el)return;
+      var media=a.type.indexOf('image/')===0?'<img src="'+esc(res.data.signedUrl)+'" alt="'+esc(a.name)+'">':(a.type.indexOf('video/')===0?'<video src="'+esc(res.data.signedUrl)+'" controls playsinline></video>':'');
+      el.innerHTML=media+'<a href="'+esc(res.data.signedUrl)+'" target="_blank" rel="noopener">'+esc(a.name||'Lampiran')+'</a><button type="button" class="mini danger" data-act="remove-attachment" data-index="'+i+'">Hapus</button>';
+    }catch(e){var el=box.querySelector('[data-att-index="'+i+'"]');if(el)el.innerHTML='<span>'+esc(a.name||'Lampiran')+' (gagal dimuat)</span>'}
+  });
+}
+async function uploadPendingAttachments(r){
+  var files=pendingFiles[r.id]||[];if(!files.length)return;
+  if(!cloudReady||!currentUser)throw new Error('Login online diperlukan untuk mengunggah lampiran');
+  for(var i=0;i<files.length;i++){
+    var file=files[i],safe=file.name.replace(/[^a-zA-Z0-9._-]+/g,'_').slice(-90),path=currentUser.id+'/'+r.id+'/'+uid()+'-'+safe;
+    var up=await sb.storage.from('report-attachments').upload(path,file,{contentType:file.type,upsert:false});
+    if(up.error)throw up.error;
+    r.attachments=r.attachments||[];r.attachments.push({path:path,name:file.name,type:file.type,size:file.size});
+    pendingFiles[r.id]=files.slice(i+1);
+  }
+  delete pendingFiles[r.id];
+}
+function renderNote(){var r=cur();$('note').hidden=!(r.example&&view==='isi')}
+function focusEl(id,end){
+  var el=$(id);if(!el)return;el.focus();
+  if(end&&el.setSelectionRange){var n=el.value.length;try{el.setSelectionRange(n,n)}catch(e){}}
+}
+function focusItem(it){
+  if(it.kind==='text') focusEl('foc-'+it.id,true);
+  else focusEl((it.label?'val-':'lab-')+it.id);
+}
+function getSec(t){var n=t.closest('[data-sec]');if(!n)return null;return cur().sections.filter(function(s){return s.id===n.dataset.sec})[0]||null}
+function getItem(t){var s=getSec(t),n=t.closest('[data-item]');if(!s||!n)return null;return s.items.filter(function(i){return i.id===n.dataset.item})[0]||null}
+function getCat(t){var n=t.closest('[data-cat]');if(!n)return null;return db.catalog.filter(function(c){return c.id===n.dataset.cat})[0]||null}
+function changed(){var r=cur();r.updatedAt=Date.now();if(r.example){r.example=false;renderNote()}updateOut()}
+
+/* ---------- Hasil ---------- */
+function updateOut(){
+  var r=cur(),t=buildText(r),s=structure(r),n=0,tc=totalCable(r);
+  s.secs.forEach(function(x){n+=x.lines.length});
+  $('out').textContent=t||'Laporan masih kosong. Silakan isi melalui menu Isi Laporan.';
+  $('stats').textContent=n+' baris'+(tc>0?' · Total kabel '+fmt(tc)+' M':'');
+  var waMobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent||'');
+  $('wa').href=(waMobile?'https://wa.me/':'https://web.whatsapp.com/send')+(t?(waMobile?'?text=':'?text=')+encodeURIComponent(t):'');
+}
+
+/* ---------- Barang ---------- */
+function catRowHTML(c){
+  var id=esc(c.id);
+  var opts=CAT_KINDS.map(function(k){return '<option value="'+k[0]+'"'+(c.kind===k[0]?' selected':'')+'>'+k[1]+'</option>'}).join('');
+  return '<div class="card catcard" data-cat="'+id+'"><div class="catgrid">'
+   +'<div><label class="lbl" for="cl-'+id+'">Nama barang</label><input id="cl-'+id+'" data-f="clabel" value="'+esc(c.label)+'" autocomplete="off"></div>'
+   +'<div><label class="lbl" for="cn-'+id+'">Keterangan bawaan</label><input id="cn-'+id+'" data-f="cnote" value="'+esc(c.note)+'" placeholder="kosong = diisi saat laporan" autocomplete="off"></div>'
+   +'<div><label class="lbl" for="ck-'+id+'">Jenis</label><select id="ck-'+id+'" data-f="ckind">'+opts+'</select></div></div>'
+   +'<div class="catfoot">'+(c.kind==='qty'?'<label class="check"><input type="checkbox" id="cc-'+id+'" data-f="ccolon"'+(c.colon?' checked':'')+'><span>Titik dua</span></label>':'<span></span>')
+   +'<button type="button" class="mini danger" data-act="cat-del">Hapus</button></div></div>';
+}
+function renderCatalog(){
+  $('cats').innerHTML=db.catalog.length?db.catalog.map(catRowHTML).join(''):'<p class="empty">Daftar barang kosong. Tambah barang pertama di atas.</p>';
+  $('kn').value=db.kop.name;$('kt').value=db.kop.tag;$('ka').value=db.kop.addr;
+}
+
+/* ---------- Riwayat ---------- */
+function renderHistory(){
+  var q=($('sq').value||'').toLowerCase().trim();
+  var list=db.reports.filter(function(r){return r.saved!==false && String(r.customer||'').trim()}).slice().sort(function(a,b){return b.updatedAt-a.updatedAt}).filter(function(r){return !q||(r.customer+' '+r.address).toLowerCase().indexOf(q)>=0});
+  $('hist').innerHTML=list.length?list.map(function(r){
+    var s=structure(r),n=0,tc=totalCable(r);s.secs.forEach(function(x){n+=x.lines.length});
+    var id=esc(r.id),d=fmtDate(r.date);
+    return '<article class="card hrow'+(r.id===db.currentId?' cur':'')+'" data-rid="'+id+'">'
+     +'<div><strong>'+esc((r.customer||'').trim()||'Tanpa nama')+'</strong>'+(r.example?'<span class="tag">Contoh</span>':'')
+     +'<div class="hmeta">'+esc([d,n+' baris',tc>0?'kabel '+fmt(tc)+' M':''].filter(Boolean).join(' · '))+'</div></div>'
+     +'<div class="hact"><button type="button" class="mini" data-act="h-edit">Edit</button><button type="button" class="mini" data-act="h-open">Buka</button><button type="button" class="mini" data-act="h-dup">Duplikat</button><button type="button" class="mini danger" data-act="h-del">Hapus</button></div></article>';
+  }).join(''):'<p class="empty">Tidak ada laporan yang cocok.</p>';
+}
+
+/* ---------- Navigasi ---------- */
+function setView(v,keepScroll){
+  if(v==='hasil'||v==='barang')v='isi';
+  view=v;
+  ['isi','riwayat'].forEach(function(n){$('v-'+n).hidden=n!==v});
+  $('v-hasil').hidden=false;
+  document.querySelectorAll('.tab').forEach(function(b){if(b.dataset.v===v)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});
+  if(v==='isi')render();
+  if(v==='hasil')updateOut();
+  if(v==='riwayat')renderHistory();
+  renderNote();
+  if(!keepScroll)window.scrollTo(0,0);
+}
+if(mq.addEventListener)mq.addEventListener('change',function(){setView(view,true)});
+else if(mq.addListener)mq.addListener(function(){setView(view,true)});
+
+/* ---------- Input ---------- */
+document.addEventListener('change',function(e){var t=e.target,f=t.dataset&&t.dataset.f;if(f==='job'||f==='item'||f==='unit'){var sec=getSec(t),it=getItem(t);if(!sec||!it)return;it[f]=t.value;changed();render()}});
+document.addEventListener('input',function(e){
+  var t=e.target,f=t.dataset&&t.dataset.f;
+  if(!f) return;
+  var v=t.type==='checkbox'?t.checked:t.value;
+  if(f.indexOf('kop')===0){db.kop[f.slice(3)]=v;setStatus();save();return}
+  if(f==='clabel'||f==='cnote'||f==='ckind'||f==='ccolon'){
+    var c=getCat(t);if(!c)return;
+    if(f==='clabel')c.label=v;else if(f==='cnote')c.note=v;else if(f==='ccolon')c.colon=v;
+    else{c.kind=v;renderCatalog()}
+    save();return;
+  }
+  var r=cur();
+  if(f==='customer'||f==='address'||f==='date'||f==='showMeta'||f==='tech'||f==='catatan'){r[f]=v;if(f==='tech')db.lastTech=v}
+  else{
+    var sec=getSec(t);if(!sec)return;
+    if(f==='title')sec.title=v;
+    else if(f==='job'){sec.job=v;sec.title='';}
+    else{var it=getItem(t);if(!it)return;it[f]=v;if(f==='expr')updCalc(it)}
+  }
+  changed();
+});
+document.addEventListener('change',function(e){
+  if(e.target&&e.target.id==='attachmentInput'){
+    var r=cur(),files=Array.prototype.slice.call(e.target.files||[]),current=pendingFiles[r.id]||[];
+    files.forEach(function(file){
+      if(!file.type.match(/^(image\/(jpeg|png|webp|heic|heif)|video\/(mp4|quicktime|webm))$/)){toast('Format file tidak didukung: '+file.name);return}
+      if(file.size>(file.type.indexOf('video/')===0?80:12)*1024*1024){toast('Ukuran file terlalu besar: '+file.name);return}
+      if(current.length>=8){toast('Maksimal 8 lampiran per laporan');return}
+      current.push(file);
+    });
+    pendingFiles[r.id]=current;renderAttachments();e.target.value='';
+  }
+});
+$('sq').addEventListener('input',renderHistory);
+/* ---------- Klik ---------- */
+document.addEventListener('click',function(e){
+  var b=e.target.closest('[data-act]');if(!b)return;
+  var act=b.dataset.act,r=cur(),sec,it,c,id;
+  switch(act){
+    case 'view':setView(b.dataset.v);break;
+    case 'new':{isReadOnly=false;var n=blankReport();n.tech=db.lastTech||'';db.reports.push(n);db.currentId=n.id;save();setView('isi');focusEl('customer');break}
+    case 'dismiss-note':r.example=false;renderNote();save();break;
+    case 'dismiss-install':try{localStorage.setItem('laporan-cctv-install','1')}catch(x){}$('install').hidden=true;break;
+    case 'kind':{
+      it=getItem(b);if(!it)break;
+      var k=b.dataset.kind;
+      if(k===it.kind)break;
+      if(k==='text'&&!it.text.trim())it.text=itemLine(it);
+      it.kind=k;changed();render();break;
+    }
+    case 'colon':it=getItem(b);if(it){it.colon=it.colon===false;changed();render()}break;
+    case 'join':it=getItem(b);if(it){it.join=!it.join;changed();render()}break;
+    case 'del-item':{
+      sec=getSec(b);it=getItem(b);if(!sec||!it)break;
+      if(!arm(b,'i:'+it.id,'Yakin?'))break;
+      sec.items=sec.items.filter(function(x){return x!==it});changed();render();break;
+    }
+    case 'add-blank':{sec=getSec(b);if(!sec)break;it=mk('text',{text:''});sec.items.push(it);changed();render();focusItem(it);break}
+    case 'add-structured':{sec=getSec(b);if(!sec)break;it=mk('structured',{item:'Isi Sendiri'});sec.items.push(it);changed();render();break}
+    case 'add-cat':{
+      sec=getSec(b);c=db.catalog.filter(function(x){return x.id===b.dataset.cid})[0];if(!sec||!c)break;
+      if(c.kind==='text')it=mk('text',{text:c.label+' '+(c.note||'')});
+      else if(c.kind==='cable')it=mk('cable',{label:c.label});
+      else it=mk('qty',{label:c.label,qty:c.note||'',colon:c.colon!==false});
+      sec.items.push(it);changed();render();focusItem(it);break;
+    }
+    case 'add-sec':{var s={id:uid(),title:'',job:'Pasang Baru',bold:true,items:[mk('structured',{item:'Isi Sendiri'})]};r.sections.push(s);changed();render();break}
+    case 'bold':sec=getSec(b);if(sec){sec.bold=!sec.bold;changed();render()}break;
+    case 'del-sec':{
+      sec=getSec(b);if(!sec)break;
+      if(!arm(b,'s:'+sec.id,'Yakin hapus?'))break;
+      r.sections=r.sections.filter(function(x){return x!==sec});changed();render();break;
+    }
+    case 'copy':{
+      var t=buildText(r);if(!t){toast('Laporan masih kosong');break}
+      copyText(t).then(function(ok){
+        if(ok)toast('Teks disalin. Tempel di WhatsApp.');
+        else{try{var rg=document.createRange();rg.selectNodeContents($('out'));var sl=window.getSelection();sl.removeAllRanges();sl.addRange(rg)}catch(x){}toast('Tekan lama teks lalu pilih Salin')}
+      });break;
+    }
+    case 'save-report':{
+      (async function(){
+        var report=cur();report.saved=true;
+        try{
+          await uploadPendingAttachments(report);
+          if(!saveNow())throw new Error('Penyimpanan perangkat penuh atau diblokir');
+          renderHistory();
+          if(cloudReady){toast('Menyimpan laporan dan lampiran ke database online...');await saveCloudNow(report.id);toast('Laporan dan lampiran berhasil disimpan online.')}
+          else toast('Laporan tersimpan di perangkat ini.');
+          renderAttachments();
+        }catch(err){toast('Gagal menyimpan: '+(err.message||'periksa koneksi dan pengaturan Storage'))}
+      })();break;
+    }
+    case 'remove-pending':{
+      var pending=pendingFiles[r.id]||[],pi=+b.dataset.index;
+      pending.splice(pi,1);pendingFiles[r.id]=pending;renderAttachments();break;
+    }
+    case 'remove-attachment':{
+      var ai=+b.dataset.index,att=(r.attachments||[])[ai];if(!att)break;
+      (async function(){try{
+        var del=await sb.storage.from('report-attachments').remove([att.path]);if(del.error)throw del.error;
+        r.attachments.splice(ai,1);saveNow();if(cloudReady)await saveCloudNow(r.id);renderAttachments();toast('Lampiran dihapus');
+      }catch(err){toast('Gagal menghapus lampiran: '+err.message)}})();break;
+    }
+    case 'pdf':sharePdf(b);break;
+    case 'cat-add':{
+      var lab=$('nl').value.trim();if(!lab){toast('Isi nama barang dulu');focusEl('nl');break}
+      db.catalog.push({id:uid(),label:lab,note:$('nn').value.trim(),kind:$('nk').value,colon:true});
+      $('nl').value='';$('nn').value='';save();renderCatalog();toast('Ditambahkan ke daftar barang');break;
+    }
+    case 'cat-del':{
+      c=getCat(b);if(!c)break;
+      if(!arm(b,'c:'+c.id,'Yakin hapus?'))break;
+      db.catalog=db.catalog.filter(function(x){return x!==c});save();renderCatalog();break;
+    }
+    case 'h-edit':id=b.closest('[data-rid]').dataset.rid;db.currentId=id;isReadOnly=false;setView('isi');toast('Mode edit aktif. Perubahan tersimpan setelah menekan Simpan laporan.');break;
+    case 'h-open':id=b.closest('[data-rid]').dataset.rid;db.currentId=id;isReadOnly=true;save();setView('isi');break;
+    case 'h-dup':{
+      id=b.closest('[data-rid]').dataset.rid;
+      var src=db.reports.filter(function(x){return x.id===id})[0];if(!src)break;
+      isReadOnly=false;var cp=normReport(JSON.parse(JSON.stringify(src)));
+      cp.id=uid();cp.example=false;cp.saved=false;cp.date=todayISO();cp.updatedAt=Date.now();
+      cp.sections.forEach(function(s){s.id=uid();s.items.forEach(function(i){i.id=uid()})});
+      db.reports.push(cp);db.currentId=cp.id;save();setView('isi');toast('Laporan diduplikat. Ubah nama pelanggan.');focusEl('customer');break;
+    }
+    case 'h-del':{
+      id=b.closest('[data-rid]').dataset.rid;
+      if(!arm(b,'r:'+id,'Yakin hapus?'))break;
+      db.reports=db.reports.filter(function(x){return x.id!==id});
+      if(!db.reports.length){db.reports.push(blankReport())}
+      if(db.currentId===id)db.currentId=db.reports[0].id;
+      save();
+      if(cloudReady){delete cloudPending[id];sb.from('reports').delete().eq('id',id).then(function(x){if(x.error)toast('Gagal menghapus di cloud: '+x.error.message)})}
+      renderHistory();break;
+    }
+    case 'bk-copy':{
+      var js=JSON.stringify({v:2,reports:db.reports,catalog:db.catalog,kop:db.kop});
+      $('bk').value=js;$('bk').select();
+      copyText(js).then(function(ok){toast(ok?'Cadangan disalin':'Tekan lama teks lalu pilih Salin')});break;
+    }
+    case 'bk-restore':{
+      try{
+        var d=JSON.parse($('bk').value);
+        var rs=(d&&Array.isArray(d.reports)?d.reports:[]).map(normReport).filter(Boolean);
+        var cs=(d&&Array.isArray(d.catalog)?d.catalog:[]).map(normCat).filter(Boolean);
+        if(!rs.length&&!cs.length){toast('Tidak ada data di teks itu');break}
+        var cnt=0;
+        rs.forEach(function(x){
+          var i=-1;db.reports.forEach(function(y,j){if(y.id===x.id)i=j});
+          if(i<0){db.reports.push(x);cnt++}else if(x.updatedAt>db.reports[i].updatedAt){db.reports[i]=x;cnt++}
+        });
+        cs.forEach(function(x){
+          var has=db.catalog.some(function(y){return y.label===x.label&&y.kind===x.kind});
+          if(!has)db.catalog.push(x);
+        });
+        if(d&&d.kop)db.kop=normKop(d.kop);
+        save();setStatus();renderHistory();render();toast(cnt+' laporan dipulihkan');
+      }catch(err){toast('Teks cadangan tidak valid')}
+      break;
+    }
+  }
+});
+
+/* ---------- Pasang sebagai aplikasi ---------- */
+var standalone=(window.navigator&&window.navigator.standalone===true)||(window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches);
+var isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+var dismissed=false;try{dismissed=localStorage.getItem('laporan-cctv-install')==='1'}catch(e){}
+if(isIOS&&!standalone&&!dismissed)$('install').hidden=false;
+window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferred=e;$('installBtn').hidden=false});
+$('installBtn').addEventListener('click',function(){
+  if(!deferred)return;
+  deferred.prompt();
+  deferred.userChoice.then(function(){deferred=null;$('installBtn').hidden=true},function(){});
+});
+window.addEventListener('appinstalled',function(){$('installBtn').hidden=true});
+try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}
+if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})}
+
+/* ---------- Login, database online, dan realtime ---------- */
+function authMessage(message,ok){var el=$('authMessage');el.textContent=message||'';el.className='auth-message'+(ok?' ok':'')}
+async function loadCloud(){
+  var p=await sb.from('profiles').select('id,display_name,role').eq('id',currentUser.id).single();
+  if(p.error)throw p.error;currentProfile=p.data;
+  var rr=await sb.from('reports').select('id,owner_id,payload,updated_at').order('updated_at',{ascending:false});
+  if(rr.error)throw rr.error;
+  var local=db;
+  if(rr.data&&rr.data.length){
+    db.reports=rr.data.map(function(row){var x=normReport(row.payload)||blankReport();x.id=row.id;x.ownerId=row.owner_id;x.updatedAt=+x.updatedAt||Date.parse(row.updated_at)||Date.now();return x});
+    db.currentId=db.reports.some(function(x){return x.id===local.currentId})?local.currentId:db.reports[0].id;
+  }else{
+    db.reports=(currentProfile.role==='admin'&&hadLocalDb?local.reports.filter(function(x){return x.saved!==false}):[]).map(function(x){x.ownerId=currentUser.id;return x});
+    if(!db.reports.length)db.reports=[blankReport()];
+    db.currentId=db.reports.some(function(x){return x.id===local.currentId})?local.currentId:db.reports[0].id;
+    if(db.reports.some(function(x){return x.saved!==false})){var initial=await sb.from('reports').upsert(db.reports.filter(function(x){return x.saved!==false}).map(cloudRow),{onConflict:'id'});if(initial.error)throw initial.error;}
+  }
+  var ss=await sb.from('user_settings').select('catalog,kop,last_tech').eq('user_id',currentUser.id).maybeSingle();
+  if(ss.error)throw ss.error;
+  if(ss.data){db.catalog=Array.isArray(ss.data.catalog)?ss.data.catalog.map(normCat).filter(Boolean):db.catalog;db.kop=normKop(ss.data.kop);db.lastTech=str(ss.data.last_tech)}
+  else{var initSettings=await sb.from('user_settings').upsert({user_id:currentUser.id,catalog:db.catalog,kop:db.kop,last_tech:db.lastTech||''},{onConflict:'user_id'});if(initSettings.error)throw initSettings.error}
+  cloudReady=true;try{localStorage.setItem(KEY,JSON.stringify(db))}catch(e){}
+}
+async function refreshCloudHistory(){
+  if(!cloudReady)return;
+  var rr=await sb.from('reports').select('id,owner_id,payload,updated_at').order('updated_at',{ascending:false});if(rr.error){console.error(rr.error);return}
+  var local=db.reports.slice(),merged=(rr.data||[]).map(function(row){
+    var remote=normReport(row.payload)||blankReport();remote.id=row.id;remote.ownerId=row.owner_id;remote.updatedAt=+remote.updatedAt||Date.parse(row.updated_at)||Date.now();
+    var old=local.filter(function(x){return x.id===remote.id})[0];return old&&old.updatedAt>remote.updatedAt?old:remote;
+  });
+  local.forEach(function(old){if(!merged.some(function(x){return x.id===old.id})&&old.updatedAt>Date.now()-12000)merged.push(old)});
+  db.reports=merged;if(!db.reports.length)db.reports=[blankReport()];
+  if(!db.reports.some(function(x){return x.id===db.currentId}))db.currentId=db.reports[0].id;
+  try{localStorage.setItem(KEY,JSON.stringify(db))}catch(e){}
+  renderHistory();if(view==='isi')render();
+}
+function startRealtime(){
+  if(realtimeChannel)sb.removeChannel(realtimeChannel);
+  realtimeChannel=sb.channel('laporan-realtime-'+currentUser.id)
+    .on('postgres_changes',{event:'*',schema:'public',table:'reports'},function(){refreshCloudHistory()})
+    .subscribe(function(status){if(status==='SUBSCRIBED'&&currentProfile)$('status').textContent=(currentProfile.display_name||currentUser.email||'Pengguna')+' · '+(currentProfile.role==='admin'?'Admin':'Teknisi')+' · Realtime aktif'});
+}
+async function enterApp(user){
+  currentUser=user;
+  try{await loadCloud();$('authGate').hidden=true;$('appRoot').hidden=false;setStatus();render();renderCatalog();renderHistory();setView('isi',true);startRealtime()}
+  catch(e){cloudReady=false;currentUser=null;currentProfile=null;$('appRoot').hidden=true;$('authGate').hidden=false;authMessage('Gagal memuat database: '+(e.message||'periksa SQL, izin Data API, dan koneksi'));console.error('Supabase bootstrap:',e)}
+}
+$('authForm').addEventListener('submit',async function(e){
+  e.preventDefault();var email=$('authEmail').value.trim(),password=$('authPassword').value;authMessage('Sedang masuk...',true);
+  var result=await sb.auth.signInWithPassword({email:email,password:password});if(result.error){authMessage(result.error.message);return}
+  authMessage('Login berhasil. Memuat laporan...',true);await enterApp(result.data.user);
+});
+$('signupBtn').addEventListener('click',async function(){
+  var email=$('authEmail').value.trim(),password=$('authPassword').value;
+  if(!email||password.length<6){authMessage('Isi email dan password minimal 6 karakter.');return}
+  authMessage('Membuat akun...',true);
+  var result=await sb.auth.signUp({email:email,password:password,options:{data:{display_name:email.split('@')[0]},emailRedirectTo:window.location.origin+window.location.pathname}});
+  if(result.error){authMessage(result.error.message);return}
+  if(result.data.session){authMessage('Akun dibuat. Memuat aplikasi...',true);await enterApp(result.data.user)}
+  else authMessage('Akun dibuat. Periksa email untuk konfirmasi, lalu login. Akun baru berstatus Teknisi.',true);
+});
+$('logoutBtn').addEventListener('click',async function(){
+  cloudReady=false;if(realtimeChannel){await sb.removeChannel(realtimeChannel);realtimeChannel=null}
+  await sb.auth.signOut();currentUser=null;currentProfile=null;$('appRoot').hidden=true;$('authGate').hidden=false;authMessage('Anda sudah keluar.',true);
+});
+(async function start(){
+  $('appRoot').hidden=true;$('authGate').hidden=false;
+  var session=await sb.auth.getSession();if(session.error){authMessage(session.error.message);return}
+  if(session.data.session)await enterApp(session.data.session.user);
+})();
+
+})();
+</script>
+</body>
+</html>
