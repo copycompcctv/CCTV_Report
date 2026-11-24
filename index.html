@@ -779,6 +779,7 @@ async function uploadPendingAttachments(r){
     var up=await sb.storage.from('report-attachments').upload(path,file,{contentType:file.type,upsert:false});
     if(up.error)throw up.error;
     r.attachments=r.attachments||[];r.attachments.push({path:path,name:file.name,type:file.type,size:file.size});
+    pendingFiles[r.id]=files.slice(i+1);
   }
   delete pendingFiles[r.id];
 }
