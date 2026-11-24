@@ -810,7 +810,8 @@ function updateOut(){
   s.secs.forEach(function(x){n+=x.lines.length});
   $('out').textContent=t||'Laporan masih kosong. Silakan isi melalui menu Isi Laporan.';
   $('stats').textContent=n+' baris'+(tc>0?' · Total kabel '+fmt(tc)+' M':'');
-  $('wa').href='https://wa.me/'+(t?'?text='+encodeURIComponent(t):'');
+  var waMobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent||'');
+  $('wa').href=(waMobile?'https://wa.me/':'https://web.whatsapp.com/send')+(t?(waMobile?'?text=':'?text=')+encodeURIComponent(t):'');
 }
 
 /* ---------- Barang ---------- */
@@ -895,33 +896,6 @@ document.addEventListener('change',function(e){
   }
 });
 $('sq').addEventListener('input',renderHistory);
-$('wa').addEventListener('click',async function(e){
-  var reportText=buildText(cur());if(!reportText){e.preventDefault();toast('Laporan masih kosong');return}
-  var report=cur(),isMobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent||'');
-  // PC selalu membuka WhatsApp Web. HP memakai share sheet hanya jika ada lampiran.
-  if(!isMobile||!report.attachments||!report.attachments.length)return;
-  if(!navigator.share||!navigator.canShare)return;
-  e.preventDefault();
-  try{
-    var shareFiles=[];
-    for(var ai=0;ai<report.attachments.length;ai++){
-      var signed=await sb.storage.from('report-attachments').createSignedUrl(report.attachments[ai].path,300);
-      if(signed.error)continue;
-      var fr=await fetch(signed.data.signedUrl);if(!fr.ok)continue;
-      var fb=await fr.blob();
-      shareFiles.push(new File([fb],report.attachments[ai].name||('Lampiran-'+(ai+1)),{type:fb.type||report.attachments[ai].type}));
-    }
-    if(shareFiles.length&&navigator.canShare({files:shareFiles})){
-      await navigator.share({title:'Laporan Copy Computer',text:reportText,files:shareFiles});
-    }else{
-      window.location.href='https://wa.me/?text='+encodeURIComponent(reportText);
-    }
-  }catch(err){
-    if(err&&err.name==='AbortError')return;
-    window.location.href='https://wa.me/?text='+encodeURIComponent(reportText);
-  }
-});
-
 /* ---------- Klik ---------- */
 document.addEventListener('click',function(e){
   var b=e.target.closest('[data-act]');if(!b)return;
