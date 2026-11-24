@@ -88,7 +88,7 @@ sources=[];(rr.data||[]).forEach(row=>{let r=row.payload||{};if(!r.customer)retu
 renderSources();renderInvoices();note('Data laporan dan riwayat nota berhasil dimuat. Pilih sumber laporan untuk mulai membuat nota.',true)}
 $('cctvTab').onclick=()=>{source='CCTV';$('cctvTab').classList.add('active');$('cctvTab').classList.remove('secondary');$('serviceTab').classList.remove('active');$('serviceTab').classList.add('secondary');$('sourceSelect').value='';renderSources();$('sourceInfo').textContent='Pilih laporan CCTV.'};
 $('serviceTab').onclick=()=>{source='Servisan';$('serviceTab').classList.add('active');$('serviceTab').classList.remove('secondary');$('cctvTab').classList.remove('active');$('cctvTab').classList.add('secondary');$('sourceSelect').value='';renderSources();$('sourceInfo').textContent='Pilih data servisan.'};
-$('sourceSelect').onchange=populate;$('addItem').onclick=()=>addItem('');$('downPayment').oninput=calc;$('extra').oninput=calc;$('saveBtn').onclick=saveInvoice;$('printBtn').onclick=()=>window.print();
+$('sourceSelect').onchange=populate;$('addItem').onclick=()=>addItem('');$('downPayment').oninput=calc;$('extra').oninput=calc;['customer','address','invoiceDate','invoiceNo'].forEach(id=>$(id).addEventListener('input',calc));$('saveBtn').onclick=saveInvoice;$('printBtn').onclick=()=>window.print();
 loadData().catch(e=>note('Gagal memuat data: '+e.message,false));
 })();
 </script></body></html>
