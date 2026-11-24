@@ -159,12 +159,11 @@ details summary{cursor:pointer;font-weight:600;min-height:40px;display:flex;alig
     <div class="card auth-card">
       <div class="auth-brand"><div class="auth-mark"><img src="logo-copy-computer.PNG" alt="Logo Copy Computer"></div><div><h1>Laporan Teknisi CCTV</h1><p class="sub">Login untuk menyimpan dan membuka laporan online</p></div></div>
       <form id="authForm" class="stack">
-        <div><label class="lbl" for="authEmail">Email</label><input id="authEmail" type="email" autocomplete="username" required placeholder="email@contoh.com"></div>
-        <div><label class="lbl" for="authPassword">Password</label><input id="authPassword" type="password" autocomplete="current-password" minlength="6" required placeholder="Minimal 6 karakter"></div>
+        <div><label class="lbl" for="authPassword">Password</label><input id="authPassword" type="password" autocomplete="current-password" minlength="6" required placeholder="Masukkan password bersama"></div>
         <div id="authMessage" class="auth-message" role="status" aria-live="polite"></div>
-        <div class="actions"><button type="submit" class="btn">Masuk</button><button type="button" id="signupBtn" class="btn ghost">Daftar akun pertama</button></div>
+        <div class="actions"><button type="submit" class="btn">Masuk</button></div>
       </form>
-      <p class="hint">Akun baru otomatis menjadi Teknisi. Admin perlu mengaktifkan hak Admin melalui SQL Supabase.</p>
+      <p class="hint">Gunakan satu password bersama untuk akses laporan CCTV.</p>
       <a class="btn ghost full" href="./" style="text-align:center;text-decoration:none">← Menu Utama Copy Computer</a>
     </div>
   </section>
@@ -294,6 +293,7 @@ details summary{cursor:pointer;font-weight:600;min-height:40px;display:flex;alig
 'use strict';
 var SUPABASE_URL='https://ogolkyowgvypstjmxxde.supabase.co';
 var SUPABASE_PUBLISHABLE_KEY='sb_publishable_8NQAMLU4WhrHfn5nwf4gjQ_rr9egknn';
+var CCTV_LOGIN_EMAIL='cctv@copycomputer.app';
 var sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
 var currentUser=null,currentProfile=null,cloudReady=false,cloudTimer=null,realtimeChannel=null,cloudPending={},isReadOnly=false;
 var KEY='laporan-cctv-v2';
@@ -1090,18 +1090,17 @@ async function enterApp(user){
   catch(e){cloudReady=false;currentUser=null;currentProfile=null;$('appRoot').hidden=true;$('authGate').hidden=false;authMessage('Gagal memuat database: '+(e.message||'periksa SQL, izin Data API, dan koneksi'));console.error('Supabase bootstrap:',e)}
 }
 $('authForm').addEventListener('submit',async function(e){
-  e.preventDefault();var email=$('authEmail').value.trim(),password=$('authPassword').value;authMessage('Sedang masuk...',true);
-  var result=await sb.auth.signInWithPassword({email:email,password:password});if(result.error){authMessage(result.error.message);return}
-  authMessage('Login berhasil. Memuat laporan...',true);await enterApp(result.data.user);
-});
-$('signupBtn').addEventListener('click',async function(){
-  var email=$('authEmail').value.trim(),password=$('authPassword').value;
-  if(!email||password.length<6){authMessage('Isi email dan password minimal 6 karakter.');return}
-  authMessage('Membuat akun...',true);
-  var result=await sb.auth.signUp({email:email,password:password,options:{data:{display_name:email.split('@')[0]},emailRedirectTo:window.location.origin+window.location.pathname}});
-  if(result.error){authMessage(result.error.message);return}
-  if(result.data.session){authMessage('Akun dibuat. Memuat aplikasi...',true);await enterApp(result.data.user)}
-  else authMessage('Akun dibuat. Periksa email untuk konfirmasi, lalu login. Akun baru berstatus Teknisi.',true);
+  e.preventDefault();
+  var password=$('authPassword').value;
+  var button=$('authForm').querySelector('button[type="submit"]');
+  button.disabled=true;button.textContent='Memeriksa...';authMessage('Sedang masuk...',true);
+  try{
+    var result=await sb.auth.signInWithPassword({email:CCTV_LOGIN_EMAIL,password:password});
+    if(result.error)throw result.error;
+    authMessage('Login berhasil. Memuat laporan...',true);
+    await enterApp(result.data.user);
+  }catch(err){authMessage(err.message||'Gagal masuk. Periksa password dan koneksi.')}
+  finally{button.disabled=false;button.textContent='Masuk'}
 });
 $('logoutBtn').addEventListener('click',async function(){
   cloudReady=false;if(realtimeChannel){await sb.removeChannel(realtimeChannel);realtimeChannel=null}
@@ -1110,7 +1109,10 @@ $('logoutBtn').addEventListener('click',async function(){
 (async function start(){
   $('appRoot').hidden=true;$('authGate').hidden=false;
   var session=await sb.auth.getSession();if(session.error){authMessage(session.error.message);return}
-  if(session.data.session)await enterApp(session.data.session.user);
+  if(session.data.session){
+    if((session.data.session.user.email||'').toLowerCase()===CCTV_LOGIN_EMAIL)await enterApp(session.data.session.user);
+    else await sb.auth.signOut();
+  }
 })();
 
 })();
