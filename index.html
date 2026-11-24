@@ -547,7 +547,7 @@ function buildPdf(r,kop,logoJpeg){
     objs[6+2*i]='<< /Type /Page /Parent 2 0 R /MediaBox [0 0 '+PW+' '+PH+'] /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R >> '+(imageObj?'/XObject << /Logo '+imageObj+' 0 R >> ':'')+'>> /Contents '+(7+2*i)+' 0 R >>';
     objs[7+2*i]='<< /Length '+content.length+' >>\nstream\n'+content+'\nendstream';
   });
-  if(imageObj){var jpg='';for(var ji=0;ji<logoJpeg.bytes.length;ji+=8192)jpg+=String.fromCharCode.apply(null,logoJpeg.bytes.subarray(ji,ji+8192));objs[imageObj]='<< /Type /XObject /Subtype /Image /Width '+logoJpeg.width+' /Height '+logoJpeg.height+' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length '+jpg.length+' >>\\nstream\\n'+jpg+'\\nendstream';}
+  if(imageObj){var jpg='';for(var ji=0;ji<logoJpeg.bytes.length;ji+=8192)jpg+=String.fromCharCode.apply(null,logoJpeg.bytes.subarray(ji,ji+8192));objs[imageObj]='<< /Type /XObject /Subtype /Image /Width '+logoJpeg.width+' /Height '+logoJpeg.height+' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length '+jpg.length+' >>\nstream\n'+jpg+'\nendstream';}
   var out='%PDF-1.4\n%\xE2\xE3\xCF\xD3\n',offs=[],i;
   for(i=1;i<objs.length;i++){offs[i]=out.length;out+=i+' 0 obj\n'+objs[i]+'\nendobj\n'}
   var xref=out.length;
