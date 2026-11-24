@@ -286,7 +286,7 @@ details summary{cursor:pointer;font-weight:600;min-height:40px;display:flex;alig
 var SUPABASE_URL='https://ogolkyowgvypstjmxxde.supabase.co';
 var SUPABASE_PUBLISHABLE_KEY='sb_publishable_8NQAMLU4WhrHfn5nwf4gjQ_rr9egknn';
 var sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
-var currentUser=null,currentProfile=null,cloudReady=false,cloudTimer=null,realtimeChannel=null,cloudPending={};
+var currentUser=null,currentProfile=null,cloudReady=false,cloudTimer=null,realtimeChannel=null,cloudPending={},isReadOnly=false;
 var KEY='laporan-cctv-v2';
 
 // ==LOGIC==
@@ -736,6 +736,14 @@ function render(){
    +r.sections.map(function(sec){if(!sec.items.length)sec.items.push(mk('structured',{item:'Isi Sendiri'}));return sectionHTML(sec)}).join('')
    +'<div class="item-actions"><button type="button" class="btn" data-act="add-sec">+ Tambah pekerjaan</button></div>'
    +'<div class="card stack"><label class="lbl" for="catatan">Catatan</label><textarea id="catatan" data-f="catatan" rows="3" placeholder="Catatan tambahan (opsional)">'+esc(r.catatan||'')+'</textarea></div>';
+  if(isReadOnly){
+    var banner=document.createElement('div');banner.className='card';banner.style.cssText='border-color:#0b7895;background:#eef8fb;color:#075b73';
+    banner.innerHTML='<strong>Mode lihat laporan</strong><div class="hint">Laporan tersimpan ditampilkan hanya untuk dibaca. Data tidak bisa diubah dari tampilan ini.</div><button type="button" class="btn ghost" data-act="view" data-v="riwayat">Kembali ke riwayat</button>';
+    $('form').insertBefore(banner,$('form').firstChild);
+    $('form').querySelectorAll('input,textarea,select,button').forEach(function(el){el.disabled=true});
+    var back=banner.querySelector('button');if(back)back.disabled=false;
+    var saveBtn=document.querySelector('[data-act="save-report"]');if(saveBtn)saveBtn.hidden=true;
+  }else{var saveBtn=document.querySelector('[data-act="save-report"]');if(saveBtn)saveBtn.hidden=false;}
   renderNote();updateOut();
 }
 function renderNote(){var r=cur();$('note').hidden=!(r.example&&view==='isi')}
@@ -838,7 +846,7 @@ document.addEventListener('click',function(e){
   var act=b.dataset.act,r=cur(),sec,it,c,id;
   switch(act){
     case 'view':setView(b.dataset.v);break;
-    case 'new':{var n=blankReport();n.tech=db.lastTech||'';db.reports.push(n);db.currentId=n.id;save();setView('isi');focusEl('customer');break}
+    case 'new':{isReadOnly=false;var n=blankReport();n.tech=db.lastTech||'';db.reports.push(n);db.currentId=n.id;save();setView('isi');focusEl('customer');break}
     case 'dismiss-note':r.example=false;renderNote();save();break;
     case 'dismiss-install':try{localStorage.setItem('laporan-cctv-install','1')}catch(x){}$('install').hidden=true;break;
     case 'kind':{
@@ -898,11 +906,11 @@ document.addEventListener('click',function(e){
       if(!arm(b,'c:'+c.id,'Yakin hapus?'))break;
       db.catalog=db.catalog.filter(function(x){return x!==c});save();renderCatalog();break;
     }
-    case 'h-open':id=b.closest('[data-rid]').dataset.rid;db.currentId=id;save();setView('isi');break;
+    case 'h-open':id=b.closest('[data-rid]').dataset.rid;db.currentId=id;isReadOnly=true;save();setView('isi');break;
     case 'h-dup':{
       id=b.closest('[data-rid]').dataset.rid;
       var src=db.reports.filter(function(x){return x.id===id})[0];if(!src)break;
-      var cp=normReport(JSON.parse(JSON.stringify(src)));
+      isReadOnly=false;var cp=normReport(JSON.parse(JSON.stringify(src)));
       cp.id=uid();cp.example=false;cp.date=todayISO();cp.updatedAt=Date.now();
       cp.sections.forEach(function(s){s.id=uid();s.items.forEach(function(i){i.id=uid()})});
       db.reports.push(cp);db.currentId=cp.id;save();setView('isi');toast('Laporan diduplikat. Ubah nama pelanggan.');focusEl('customer');break;
