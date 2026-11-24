@@ -406,7 +406,7 @@ var DEFAULT_CATALOG=[
   {label:'TC',kind:'qty',note:'',colon:false}
 ];
 function blankReport(){
-  return {id:uid(),example:false,customer:'',address:'',tech:'',date:todayISO(),showMeta:false,updatedAt:Date.now(),
+  return {id:uid(),example:false,saved:false,customer:'',address:'',tech:'',date:todayISO(),showMeta:false,updatedAt:Date.now(),
     catatan:'',sections:[{id:uid(),title:'',job:'Pasang Baru',bold:true,items:[mk('structured',{item:'Isi Sendiri'})]}]};
 }
 function sampleReports(){
@@ -601,17 +601,18 @@ async function saveCloudNow(forceId){
   if(settings.error)throw settings.error;
 }
 function queueCloudSave(){
-  if(!cloudReady||!currentUser)return;
+  if(!cloudReady||!currentUser||cur().saved===false)return;
   cloudPending[cur().id]=true;
   clearTimeout(cloudTimer);
   cloudTimer=setTimeout(function(){saveCloudNow().catch(function(e){console.error('Supabase sync:',e);toast('Sinkronisasi gagal: '+(e.message||'periksa koneksi'))})},650);
 }
+function savedSnapshot(){return {reports:db.reports.filter(function(r){return r.saved!==false}),catalog:db.catalog,currentId:db.currentId,kop:db.kop,lastTech:db.lastTech}}
 function saveNow(){
   clearTimeout(st);
-  try{localStorage.setItem(KEY,JSON.stringify(db));storageOk=true;setStatus();queueCloudSave();return true}
+  try{localStorage.setItem(KEY,JSON.stringify(savedSnapshot()));storageOk=true;setStatus();queueCloudSave();return true}
   catch(e){storageOk=false;setStatus();return false}
 }
-function save(){clearTimeout(st);st=setTimeout(function(){saveNow()},200)}
+function save(){clearTimeout(st);st=setTimeout(function(){try{localStorage.setItem(KEY,JSON.stringify(savedSnapshot()));storageOk=true;setStatus()}catch(e){storageOk=false;setStatus()}},200)}
 function toast(m){var t=$('toast');t.textContent=m;t.classList.add('on');clearTimeout(tt);tt=setTimeout(function(){t.classList.remove('on')},2600)}
 function copyText(t){
   var p=navigator.clipboard&&navigator.clipboard.writeText?navigator.clipboard.writeText(t).then(function(){return true},function(){return false}):Promise.resolve(false);
@@ -758,7 +759,7 @@ function focusItem(it){
 function getSec(t){var n=t.closest('[data-sec]');if(!n)return null;return cur().sections.filter(function(s){return s.id===n.dataset.sec})[0]||null}
 function getItem(t){var s=getSec(t),n=t.closest('[data-item]');if(!s||!n)return null;return s.items.filter(function(i){return i.id===n.dataset.item})[0]||null}
 function getCat(t){var n=t.closest('[data-cat]');if(!n)return null;return db.catalog.filter(function(c){return c.id===n.dataset.cat})[0]||null}
-function changed(){var r=cur();r.updatedAt=Date.now();if(r.example){r.example=false;renderNote()}updateOut();save()}
+function changed(){var r=cur();r.updatedAt=Date.now();if(r.example){r.example=false;renderNote()}updateOut()}
 
 /* ---------- Hasil ---------- */
 function updateOut(){
@@ -788,7 +789,7 @@ function renderCatalog(){
 /* ---------- Riwayat ---------- */
 function renderHistory(){
   var q=($('sq').value||'').toLowerCase().trim();
-  var list=db.reports.slice().sort(function(a,b){return b.updatedAt-a.updatedAt}).filter(function(r){return !q||(r.customer+' '+r.address).toLowerCase().indexOf(q)>=0});
+  var list=db.reports.filter(function(r){return r.saved!==false && (r.customer||r.address||buildText(r).trim())}).slice().sort(function(a,b){return b.updatedAt-a.updatedAt}).filter(function(r){return !q||(r.customer+' '+r.address).toLowerCase().indexOf(q)>=0});
   $('hist').innerHTML=list.length?list.map(function(r){
     var s=structure(r),n=0,tc=totalCable(r);s.secs.forEach(function(x){n+=x.lines.length});
     var id=esc(r.id),d=fmtDate(r.date);
@@ -887,7 +888,7 @@ document.addEventListener('click',function(e){
       });break;
     }
     case 'save-report':{
-      var ok=saveNow();
+      cur().saved=true;var ok=saveNow();
       if(ok){
         renderHistory();
         if(cloudReady){toast('Menyimpan laporan ke database online...');saveCloudNow(cur().id).then(function(){toast('Laporan tersimpan di database online.')}).catch(function(e){toast('Gagal menyimpan online: '+e.message)})}
@@ -911,7 +912,7 @@ document.addEventListener('click',function(e){
       id=b.closest('[data-rid]').dataset.rid;
       var src=db.reports.filter(function(x){return x.id===id})[0];if(!src)break;
       isReadOnly=false;var cp=normReport(JSON.parse(JSON.stringify(src)));
-      cp.id=uid();cp.example=false;cp.date=todayISO();cp.updatedAt=Date.now();
+      cp.id=uid();cp.example=false;cp.saved=false;cp.date=todayISO();cp.updatedAt=Date.now();
       cp.sections.forEach(function(s){s.id=uid();s.items.forEach(function(i){i.id=uid()})});
       db.reports.push(cp);db.currentId=cp.id;save();setView('isi');toast('Laporan diduplikat. Ubah nama pelanggan.');focusEl('customer');break;
     }
@@ -980,10 +981,10 @@ async function loadCloud(){
     db.reports=rr.data.map(function(row){var x=normReport(row.payload)||blankReport();x.id=row.id;x.ownerId=row.owner_id;x.updatedAt=+x.updatedAt||Date.parse(row.updated_at)||Date.now();return x});
     db.currentId=db.reports.some(function(x){return x.id===local.currentId})?local.currentId:db.reports[0].id;
   }else{
-    db.reports=(currentProfile.role==='admin'&&hadLocalDb?local.reports:[blankReport()]).map(function(x){x.ownerId=currentUser.id;return x});
+    db.reports=(currentProfile.role==='admin'&&hadLocalDb?local.reports.filter(function(x){return x.saved!==false}):[]).map(function(x){x.ownerId=currentUser.id;return x});
     if(!db.reports.length)db.reports=[blankReport()];
     db.currentId=db.reports.some(function(x){return x.id===local.currentId})?local.currentId:db.reports[0].id;
-    var initial=await sb.from('reports').upsert(db.reports.map(cloudRow),{onConflict:'id'});if(initial.error)throw initial.error;
+    if(db.reports.some(function(x){return x.saved!==false})){var initial=await sb.from('reports').upsert(db.reports.filter(function(x){return x.saved!==false}).map(cloudRow),{onConflict:'id'});if(initial.error)throw initial.error;}
   }
   var ss=await sb.from('user_settings').select('catalog,kop,last_tech').eq('user_id',currentUser.id).maybeSingle();
   if(ss.error)throw ss.error;
