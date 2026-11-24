@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nota Tagihan | Copy Computer</title><meta name="theme-color" content="#0A6C8B">
+<link rel="icon" type="image/png" href="icon-192.png">
+<style>
+:root{--ink:#17283d;--muted:#68798d;--line:#dce4ec;--bg:#f2f5f9;--teal:#0a6c8b;--green:#16845b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+header{background:#fff;border-bottom:1px solid var(--line);padding:12px max(18px,calc((100% - 1180px)/2));display:flex;align-items:center;gap:14px}
+header img{width:64px;height:58px;object-fit:contain}header strong{font-size:19px}header small{display:block;color:var(--muted)}
+.wrap{max-width:1180px;margin:24px auto;padding:0 18px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}h1{font-size:26px;margin:0}.muted{color:var(--muted)}
+button,.btn{border:0;border-radius:9px;padding:10px 14px;background:var(--teal);color:#fff;font:inherit;font-weight:650;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px}button.secondary,.btn.secondary{background:#e8eef5;color:#28415c}button:disabled{opacity:.55;cursor:wait}
+.grid{display:grid;grid-template-columns:minmax(300px,.9fr) minmax(360px,1.1fr);gap:16px}.panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:17px;margin-bottom:16px}.panel h2{font-size:17px;margin:0 0 13px}
+.field{display:flex;flex-direction:column;gap:5px;margin-bottom:11px}.field label{font-size:12px;font-weight:750;color:#52647a}input,select,textarea{width:100%;border:1px solid #d5dee8;border-radius:8px;padding:10px;font:inherit;color:var(--ink);background:#fff}input[type=number]{text-align:right}
+.row{display:flex;gap:8px;align-items:center}.row>*{flex:1}.source-tabs{display:flex;gap:8px;margin-bottom:12px}.source-tabs button{flex:1}.source-tabs button.active{background:#12516a}
+.item{border:1px solid var(--line);border-radius:10px;padding:11px;margin:10px 0}.itemtop{display:flex;justify-content:space-between;gap:10px;margin-bottom:8px}.itemgrid{display:grid;grid-template-columns:1fr 105px 145px;gap:8px}.itemgrid label{display:block;font-size:11px;color:var(--muted);margin-bottom:4px}
+.total{background:#f0f7f8;border-radius:10px;padding:14px;margin-top:12px}.totalrow{display:flex;justify-content:space-between;gap:12px;margin:4px 0}.grand{font-size:22px;font-weight:850;color:var(--green)}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.notice{padding:10px 12px;border-radius:9px;background:#eef5f8;color:#34546a;font-size:13px;margin:10px 0}
+.listcard{border:1px solid var(--line);padding:12px;border-radius:10px;margin:9px 0}.listcard b{display:block}.empty{color:var(--muted);padding:15px;text-align:center}
+@media(max-width:820px){.grid{grid-template-columns:1fr}.itemgrid{grid-template-columns:1fr 90px 125px}}@media(max-width:430px){.itemgrid{grid-template-columns:1fr 76px 110px}.wrap{padding:0 12px}header{padding:10px 12px}}
+@media print{body{background:#fff}.noprint,header,.top,.panel.source,.panel.history{display:none!important}.wrap{margin:0;padding:0;max-width:none}.grid{display:block}.panel{border:0;padding:0}.invoice-head{display:flex!important}.item{break-inside:avoid}.total{background:#fff;border:1px solid #ddd}}
+.invoice-head{display:none;align-items:center;gap:14px;border-bottom:2px solid #26384a;padding-bottom:14px;margin-bottom:16px}.invoice-head img{width:82px;height:72px;object-fit:contain}
+</style></head><body>
+<header><img src="logo-copy-computer.PNG" alt="Logo Copy Computer"><div><strong>COPY COMPUTER</strong><small>Sistem Operasional • Nota Tagihan</small></div></header>
+<main class="wrap">
+<div class="top"><div><h1>Nota Tagihan</h1><div class="muted">Buat nota dari laporan CCTV atau data servisan yang sudah tersimpan.</div></div><a class="btn secondary" href="./">← Menu Utama</a></div>
+<div id="status" class="notice">Memeriksa sesi dan memuat data...</div>
+<div class="grid">
+<section>
+<div class="panel source"><h2>1. Ambil data dari laporan</h2>
+<div class="source-tabs"><button id="cctvTab" class="active" type="button">Laporan CCTV</button><button id="serviceTab" class="secondary" type="button">Servisan</button></div>
+<div class="field"><label>Pilih laporan / pelanggan</label><select id="sourceSelect"><option value="">Memuat laporan...</option></select></div>
+<div id="sourceInfo" class="notice">Pilih laporan untuk mengisi data nota secara otomatis.</div>
+</div>
+<div class="panel noprint"><h2>2. Data nota</h2>
+<div class="row"><div class="field"><label>Nomor nota</label><input id="invoiceNo" readonly></div><div class="field"><label>Tanggal nota</label><input id="invoiceDate" type="date"></div></div>
+<div class="field"><label>Nama pelanggan</label><input id="customer" placeholder="Otomatis dari laporan"></div>
+<div class="field"><label>Alamat pelanggan</label><textarea id="address" rows="2" placeholder="Otomatis dari laporan"></textarea></div>
+<div class="field"><label>No. WhatsApp (opsional)</label><input id="phone" placeholder="Jika tersedia di data servisan"></div>
+<div class="field"><label>Keterangan tambahan (opsional)</label><textarea id="extra" rows="2" placeholder="Catatan tambahan untuk nota"></textarea></div>
+</div>
+<div class="panel noprint"><h2>3. Pembayaran</h2>
+<div class="row"><div class="field"><label>Uang muka (Rp)</label><input id="downPayment" inputmode="numeric" placeholder="Kosongkan jika tidak ada"></div><div class="field"><label>Catatan pembayaran</label><input id="paymentNote" placeholder="Tunai / transfer (opsional)"></div></div>
+<div class="notice">Harga satuan dan nominal awal sengaja dikosongkan. Isi harga tiap pekerjaan; subtotal dan total akan dihitung otomatis.</div>
+<div class="actions"><button id="saveBtn" type="button">Simpan Nota</button><button id="printBtn" class="secondary" type="button">Cetak / PDF</button></div>
+</div>
+</section>
+<section>
+<div class="panel"><div class="invoice-head" id="printBrand"><img src="logo-copy-computer.PNG" alt="Logo Copy Computer"><div><h2 style="margin:0">COPY COMPUTER</h2><div>Jl. Sicengkir No. 3 Troso, Kec. Pecangaan Kab. Jepara 59462</div><b>NOTA TAGIHAN</b></div></div>
+<h2 class="noprint">4. Rincian tagihan</h2><div class="muted" id="invoiceMeta"></div>
+<div id="items"></div>
+<div class="actions noprint"><button id="addItem" class="secondary" type="button">+ Tambah baris</button></div>
+<div class="total"><div class="totalrow"><span>Total tagihan</span><b id="grandTotal">Rp 0</b></div><div class="totalrow"><span>Uang muka</span><b id="dpTotal">Rp 0</b></div><div class="totalrow grand"><span>Sisa tagihan</span><span id="balance">Rp 0</span></div></div>
+<div id="printExtra" style="margin-top:14px"></div>
+</div>
+<div class="panel history noprint"><h2>Riwayat nota tersimpan</h2><div id="invoiceList" class="empty">Belum ada nota.</div></div>
+</section></div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function(){
+'use strict';
+const URL='https://ogolkyowgvypstjmxxde.supabase.co',KEY='sb_publishable_8NQAMLU4WhrHfn5nwf4gjQ_rr9egknn';
+const sb=window.supabase.createClient(URL,KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+const $=id=>document.getElementById(id);let user=null,source='CCTV',sources=[],invoices=[],currentId=null;
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const rupiah=n=>'Rp '+Math.round(Number(n)||0).toLocaleString('id-ID');
+const number=v=>Math.max(0,Number(String(v||'').replace(/[^0-9]/g,''))||0);
+const today=()=>{let d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+function note(m,ok){$('status').textContent=m;$('status').style.background=ok?'#eaf7ef':'#eef5f8';$('status').style.color=ok?'#17623f':'#34546a'}
+function lineText(it){if(it.kind==='text')return (it.text||'').trim();if(it.kind==='qty')return [it.label,it.qty].filter(Boolean).join(' : ');if(it.kind==='cable')return [it.label,it.expr||it.text,it.unit].filter(Boolean).join(' : ');if(it.kind==='structured'){let name=it.item==='Isi Sendiri'?(it.itemCustom||''):it.item;return [name,it.note,it.unit&&it.unit!=='-'?it.unit:''].filter(Boolean).join(' : ')}return [it.label,it.text,it.note].filter(Boolean).join(' : ')}
+function reportLines(r){let out=[];(r.sections||[]).forEach(s=>{if(s.title&&s.title!=='Rincian pekerjaan')out.push(s.title);(s.items||[]).forEach(it=>{let t=lineText(it);if(t)out.push(t)})});return out.filter(Boolean)}
+function serviceLines(j){let device=(j.jenis==='Lainnya'?(j.customType||'Lainnya'):j.jenis)+' '+(j.model||'');return [device.trim(),j.keluhan?'Keluhan: '+j.keluhan:'',j.pemeriksaan?'Pemeriksaan: '+j.pemeriksaan:'',j.lain?'Kelengkapan: '+j.lain:'',j.catatan?'Catatan: '+j.catatan:''].filter(Boolean)}
+function selectedSource(){return sources.find(x=>x.key===$('sourceSelect').value)}
+function renderSources(){let list=sources.slice().sort((a,b)=>(b.time||0)-(a.time||0));$('sourceSelect').innerHTML='<option value="">Pilih laporan...</option>'+list.map(x=>'<option value="'+esc(x.key)+'">'+esc(x.customer+' — '+x.dateLabel+' ('+x.ticket+')')+'</option>').join('')}
+function populate(){let x=selectedSource();if(!x)return;currentId=null;$('invoiceNo').value='CC-'+Date.now().toString().slice(-8);$('invoiceDate').value=today();$('customer').value=x.customer||'';$('address').value=x.address||'';$('phone').value=x.phone||'';$('sourceInfo').textContent='Sumber: '+x.kind+' • '+x.dateLabel+' • '+x.lines.length+' rincian';$('items').innerHTML='';x.lines.forEach(t=>addItem(t));calc();$('invoiceMeta').textContent='Sumber '+x.kind+' • '+x.dateLabel+' • '+x.ticket}
+function addItem(desc){let div=document.createElement('div');div.className='item';div.innerHTML='<div class="itemtop"><b class="desc">'+esc(desc||'Uraian pekerjaan')+'</b><button type="button" class="secondary noprint remove">Hapus</button></div><div class="itemgrid"><div><label>Uraian</label><input class="description" value="'+esc(desc||'')+'"></div><div><label>Jumlah</label><input class="qty" type="number" min="1" step="1" value="1"></div><div><label>Harga satuan (Rp)</label><input class="price" inputmode="numeric" placeholder="Kosong"></div></div><div class="muted subtotal" style="text-align:right;margin-top:6px">Subtotal: Rp 0</div>';
+div.querySelectorAll('input').forEach(el=>el.addEventListener('input',calc));div.querySelector('.remove').addEventListener('click',()=>{div.remove();calc()});$('items').appendChild(div);calc()}
+function itemData(){return [...$('items').querySelectorAll('.item')].map(el=>({description:el.querySelector('.description').value,qty:number(el.querySelector('.qty').value),price:number(el.querySelector('.price').value)}))}
+function calc(){let sum=0;[...$('items').querySelectorAll('.item')].forEach(el=>{let q=number(el.querySelector('.qty').value),p=number(el.querySelector('.price').value),s=q*p;sum+=s;el.querySelector('.subtotal').textContent='Subtotal: '+rupiah(s)});let dp=number($('downPayment').value);$('grandTotal').textContent=rupiah(sum);$('dpTotal').textContent=rupiah(dp);$('balance').textContent=rupiah(Math.max(0,sum-dp));$('printExtra').textContent=$('extra').value?('Catatan: '+$('extra').value):''}
+function renderInvoices(){$('invoiceList').innerHTML=invoices.length?invoices.slice().sort((a,b)=>(b.createdAt||0)-(a.createdAt||0)).map(i=>'<div class="listcard"><b>'+esc(i.invoiceNo)+' • '+esc(i.customer)+'</b><span class="muted">'+esc(i.invoiceDate)+' • '+rupiah(i.total)+'</span><div class="actions"><button type="button" class="secondary" data-open="'+esc(i.id)+'">Buka</button><button type="button" class="secondary" data-print="'+esc(i.id)+'">Cetak</button></div></div>').join(''):'<div class="empty">Belum ada nota tersimpan.</div>';$('invoiceList').querySelectorAll('[data-open]').forEach(b=>b.onclick=()=>loadInvoice(b.dataset.open));$('invoiceList').querySelectorAll('[data-print]').forEach(b=>b.onclick=()=>{loadInvoice(b.dataset.print);setTimeout(()=>window.print(),50)})}
+function currentInvoice(){let x=selectedSource();return {id:currentId||('invoice:'+Date.now()),invoiceNo:$('invoiceNo').value||('CC-'+Date.now()),invoiceDate:$('invoiceDate').value||today(),customer:$('customer').value,address:$('address').value,phone:$('phone').value,extra:$('extra').value,paymentNote:$('paymentNote').value,downPayment:number($('downPayment').value),items:itemData(),total:itemData().reduce((s,i)=>s+i.qty*i.price,0),sourceType:x?.kind||'Manual',sourceKey:x?.key||'',createdAt:Date.now()}}
+async function saveInvoice(){if(!user){note('Sesi login tidak ditemukan. Silakan masuk ke aplikasi CCTV atau Servisan terlebih dahulu.',false);return}let inv=currentInvoice();if(!inv.customer.trim()){note('Nama pelanggan belum diisi.',false);return}if(!inv.items.length){note('Belum ada rincian pekerjaan.',false);return}let row={id:inv.id,record_type:'invoice',payload:inv,updated_at:new Date().toISOString()};let {error}=await sb.from('service_records').upsert(row,{onConflict:'id'});if(error){note('Gagal menyimpan nota: '+error.message,false);return}currentId=inv.id;let ix=invoices.findIndex(x=>x.id===inv.id);if(ix>=0)invoices[ix]=inv;else invoices.unshift(inv);renderInvoices();note('Nota berhasil disimpan online.',true)}
+function loadInvoice(id){let inv=invoices.find(x=>x.id===id);if(!inv)return;currentId=inv.id;$('invoiceNo').value=inv.invoiceNo;$('invoiceDate').value=inv.invoiceDate;$('customer').value=inv.customer;$('address').value=inv.address||'';$('phone').value=inv.phone||'';$('extra').value=inv.extra||'';$('paymentNote').value=inv.paymentNote||'';$('downPayment').value=inv.downPayment||'';$('items').innerHTML='';(inv.items||[]).forEach(i=>{addItem(i.description);let el=$('items').lastElementChild;el.querySelector('.qty').value=i.qty;el.querySelector('.price').value=i.price||''});$('invoiceMeta').textContent='Nomor '+inv.invoiceNo+' • '+inv.invoiceDate+' • '+(inv.sourceType||'');calc();window.scrollTo({top:0,behavior:'smooth'})}
+async function loadData(){let {data:sessionData,error:se}=await sb.auth.getSession();if(se)throw se;user=sessionData.session?.user;if(!user){note('Silakan login terlebih dahulu melalui Laporan CCTV atau Manajemen Servis, lalu buka Nota Tagihan.',false);$('sourceSelect').innerHTML='<option>Login diperlukan</option>';return}
+let [rr,sr]=await Promise.all([sb.from('reports').select('id,payload,created_at'),sb.from('service_records').select('id,record_type,payload')]);if(rr.error)throw rr.error;if(sr.error)throw sr.error;
+sources=[];(rr.data||[]).forEach(row=>{let r=row.payload||{};if(!r.customer)return;sources.push({key:'cctv:'+row.id,kind:'CCTV',ticket:r.customer,customer:r.customer,address:r.address||'',phone:'',dateLabel:r.date||'',time:r.created_at?Date.parse(r.created_at):Number(r.createdAt)||0,lines:reportLines(r)})});
+(sr.data||[]).forEach(row=>{if(row.record_type==='service'){let j=row.payload||{};sources.push({key:'service:'+j.id,kind:'Servisan',ticket:j.ticket||j.id,customer:j.nama||'',address:'',phone:j.wa||'',dateLabel:j.date||'',time:Number(j.id)||Date.parse(j.date||'')||0,lines:serviceLines(j)})}if(row.record_type==='invoice'&&row.payload)invoices.push(row.payload)});
+renderSources();renderInvoices();note('Data laporan dan riwayat nota berhasil dimuat. Pilih sumber laporan untuk mulai membuat nota.',true)}
+$('cctvTab').onclick=()=>{source='CCTV';$('cctvTab').classList.add('active');$('cctvTab').classList.remove('secondary');$('serviceTab').classList.remove('active');$('serviceTab').classList.add('secondary');$('sourceSelect').value='';$('sourceInfo').textContent='Pilih laporan CCTV.'};
+$('serviceTab').onclick=()=>{source='Servisan';$('serviceTab').classList.add('active');$('serviceTab').classList.remove('secondary');$('cctvTab').classList.remove('active');$('cctvTab').classList.add('secondary');$('sourceSelect').value='';$('sourceInfo').textContent='Pilih data servisan.'};
+$('sourceSelect').onchange=populate;$('addItem').onclick=()=>addItem('');$('downPayment').oninput=calc;$('extra').oninput=calc;$('saveBtn').onclick=saveInvoice;$('printBtn').onclick=()=>window.print();
+loadData().catch(e=>note('Gagal memuat data: '+e.message,false));
+})();
+</script></body></html>
