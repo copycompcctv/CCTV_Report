@@ -76,12 +76,12 @@ async function shareWhatsApp(id){
  const thanksLines=doc.splitTextToSize(thanks,width);doc.text(thanksLines,doc.internal.pageSize.getWidth()/2,y,{align:'center'});
  y+=thanksLines.length*5+17;doc.setFont('helvetica','normal');doc.text('Pelanggan',left+10,y);doc.text('Petugas',right-38,y);y+=22;doc.text('____________________',left+5,y);doc.text('____________________',right-47,y);
  const blob=doc.output('blob');const file=new File([blob],j.ticket+'-Copy-Computer.pdf',{type:'application/pdf'});
- const message='Berikut nota penerimaan servis '+j.ticket+' dari Copy Computer.';
+ const message='Halo '+j.nama+', berikut nota penerimaan servis dari Copy Computer.\\n\\nNomor nota: '+j.ticket+'\\n\\nTerima kasih telah mempercayakan perbaikan perangkat Anda kepada Copy Computer. Kepuasan Anda adalah prioritas kami.';
  if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){
    try{await navigator.share({files:[file],title:'Nota Servis '+j.ticket,text:message});return}catch(err){if(err&&err.name==='AbortError')return}
  }
  doc.save(j.ticket+'-Copy-Computer.pdf');
- const waUrl='https://wa.me/'+phone+'?text='+encodeURIComponent(message+' PDF nota sudah diunduh. Silakan lampirkan file PDF pada percakapan ini.');
+ const waMessage='Halo '+j.nama+', berikut nota penerimaan servis '+j.ticket+' dari Copy Computer.\\n\\nFile PDF nota sudah diunduh. Mohon lampirkan file PDF tersebut pada pesan ini sebelum dikirim.\\n\\nTerima kasih telah mempercayakan perbaikan perangkat Anda kepada Copy Computer. Kepuasan Anda adalah prioritas kami.';const waUrl='https://wa.me/'+phone+'?text='+encodeURIComponent(waMessage);
  window.open(waUrl,'_blank','noopener,noreferrer');
  alert('Nota PDF sudah diunduh. Lampirkan file PDF tersebut di WhatsApp yang terbuka untuk mengirimkannya kepada pelanggan.');
 }
