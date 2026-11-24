@@ -1047,7 +1047,7 @@ function authMessage(message,ok){var el=$('authMessage');el.textContent=message|
 async function loadCloud(){
   var p=await sb.from('profiles').select('id,display_name,role').eq('id',currentUser.id).single();
   if(p.error)throw p.error;currentProfile=p.data;
-  var rr=await sb.from('reports').select('id,owner_id,payload,created_at,updated_at').order('created_at',{ascending:false});
+  var rr=await sb.from('reports').select('id,owner_id,payload,updated_at').order('updated_at',{ascending:false});
   if(rr.error)throw rr.error;
   var local=db;
   if(rr.data&&rr.data.length){
