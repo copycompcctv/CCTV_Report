@@ -151,7 +151,7 @@ details summary{cursor:pointer;font-weight:600;min-height:40px;display:flex;alig
 @media (max-width:520px){.structured-grid{grid-template-columns:1fr}}
 @media (prefers-reduced-motion: reduce){.toast{transition:none}}
 .item-actions{display:flex;justify-content:flex-start;margin-top:12px}.out-heading{display:flex;align-items:center;gap:14px;flex-wrap:wrap}.out-heading strong{font-size:18px;font-weight:500;color:#4d145c}.structured-item{padding:12px;border-radius:9px}.structured-item .item-top{margin-bottom:10px}.structured-item .lbl{margin-bottom:6px}
-.attachment-list{display:grid;gap:8px}.attachment-entry{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px;border:1px solid var(--line);border-radius:8px}.attachment-entry img{width:76px;height:60px;object-fit:cover;border-radius:6px}.attachment-entry video{width:120px;max-height:76px;border-radius:6px}.attachment-entry a{color:var(--accent);font-weight:600}.brand .sub{max-width:560px}.sec-head{align-items:center}.sec-head select{flex:1;min-width:160px}.structured-item .item-top strong{font-weight:600}
+.attachment-panel{border:1px solid var(--line);border-radius:10px;padding:12px;display:grid;gap:8px}.attachment-pick{display:inline-flex;align-items:center;justify-content:center;width:max-content;max-width:100%;cursor:pointer}#attachmentInput{display:block;width:100%;max-width:100%;font:inherit;font-size:13px;color:var(--text);padding:8px;border:1px dashed var(--line);border-radius:8px;background:var(--soft)}.attachment-list{display:grid;gap:8px}.attachment-entry{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px;border:1px solid var(--line);border-radius:8px}.attachment-entry img{width:76px;height:60px;object-fit:cover;border-radius:6px}.attachment-entry video{width:120px;max-height:76px;border-radius:6px}.attachment-entry a{color:var(--accent);font-weight:600}.brand .sub{max-width:560px}.sec-head{align-items:center}.sec-head select{flex:1;min-width:160px}.structured-item .item-top strong{font-weight:600}
 </style>
 </head>
 <body>
@@ -261,6 +261,13 @@ details summary{cursor:pointer;font-weight:600;min-height:40px;display:flex;alig
         <pre id="out" class="bubble"></pre>
         <div id="stats" class="stats"></div>
         <div class="actions">
+          <section class="attachment-panel" aria-label="Lampiran foto dan video">
+            <div class="lbl" style="margin:0 0 8px">Lampiran Foto / Video</div>
+            <label class="btn ghost attachment-pick" for="attachmentInput">＋ Tambah foto atau video</label>
+            <input id="attachmentInput" type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,video/mp4,video/quicktime,video/webm" multiple>
+            <div class="hint">Maksimal 8 file. Foto maks. 12 MB dan video maks. 80 MB per file. Lampiran ikut tersimpan saat menekan Simpan laporan.</div>
+            <div id="attachmentList" class="attachment-list"><span class="hint">Belum ada lampiran.</span></div>
+          </section>
           <button type="button" class="btn save-report-btn" data-act="save-report">Simpan laporan</button>
           <button type="button" class="btn" data-act="copy">Salin teks</button>
           <a id="wa" class="btn wa wa-btn" href="https://wa.me/" target="_blank" rel="noopener" aria-label="Kirim lewat WhatsApp" title="Kirim lewat WhatsApp">
