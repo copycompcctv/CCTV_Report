@@ -18,6 +18,7 @@ as $$
   where r.record_type = 'service'
     and upper(r.payload->>'ticket') = upper(trim(p_ticket))
     and r.payload->>'pin' = trim(p_pin)
+    and lower(trim(coalesce(r.payload->>'status',''))) <> 'sudah diambil'
   limit 1;
 $$;
 
