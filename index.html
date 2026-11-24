@@ -53,7 +53,7 @@ body{
 .auth-card{display:grid;gap:18px}
 .auth-brand{display:flex;align-items:center;gap:12px}
 .auth-brand h1{font-size:23px}
-.auth-mark{width:58px;height:58px;flex:none;display:grid;place-items:center}.auth-mark svg{width:58px;height:58px;display:block}
+.auth-mark{width:58px;height:58px;flex:none;display:grid;place-items:center}.auth-mark img{width:100%;height:100%;object-fit:contain;display:block}
 .auth-message{min-height:20px;color:var(--danger);font-size:14px}
 .auth-message.ok{color:var(--wa)}
 .cols{display:grid;gap:14px;min-width:0}
@@ -62,7 +62,7 @@ body{
 h1{font:600 24px/1.1 var(--f-display);letter-spacing:-.01em;margin:0;text-wrap:balance}
 .top{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
 .brand{display:flex;gap:12px;align-items:center;min-width:0}
-.mark{width:54px;height:54px;flex:none;display:block}
+.mark{width:64px;height:auto;max-height:64px;object-fit:contain;flex:none;display:block}
 .hbtns{display:flex;gap:8px;flex-wrap:wrap}
 .sub{margin:3px 0 0;color:var(--muted);font-size:13px}
 .sub.bad{color:var(--danger)}
@@ -157,7 +157,7 @@ details summary{cursor:pointer;font-weight:600;min-height:40px;display:flex;alig
 <body>
 <section id="authGate" class="auth-gate">
     <div class="card auth-card">
-      <div class="auth-brand"><div class="auth-mark"><svg viewBox="0 0 64 64" aria-label="Copy Computer"><defs><linearGradient id="ccg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#21b6c8"/><stop offset="1" stop-color="#064a9b"/></linearGradient></defs><rect x="1" y="1" width="62" height="62" rx="13" fill="#f3f7fa"/><path d="M30 12C18 7 7 17 7 31s11 25 23 20l2-10c-8 5-15 0-15-10s7-15 15-10z" fill="#e7edf2" stroke="#47708c" stroke-width="2"/><path d="M30 12C18 7 7 17 7 31s11 25 23 20l2-10c-8 5-15 0-15-10s7-15 15-10z" transform="translate(20 0)" fill="url(#ccg)" stroke="#17618d" stroke-width="2"/></svg></div><div><h1>Laporan Teknisi CCTV</h1><p class="sub">Login untuk menyimpan dan membuka laporan online</p></div></div>
+      <div class="auth-brand"><div class="auth-mark"><img src="logo-copy-computer.PNG" alt="Logo Copy Computer"></div><div><h1>Laporan Teknisi CCTV</h1><p class="sub">Login untuk menyimpan dan membuka laporan online</p></div></div>
       <form id="authForm" class="stack">
         <div><label class="lbl" for="authEmail">Email</label><input id="authEmail" type="email" autocomplete="username" required placeholder="email@contoh.com"></div>
         <div><label class="lbl" for="authPassword">Password</label><input id="authPassword" type="password" autocomplete="current-password" minlength="6" required placeholder="Minimal 6 karakter"></div>
@@ -171,7 +171,7 @@ details summary{cursor:pointer;font-weight:600;min-height:40px;display:flex;alig
   <div class="wrap" id="appRoot" hidden>
   <header class="top">
     <div class="brand">
-      <svg class="mark" viewBox="0 0 64 64" aria-label="Logo Copy Computer"><defs><linearGradient id="ccg2" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#21b6c8"/><stop offset="1" stop-color="#064a9b"/></linearGradient></defs><rect x="1" y="1" width="62" height="62" rx="13" fill="#f3f7fa" stroke="#d5e0e8"/><path d="M30 12C18 7 7 17 7 31s11 25 23 20l2-10c-8 5-15 0-15-10s7-15 15-10z" fill="#e7edf2" stroke="#47708c" stroke-width="2"/><path d="M30 12C18 7 7 17 7 31s11 25 23 20l2-10c-8 5-15 0-15-10s7-15 15-10z" transform="translate(20 0)" fill="url(#ccg2)" stroke="#17618d" stroke-width="2"/></svg>
+      <img class="mark" src="logo-copy-computer.PNG" alt="Logo Copy Computer">
       <div>
         <h1>Laporan Teknisi</h1>
         <p class="sub" id="brand"></p>
