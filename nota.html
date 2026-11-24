@@ -87,8 +87,8 @@ button,.actions{display:none!important}
 <script>
 (function(){
 'use strict';
-const URL='https://ogolkyowgvypstjmxxde.supabase.co',KEY='sb_publishable_8NQAMLU4WhrHfn5nwf4gjQ_rr9egknn';
-const sb=window.supabase.createClient(URL,KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+const SUPABASE_URL='https://ogolkyowgvypstjmxxde.supabase.co',KEY='sb_publishable_8NQAMLU4WhrHfn5nwf4gjQ_rr9egknn';
+const sb=window.supabase.createClient(SUPABASE_URL,KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
 const $=id=>document.getElementById(id);let user=null,source='CCTV',sources=[],invoices=[],currentId=null;const LOCAL_INVOICES='cc_nota_tagihan_v1';
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const rupiah=n=>'Rp '+Math.round(Number(n)||0).toLocaleString('id-ID');
