@@ -39,6 +39,7 @@ button,.btn{border:0;border-radius:10px;padding:10px 15px;background:var(--blue)
 </div><p class="sub" style="text-align:center;margin:18px 0">Tampilan percobaan • Data tersimpan di browser perangkat ini saja.</p>
 </main>
 <script>
+const $=id=>document.getElementById(id);
 const KEY='cc_servisan_demo_v1';let jobs=JSON.parse(localStorage.getItem(KEY)||'[]'),editing=null;
 const ORDER_KEY='cc_servisan_orders_v1';let orders=JSON.parse(localStorage.getItem(ORDER_KEY)||'[]');
 function toggleOrderForm(force){const panel=$('orderPanel');const show=typeof force==='boolean'?force:panel.style.display==='none';panel.style.display=show?'block':'none';if(show){$('orderNama').value=$('nama').value||'';$('orderWa').value=$('wa').value||'';renderOrders();panel.scrollIntoView({behavior:'smooth',block:'start'})}}
@@ -47,7 +48,6 @@ $('orderForm').addEventListener('submit',e=>{e.preventDefault();const n=orders.l
 function renderOrders(){const el=$('orderList');if(!orders.length){el.className='empty';el.textContent='Belum ada pesanan khusus.';return}el.className='';el.innerHTML=orders.map(o=>'<article class="job"><div class="jobhead"><div><div class="ticket">'+esc(o.ticket)+'</div><b>'+esc(o.nama)+'</b></div><span class="pill">Pesanan</span></div><p><b>'+esc(o.jenis)+'</b> • Jumlah: '+esc(o.jumlah)+' • '+esc(o.date)+'</p><p>'+esc(o.detail)+'</p>'+(o.catatan?'<p>Catatan: '+esc(o.catatan)+'</p>':'')+'<div class="jobactions"><button class="secondary" onclick="deleteOrder('+o.id+')">Hapus</button></div></article>').join('')}
 function deleteOrder(id){if(confirm('Hapus pesanan ini?')){orders=orders.filter(o=>o.id!==id);localStorage.setItem(ORDER_KEY,JSON.stringify(orders));renderOrders()}}
 
-const $=id=>document.getElementById(id);
 function checks(id){return [...document.querySelectorAll('#'+id+' input:checked')].map(x=>x.value)}
 function setChecks(id,vals=[]){document.querySelectorAll('#'+id+' input').forEach(x=>x.checked=vals.includes(x.value))}
 function persist(){localStorage.setItem(KEY,JSON.stringify(jobs));render()}
