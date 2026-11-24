@@ -17,23 +17,23 @@ alter table public.service_records enable row level security;
 drop policy if exists "service_account_read_records" on public.service_records;
 create policy "service_account_read_records"
   on public.service_records for select to authenticated
-  using ((auth.jwt() ->> 'email') = 'servis@copycomputer.app');
+  using ((auth.jwt() ->> 'email') in ('servis@copycomputer.app', 'cctv@copycomputer.app'));
 
 drop policy if exists "service_account_insert_records" on public.service_records;
 create policy "service_account_insert_records"
   on public.service_records for insert to authenticated
-  with check ((auth.jwt() ->> 'email') = 'servis@copycomputer.app');
+  with check ((auth.jwt() ->> 'email') in ('servis@copycomputer.app', 'cctv@copycomputer.app'));
 
 drop policy if exists "service_account_update_records" on public.service_records;
 create policy "service_account_update_records"
   on public.service_records for update to authenticated
-  using ((auth.jwt() ->> 'email') = 'servis@copycomputer.app')
-  with check ((auth.jwt() ->> 'email') = 'servis@copycomputer.app');
+  using ((auth.jwt() ->> 'email') in ('servis@copycomputer.app', 'cctv@copycomputer.app'))
+  with check ((auth.jwt() ->> 'email') in ('servis@copycomputer.app', 'cctv@copycomputer.app'));
 
 drop policy if exists "service_account_delete_records" on public.service_records;
 create policy "service_account_delete_records"
   on public.service_records for delete to authenticated
-  using ((auth.jwt() ->> 'email') = 'servis@copycomputer.app');
+  using ((auth.jwt() ->> 'email') in ('servis@copycomputer.app', 'cctv@copycomputer.app'));
 
 grant select, insert, update, delete on public.service_records to authenticated;
 
