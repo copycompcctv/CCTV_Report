@@ -896,19 +896,30 @@ document.addEventListener('change',function(e){
 });
 $('sq').addEventListener('input',renderHistory);
 $('wa').addEventListener('click',async function(e){
+  var reportText=buildText(cur());if(!reportText){e.preventDefault();toast('Laporan masih kosong');return}
+  var report=cur(),isMobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent||'');
+  // PC selalu membuka WhatsApp Web. HP memakai share sheet hanya jika ada lampiran.
+  if(!isMobile||!report.attachments||!report.attachments.length)return;
   if(!navigator.share||!navigator.canShare)return;
-  e.preventDefault();var reportText=buildText(cur());if(!reportText){toast('Laporan masih kosong');return}
+  e.preventDefault();
   try{
-    var response=await fetch('logo-copy-computer.PNG');if(!response.ok)throw new Error('Logo tidak dapat dimuat');
-    var blob=await response.blob(),shareFiles=[new File([blob],'Copy-Computer.png',{type:'image/png'})],report=cur();
-    for(var ai=0;ai<(report.attachments||[]).length;ai++){
+    var shareFiles=[];
+    for(var ai=0;ai<report.attachments.length;ai++){
       var signed=await sb.storage.from('report-attachments').createSignedUrl(report.attachments[ai].path,300);
-      if(signed.error)continue;var fr=await fetch(signed.data.signedUrl);if(!fr.ok)continue;
-      var fb=await fr.blob();shareFiles.push(new File([fb],report.attachments[ai].name||('Lampiran-'+(ai+1)),{type:fb.type||report.attachments[ai].type}));
+      if(signed.error)continue;
+      var fr=await fetch(signed.data.signedUrl);if(!fr.ok)continue;
+      var fb=await fr.blob();
+      shareFiles.push(new File([fb],report.attachments[ai].name||('Lampiran-'+(ai+1)),{type:fb.type||report.attachments[ai].type}));
     }
-    var payload={title:'Laporan Copy Computer',text:reportText,files:shareFiles};
-    if(navigator.canShare({files:shareFiles})){await navigator.share(payload)}else{window.open('https://wa.me/?text='+encodeURIComponent(reportText),'_blank','noopener')}
-  }catch(err){if(err&&err.name==='AbortError')return;window.open('https://wa.me/?text='+encodeURIComponent(reportText),'_blank','noopener')}
+    if(shareFiles.length&&navigator.canShare({files:shareFiles})){
+      await navigator.share({title:'Laporan Copy Computer',text:reportText,files:shareFiles});
+    }else{
+      window.location.href='https://wa.me/?text='+encodeURIComponent(reportText);
+    }
+  }catch(err){
+    if(err&&err.name==='AbortError')return;
+    window.location.href='https://wa.me/?text='+encodeURIComponent(reportText);
+  }
 });
 
 /* ---------- Klik ---------- */
