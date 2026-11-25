@@ -79,28 +79,26 @@ main{width:min(1160px,100%);margin:58px auto 42px;padding:0 24px}
 <nav class="menu" aria-label="Menu aplikasi">
   <a class="module" href="./cctv.html" aria-label="CCTV Report">
     <div class="symbol" aria-hidden="true"><svg viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg" fill="none" aria-hidden="true">
-  <g fill="#34383D">
-    <!-- sunshade -->
-    <path d="M17 25 24 19 68 20c8 0 13 5 15 13l1 5H25l-8-7v-6Z"/>
-    <!-- camera barrel -->
-    <path d="M27 33h43c7 0 11 4 12 10l1 10c0 6-4 10-10 10H29c-7 0-11-5-11-12v-7c0-6 3-10 9-11Z"/>
-    <!-- front lens barrel -->
-    <path d="M28 34c-9 0-15 6-15 15s6 15 15 15h4V34h-4Z"/>
-    <!-- lens glass and single narrow rim -->
-    <ellipse cx="25" cy="49" rx="6.4" ry="11.5" fill="#F1F5F9"/>
-    <ellipse cx="25" cy="49" rx="4.3" ry="8.8" fill="#34383D"/>
-    <path d="M24 42c-2 3-2 11 0 14" stroke="#F1F5F9" stroke-width="1.5" stroke-linecap="round"/>
-    <!-- subtle housing edge -->
-    <path d="M45 35v27M65 36h5c4 0 7 3 8 7" stroke="#F1F5F9" stroke-width="1.6" stroke-linecap="round"/>
-    <!-- compact angled mounting neck -->
-    <path d="M66 62v8c0 3 2 5 5 5h7v-6h-5v-7h-7Z"/>
-    <!-- wall bracket plate on the right -->
-    <path d="M77 67h11c2 0 3 2 3 4v13c0 2-1 3-3 3H77V67Z"/>
-  </g>
-  <g fill="#F1F5F9">
-    <circle cx="84" cy="72" r="1.3"/>
-    <circle cx="84" cy="82" r="1.3"/>
-  </g>
+<defs>
+ <linearGradient id="camTop" x1="25" y1="20" x2="78" y2="62" gradientUnits="userSpaceOnUse"><stop stop-color="#123A9B"/><stop offset=".58" stop-color="#0878D9"/><stop offset="1" stop-color="#08C5DF"/></linearGradient>
+ <linearGradient id="camLower" x1="18" y1="45" x2="66" y2="78" gradientUnits="userSpaceOnUse"><stop stop-color="#102B78"/><stop offset="1" stop-color="#0875D8"/></linearGradient>
+ <linearGradient id="camWave" x1="66" y1="60" x2="88" y2="84" gradientUnits="userSpaceOnUse"><stop stop-color="#08C6E2"/><stop offset="1" stop-color="#0873E8"/></linearGradient>
+</defs>
+<!-- upper sunshield / camera hood -->
+<path d="M17 39 61 18C69 14 77 17 81 24C85 31 82 39 75 43L45 59 31 53 17 39Z" fill="url(#camTop)"/>
+<!-- lower camera shell -->
+<path d="M20 40C27 37 36 40 42 46L57 59C61 63 67 62 72 59L77 55C76 64 70 70 61 73L42 82C34 86 24 82 20 74L14 60C10 51 12 44 20 40Z" fill="url(#camLower)"/>
+<!-- front rim and lens -->
+<path d="M20 39C28 35 38 40 42 48L49 61C53 68 61 69 68 65" stroke="#F7FBFF" stroke-width="5" stroke-linecap="round"/>
+<ellipse cx="27" cy="57" rx="10.5" ry="13.5" fill="#12317F"/>
+<ellipse cx="29" cy="58" rx="4.3" ry="6.3" fill="#F7FBFF"/>
+<ellipse cx="29" cy="58" rx="2.4" ry="4.2" fill="#12317F"/>
+<!-- subtle underside highlight -->
+<path d="M56 67C59 68 63 68 67 66L73 62" stroke="#6BDCF0" stroke-width="2.4" stroke-linecap="round"/>
+<!-- wireless signal arcs -->
+<path d="M70 63C75 68 75 75 70 80" stroke="url(#camWave)" stroke-width="5" stroke-linecap="round"/>
+<path d="M79 57C89 67 89 79 79 89" stroke="url(#camWave)" stroke-width="5" stroke-linecap="round"/>
+<path d="M64 70C67 73 67 77 64 80" stroke="url(#camWave)" stroke-width="5" stroke-linecap="round"/>
 </svg></div>
     <h2>CCTV <span>Report</span></h2>
   </a>
