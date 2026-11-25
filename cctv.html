@@ -482,7 +482,7 @@ function normReport(r){
     x=x||{};var items=(Array.isArray(x.items)?x.items:[]).map(normItem),groups=[];
     items.forEach(function(it){
       if(it.kind!=='structured') return;
-      var job=x.job||(x.title&&x.title!=='Rincian pekerjaan'?x.title:'')||(it.job==='Servis Lainnya'?(it.jobCustom||'Servis Lainnya'):it.job)||'Pasang Baru';
+      var job=x.job||(x.title&&x.title!=='Rincian pekerjaan'?x.title:'')||(it.job==='Servis Lainnya'?(it.jobCustom||'Servis Lainnya'):it.job)||'Pasang Kamera Baru';if(job==='Pasang Baru')job='Pasang Kamera Baru';
       var g=groups[groups.length-1];if(!g||g.job!==job){g={id:uid(),job:job,title:'',bold:true,items:[]};groups.push(g)}g.items.push(it);
     });
     var plain=items.filter(function(it){return it.kind!=='structured'});
@@ -1059,7 +1059,7 @@ document.addEventListener('click',function(e){
       else it=mk('qty',{label:c.label,qty:c.note||'',colon:c.colon!==false});
       sec.items.push(it);changed();render();focusItem(it);break;
     }
-    case 'add-sec':{var s={id:uid(),title:'',job:'Pasang Baru',bold:true,items:[mk('structured',{item:'Isi Sendiri'})]};r.sections.push(s);changed();render();break}
+    case 'add-sec':{var s={id:uid(),title:'',job:'Pasang Kamera Baru',bold:true,items:[mk('structured',{item:'Isi Sendiri',unit:'-'})]};r.sections.push(s);changed();render();break}
     case 'bold':sec=getSec(b);if(sec){sec.bold=!sec.bold;changed();render()}break;
     case 'del-sec':{
       sec=getSec(b);if(!sec)break;
