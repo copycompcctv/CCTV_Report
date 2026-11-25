@@ -285,6 +285,46 @@ textarea{min-height:86px}
 #form .item-actions{margin-top:2px}
 #form .item-actions .btn{min-height:48px}
 @media(max-width:520px){.form-title{gap:12px;padding-bottom:14px}.form-title-icon{width:58px;height:58px;border-radius:18px}.form-title-icon svg{width:36px;height:36px}#form .card{padding:14px;border-radius:17px}#form .sec-head .mini{padding:7px 9px}}
+
+/* CCTV Report form — compact layout matched to supplied mobile reference */
+#appRoot .wrap{max-width:980px;gap:14px}#form{gap:14px}
+.form-title{display:flex;align-items:center;justify-content:flex-start;gap:16px;padding:2px 0 14px;border-bottom:1px solid #dce7ff}
+.form-title-icon{width:88px;height:88px;flex:none;border-radius:28px;background:#edf3ff;color:#1768e8;display:grid;place-items:center}
+.form-title-icon svg{width:62px;height:62px}
+.form-title h2{font-size:clamp(23px,2.4vw,30px);line-height:1.15;font-weight:800;letter-spacing:-.035em;color:#10265a}
+.form-title p{margin:5px 0 0;font-size:clamp(14px,1.6vw,18px);color:#6872b5}
+#form .card{padding:18px;border:1px solid #dce7ff;border-radius:22px;box-shadow:0 4px 16px rgba(24,78,160,.05)}
+#form .form-fields{gap:16px}.form-field{display:grid;gap:7px;min-width:0}
+.field-label,.job-label{display:flex;align-items:center;gap:12px;margin:0;color:#10265a;font-size:17px;font-weight:600;letter-spacing:-.015em}
+.field-label svg,.job-label svg{width:28px;height:28px;flex:none;color:#075bea}
+.field-label em,.job-label em{font-style:normal;color:#e11d48}
+.form-field input{min-height:54px;padding:11px 15px;border:1.5px solid #cbdcff;border-radius:15px;background:#f7f9ff;font-size:17px}
+.form-two{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+#form .check{font-size:14px;color:#596b9f;min-height:30px}
+#form .sec-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center}
+#form .sec-head .job-label{grid-column:1/-1}
+#form .sec-head select{grid-column:1;min-width:0}#form .sec-head .mini{grid-column:2}
+#form .structured-item{padding:14px;border-radius:15px;background:#f8faff;border:1px solid #dce7ff}
+#form .structured-item .lbl{font-size:14px}#form .item-actions{margin-top:4px}#form .item-actions .btn{min-height:46px}
+.form-note{gap:10px!important}.form-note textarea{min-height:88px;border-radius:15px;background:#f7f9ff}
+.attachment-panel{border:2px dashed #9dbdff;border-radius:18px;background:#f8fbff;padding:18px;gap:10px}
+.attach-title{display:grid;grid-template-columns:30px 1fr;gap:0 10px}.attach-title svg{grid-row:span 2;width:30px;height:30px}.attach-title .hint{grid-column:2;font-weight:400;font-size:13px}
+.attachment-pick{min-height:52px!important;border-radius:14px!important;font-size:16px!important}
+.form-actions{display:grid;grid-template-columns:.85fr 1.4fr;gap:12px;margin-top:2px}.form-actions .btn{min-height:58px;font-size:18px;border-radius:17px}
+#form .btn.ghost{background:#dce8ff;color:#075bea;border:0}
+@media(min-width:960px){#appRoot .wrap{max-width:980px}.form-title-icon{width:82px;height:82px}.form-title h2{font-size:26px}}
+@media(max-width:600px){
+ body{padding:9px 12px 24px}#appRoot .wrap{gap:12px}
+ .form-title{gap:12px;padding-bottom:12px}.form-title-icon{width:64px;height:64px;border-radius:22px}.form-title-icon svg{width:46px;height:46px}
+ .form-title h2{font-size:21px}.form-title p{font-size:13px}
+ #form .card{padding:14px;border-radius:18px}#form .form-fields{gap:13px}
+ .field-label,.job-label{font-size:15px;gap:9px}.field-label svg,.job-label svg{width:25px;height:25px}
+ .form-field input{min-height:48px;font-size:16px;border-radius:12px}.form-two{gap:10px}
+ #form .sec-head{gap:8px}#form .sec-head .mini{font-size:12px;padding:0 9px}
+ #form .structured-item{padding:11px}.attachment-panel{padding:13px;border-radius:15px}
+ .form-actions{gap:9px}.form-actions .btn{min-height:52px;font-size:15px;border-radius:14px}
+}
+@media(max-width:390px){.form-two{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -863,7 +903,7 @@ function itemHTML(it,idx){
 function sectionHTML(s){
   var id=esc(s.id),jobs=['Instalasi Listrik','Krimping Ulang','Pasang Kamera Baru','Pasang Ulang Kamera','Reset DVR','Servis DVR/NVR','Servis Kamera','Servis Lainnya','Setting Online ke HP'],selectedJob=(s.job||s.title||'Pasang Kamera Baru');if(selectedJob==='Pasang Baru')selectedJob='Pasang Kamera Baru';
   return '<section class="card" data-sec="'+id+'">'
-   +'<div class="sec-head"><label class="lbl" for="jobsec-'+id+'">Item pekerjaan</label><select id="jobsec-'+id+'" data-f="job">'+jobs.map(function(v){return '<option'+(selectedJob===v?' selected':'')+'>'+v+'</option>'}).join('')+'</select>'
+   +'<div class="sec-head"><label class="lbl job-label" for="jobsec-'+id+'"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.7 6.3a5 5 0 0 0-6.4 6.4L3 18l5.3-5.3a5 5 0 0 0 6.4-6.4l-3.1 3.1-3-3z" fill="currentColor"/></svg>Jenis Pekerjaan <em>*</em></label><select id="jobsec-'+id+'" data-f="job">'+jobs.map(function(v){return '<option'+(selectedJob===v?' selected':'')+'>'+v+'</option>'}).join('')+'</select>'
    +'<button type="button" class="mini danger" data-act="del-sec">Hapus pekerjaan</button></div>'
    +s.items.map(itemHTML).join('')
    +'<div class="item-actions"><button type="button" class="btn small" data-act="add-structured">＋ Tambah item barang</button></div></section>';
@@ -872,15 +912,15 @@ function render(){
   var r=cur();
   $('form').innerHTML=
    '<div class="form-title"><div class="form-title-icon"><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="4" y="20" width="56" height="33" rx="4" fill="none" stroke="currentColor" stroke-width="3"/><path d="M16 20l5-7h22l5 7" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="32" cy="36" r="11" fill="none" stroke="currentColor" stroke-width="4"/></svg></div><div><h2>Buat Laporan CCTV</h2><p>Isi data laporan dengan lengkap</p></div></div>'
-   +'<div class="card stack"><div><label class="lbl" for="customer">Pelanggan</label><input id="customer" data-f="customer" value="'+esc(r.customer)+'" placeholder="Nama Pelanggan" autocomplete="off"></div>'
-   +'<div class="two"><div><label class="lbl" for="date">Tanggal</label><input id="date" type="date" data-f="date" value="'+esc(r.date)+'"></div>'
-   +'<div><label class="lbl" for="tech">Teknisi</label><input id="tech" data-f="tech" value="'+esc(r.tech)+'" placeholder="Nama Teknisi" autocomplete="off"></div></div>'
-   +'<div><label class="lbl" for="address">Alamat</label><input id="address" data-f="address" value="'+esc(r.address)+'" placeholder="Alamat Pelanggan" autocomplete="off"></div>'
+   +'<div class="card stack form-fields"><div class="form-field"><label class="field-label" for="customer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a4.2 4.2 0 1 0 0-8.4A4.2 4.2 0 0 0 12 12Zm-8 8.2c.4-4 3.5-6.2 8-6.2s7.6 2.2 8 6.2v.6H4z" fill="currentColor"/></svg>Nama Pelanggan <em>*</em></label><input id="customer" data-f="customer" value="'+esc(r.customer)+'" placeholder="Masukkan nama pelanggan..." autocomplete="off"></div>'
+   +'<div class="two form-two"><div class="form-field"><label class="field-label" for="date"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M7 3v4M17 3v4M3 10h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="15" r="2" fill="currentColor"/></svg>Tanggal Laporan <em>*</em></label><input id="date" type="date" data-f="date" value="'+esc(r.date)+'"></div>'
+   +'<div class="form-field"><label class="field-label" for="tech"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.7 6.3a5 5 0 0 0-6.4 6.4L3 18l3 3 5.3-5.3a5 5 0 0 0 6.4-6.4l-3.1 3.1-3-3z" fill="currentColor"/></svg>Teknisi</label><input id="tech" data-f="tech" value="'+esc(r.tech)+'" placeholder="Nama teknisi" autocomplete="off"></div></div>'
+   +'<div class="form-field"><label class="field-label" for="address"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-7.2 8-13a8 8 0 1 0-16 0c0 5.8 8 13 8 13Z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="9" r="2.5" fill="currentColor"/></svg>Alamat</label><input id="address" data-f="address" value="'+esc(r.address)+'" placeholder="Masukkan alamat pelanggan..." autocomplete="off"></div>'
    +'<label class="check"><input id="showMeta" type="checkbox" data-f="showMeta"'+(r.showMeta?' checked':'')+'><span>Cantumkan tanggal dan alamat di teks WhatsApp</span></label></div>'
    +r.sections.map(function(sec){if(!sec.items.length)sec.items.push(mk('structured',{item:'Isi Sendiri'}));return sectionHTML(sec)}).join('')
    +'<div class="item-actions"><button type="button" class="btn" data-act="add-sec">+ Tambah pekerjaan</button></div>'
-   +'<div class="card stack"><label class="lbl" for="catatan">Keterangan tambahan</label><textarea id="catatan" data-f="catatan" rows="3" placeholder="Keterangan tambahan (opsional)">'+esc(r.catatan||'')+'</textarea></div>'
-   +'<section class="attachment-panel" aria-label="Lampiran foto dan video"><div><strong>Lampiran Foto / Video</strong><p class="hint">Opsional · Maksimal 8 file</p></div><label class="btn ghost attachment-pick" for="attachmentInput">＋ Pilih Foto / Video</label><input id="attachmentInput" type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,video/mp4,video/quicktime,video/webm" multiple><div class="hint">Foto maks. 12 MB dan video maks. 80 MB per file.</div><div id="attachmentList" class="attachment-list"><span class="hint">Belum ada lampiran.</span></div></section>'
+   +'<div class="card stack form-note"><label class="field-label" for="catatan"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6z" fill="currentColor"/><path d="M9 11h7M9 15h7" stroke="white" stroke-width="1.7" stroke-linecap="round"/></svg>Keterangan Tambahan</label><textarea id="catatan" data-f="catatan" rows="3" placeholder="Masukkan keterangan tambahan...">'+esc(r.catatan||'')+'</textarea></div>'
+   +'<section class="attachment-panel" aria-label="Lampiran foto dan video"><div class="field-label attach-title"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h3l2-3h6l2 3h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2Z" fill="currentColor"/><circle cx="12" cy="13" r="4" fill="none" stroke="white" stroke-width="2"/></svg>Foto / Video (Opsional)<p class="hint">Maksimal 8 file</p></div><label class="btn ghost attachment-pick" for="attachmentInput">＋ Pilih Foto / Video</label><input id="attachmentInput" type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,video/mp4,video/quicktime,video/webm" multiple><div class="hint">Foto maks. 12 MB dan video maks. 80 MB per file.</div><div id="attachmentList" class="attachment-list"><span class="hint">Belum ada lampiran.</span></div></section>'
    +'<div class="form-actions"><button type="button" class="btn ghost" data-act="reset-form">Reset</button><button type="button" class="btn save-report-btn" data-act="save-report">Simpan Laporan</button></div>';
   if(isReadOnly){
     var banner=document.createElement('div');banner.className='card';banner.style.cssText='border-color:#0b7895;background:#eef8fb;color:#075b73';
