@@ -1346,6 +1346,11 @@ document.addEventListener('change',function(e){var t=e.target,f=t.dataset&&t.dat
 document.addEventListener('input',function(e){
   var t=e.target,f=t.dataset&&t.dataset.f;
   if(!f) return;
+  if(f==='date'){
+    var digits=t.value.replace(/\D/g,'').slice(0,8);
+    var formatted=digits.length>4?digits.slice(0,2)+'/'+digits.slice(2,4)+'/'+digits.slice(4):digits.length>2?digits.slice(0,2)+'/'+digits.slice(2):digits;
+    if(t.value!==formatted)t.value=formatted;
+  }
   var v=t.type==='checkbox'?t.checked:t.value;
   if(f.indexOf('kop')===0){db.kop[f.slice(3)]=v;setStatus();save();return}
   if(f==='clabel'||f==='cnote'||f==='ckind'||f==='ccolon'){
@@ -1678,4 +1683,40 @@ $('logoutBtn').addEventListener('click',async function(){
 #form .form-note .field-label,
 #form .attach-title{gap:12px!important;align-items:center!important}
 #form .sec-head .job-label svg{overflow:visible!important}
+</style>
+<style>
+/* Skala label dan kontrol dibuat seragam di seluruh bagian formulir */
+#form .field-label,
+#form .job-label,
+#form .item-field-label,
+#form .attach-title{
+ display:flex!important;align-items:center!important;gap:10px!important;
+ min-height:28px;font-size:16px!important;line-height:1.35!important;
+ font-weight:650!important;color:#10265a!important;
+}
+#form .field-label svg,
+#form .job-label svg,
+#form .item-field-label svg,
+#form .attach-title svg{
+ width:24px!important;height:24px!important;min-width:24px!important;
+ flex:0 0 24px!important;display:block!important;color:#1768e8!important;
+}
+#form .form-fields{gap:14px!important}
+#form .form-field{gap:7px!important}
+#form input:not([type=file]),#form select,#form textarea{
+ min-height:48px!important;font-size:16px!important;line-height:1.4!important;
+ padding:11px 14px!important;border-radius:12px!important;
+}
+#form .sec-head{row-gap:8px!important}
+#form .sec-head select{grid-column:1/-1!important;width:100%!important}
+#form [data-sec]{padding:14px!important;gap:10px!important}
+#form .structured-grid{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:7px!important}
+#form .structured-item{padding:0!important;margin:0!important}
+#form .item-choice{display:grid!important;gap:7px!important}
+#form .item-actions{margin-top:8px!important}
+#form .form-note .field-label{font-size:16px!important}
+@media(max-width:520px){
+ #form .field-label,#form .job-label,#form .item-field-label,#form .attach-title{font-size:15px!important}
+ #form input:not([type=file]),#form select,#form textarea{font-size:15px!important;min-height:46px!important}
+}
 </style>
