@@ -54,6 +54,22 @@ header img{width:62px;height:auto;max-height:48px;object-fit:contain;flex:none}
 header .brand-copy{min-width:0;line-height:1.25}header .brand-copy strong{display:block;font-size:16px;font-weight:800;color:#10265a;letter-spacing:.02em}header .brand-copy small{display:block;color:#1768e8;font-size:12px;margin-top:3px}
 header .header-spacer{flex:1}header .nav-icon{width:42px;height:42px;min-width:42px;padding:0;border:1px solid #dfe8f7;border-radius:12px;background:#f4f8ff;color:#174a9c;display:inline-grid;place-items:center;text-decoration:none}header .nav-icon svg{width:20px;height:20px;display:block}
 @media(max-width:520px){header{padding:9px 12px;gap:9px}header img{width:52px;max-height:42px}header .brand-copy strong{font-size:14px}header .brand-copy small{font-size:11px}header .nav-icon{width:39px;height:39px;min-width:39px}}
+
+/* Palet Copy Computer: putih, biru tua, biru terang */
+:root{--ink:#10265a;--muted:#71809a;--line:#dfe8f7;--bg:#fff;--teal:#1768e8;--green:#1768e8}
+body{background:#fff;color:#10265a}
+header{border-bottom:1px solid #e3ebf7;box-shadow:0 3px 14px rgba(20,60,120,.04)}
+header strong{color:#10265a}
+header small{color:#1768e8}
+.wrap{max-width:1120px}
+.panel{border:1px solid #dfe8f7;border-radius:16px;box-shadow:0 4px 16px rgba(24,78,160,.045)}
+button,.btn{background:#1768e8;border-radius:11px}
+button.secondary,.btn.secondary{background:#f4f8ff;color:#1749a4;border:1px solid #dfe8f7}
+.total{background:#edf4ff;color:#10265a}
+.grand{color:#1768e8}
+.notice{background:#edf4ff;color:#234477}
+input,select,textarea{border-color:#d7e2f7;border-radius:10px}
+@media(max-width:650px){.panel{padding:14px}.wrap{padding:0 12px}}
 </style></head><body>
 <header><img src="logo-copy-computer.PNG" alt="Logo Copy Computer"><div class="brand-copy"><strong>COPY COMPUTER</strong><small>Buat Nota</small></div><span class="header-spacer"></span><a class="nav-icon" href="../" aria-label="Menu utama" title="Menu utama"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg></a><button class="nav-icon" type="button" onclick="if(history.length>1)history.back();else location.href='../'" aria-label="Kembali" title="Kembali"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6M9 12h12"/></svg></button></header>
 <main class="wrap">
