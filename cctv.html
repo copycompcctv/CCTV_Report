@@ -793,7 +793,7 @@ function mergeCatalog(cats){
 }
 function blankReport(){
   return {id:uid(),example:false,saved:false,customer:'',address:'',tech:'',date:todayISO(),createdAt:Date.now(),showMeta:false,updatedAt:Date.now(),
-    catatan:'',sections:[{id:uid(),title:'',job:'Pasang Kamera Baru',bold:true,items:[mk('structured',{item:'',unit:'-'})]}]};
+    catatan:'',sections:[{id:uid(),title:'',job:'Pasang Kamera Baru',bold:true,items:[mk('structured',{item:''})]}]};
 }
 function sampleReports(){
   var a={id:uid(),example:true,customer:'H. Jamal',address:'',tech:'',date:todayISO(),createdAt:Date.now(),showMeta:false,updatedAt:Date.now(),sections:[
@@ -1257,7 +1257,7 @@ if(mq.addEventListener)mq.addEventListener('change',function(){setView(view,true
 else if(mq.addListener)mq.addListener(function(){setView(view,true)});
 
 /* ---------- Input ---------- */
-document.addEventListener('change',function(e){var t=e.target,f=t.dataset&&t.dataset.f;if(f==='job'||f==='item'||f==='unit'){var sec=getSec(t),it=getItem(t);if(!sec||!it)return;it[f]=t.value;changed();render()}});
+document.addEventListener('change',function(e){var t=e.target,f=t.dataset&&t.dataset.f;if(f==='job'||f==='item'){var sec=getSec(t),it=getItem(t);if(!sec||!it)return;it[f]=t.value;changed();render()}});
 document.addEventListener('input',function(e){
   var t=e.target,f=t.dataset&&t.dataset.f;
   if(!f) return;
@@ -1329,7 +1329,7 @@ document.addEventListener('click',function(e){
       else it=mk('qty',{label:c.label,qty:c.note||'',colon:c.colon!==false});
       sec.items.push(it);changed();render();focusItem(it);break;
     }
-    case 'add-sec':{var s={id:uid(),title:'',job:'Pasang Kamera Baru',bold:true,items:[mk('structured',{item:'Isi Sendiri',unit:'-'})]};r.sections.push(s);changed();render();break}
+    case 'add-sec':{var s={id:uid(),title:'',job:'Pasang Kamera Baru',bold:true,items:[mk('structured',{item:'Isi Sendiri'})]};r.sections.push(s);changed();render();break}
     case 'bold':sec=getSec(b);if(sec){sec.bold=!sec.bold;changed();render()}break;
     case 'del-sec':{
       sec=getSec(b);if(!sec)break;
