@@ -37,6 +37,30 @@ main{width:min(900px,calc(100% - 40px));margin:38px auto}
  .card b{font-size:clamp(18px,4.8vw,22px)}.card span{font-size:14px}.card:after{font-size:36px}
 }
 
+
+/* Responsive professional proportions; preserve approved card and icon artwork */
+header{min-height:76px;max-width:1160px;margin:14px auto;padding:8px 18px;border-radius:20px;gap:14px}
+header img{width:72px;max-height:54px;padding-right:12px;border-right:2px solid #10265a}
+header strong{font-size:21px}header small{font-size:13px}
+.nav{gap:8px}.nav a{width:48px;height:48px;border-radius:15px}.nav svg{width:24px;height:24px}
+main{width:min(900px,calc(100% - 40px));margin:42px auto}
+.intro{margin-bottom:20px}h1{font-size:27px}.intro p{font-size:15px}
+.cards{grid-template-columns:1fr;gap:14px}
+.card{min-height:112px;grid-template-columns:82px minmax(0,1fr) 24px;grid-template-rows:auto auto;column-gap:17px;padding:13px 17px;border-radius:20px}
+.ico{width:76px;height:76px;border-radius:20px}.ico svg{width:50px;height:50px}
+.card b{font-size:24px}.card span{font-size:15px}.card:after{font-size:38px}
+@media(min-width:651px) and (max-width:980px){main{width:min(820px,calc(100% - 36px));margin:34px auto}.card{min-height:106px}}
+@media(max-width:650px){
+ header{min-height:68px;margin:10px 12px;padding:7px 10px;gap:8px}
+ header img{width:56px;max-height:42px;padding-right:9px}header strong{font-size:16px}header small{font-size:11px}
+ .nav{gap:6px}.nav a{width:40px;height:40px;border-radius:12px}.nav svg{width:20px;height:20px}
+ main{width:calc(100% - 28px);margin:28px auto}
+ .cards{gap:11px}
+ .card{min-height:96px;grid-template-columns:66px minmax(0,1fr) 18px;column-gap:12px;padding:10px 12px;border-radius:17px}
+ .ico{width:62px;height:62px;border-radius:16px}.ico svg{width:42px;height:42px}
+ .card b{font-size:clamp(18px,4.7vw,21px)}.card span{font-size:13px}.card:after{font-size:33px}
+}
+
 </style>
 </head>
 <body>
