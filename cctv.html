@@ -651,17 +651,16 @@ body{background:#f7f9fd;color:var(--ink);padding:14px 20px 38px}
     <div class="hbtns">
       <a href="./" class="icon-btn" aria-label="Home" title="Home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7"/><path d="M5 9v12h14V9M9 21v-7h6v7"/></svg></a>
       <button type="button" id="backBtn" class="icon-btn" aria-label="Kembali" title="Kembali"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/><path d="M9 12h12"/></svg></button>
-      <button type="button" id="logoutBtn" class="btn small ghost" hidden>Keluar</button>
-      <button type="button" id="installBtn" class="btn small ghost" hidden>Pasang</button>
+      <button type="button" id="logoutBtn" class="icon-btn" aria-label="Keluar dari akun" title="Keluar" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/><path d="M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6"/></svg></button>
+      <button type="button" id="installBtn" class="icon-btn" aria-label="Instal aplikasi" title="Instal aplikasi" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v11"/><path d="m7 9 5 5 5-5"/><path d="M5 17v3h14v-3"/></svg></button>
     </div>
   </header>
-  <div class="page-heading"><span class="page-heading-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 4 4 4L9 19l-5 1 1-5L16 4Z"/><path d="m14 6 4 4"/></svg></span><span>Tulis Laporan</span></div>
 
   <nav class="tabs" aria-label="Menu CCTV Report">
     <div class="tabs-in">
-      <button type="button" class="tab" data-act="view" data-v="isi">Buat Laporan</button>
-      <button type="button" class="tab" data-act="view" data-v="riwayat">Riwayat</button>
-      <button type="button" class="tab" data-act="view" data-v="barang">Stok Barang</button>
+      <button type="button" class="tab" data-act="view" data-v="isi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M16 3h5v5M10 14l11-11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Buat Laporan</span></button>
+      <button type="button" class="tab" data-act="view" data-v="riwayat"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 7v5l3 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span>Riwayat</span></button>
+      <button type="button" class="tab" data-act="view" data-v="barang"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 7 9-4 9 4-9 4-9-4Z M3 7v10l9 4 9-4V7 M12 11v10" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg><span>Stok Barang</span></button>
     </div>
   </nav>
 
@@ -1606,3 +1605,20 @@ $('logoutBtn').addEventListener('click',async function(){
 </script>
 </body>
 </html>
+
+<style>
+/* Navigasi ringkas: label tab memakai ikon, tanpa judul halaman berulang */
+.page-heading{display:none!important}
+.tabs-in{grid-template-columns:repeat(3,minmax(0,1fr));}
+.tab{display:flex;align-items:center;justify-content:center;gap:9px}
+.tab svg{width:19px;height:19px;flex:0 0 19px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+#logoutBtn,#installBtn{width:50px;height:50px;min-height:50px;padding:0;border-radius:15px;display:inline-grid;place-items:center}
+#logoutBtn[hidden],#installBtn[hidden]{display:none!important}
+#logoutBtn svg,#installBtn svg{width:24px;height:24px}
+@media(max-width:700px){
+ .tab{gap:6px;font-size:12px}
+ .tab svg{width:17px;height:17px;flex-basis:17px}
+ #logoutBtn,#installBtn{width:40px;height:40px;min-height:40px;border-radius:12px}
+ #logoutBtn svg,#installBtn svg{width:20px;height:20px}
+}
+</style>
