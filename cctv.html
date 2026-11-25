@@ -811,7 +811,7 @@ function updCalc(it){var el=$('tot-'+it.id);if(!el)return;var c=calcInfo(it);el.
 function fieldsHTML(it){
   var id=esc(it.id);
   if(it.kind==='structured'){
-    var items=['DVR','NVR','Kamera Indoor','Kamera Outdoor','Hardisk','PSU','Adaptor','Kabel CCTV','Kabel LAN','Duradus','Jack BNC','Jack DC','Stopkontak','Streker Male','Streker Female','Kabel Listrik','TC Duck','Isi Sendiri'];
+    var items=['Adaptor','Baterai CMOS','DVR','DVR 4 CH','DVR 8 CH','DVR 16 CH','Duradus','Hardisk','Hardisk 500 GB','Hardisk 1 TB','Hardisk 2 TB','Isi Sendiri','Jack BNC','Jack DC','Kabel CCTV','Kabel LAN','Kabel Listrik','Kamera Indoor','Kamera Outdoor','MMC 32 GB','MMC 64 GB','MMC 128 GB','NVR','NVR 5 CH','NVR 10 CH','NVR 20 CH','POE 4 Port','POE 8 Port','PSU','Steker Bulat Male','Steker Gepeng Female','Steker Gepeng Male','Stopkontak','Stopkontak 1 lubang','Stopkontak 2 lubang','Stopkontak 3 lubang','TC Duck'];
     return '<div class="structured-grid">'
       +'<div><label class="lbl" for="item-'+id+'">Item barang</label><select id="item-'+id+'" data-f="item">'+items.map(function(v){return '<option'+(it.item===v?' selected':'')+'>'+v+'</option>'}).join('')+'</select></div>'
       +(it.item==='Isi Sendiri'?'<div><label class="lbl" for="itemc-'+id+'">Nama barang</label><input id="itemc-'+id+'" data-f="itemCustom" value="'+esc(it.itemCustom)+'" placeholder="Ketik nama barang" autocomplete="off"></div>':'')
