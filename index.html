@@ -80,31 +80,32 @@ main{width:min(1160px,100%);margin:58px auto 42px;padding:0 24px}
   <a class="module" href="./cctv.html" aria-label="CCTV Report">
     <div class="symbol" aria-hidden="true"><svg viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
 <defs>
-  <linearGradient id="outdoorCamBody" x1="25" y1="26" x2="82" y2="62" gradientUnits="userSpaceOnUse">
+  <linearGradient id="cctvBodyRef" x1="20" y1="25" x2="80" y2="59" gradientUnits="userSpaceOnUse">
     <stop stop-color="#08BED2"/><stop offset="1" stop-color="#1768E8"/>
   </linearGradient>
-  <linearGradient id="outdoorCamLens" x1="9" y1="31" x2="35" y2="57" gradientUnits="userSpaceOnUse">
-    <stop stop-color="#164EAA"/><stop offset="1" stop-color="#071D50"/>
+  <linearGradient id="cctvLensRef" x1="8" y1="33" x2="29" y2="54" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#174FA8"/><stop offset="1" stop-color="#071D50"/>
   </linearGradient>
 </defs>
-<!-- sun visor -->
-<path d="M25 19H78L85 26H19L25 19Z" fill="#123F9E"/>
-<!-- outdoor camera housing -->
-<path d="M29 27H76C81 27 85 31 85 36V53C85 58 81 62 76 62H29L22 55V34L29 27Z" fill="url(#outdoorCamBody)"/>
-<!-- front lens barrel -->
-<path d="M29 30L21 35V54L29 59V30Z" fill="#0C4C9F"/>
-<circle cx="21.5" cy="44.5" r="13.5" fill="#0B347B" stroke="#DDFBFF" stroke-width="2.4"/>
-<circle cx="21.5" cy="44.5" r="9.2" fill="url(#outdoorCamLens)" stroke="#65DCEB" stroke-width="2"/>
-<circle cx="21.5" cy="44.5" r="4.8" fill="#061A49" stroke="#DDFBFF" stroke-width="1.7"/>
-<circle cx="19.5" cy="42.5" r="1.7" fill="white"/>
-<!-- clean housing highlights -->
-<path d="M39 34H68" stroke="#D9FAFF" stroke-width="2" stroke-linecap="round" opacity=".85"/>
-<path d="M77 34V54" stroke="#D9FAFF" stroke-width="2" stroke-linecap="round" opacity=".8"/>
-<!-- one-piece outdoor wall bracket -->
-<path d="M66 62V67C66 71 69 74 73 74H78V79" stroke="#123F9E" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M60 66H68" stroke="#08AFCB" stroke-width="4" stroke-linecap="round"/>
-<path d="M72 77H84V89H72V77Z" rx="2" fill="#1768E8"/>
-<circle cx="78" cy="83" r="1.7" fill="#DDFBFF"/>
+<!-- broad outdoor sunshield -->
+<path d="M22 19H76L83 25H17L22 19Z" fill="#123F9E"/>
+<!-- horizontal camera body with a gently tapered rear -->
+<path d="M27 26H73C78 26 82 30 82 35V49C82 54 78 58 73 58H27L20 52V32L27 26Z" fill="url(#cctvBodyRef)"/>
+<!-- lens housing at the front -->
+<path d="M27 29L19 34V50L27 55V29Z" fill="#0C4C9F"/>
+<circle cx="20.5" cy="42" r="12.5" fill="#0B347B" stroke="#E4FBFF" stroke-width="2.2"/>
+<circle cx="20.5" cy="42" r="8.7" fill="url(#cctvLensRef)" stroke="#70E1EF" stroke-width="1.8"/>
+<circle cx="20.5" cy="42" r="4.6" fill="#061A49" stroke="#DDFBFF" stroke-width="1.4"/>
+<circle cx="18.8" cy="40.3" r="1.5" fill="white"/>
+<!-- crisp body details -->
+<path d="M34 32H68" stroke="#D9FAFF" stroke-width="2" stroke-linecap="round" opacity=".9"/>
+<path d="M75 31V52" stroke="#D9FAFF" stroke-width="1.8" stroke-linecap="round" opacity=".75"/>
+<!-- articulated outdoor mounting arm and wall plate, matching reference silhouette -->
+<path d="M65 58V64C65 68 68 71 72 71H78V76" stroke="#123F9E" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M61 61H68" stroke="#08AFCB" stroke-width="4" stroke-linecap="round"/>
+<path d="M74 74H85V88H74V74Z" fill="#1768E8"/>
+<path d="M77 77H82" stroke="#DDFBFF" stroke-width="1.6" stroke-linecap="round"/>
+<circle cx="79.5" cy="84" r="1.2" fill="#DDFBFF"/>
 </svg></div>
     <h2>CCTV <span>Report</span></h2>
   </a>
