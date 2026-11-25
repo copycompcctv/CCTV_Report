@@ -80,32 +80,31 @@ main{width:min(1160px,100%);margin:58px auto 42px;padding:0 24px}
   <a class="module" href="./cctv.html" aria-label="CCTV Report">
     <div class="symbol" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
 <defs>
-  <linearGradient id="outdoorBody" x1="13" y1="17" x2="53" y2="43" gradientUnits="userSpaceOnUse">
-    <stop stop-color="#08BFD3"/><stop offset="1" stop-color="#1768E8"/>
+  <linearGradient id="camHousing" x1="13" y1="17" x2="53" y2="41" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#08BED2"/><stop offset="1" stop-color="#1768E8"/>
   </linearGradient>
-  <linearGradient id="outdoorLens" x1="4" y1="22" x2="22" y2="39" gradientUnits="userSpaceOnUse">
-    <stop stop-color="#123C91"/><stop offset="1" stop-color="#071D50"/>
+  <linearGradient id="camGlass" x1="5" y1="23" x2="20" y2="37" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#174EAB"/><stop offset="1" stop-color="#071D50"/>
   </linearGradient>
 </defs>
-<!-- slim top visor -->
-<path d="M14 15.5H51.5L56 19.5H11.5L14 15.5Z" fill="#123F9E"/>
-<!-- outdoor camera housing, side profile -->
-<path d="M17 20H48.5C51.5 20 54 22.5 54 25.5V33.5C54 36.5 51.5 39 48.5 39H17L12 34V25L17 20Z" fill="url(#outdoorBody)"/>
-<!-- front lens barrel -->
+<!-- sunshade -->
+<path d="M15 14.5H51.5L55 18.5H12L15 14.5Z" fill="#123F9E"/>
+<!-- main outdoor camera body -->
+<path d="M17 19.5H47.5C51.1 19.5 54 22.4 54 26V33C54 36.6 51.1 39.5 47.5 39.5H17L12 34.5V24.5L17 19.5Z" fill="url(#camHousing)"/>
+<!-- lens barrel and glass -->
 <path d="M17 21.5 11 25V34L17 37.5V21.5Z" fill="#0C4C9F"/>
-<circle cx="12.5" cy="29.5" r="8.5" fill="url(#outdoorLens)" stroke="#D8F8FF" stroke-width="1.8"/>
-<circle cx="12.5" cy="29.5" r="5.8" fill="#071C4C" stroke="#55D7EA" stroke-width="1.5"/>
-<circle cx="12.5" cy="29.5" r="3.1" fill="#102D69" stroke="#C9F8FF" stroke-width="1.2"/>
-<circle cx="11.3" cy="28.3" r="1.1" fill="white"/>
-<!-- housing details -->
-<path d="M47.5 23.5V35.5" stroke="#C8F6FF" stroke-width="1.5" stroke-linecap="round"/>
-<path d="M23 23.5H40" stroke="#B7F4FA" stroke-width="1.4" stroke-linecap="round" opacity=".8"/>
-<!-- compact wall-mount arm and plate -->
-<path d="M39 39V43.5L34.5 47.5" stroke="#123F9E" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M32.5 46.5H39.5V50H32.5Z" fill="#08BFD3"/>
-<path d="M38.5 49H47V53H38.5Z" fill="#123F9E"/>
-<path d="M44 51.5H48V59H44Z" rx="1" fill="#1768E8"/>
-<circle cx="46" cy="55" r=".8" fill="#D9F9FF"/>
+<circle cx="12.5" cy="29.5" r="8.2" fill="#0B347B" stroke="#DDFBFF" stroke-width="1.8"/>
+<circle cx="12.5" cy="29.5" r="5.6" fill="url(#camGlass)" stroke="#75E3F0" stroke-width="1.5"/>
+<circle cx="12.5" cy="29.5" r="2.7" fill="#061A49" stroke="#DDFBFF" stroke-width="1.1"/>
+<circle cx="11.4" cy="28.4" r="1" fill="white"/>
+<!-- subtle side details -->
+<path d="M24 23.5H42" stroke="#D9FAFF" stroke-width="1.4" stroke-linecap="round" opacity=".8"/>
+<path d="M48.5 24V35" stroke="#D9FAFF" stroke-width="1.4" stroke-linecap="round"/>
+<!-- single connected wall mounting bracket -->
+<path d="M39 39.5V43.5C39 45.1 40.3 46.4 41.9 46.4H46.5V51.5" stroke="#123F9E" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M34 42.5H42" stroke="#08AFCB" stroke-width="3.5" stroke-linecap="round"/>
+<path d="M43.5 49.5H50.5V58H43.5V49.5Z" fill="#1768E8"/>
+<circle cx="47" cy="53.5" r="1.1" fill="#DDFBFF"/>
 </svg></div>
     <h2><span>CCTV</span> Report</h2>
   </a>
