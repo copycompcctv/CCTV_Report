@@ -868,7 +868,7 @@ function renderHistory(){
     return '<article class="card hrow'+(r.id===db.currentId?' cur':'')+'" data-rid="'+id+'">'
      +'<div><strong>'+esc((r.customer||'').trim()||'Tanpa nama')+'</strong>'+(r.example?'<span class="tag">Contoh</span>':'')
      +'<div class="hmeta">'+esc([d,n+' baris',tc>0?'kabel '+fmt(tc)+' M':''].filter(Boolean).join(' · '))+'</div></div>'
-     +'<div class="hact"><button type="button" class="mini" data-act="h-open">Buka</button><button type="button" class="mini" data-act="h-edit">Edit</button><button type="button" class="mini" data-act="h-dup">Salin</button><button type="button" class="mini" data-act="h-copy">Salin Teks</button><button type="button" class="mini" data-act="h-wa">WhatsApp</button><button type="button" class="mini" data-act="h-pdf">Cetak / PDF</button><button type="button" class="mini danger" data-act="h-del">Hapus</button></div></article>';
+     +'<div class="hact"><button type="button" class="mini" data-act="h-open">Buka</button><button type="button" class="mini" data-act="h-edit">Edit</button><button type="button" class="mini" data-act="h-copy">Salin</button><button type="button" class="mini" data-act="h-wa">WhatsApp</button><button type="button" class="mini" data-act="h-pdf">Cetak / PDF</button><button type="button" class="mini danger" data-act="h-del">Hapus</button></div></article>';
   }).join(''):'<p class="empty">Tidak ada laporan yang cocok.</p>';
 }
 
