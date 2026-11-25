@@ -152,6 +152,45 @@ details summary{cursor:pointer;font-weight:600;min-height:40px;display:flex;alig
 @media (prefers-reduced-motion: reduce){.toast{transition:none}}
 .item-actions{display:flex;justify-content:flex-start;margin-top:12px}.out-heading{display:flex;align-items:center;gap:14px;flex-wrap:wrap}.out-heading strong{font-size:18px;font-weight:500;color:#4d145c}.structured-item{padding:12px;border-radius:9px}.structured-item .item-top{margin-bottom:10px}.structured-item .lbl{margin-bottom:6px}
 .attachment-panel{border:1px solid var(--line);border-radius:10px;padding:12px;display:grid;gap:8px}.attachment-pick{display:inline-flex;align-items:center;justify-content:center;width:max-content;max-width:100%;cursor:pointer}#attachmentInput{display:block;width:100%;max-width:100%;font:inherit;font-size:13px;color:var(--text);padding:8px;border:1px dashed var(--line);border-radius:8px;background:var(--soft)}.attachment-list{display:grid;gap:8px}.attachment-entry{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px;border:1px solid var(--line);border-radius:8px}.attachment-entry img{width:76px;height:60px;object-fit:cover;border-radius:6px}.attachment-entry video{width:120px;max-height:76px;border-radius:6px}.attachment-entry a{color:var(--accent);font-weight:600}.brand .sub{max-width:560px}.sec-head{align-items:center}.sec-head select{flex:1;min-width:160px}.structured-item .item-top strong{font-weight:600}
+
+/* Copy Computer modern light UI */
+:root{color-scheme:light;--bg:#fff;--surface:#fff;--surface2:#f3f7ff;--ink:#10265a;--muted:#71809a;--line:#dfe8f7;--accent:#1768e8;--accent-ink:#fff;--accent-soft:#edf4ff;--wa:#168a50;--wa-ink:#fff}
+body{background:#fff;color:var(--ink);padding-block:12px 30px}
+.wrap{max-width:760px;gap:14px}
+.top{background:#fff;border:1px solid var(--line);border-radius:18px;padding:10px 12px;box-shadow:0 5px 18px rgba(24,78,160,.07)}
+.brand{gap:12px}
+.mark{width:66px;height:auto;max-height:48px;object-fit:contain;aspect-ratio:auto}
+.brand-name{font-size:17px;font-weight:800;letter-spacing:.01em;color:#10265a}
+.brand-section{font-size:13px;font-weight:650;color:#1768e8;margin:1px 0 0}
+.hbtns{gap:7px}
+.icon-btn{width:44px;height:44px;min-height:44px;padding:0;border:1px solid #dfe8fb;border-radius:13px;background:#f4f7ff;color:#123b91;display:inline-grid;place-items:center;text-decoration:none}
+.icon-btn svg{width:22px;height:22px}
+.btn{background:#1768e8;border-radius:11px;min-height:44px}
+.btn.ghost{background:#f4f7ff;border:1px solid #dfe8fb;color:#1749a4}
+.card{border:1px solid var(--line);border-radius:16px;padding:15px;box-shadow:0 4px 16px rgba(24,78,160,.045)}
+input,textarea,select{border-color:#d7e2f7;border-radius:10px;background:#fff}
+.lbl{text-transform:none;letter-spacing:0;font-size:13px;color:#1c3975}
+.tabs{position:static;background:#fff;border:1px solid var(--line);border-radius:14px;padding:5px;box-shadow:0 4px 14px rgba(24,78,160,.04)}
+.tabs-in{max-width:none;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
+.tab{min-height:42px;border-radius:10px;font-size:13px}
+.tab[aria-current=page]{background:#eaf2ff;color:#1458c8}
+.cols{display:block}
+#v-hasil{display:none!important}
+#form{gap:12px}
+#form .card{gap:13px}
+#form .card:first-child{padding:16px}
+.form-title{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.form-title h2{font-size:19px;line-height:1.25;margin:0;color:#10265a}
+.form-title p{margin:3px 0 0;color:var(--muted);font-size:13px}
+.form-actions{display:grid;grid-template-columns:1fr 1.45fr;gap:10px;margin-top:4px}
+.form-actions .btn{width:100%}
+.attachment-panel{background:#fbfdff;border:1px dashed #a9c4f8;border-radius:13px;padding:13px}
+.attachment-pick{width:100%;min-height:46px}
+.hrow{gap:12px}
+.hact{gap:6px}
+.mini{border-color:#dce6f7;border-radius:9px;color:#1749a4}
+@media(min-width:960px){.wrap{max-width:760px}.tabs{position:static}.tabs-in{grid-template-columns:repeat(3,minmax(0,1fr))}.cols{display:block}}
+@media(max-width:520px){body{padding-left:12px;padding-right:12px}.top{padding:9px}.mark{width:56px;max-height:42px}.brand-name{font-size:15px}.icon-btn{width:40px;height:40px;min-height:40px}.tabs-in{grid-template-columns:repeat(3,minmax(0,1fr))}.tab{font-size:12px;padding:0 4px}.form-actions{grid-template-columns:.85fr 1.4fr}}
 </style>
 </head>
 <body>
@@ -171,25 +210,26 @@ details summary{cursor:pointer;font-weight:600;min-height:40px;display:flex;alig
   <div class="wrap" id="appRoot" hidden>
   <header class="top">
     <div class="brand">
-      <img class="mark" src="logo-copy-computer.PNG" alt="Logo Copy Computer">
+      <img class="mark" src="logo-copy-computer.PNG" alt="Logo asli Copy Computer">
       <div>
-        <h1>Laporan Teknisi</h1>
-        <p class="sub" id="brand"></p>
+        <div class="brand-name">COPY COMPUTER</div>
+        <p class="brand-section">CCTV Report</p>
         <p id="status" class="sub" hidden></p>
       </div>
     </div>
     <div class="hbtns">
-      <a href="./" class="btn small ghost" style="text-decoration:none">Menu Utama</a>
+      <a href="./" class="icon-btn" aria-label="Home" title="Home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7"/><path d="M5 9v12h14V9M9 21v-7h6v7"/></svg></a>
+      <button type="button" id="backBtn" class="icon-btn" aria-label="Kembali" title="Kembali"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/><path d="M9 12h12"/></svg></button>
       <button type="button" id="logoutBtn" class="btn small ghost" hidden>Keluar</button>
-      <button type="button" id="installBtn" class="btn small ghost" hidden>Pasang aplikasi</button>
-      <button type="button" class="btn small" data-act="new">Laporan baru</button>
+      <button type="button" id="installBtn" class="btn small ghost" hidden>Pasang</button>
     </div>
   </header>
 
-  <nav class="tabs" aria-label="Menu utama">
+  <nav class="tabs" aria-label="Menu CCTV Report">
     <div class="tabs-in">
-      <button type="button" class="tab" data-act="view" data-v="isi">Isi Laporan</button>
-      <button type="button" class="tab" data-act="view" data-v="riwayat">History Laporan</button>
+      <button type="button" class="tab" data-act="view" data-v="isi">Buat Laporan</button>
+      <button type="button" class="tab" data-act="view" data-v="riwayat">Riwayat</button>
+      <button type="button" class="tab" data-act="view" data-v="barang">Stok Barang</button>
     </div>
   </nav>
 
@@ -645,13 +685,13 @@ function arm(b,key,txt){
   setTimeout(function(){if(armed===key){armed=null;if(b.isConnected)b.textContent=b.dataset.o}},3000);
   return false;
 }
-async function sharePdf(btn){
+async function sharePdf(btn,reportOverride){
   var old=btn?btn.textContent:'';
   if(btn){btn.disabled=true;btn.textContent='Menyiapkan PDF...'}
   function finish(){if(btn){btn.disabled=false;btn.textContent=old}}
   var url=null;
   try{
-    var r=cur(),name=pdfName(r),logo=await loadLogoForPdf(),bytes=buildPdf(r,db.kop,logo);
+    var r=reportOverride||cur(),name=pdfName(r),logo=await loadLogoForPdf(),bytes=buildPdf(r,db.kop,logo);
     var blob=new Blob([bytes],{type:'application/pdf'});
     // On supported Chromium browsers, show a real Save As dialog.
     if(window.showSaveFilePicker){
@@ -754,16 +794,19 @@ function render(){
    +'<label class="check"><input id="showMeta" type="checkbox" data-f="showMeta"'+(r.showMeta?' checked':'')+'><span>Cantumkan tanggal dan alamat di teks WhatsApp</span></label></div>'
    +r.sections.map(function(sec){if(!sec.items.length)sec.items.push(mk('structured',{item:'Isi Sendiri'}));return sectionHTML(sec)}).join('')
    +'<div class="item-actions"><button type="button" class="btn" data-act="add-sec">+ Tambah pekerjaan</button></div>'
-   +'<div class="card stack"><label class="lbl" for="catatan">Catatan</label><textarea id="catatan" data-f="catatan" rows="3" placeholder="Catatan tambahan (opsional)">'+esc(r.catatan||'')+'</textarea></div>';
+   +'<div class="card stack"><label class="lbl" for="catatan">Keterangan tambahan</label><textarea id="catatan" data-f="catatan" rows="3" placeholder="Keterangan tambahan (opsional)">'+esc(r.catatan||'')+'</textarea></div>'
+   +'<section class="attachment-panel" aria-label="Lampiran foto dan video"><div><strong>Lampiran Foto / Video</strong><p class="hint">Opsional · Maksimal 8 file</p></div><label class="btn ghost attachment-pick" for="attachmentInput">＋ Pilih Foto / Video</label><input id="attachmentInput" type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,video/mp4,video/quicktime,video/webm" multiple><div class="hint">Foto maks. 12 MB dan video maks. 80 MB per file.</div><div id="attachmentList" class="attachment-list"><span class="hint">Belum ada lampiran.</span></div></section>'
+   +'<div class="form-title"><div><h2>Buat Laporan Baru</h2><p>Periksa data sebelum menyimpan.</p></div></div>'
+   +'<div class="form-actions"><button type="button" class="btn ghost" data-act="reset-form">Reset</button><button type="button" class="btn save-report-btn" data-act="save-report">Simpan Laporan</button></div>';
   if(isReadOnly){
     var banner=document.createElement('div');banner.className='card';banner.style.cssText='border-color:#0b7895;background:#eef8fb;color:#075b73';
     banner.innerHTML='<strong>Mode lihat laporan</strong><div class="hint">Laporan tersimpan ditampilkan hanya untuk dibaca. Data tidak bisa diubah dari tampilan ini.</div><button type="button" class="btn ghost" data-act="view" data-v="riwayat">Kembali ke riwayat</button>';
     $('form').insertBefore(banner,$('form').firstChild);
     $('form').querySelectorAll('input,textarea,select,button').forEach(function(el){el.disabled=true});
     var back=banner.querySelector('button');if(back)back.disabled=false;
-    var saveBtn=document.querySelector('[data-act="save-report"]');if(saveBtn)saveBtn.hidden=true;
+    var saveBtn=document.querySelector('[data-act="save-report"]');if(saveBtn)saveBtn.hidden=true;var resetBtn=document.querySelector('[data-act="reset-form"]');if(resetBtn)resetBtn.hidden=true;
   }else{var saveBtn=document.querySelector('[data-act="save-report"]');if(saveBtn)saveBtn.hidden=false;}
-  renderNote();updateOut();
+  renderNote();updateOut();renderAttachments();
 }
 async function renderAttachments(){
   var box=$('attachmentList');if(!box)return;var r=cur(),html='';
@@ -842,7 +885,7 @@ function renderHistory(){
     return '<article class="card hrow'+(r.id===db.currentId?' cur':'')+'" data-rid="'+id+'">'
      +'<div><strong>'+esc((r.customer||'').trim()||'Tanpa nama')+'</strong>'+(r.example?'<span class="tag">Contoh</span>':'')
      +'<div class="hmeta">'+esc([d,n+' baris',tc>0?'kabel '+fmt(tc)+' M':''].filter(Boolean).join(' · '))+'</div></div>'
-     +'<div class="hact"><button type="button" class="mini" data-act="h-detail">Lihat laporan</button><button type="button" class="mini" data-act="h-edit">Edit</button><button type="button" class="mini danger" data-act="h-del">Hapus</button></div></article>';
+     +'<div class="hact"><button type="button" class="mini" data-act="h-open">Buka</button><button type="button" class="mini" data-act="h-edit">Edit</button><button type="button" class="mini" data-act="h-dup">Salin</button><button type="button" class="mini" data-act="h-wa">WhatsApp</button><button type="button" class="mini" data-act="h-pdf">Cetak / PDF</button><button type="button" class="mini danger" data-act="h-del">Hapus</button></div></article>';
   }).join(''):'<p class="empty">Tidak ada laporan yang cocok.</p>';
 }
 
@@ -860,14 +903,14 @@ function showReportPopup(title,body){
 
 /* ---------- Navigasi ---------- */
 function setView(v,keepScroll){
-  if(v==='hasil'||v==='barang')v='isi';
+  if(['isi','riwayat','barang'].indexOf(v)<0)v='isi';
   view=v;
-  ['isi','riwayat'].forEach(function(n){$('v-'+n).hidden=n!==v});
-  $('v-hasil').hidden=false;
+  ['isi','riwayat','barang'].forEach(function(n){var el=$('v-'+n);if(el)el.hidden=n!==v});
+  $('v-hasil').hidden=true;
   document.querySelectorAll('.tab').forEach(function(b){if(b.dataset.v===v)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});
   if(v==='isi')render();
-  if(v==='hasil')updateOut();
   if(v==='riwayat')renderHistory();
+  if(v==='barang')renderCatalog();
   renderNote();
   if(!keepScroll)window.scrollTo(0,0);
 }
@@ -917,6 +960,11 @@ document.addEventListener('click',function(e){
   switch(act){
     case 'view':setView(b.dataset.v);break;
     case 'new':{isReadOnly=false;var n=blankReport();n.tech=db.lastTech||'';db.reports.push(n);db.currentId=n.id;save();setView('isi');focusEl('customer');break}
+    case 'reset-form':{
+      if(!confirm('Kosongkan semua isian laporan ini?'))break;
+      var old=cur(),fresh=blankReport();fresh.id=old.id;fresh.ownerId=old.ownerId||'';fresh.saved=old.saved!==false;fresh.createdAt=old.createdAt||Date.now();fresh.tech=db.lastTech||old.tech||'';
+      db.reports=db.reports.map(function(x){return x.id===old.id?fresh:x});db.currentId=fresh.id;delete pendingFiles[old.id];isReadOnly=false;saveNow();render();renderAttachments();toast('Form laporan dikosongkan.');break;
+    }
     case 'dismiss-note':r.example=false;renderNote();save();break;
     case 'dismiss-install':try{localStorage.setItem('laporan-cctv-install','1')}catch(x){}$('install').hidden=true;break;
     case 'kind':{
@@ -992,6 +1040,8 @@ document.addEventListener('click',function(e){
       db.catalog=db.catalog.filter(function(x){return x!==c});save();renderCatalog();break;
     }
     case 'h-detail':{id=b.closest('[data-rid]').dataset.rid;var rr=db.reports.find(function(x){return String(x.id)===String(id)});if(rr)showReportPopup('Laporan CCTV',buildText(rr));break;}
+    case 'h-wa':{id=b.closest('[data-rid]').dataset.rid;var wr=db.reports.find(function(x){return String(x.id)===String(id)});if(wr){var wt=buildText(wr);if(wt)window.open('https://wa.me/?text='+encodeURIComponent(wt),'_blank','noopener,noreferrer');else toast('Laporan masih kosong')}break;}
+    case 'h-pdf':{id=b.closest('[data-rid]').dataset.rid;var pr=db.reports.find(function(x){return String(x.id)===String(id)});if(pr)sharePdf(null,pr);break;}
     case 'h-edit':id=b.closest('[data-rid]').dataset.rid;db.currentId=id;isReadOnly=false;setView('isi');toast('Mode edit aktif. Perubahan tersimpan setelah menekan Simpan laporan.');break;
     case 'h-open':id=b.closest('[data-rid]').dataset.rid;db.currentId=id;isReadOnly=true;save();setView('isi');break;
     case 'h-dup':{
@@ -1115,6 +1165,7 @@ $('authForm').addEventListener('submit',async function(e){
   }catch(err){authMessage(err.message||'Gagal masuk. Periksa password dan koneksi.')}
   finally{button.disabled=false;button.textContent='Masuk'}
 });
+$('backBtn').addEventListener('click',function(){if(document.referrer&&new URL(document.referrer).origin===location.origin&&history.length>1)history.back();else location.href='./'});
 $('logoutBtn').addEventListener('click',async function(){
   cloudReady=false;if(realtimeChannel){await sb.removeChannel(realtimeChannel);realtimeChannel=null}
   await sb.auth.signOut();currentUser=null;currentProfile=null;$('appRoot').hidden=true;$('authGate').hidden=false;authMessage('Anda sudah keluar.',true);
