@@ -415,7 +415,7 @@ function parseExpr(s){
   var total=terms.reduce(function(a,t){return a+parseFloat(t)},0);
   return {ok:true,terms:terms.map(function(t){return t.replace(/\./g,',')}),total:total};
 }
-function mk(kind,o){return Object.assign({id:uid(),kind:kind,label:'',text:'',qty:'',expr:'',colon:true,join:false,job:'Pasang Baru',jobCustom:'',item:'DVR',itemCustom:'',note:'',unit:'Pcs'},o||{})}
+function mk(kind,o){return Object.assign({id:uid(),kind:kind,label:'',text:'',qty:'',expr:'',colon:true,join:false,job:'Pasang Kamera Baru',jobCustom:'',item:'Isi Sendiri',itemCustom:'',note:'',unit:'-'},o||{})}
 function itemLine(it){
   var label=(it.label||'').trim();
   if(it.kind==='structured'){var nm=it.item==='Isi Sendiri'?(it.itemCustom||''):it.item;var detail=(it.note||'').trim();var unit=it.unit&&it.unit!=='-'?it.unit:'';return [nm,detail].filter(Boolean).join(' : ')+(unit?' '+unit:'')}
