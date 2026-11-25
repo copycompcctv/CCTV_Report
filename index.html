@@ -78,30 +78,30 @@ main{width:min(1160px,100%);margin:58px auto 42px;padding:0 24px}
 <main>
 <nav class="menu" aria-label="Menu aplikasi">
   <a class="module" href="./cctv.html" aria-label="CCTV Report">
-    <div class="symbol" aria-hidden="true"><svg viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg" fill="none" role="img" aria-label="Ikon kamera CCTV indoor tampak depan 2D">
-  <defs>
-    <linearGradient id="indoorFace" x1="30" y1="24" x2="96" y2="100" gradientUnits="userSpaceOnUse"><stop stop-color="#FFFFFF"/><stop offset=".62" stop-color="#E8EEF6"/><stop offset="1" stop-color="#AEBED2"/></linearGradient>
-    <linearGradient id="indoorAccent" x1="24" y1="23" x2="103" y2="105" gradientUnits="userSpaceOnUse"><stop stop-color="#08C5D9"/><stop offset="1" stop-color="#123CAA"/></linearGradient>
-    <radialGradient id="indoorGlass" cx="0" cy="0" r="1" gradientTransform="matrix(19 22 -22 19 52 46)" gradientUnits="userSpaceOnUse"><stop stop-color="#D9FFFF"/><stop offset=".28" stop-color="#08C5D9"/><stop offset=".65" stop-color="#1768D9"/><stop offset="1" stop-color="#071A42"/></radialGradient>
-  </defs>
-  <!-- front-facing compact indoor camera body -->
-  <path d="M37 18h54c9 0 16 7 16 16v39c0 8-7 15-15 15H36c-8 0-15-7-15-15V34c0-9 7-16 16-16Z" fill="url(#indoorFace)" stroke="#8193AB" stroke-width="2.5"/>
-  <path d="M37 18h54c9 0 16 7 16 16v7H21v-7c0-9 7-16 16-16Z" fill="#FFFFFF" opacity=".8"/>
-  <path d="M29 30h70" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" opacity=".9"/>
-  <!-- centered lens and bezel -->
-  <circle cx="64" cy="54" r="23" fill="#123CAA" stroke="#FFFFFF" stroke-width="3"/>
-  <circle cx="64" cy="54" r="17.5" fill="url(#indoorGlass)"/>
-  <circle cx="58" cy="47" r="4.5" fill="#FFFFFF" opacity=".95"/>
-  <circle cx="72" cy="62" r="2" fill="#8DEEFF" opacity=".8"/>
-  <!-- small microphone / status details -->
-  <circle cx="39" cy="77" r="2.2" fill="#08C5D9"/>
-  <circle cx="47" cy="77" r="2.2" fill="#A4B5CB"/>
-  <circle cx="89" cy="77" r="2.2" fill="#08C5D9"/>
-  <!-- short integrated swivel foot -->
-  <path d="M54 88h20l4 10H50z" fill="#123CAA"/>
-  <path d="M43 98h42l10 9H33z" fill="url(#indoorAccent)" stroke="#123CAA" stroke-width="1.8" stroke-linejoin="round"/>
-  <path d="M42 102h44" stroke="#DDFBFF" stroke-width="1.8" stroke-linecap="round" opacity=".9"/>
-</svg></div>
+    <div class="symbol" aria-hidden="true"><svg viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg" fill="none" role="img" aria-label="Ikon kamera CCTV dome indoor plafon 2D">
+      <defs>
+        <linearGradient id="domeBody" x1="30" y1="34" x2="98" y2="94" gradientUnits="userSpaceOnUse"><stop stop-color="#FFFFFF"/><stop offset=".58" stop-color="#E8F1FA"/><stop offset="1" stop-color="#B8C9DC"/></linearGradient>
+        <linearGradient id="domeTrim" x1="24" y1="45" x2="104" y2="91" gradientUnits="userSpaceOnUse"><stop stop-color="#08C5D9"/><stop offset="1" stop-color="#123CAA"/></linearGradient>
+        <linearGradient id="domeGlass" x1="48" y1="66" x2="83" y2="91" gradientUnits="userSpaceOnUse"><stop stop-color="#193F80"/><stop offset=".55" stop-color="#071A42"/><stop offset="1" stop-color="#020B20"/></linearGradient>
+      </defs>
+      <!-- ceiling mounting plate and short mount -->
+      <path d="M27 13h74a5 5 0 0 1 5 5v8H22v-8a5 5 0 0 1 5-5Z" fill="#123CAA"/>
+      <path d="M34 18h60" stroke="#8DEEFF" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M48 26h32v13H48z" fill="#08B8D2"/>
+      <path d="M54 38h20v9H54z" fill="#123CAA"/>
+      <!-- rounded dome housing -->
+      <path d="M18 72c0-23 20-40 46-40s46 17 46 40v5c0 7-6 13-13 13H31c-7 0-13-6-13-13v-5Z" fill="url(#domeBody)" stroke="#123CAA" stroke-width="3"/>
+      <path d="M18 72c0-23 20-40 46-40s46 17 46 40" stroke="#08C5D9" stroke-width="4" stroke-linecap="round"/>
+      <path d="M23 76c11 9 25 13 41 13s30-4 41-13" stroke="#8EA5C0" stroke-width="2" opacity=".8"/>
+      <!-- dark smoked lower dome and central camera lens -->
+      <path d="M31 75c8 8 19 12 33 12s25-4 33-12c-3 10-15 17-33 17S34 85 31 75Z" fill="url(#domeGlass)" stroke="#123CAA" stroke-width="1.5"/>
+      <ellipse cx="64" cy="78" rx="10" ry="7" fill="#08B8D2"/>
+      <ellipse cx="64" cy="78" rx="6" ry="4.5" fill="#071A42"/>
+      <circle cx="61.5" cy="76.5" r="1.8" fill="#FFFFFF"/>
+      <!-- subtle side highlights -->
+      <path d="M29 61c4-10 12-17 22-21" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" opacity=".9"/>
+      <circle cx="99" cy="72" r="2" fill="#08C5D9"/>
+    </svg></div>
     <h2>CCTV <span>Report</span></h2>
   </a>
   <a class="module" href="./servisan/" aria-label="Manajemen Servis">
