@@ -824,7 +824,7 @@ function str(v){return typeof v==='string'?v:(v==null?'':String(v))}
 function normItem(it){
   it=it||{};
   return {id:str(it.id)||uid(),kind:['text','qty','cable','structured'].indexOf(it.kind)>=0?it.kind:'text',
-    label:str(it.label),text:str(it.text),qty:str(it.qty),expr:str(it.expr),colon:it.colon!==false,join:!!it.join,job:str(it.job)||'Pasang Baru',jobCustom:str(it.jobCustom),item:str(it.item),itemCustom:str(it.itemCustom),note:str(it.note)};
+    label:str(it.label),text:str(it.text),qty:str(it.qty),expr:str(it.expr),colon:it.colon!==false,join:!!it.join,job:str(it.job),jobCustom:str(it.jobCustom),item:str(it.item),itemCustom:str(it.itemCustom),note:str(it.note)};
 }
 function normReport(r){
   if(!r||typeof r!=='object') return null;
@@ -833,7 +833,7 @@ function normReport(r){
     x=x||{};var items=(Array.isArray(x.items)?x.items:[]).map(normItem),groups=[];
     items.forEach(function(it){
       if(it.kind!=='structured') return;
-      var job=x.job||(x.title&&x.title!=='Rincian pekerjaan'?x.title:'')||(it.job==='Servis Lainnya'?(it.jobCustom||'Servis Lainnya'):it.job)||'Pasang Kamera Baru';if(job==='Pasang Baru')job='Pasang Kamera Baru';
+      var job=x.job||(x.title&&x.title!=='Rincian pekerjaan'?x.title:'')||(it.job==='Servis Lainnya'?(it.jobCustom||'Servis Lainnya'):it.job)||'';if(job==='Pasang Baru')job='Pasang Kamera Baru';
       var g=groups[groups.length-1];if(!g||g.job!==job){g={id:uid(),job:job,title:'',bold:true,items:[]};groups.push(g)}g.items.push(it);
     });
     var plain=items.filter(function(it){return it.kind!=='structured'});
@@ -875,8 +875,8 @@ function mergeCatalog(cats){
  all.sort(function(a,b){return a.label.localeCompare(b.label)});return all;
 }
 function blankReport(){
-  return {id:uid(),example:false,saved:false,customer:'',address:'',tech:'',date:todayISO(),createdAt:Date.now(),showMeta:false,updatedAt:Date.now(),
-    catatan:'',sections:[{id:uid(),title:'',job:'Pasang Kamera Baru',bold:true,items:[mk('structured',{item:''})]}]};
+  return {id:uid(),example:false,saved:false,customer:'',address:'',tech:'',date:'',createdAt:Date.now(),showMeta:false,updatedAt:Date.now(),
+    catatan:'',sections:[{id:uid(),title:'',job:'',bold:true,items:[mk('structured',{item:''})]}]};
 }
 function sampleReports(){
   var a={id:uid(),example:true,customer:'H. Jamal',address:'',tech:'',date:todayISO(),createdAt:Date.now(),showMeta:false,updatedAt:Date.now(),sections:[
@@ -1038,9 +1038,9 @@ function loadDb(){
   var raw=null,d=null;
   try{raw=localStorage.getItem(KEY);hadLocalDb=!!raw}catch(e){storageOk=false}
   try{d=raw?JSON.parse(raw):null}catch(e){d=null}
-  var reports=d&&Array.isArray(d.reports)?d.reports.map(normReport).filter(Boolean):[];
+  var reports=d&&Array.isArray(d.reports)?d.reports.map(normReport).filter(function(r){return r&&!r.example}):[];
   var catalog=mergeCatalog(d&&Array.isArray(d.catalog)?d.catalog:[]);
-  if(!reports.length) reports=sampleReports();
+  if(!reports.length) reports=[blankReport()];
   var cid=d&&reports.some(function(r){return r.id===d.currentId})?d.currentId:reports[0].id;
   return {reports:reports,catalog:catalog,currentId:cid,kop:normKop(d&&d.kop),lastTech:str(d&&d.lastTech)};
 }
@@ -1184,7 +1184,7 @@ function fieldsHTML(it){
   return lab+'<input id="val-'+id+'" class="mono" data-f="expr" value="'+esc(it.expr)+'" inputmode="tel" placeholder="50+10+5" aria-label="Panjang kabel dalam meter" autocomplete="off">';
 }
 function itemHTML(it,idx){
-  if(it.kind==='structured') return '<div class="item structured-item" data-item="'+esc(it.id)+'"><div class="item-top"><span class="sp"></span><button type="button" class="mini danger" data-act="del-item">Hapus</button></div>'+fieldsHTML(it)+'</div>';
+  if(it.kind==='structured') return '<div class="item structured-item" data-item="'+esc(it.id)+'">'+fieldsHTML(it)+'</div>';
   var kinds=[['text','Teks'],['qty','Barang'],['cable','Kabel']];
   var c=it.kind==='cable'?calcInfo(it):null;
   return '<div class="item" data-item="'+esc(it.id)+'">'
@@ -1199,10 +1199,10 @@ function itemHTML(it,idx){
    +'</div>';
 }
 function sectionHTML(s,index){
-  var id=esc(s.id),jobs=['Instalasi Listrik','Krimping Ulang','Pasang Kamera Baru','Pasang Ulang Kamera','Reset DVR','Servis DVR/NVR','Servis Kamera','Servis Lainnya','Setting Online ke HP'],selectedJob=(s.job||s.title||'Pasang Kamera Baru');if(selectedJob==='Pasang Baru')selectedJob='Pasang Kamera Baru';
+  var id=esc(s.id),jobs=['Instalasi Listrik','Krimping Ulang','Pasang Kamera Baru','Pasang Ulang Kamera','Reset DVR','Servis DVR/NVR','Servis Kamera','Servis Lainnya','Setting Online ke HP'],selectedJob=(s.job||s.title||'');if(selectedJob==='Pasang Baru')selectedJob='Pasang Kamera Baru';
   return '<section class="card" data-sec="'+id+'">'
-   +'<div class="sec-head"><label class="lbl job-label" for="jobsec-'+id+'"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.2 6.1a5.2 5.2 0 0 0-6.7 6.7L3 17.3 6.7 21l4.5-4.5a5.2 5.2 0 0 0 6.7-6.7l-3.1 3.1-3.6-3.6 3-3.2Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="m15.4 14.5 5.3 5.3" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>Jenis Pekerjaan <em>*</em></label><select id="jobsec-'+id+'" data-f="job">'+jobs.map(function(v){return '<option'+(selectedJob===v?' selected':'')+'>'+v+'</option>'}).join('')+'</select>'
-   +'<div class="job-actions"><button type="button" class="mini danger" data-act="del-sec">Hapus pekerjaan</button></div></div>'
+   +'<div class="sec-head"><label class="lbl job-label" for="jobsec-'+id+'"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.2 6.1a5.2 5.2 0 0 0-6.7 6.7L3 17.3 6.7 21l4.5-4.5a5.2 5.2 0 0 0 6.7-6.7l-3.1 3.1-3.6-3.6 3-3.2Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="m15.4 14.5 5.3 5.3" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>Jenis Pekerjaan <em>*</em></label><select id="jobsec-'+id+'" data-f="job"><option value=""'+(!selectedJob?' selected':'')+' disabled>Pilih jenis pekerjaan...</option>'+jobs.map(function(v){return '<option value="'+esc(v)+'"'+(selectedJob===v?' selected':'')+'>'+v+'</option>'}).join('')+'</select>'
+   +'</div>'
    +s.items.map(itemHTML).join('')
    +'<div class="item-actions"><button type="button" class="btn small" data-act="add-structured">＋ Tambah item barang</button>'
    +(index===0?'<button type="button" class="btn small add-job-btn" data-act="add-sec"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>Tambah pekerjaan</button>':'')
@@ -1651,4 +1651,12 @@ $('logoutBtn').addEventListener('click',async function(){
 #form .item-actions .add-job-btn{display:inline-flex;align-items:center;justify-content:center;gap:7px}
 #form .item-actions .add-job-btn svg{width:17px;height:17px;flex:0 0 17px}
 @media(max-width:420px){#form .item-actions{gap:8px}#form .item-actions>.btn{padding:0 7px;font-size:12px}}
+</style>
+<style>
+/* Jarak rapat dan pilihan awal yang benar-benar kosong */
+#form .sec-head{margin-bottom:2px!important;padding-bottom:0!important;gap:8px!important}
+#form .sec-head .job-label svg{width:24px!important;height:24px!important;min-width:24px!important}
+#form .structured-item{margin-top:0!important;padding-top:8px!important}
+#form .structured-item .fields{margin-top:0!important}
+#form .sec-head select{margin-bottom:0!important}
 </style>
