@@ -78,31 +78,32 @@ main{width:min(1160px,100%);margin:58px auto 42px;padding:0 24px}
 <main>
 <nav class="menu" aria-label="Menu aplikasi">
   <a class="module" href="./cctv.html" aria-label="CCTV Report">
-    <div class="symbol" aria-hidden="true"><svg viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg" fill="none" role="img" aria-label="Kamera CCTV outdoor tampak samping">
+    <div class="symbol" aria-hidden="true"><svg viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg" fill="none" role="img" aria-label="Ikon kamera CCTV outdoor tampak samping">
   <defs>
-    <linearGradient id="cctvHousing" x1="30" y1="39" x2="105" y2="84" gradientUnits="userSpaceOnUse"><stop stop-color="#173B91"/><stop offset=".58" stop-color="#1768E8"/><stop offset="1" stop-color="#08AFCB"/></linearGradient>
-    <linearGradient id="cctvLens" x1="13" y1="56" x2="42" y2="84" gradientUnits="userSpaceOnUse"><stop stop-color="#0D255F"/><stop offset="1" stop-color="#168DD7"/></linearGradient>
+    <linearGradient id="camShell" x1="25" y1="39" x2="95" y2="91" gradientUnits="userSpaceOnUse"><stop stop-color="#173B91"/><stop offset=".62" stop-color="#1768E8"/><stop offset="1" stop-color="#08AFCB"/></linearGradient>
+    <linearGradient id="camGlass" x1="13" y1="55" x2="36" y2="83" gradientUnits="userSpaceOnUse"><stop stop-color="#6DE7F5"/><stop offset="1" stop-color="#1768E8"/></linearGradient>
   </defs>
-  <!-- wall mounting arm and adjustable joint -->
-  <path d="M91 80h13v13H91z" fill="#173B91"/>
-  <path d="M101 88h13v7h-13z" rx="3" fill="#1768E8"/>
-  <path d="M110 91v17" stroke="#173B91" stroke-width="7" stroke-linecap="round"/>
-  <path d="M100 106h20" stroke="#173B91" stroke-width="7" stroke-linecap="round"/>
-  <circle cx="96" cy="82" r="8" fill="#DCEBFF" stroke="#173B91" stroke-width="4"/>
-  <!-- outdoor camera sunshield -->
-  <path d="M20 43 29 32h68l10 10-7 7H25z" fill="#10265A"/>
-  <path d="M29 34h66l6 7H23z" fill="#2B5FC0"/>
-  <!-- long side-profile camera housing -->
-  <path d="M27 47h65c10 0 18 8 18 18v8c0 10-8 18-18 18H27c-8 0-14-6-14-14V61c0-8 6-14 14-14Z" fill="url(#cctvHousing)" stroke="#10265A" stroke-width="3"/>
-  <path d="M38 52h47" stroke="#8EDBFA" stroke-width="3" stroke-linecap="round" opacity=".8"/>
-  <path d="M75 91h18" stroke="#0C367F" stroke-width="3" stroke-linecap="round" opacity=".65"/>
-  <!-- lens barrel at the front, facing left -->
-  <path d="M27 50c-10 0-17 9-17 19s7 19 17 19h8V50z" fill="#10265A" stroke="#F5FAFF" stroke-width="3"/>
-  <ellipse cx="16" cy="69" rx="7" ry="13" fill="url(#cctvLens)" stroke="#9BE8FA" stroke-width="2.5"/>
-  <ellipse cx="15" cy="69" rx="3" ry="7" fill="#071B48"/>
-  <circle cx="13.5" cy="65" r="2" fill="#B9F5FF"/>
-  <!-- small status light -->
-  <circle cx="87" cy="78" r="3" fill="#B9F5FF"/>
+  <!-- wall plate and compact rear mounting arm -->
+  <path d="M108 54h10a4 4 0 0 1 4 4v31a4 4 0 0 1-4 4h-10z" fill="#173B91"/>
+  <path d="M94 61 112 57v29l-18-5z" fill="#1768E8"/>
+  <path d="M87 67 103 63v17l-16-3z" fill="#0E347F"/>
+  <!-- short top-mounted joint -->
+  <path d="M82 42 98 34l9 8-8 12-15 2z" fill="#173B91"/>
+  <circle cx="92" cy="48" r="6" fill="#DCEBFF" stroke="#173B91" stroke-width="3"/>
+  <!-- broad sunshade: flat, angular outdoor-camera profile -->
+  <path d="M17 40 27 31h63l12 9-5 7H22z" fill="#10265A"/>
+  <path d="M27 34h61l8 6H21z" fill="#2C61C4"/>
+  <!-- tapered rectangular camera housing, deliberately not cylindrical -->
+  <path d="M27 46h57l13 9v22l-14 12H29L18 78V57z" fill="url(#camShell)" stroke="#10265A" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M38 52h43" stroke="#B6F1FF" stroke-width="3" stroke-linecap="round" opacity=".85"/>
+  <path d="M46 86h34" stroke="#0C367F" stroke-width="3" stroke-linecap="round" opacity=".65"/>
+  <!-- front face and lens ring -->
+  <path d="M28 48 19 54v28l10 8 8-7V55z" fill="#10265A" stroke="#F5FAFF" stroke-width="2.5" stroke-linejoin="round"/>
+  <circle cx="24" cy="68" r="12" fill="#0C2869" stroke="#B9EFFF" stroke-width="3"/>
+  <circle cx="24" cy="68" r="7.5" fill="url(#camGlass)"/>
+  <circle cx="21.5" cy="65" r="2.3" fill="#F4FFFF"/>
+  <!-- small status indicator -->
+  <circle cx="76" cy="75" r="3" fill="#B9F5FF"/>
 </svg></div>
     <h2>CCTV <span>Report</span></h2>
   </a>
