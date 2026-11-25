@@ -68,6 +68,17 @@ main{width:min(1160px,100%);margin:58px auto 42px;padding:0 24px}
  .module:after{font-size:34px}
 }
 
+
+/* Unified Copy Computer dashboard */
+:root{--navy:#10265a;--blue:#1768e8;--muted:#6872b5;--line:#dce7ff;--soft:#f3f7ff}
+body{background:#fff;color:var(--navy)}
+header{border:1px solid var(--line);border-radius:26px;box-shadow:0 6px 20px rgba(24,78,160,.07)}
+header img{object-fit:contain}
+.module{border:1px solid var(--line);background:#fff;border-radius:28px;box-shadow:0 7px 22px rgba(24,78,160,.07)}
+.symbol{background:#edf3ff;color:var(--blue)}
+.module h2{color:var(--navy)}
+@media(max-width:680px){.module{min-height:112px;border-radius:22px}.symbol{border-radius:20px}.module h2{font-size:clamp(19px,5vw,24px)}}
+
 </style>
 </head>
 <body>
