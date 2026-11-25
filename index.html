@@ -16,21 +16,21 @@
 :root{color-scheme:light;--navy:#10265a;--blue:#1768e8;--cyan:#06b8d2;--muted:#71809a;--line:#e4ebf5;--soft:#f4f8ff}
 *{box-sizing:border-box}
 body{margin:0;background:#fff;color:var(--navy);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}
-header{height:76px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:13px;padding:10px max(18px,calc((100% - 1120px)/2))}
-header img{display:block;width:68px;height:auto;max-height:52px;object-fit:contain;flex:none}
-header strong{font-size:20px;letter-spacing:-.02em;font-weight:750;color:var(--navy)}
+header{height:150px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:28px;padding:16px max(36px,calc((100% - 1540px)/2))}
+header img{display:block;width:150px;height:auto;max-height:118px;object-fit:contain;flex:none;padding-right:24px;border-right:3px solid #10265a}
+header strong{font-size:42px;letter-spacing:-.04em;font-weight:800;color:var(--navy)}
 header strong span{color:var(--blue)}
-main{width:min(900px,100%);margin:36px auto 30px;padding:0 20px}
-.menu{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
-.module{min-width:0;min-height:148px;padding:18px 16px 15px;background:#fff;border:1px solid var(--line);border-radius:18px;text-decoration:none;color:inherit;display:flex;flex-direction:column;align-items:center;text-align:center;box-shadow:0 6px 20px rgba(21,63,132,.055);transition:transform .15s,box-shadow .15s}
+main{width:min(1540px,100%);margin:148px auto 30px;padding:0 34px}
+.menu{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:36px}
+.module{min-width:0;min-height:360px;padding:26px 24px 30px;background:#fff;border:1px solid #dce7ff;border-radius:48px;text-decoration:none;color:inherit;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:0 12px 28px rgba(21,82,190,.12);transition:transform .15s,box-shadow .15s}
 .module:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(21,63,132,.1)}
-.symbol{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;background:#edf5ff;color:var(--blue);margin-bottom:9px}
-.symbol svg{width:36px;height:36px;display:block}
-.module h2{font-size:16px;line-height:1.25;margin:0;font-weight:700;letter-spacing:-.02em}
+.symbol{width:220px;height:220px;border-radius:50%;display:grid;place-items:center;background:#f0f6ff;color:var(--blue);margin-bottom:22px}
+.symbol svg{width:142px;height:142px;display:block}
+.module h2{font-size:38px;line-height:1.2;margin:0;font-weight:750;letter-spacing:-.035em}
 .module h2 span{color:var(--blue)}
-.module:after{content:"";width:36px;height:3px;border-radius:3px;background:linear-gradient(90deg,var(--cyan),var(--blue));margin-top:9px}
-@media(max-width:680px){header{height:66px;padding:8px 15px}header img{width:58px;max-height:44px}header strong{font-size:18px}main{margin:24px auto;padding:0 15px}.menu{grid-template-columns:1fr;gap:12px}.module{min-height:94px;display:grid;grid-template-columns:64px 1fr;grid-template-rows:auto auto;column-gap:14px;row-gap:2px;align-items:center;text-align:left;padding:14px 16px}.symbol{grid-row:1/3;width:58px;height:58px;margin:0}.symbol svg{width:32px;height:32px}.module h2{align-self:end}.module:after{grid-column:2;width:34px;margin-top:7px;align-self:start}}
-@media(min-width:681px) and (max-width:900px){.menu{gap:12px}.module{padding:18px 12px}}
+
+@media(max-width:680px){header{height:86px;padding:8px 18px;gap:12px}header img{width:68px;max-height:54px;padding-right:10px;border-right-width:2px}header strong{font-size:19px}main{margin:54px auto 24px;padding:0 18px}.menu{grid-template-columns:1fr;gap:18px}.module{min-height:170px;display:grid;grid-template-columns:118px 1fr;grid-template-rows:auto;column-gap:22px;align-items:center;text-align:left;padding:22px 24px;border-radius:30px}.symbol{grid-row:1;width:112px;height:112px;margin:0}.symbol svg{width:72px;height:72px}.module h2{font-size:clamp(22px,5.5vw,30px);align-self:center}.module:after{content:'›';display:block;grid-column:3;grid-row:1;color:var(--blue);font-size:54px;font-weight:300;margin:0;align-self:center}}
+@media(min-width:681px) and (max-width:1100px){header{height:116px;padding:12px 24px}header img{width:110px;max-height:86px;padding-right:16px}header strong{font-size:32px}main{margin:90px auto 30px;padding:0 22px}.menu{gap:18px}.module{min-height:280px;border-radius:32px}.symbol{width:160px;height:160px}.symbol svg{width:100px;height:100px}.module h2{font-size:clamp(22px,3vw,32px)}}
 </style>
 </head>
 <body>
@@ -41,15 +41,15 @@ main{width:min(900px,100%);margin:36px auto 30px;padding:0 20px}
 <main>
 <nav class="menu" aria-label="Menu aplikasi">
   <a class="module" href="./cctv.html" aria-label="CCTV Report">
-    <div class="symbol" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><path d="M7 17.5 32 8l7 5-25 10-7-5Z" fill="currentColor"/><path d="m14 23 25-10v13L14 36V23Z" fill="currentColor" opacity=".9"/><path d="M18 35v5m17-14 5 7m-5-7v-5" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M8 17.5v9l6 4" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></div>
+    <div class="symbol" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><path d="M5 17 34 5l8 5-29 13-8-6Z" fill="currentColor"/><path d="m13 23 29-13v17L13 40V23Z" fill="currentColor"/><path d="M13 40 8 35V21m8 17 4 5m14-18 5 8m-5-8v-5" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M7 17v9l6 5" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></div>
     <h2><span>CCTV</span> Report</h2>
   </a>
   <a class="module" href="./servisan/" aria-label="Manajemen Servis">
-    <div class="symbol" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><path d="m29 7 3-3a10 10 0 0 1 0 14l-5-5-17 17a4 4 0 0 1-6-6L21 8l-5-5a10 10 0 0 1 13 4Z" fill="currentColor"/><path d="m28 27 5-5 11 11a5 5 0 0 1-7 7L28 29" fill="currentColor" opacity=".85"/></svg></div>
+    <div class="symbol" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><path d="M28 5a12 12 0 0 0-14 15L4 30a5 5 0 0 0 7 7l10-10A12 12 0 0 0 36 13l-8 8-8-8 8-8Z" fill="currentColor"/><path d="m27 28 6-6 11 11a5 5 0 0 1-7 7L27 28Z" fill="currentColor" opacity=".9"/></svg></div>
     <h2>Manajemen <span>Servis</span></h2>
   </a>
   <a class="module" href="./nota.html" aria-label="Buat Nota">
-    <div class="symbol" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><path d="M12 5h19l8 8v29H12a4 4 0 0 1-4-4V9a4 4 0 0 1 4-4Z" fill="currentColor"/><path d="M30 5v9h9M16 21h18M16 28h18M16 35h11" stroke="white" stroke-width="2.8" stroke-linecap="round"/></svg></div>
+    <div class="symbol" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><path d="M10 3h22l8 8v27a5 5 0 0 1-5 5H10a5 5 0 0 1-5-5V8a5 5 0 0 1 5-5Z" fill="currentColor"/><path d="M14 15h18M14 22h18M14 29h11" stroke="white" stroke-width="3" stroke-linecap="round"/><circle cx="36" cy="36" r="10" fill="#1685f8" stroke="white" stroke-width="2"/><path d="m31.5 36 3 3 6-7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
     <h2>Buat <span>Nota</span></h2>
   </a>
 </nav>
