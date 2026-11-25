@@ -19,9 +19,16 @@ button,.btn{border:0;border-radius:10px;padding:10px 15px;background:var(--blue)
 .auth-card h1{margin:0}.auth-card label{font-weight:650;color:var(--navy)}.auth-card input{width:100%;padding:13px;border:1px solid #d6deea;border-radius:10px;font:inherit}
 .auth-error{color:#b42318;min-height:20px;margin:0}.auth-back{color:var(--blue);text-decoration:none;font-weight:650;margin-top:6px}
 @media print{header,.top button,.stats,.layout .panel:first-child,.toolbar,.jobactions{display:none!important}body{background:white}.wrap{margin:0;max-width:none}.layout{display:block}.panel{border:0;padding:0}.job{break-inside:avoid}}
+
+/* Header bersama Copy Computer */
+header{min-height:70px;background:#fff;border-bottom:1px solid #e3ebf7;padding:10px max(16px,calc((100% - 1120px)/2));gap:12px;box-shadow:0 3px 14px rgba(20,60,120,.04)}
+header img{width:62px;height:auto;max-height:48px;object-fit:contain;flex:none}
+header .brand-copy{min-width:0;line-height:1.25}header .brand-copy strong{display:block;font-size:16px;font-weight:800;color:#10265a;letter-spacing:.02em}header .brand-copy small{display:block;color:#1768e8;font-size:12px;margin-top:3px}
+header .header-spacer{flex:1}header .nav-icon{width:42px;height:42px;min-width:42px;padding:0;border:1px solid #dfe8f7;border-radius:12px;background:#f4f8ff;color:#174a9c;display:inline-grid;place-items:center;text-decoration:none}header .nav-icon svg{width:20px;height:20px;display:block}
+@media(max-width:520px){header{padding:9px 12px;gap:9px}header img{width:52px;max-height:42px}header .brand-copy strong{font-size:14px}header .brand-copy small{font-size:11px}header .nav-icon{width:39px;height:39px;min-width:39px}}
 </style></head>
 <body>
-<header><img src="../logo-copy-computer.PNG" alt="Logo Copy Computer"><div><strong>COPY COMPUTER</strong><small>Servis Laptop • PC • Printer • Perakitan</small></div><a href="../" class="btn secondary" style="margin-left:auto;text-decoration:none">Menu Utama</a><button type="button" class="secondary" onclick="logoutService()">Keluar</button></header>
+<header><img src="../logo-copy-computer.PNG" alt="Logo Copy Computer"><div class="brand-copy"><strong>COPY COMPUTER</strong><small>Manajemen Servis</small></div><span class="header-spacer"></span><a class="nav-icon" href="../" aria-label="Menu utama" title="Menu utama"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg></a><button class="nav-icon" type="button" onclick="if(history.length>1)history.back();else location.href='../'" aria-label="Kembali" title="Kembali"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6M9 12h12"/></svg></button><button type="button" class="secondary" onclick="logoutService()">Keluar</button></header>
 <section id="serviceLogin" class="auth-screen">
   <form id="serviceLoginForm" class="auth-card">
     <h1>Manajemen Servis</h1><p class="sub">Masukkan password teknisi untuk melanjutkan.</p>
