@@ -423,6 +423,121 @@ textarea{min-height:76px}
 #form .item-actions .btn{min-height:40px;font-size:13px}
 @keyframes itemReveal{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:translateY(0)}}
 @media(max-width:520px){#form .item-extra{grid-template-columns:1fr}#form .item-extra>div:has([data-f="note"]){grid-column:auto}}
+
+/* Final unified Copy Computer UI — based on the approved mobile CCTV form */
+:root{color-scheme:light;--bg:#fff;--surface:#fff;--surface2:#f3f7ff;--ink:#10265a;--muted:#6872b5;--line:#dce7ff;--accent:#1768e8;--accent-ink:#fff;--accent-soft:#edf4ff}
+body{background:#fff!important;color:#10265a!important;font-family:system-ui,-apple-system,"Segoe UI",sans-serif!important;padding:14px 22px 36px!important}
+#appRoot.wrap{width:min(100%,1420px)!important;max-width:1420px!important;gap:18px!important}
+.top{min-height:104px!important;padding:12px 20px!important;border:1px solid #dce7ff!important;border-radius:28px!important;background:#fff!important;box-shadow:0 6px 20px rgba(24,78,160,.07)!important}
+.brand{gap:22px!important}.mark{width:100px!important;max-height:76px!important;padding-right:18px!important;border-right:2px solid #10265a!important}
+.brand-name{font-size:clamp(20px,2.1vw,28px)!important;line-height:1.15!important;color:#10265a!important;font-weight:800!important;letter-spacing:-.03em!important}
+.brand-section{font-size:clamp(16px,1.7vw,22px)!important;line-height:1.2!important;color:#1768e8!important;font-weight:750!important;margin-top:3px!important}
+.hbtns{gap:12px!important}.icon-btn{width:72px!important;height:72px!important;min-height:72px!important;border-radius:22px!important;background:#f2f6ff!important;border:1px solid #dce7ff!important;color:#123b91!important}.icon-btn svg{width:36px!important;height:36px!important}
+.btn{background:#1768e8!important;color:#fff!important;border-radius:16px!important;min-height:54px!important;font-size:17px!important;font-weight:750!important}.btn.ghost{background:#edf3ff!important;border:1px solid #dce7ff!important;color:#1768e8!important}
+.tabs{padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important}
+.tabs-in{max-width:none!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:12px!important}
+.tab{min-height:56px!important;border:1px solid #dce7ff!important;border-radius:17px!important;background:#f7f9ff!important;color:#234477!important;font-size:17px!important;font-weight:700!important}
+.tab[aria-current=page]{background:#1768e8!important;color:#fff!important;box-shadow:0 5px 14px rgba(23,104,232,.16)!important}
+.cols{display:block!important}#v-hasil{display:none!important}
+#form{gap:0!important}
+#form .form-shell{display:grid!important;gap:20px!important;padding:28px 30px!important;background:#fff!important;border:1px solid #dce7ff!important;border-radius:30px!important;box-shadow:0 6px 20px rgba(24,78,160,.055)!important}
+#form .form-title{display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:24px!important;padding:0 0 18px!important;border-bottom:1px solid #dce7ff!important}
+#form .form-title-icon{width:148px!important;height:128px!important;flex:none!important;border-radius:42px!important;background:#edf3ff!important;color:#1768e8!important;display:grid!important;place-items:center!important}
+#form .form-title-icon svg{width:86px!important;height:86px!important}
+#form .form-title h2{font-size:clamp(30px,3.2vw,46px)!important;line-height:1.15!important;font-weight:800!important;letter-spacing:-.035em!important;color:#10265a!important;margin:0!important}
+#form .form-title p{font-size:clamp(18px,2vw,26px)!important;line-height:1.3!important;color:#6872b5!important;margin:6px 0 0!important}
+#form .form-fields{display:grid!important;gap:18px!important}
+#form .form-field{display:grid!important;gap:7px!important;min-width:0!important}
+#form .field-label,#form .job-label,#form .item-heading{display:flex!important;align-items:center!important;gap:14px!important;margin:0!important;color:#10265a!important;font-size:clamp(17px,1.8vw,24px)!important;font-weight:650!important;line-height:1.3!important;letter-spacing:-.015em!important}
+#form .field-label svg,#form .job-label svg,#form .item-heading svg{display:block!important;flex:0 0 30px!important;width:30px!important;height:30px!important;color:#075bea!important}
+#form .field-label em,#form .job-label em{font-style:normal!important;color:#ef233c!important}
+#form input,#form textarea,#form select{min-height:62px!important;padding:13px 18px!important;border:1.5px solid #cbdcff!important;border-radius:17px!important;background:#f7f9ff!important;color:#10265a!important;font-size:clamp(17px,1.7vw,22px)!important}
+#form textarea{min-height:112px!important;line-height:1.45!important}
+#form .form-two{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:18px!important}
+#form .check{display:flex!important;align-items:center!important;gap:12px!important;min-height:38px!important;font-size:16px!important;color:#6872b5!important}
+#form .check input{width:24px!important;height:24px!important;min-height:24px!important;flex:none!important;accent-color:#1768e8!important}
+#form>section.card[data-sec]{display:grid!important;gap:14px!important;padding:20px 0 0!important;margin:0!important;border:0!important;border-top:1px solid #dce7ff!important;border-radius:0!important;background:transparent!important;box-shadow:none!important}
+#form .sec-head{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;gap:10px 12px!important;align-items:center!important;margin:0!important}
+#form .sec-head .job-label{grid-column:1/-1!important}
+#form .sec-head select{grid-column:1!important;min-width:0!important}
+#form .sec-head .mini{grid-column:2!important;min-height:48px!important;padding:0 14px!important;font-size:14px!important}
+#form .structured-item{display:grid!important;gap:12px!important;padding:16px!important;border:1px solid #dce7ff!important;border-radius:18px!important;background:#f8faff!important}
+#form .structured-item .item-top{display:flex!important;align-items:center!important;gap:10px!important;margin:0!important}
+#form .item-heading{font-size:18px!important}
+#form .item-heading svg{flex-basis:26px!important;width:26px!important;height:26px!important}
+#form .structured-grid{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:10px!important}
+#form .structured-grid>div{display:grid!important;gap:6px!important;min-width:0!important}
+#form .structured-grid .lbl{font-size:15px!important;font-weight:650!important;line-height:1.3!important;color:#52658f!important;margin:0!important}
+#form .structured-grid select,#form .structured-grid input{width:100%!important;min-width:0!important;min-height:56px!important;font-size:18px!important}
+#form .item-extra{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important;padding-top:4px!important;animation:itemReveal .18s ease-out}
+#form .item-extra>div{display:grid!important;gap:6px!important;min-width:0!important}
+#form .item-extra>div:has([data-f="note"]){grid-column:1/-1!important}
+#form .item-actions{display:flex!important;justify-content:flex-start!important;margin:4px 0 0!important}
+#form .item-actions .btn{min-height:48px!important;font-size:15px!important}
+#form .form-note{display:grid!important;gap:10px!important;padding:8px 0 0!important;margin:0!important;border:0!important;border-top:1px solid #dce7ff!important;border-radius:0!important;background:transparent!important;box-shadow:none!important}
+#form .form-note .field-label svg{width:28px!important;height:28px!important}
+#form .attachment-panel{display:grid!important;gap:12px!important;padding:18px!important;border:2px dashed #9dbdff!important;border-radius:22px!important;background:#f8fbff!important}
+#form .attach-title{display:grid!important;grid-template-columns:32px 1fr!important;gap:0 12px!important;font-size:20px!important}
+#form .attach-title svg{grid-row:span 2!important;width:32px!important;height:32px!important}
+#form .attach-title .hint{grid-column:2!important;font-size:14px!important}
+#form .attachment-pick{width:100%!important;min-height:58px!important;border-radius:15px!important;font-size:18px!important}
+#form #attachmentInput{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+#form .attachment-panel .hint{font-size:13px!important}
+#form .attachment-list{display:grid!important;gap:8px!important}
+#form .form-actions{display:grid!important;grid-template-columns:.85fr 1.4fr!important;gap:14px!important;margin:4px 0 0!important}
+#form .form-actions .btn{width:100%!important;min-height:64px!important;border-radius:19px!important;font-size:clamp(17px,1.8vw,23px)!important}
+#form .form-actions .btn.ghost{background:#dce8ff!important;color:#075bea!important;border:0!important}
+#form .save-report-btn{background:#075bea!important;color:#fff!important}
+#form .mini,#form .chip{min-height:42px!important;border-radius:12px!important;font-size:14px!important}
+#form .item{border-radius:16px!important}
+#authGate{max-width:620px!important;margin:7vh auto 0!important}
+#authGate .auth-card{padding:28px!important;border:1px solid #dce7ff!important;border-radius:28px!important;box-shadow:0 8px 28px rgba(24,78,160,.07)!important;background:#fff!important}
+#authGate .auth-brand h1{font-size:clamp(22px,2.5vw,30px)!important;color:#10265a!important}
+#authGate .auth-brand .sub{font-size:16px!important;color:#6872b5!important}
+@media(max-width:700px){
+ body{padding:8px 10px 24px!important}
+ #appRoot.wrap{gap:12px!important}
+ .top{min-height:74px!important;padding:8px 10px!important;border-radius:20px!important}
+ .brand{gap:10px!important}.mark{width:60px!important;max-height:46px!important;padding-right:10px!important}
+ .brand-name{font-size:16px!important}.brand-section{font-size:14px!important}
+ .hbtns{gap:6px!important}.icon-btn{width:44px!important;height:44px!important;min-height:44px!important;border-radius:14px!important}.icon-btn svg{width:22px!important;height:22px!important}
+ .tabs-in{gap:7px!important}.tab{min-height:44px!important;border-radius:12px!important;font-size:13px!important}
+ #form .form-shell{gap:14px!important;padding:16px 14px!important;border-radius:20px!important}
+ #form .form-title{gap:13px!important;padding-bottom:14px!important}
+ #form .form-title-icon{width:72px!important;height:72px!important;border-radius:22px!important}
+ #form .form-title-icon svg{width:46px!important;height:46px!important}
+ #form .form-title h2{font-size:clamp(21px,5.6vw,29px)!important}
+ #form .form-title p{font-size:clamp(13px,3.7vw,17px)!important;margin-top:4px!important}
+ #form .form-fields{gap:13px!important}
+ #form .field-label,#form .job-label{font-size:16px!important;gap:9px!important}
+ #form .field-label svg,#form .job-label svg{flex-basis:24px!important;width:24px!important;height:24px!important}
+ #form input,#form textarea,#form select{min-height:48px!important;padding:10px 12px!important;border-radius:13px!important;font-size:16px!important}
+ #form textarea{min-height:88px!important}
+ #form .form-two{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}
+ #form .check{font-size:13px!important;gap:9px!important}
+ #form>section.card[data-sec]{padding-top:14px!important;gap:11px!important}
+ #form .sec-head{gap:8px!important}
+ #form .sec-head .mini{min-height:42px!important;padding:0 10px!important;font-size:12px!important}
+ #form .structured-item{padding:12px!important;border-radius:15px!important}
+ #form .item-heading{font-size:15px!important}
+ #form .item-heading svg{flex-basis:22px!important;width:22px!important;height:22px!important}
+ #form .structured-grid .lbl{font-size:13px!important}
+ #form .structured-grid select,#form .structured-grid input{min-height:46px!important;font-size:15px!important}
+ #form .item-extra{grid-template-columns:1fr!important;gap:9px!important}
+ #form .item-extra>div:has([data-f="note"]){grid-column:auto!important}
+ #form .form-note{padding-top:13px!important}
+ #form .form-note .field-label{font-size:16px!important}
+ #form .attachment-panel{padding:13px!important;border-radius:16px!important;gap:9px!important}
+ #form .attach-title{font-size:16px!important;grid-template-columns:26px 1fr!important}
+ #form .attach-title svg{width:26px!important;height:26px!important}
+ #form .attachment-pick{min-height:48px!important;font-size:15px!important}
+ #form .form-actions{gap:9px!important;grid-template-columns:.85fr 1.4fr!important}
+ #form .form-actions .btn{min-height:50px!important;border-radius:14px!important;font-size:14px!important}
+ #authGate{margin:8vh auto 0!important;padding:0 10px!important}
+ #authGate .auth-card{padding:20px!important;border-radius:22px!important}
+}
+@media(max-width:390px){#form .form-two{grid-template-columns:1fr!important}}
+
 </style>
 </head>
 <body>
@@ -568,10 +683,10 @@ function parseExpr(s){
   var total=terms.reduce(function(a,t){return a+parseFloat(t)},0);
   return {ok:true,terms:terms.map(function(t){return t.replace(/\./g,',')}),total:total};
 }
-function mk(kind,o){return Object.assign({id:uid(),kind:kind,label:'',text:'',qty:'',expr:'',colon:true,join:false,job:'Pasang Kamera Baru',jobCustom:'',item:'',itemCustom:'',note:'',unit:'-'},o||{})}
+function mk(kind,o){return Object.assign({id:uid(),kind:kind,label:'',text:'',qty:'',expr:'',colon:true,join:false,job:'Pasang Kamera Baru',jobCustom:'',item:'',itemCustom:'',note:''},o||{})}
 function itemLine(it){
   var label=(it.label||'').trim();
-  if(it.kind==='structured'){var nm=it.item==='Isi Sendiri'?(it.itemCustom||''):it.item;var detail=(it.note||'').trim();var unit=it.unit&&it.unit!=='-'?it.unit:'';return [nm,detail].filter(Boolean).join(' : ')+(unit?' '+unit:'')}
+  if(it.kind==='structured'){var nm=it.item==='Isi Sendiri'?(it.itemCustom||''):it.item;var detail=(it.note||'').trim();return [nm,detail].filter(Boolean).join(' : ')}
   if(it.kind==='text') return (it.text||'').replace(/[ \t]+$/gm,'').trim();
   if(it.kind==='qty'){
     var q=(it.qty||'').trim();
@@ -626,7 +741,7 @@ function str(v){return typeof v==='string'?v:(v==null?'':String(v))}
 function normItem(it){
   it=it||{};
   return {id:str(it.id)||uid(),kind:['text','qty','cable','structured'].indexOf(it.kind)>=0?it.kind:'text',
-    label:str(it.label),text:str(it.text),qty:str(it.qty),expr:str(it.expr),colon:it.colon!==false,join:!!it.join,job:str(it.job)||'Pasang Baru',jobCustom:str(it.jobCustom),item:str(it.item),itemCustom:str(it.itemCustom),note:str(it.note),unit:str(it.unit)||'-'};
+    label:str(it.label),text:str(it.text),qty:str(it.qty),expr:str(it.expr),colon:it.colon!==false,join:!!it.join,job:str(it.job)||'Pasang Baru',jobCustom:str(it.jobCustom),item:str(it.item),itemCustom:str(it.itemCustom),note:str(it.note)};
 }
 function normReport(r){
   if(!r||typeof r!=='object') return null;
@@ -972,12 +1087,13 @@ function fieldsHTML(it){
   var id=esc(it.id);
   if(it.kind==='structured'){
     var items=['Adaptor','Baterai CMOS','DVR','DVR 4 CH','DVR 8 CH','DVR 16 CH','Duradus','Hardisk','Hardisk 500 GB','Hardisk 1 TB','Hardisk 2 TB','Isi Sendiri','Jack BNC','Jack DC','Kabel CCTV','Kabel LAN','Kabel Listrik','Kamera Indoor','Kamera Outdoor','MMC 32 GB','MMC 64 GB','MMC 128 GB','NVR','NVR 5 CH','NVR 10 CH','NVR 20 CH','POE 4 Port','POE 8 Port','PSU','Steker Bulat Male','Steker Gepeng Female','Steker Gepeng Male','Stopkontak','Stopkontak 1 lubang','Stopkontak 2 lubang','Stopkontak 3 lubang','TC Duck'];
+    items.sort(function(a,b){return a.localeCompare(b,'id')});
     return '<div class="structured-grid">'
       +'<div class="item-choice"><label class="lbl" for="item-'+id+'">Pilih item barang</label><select id="item-'+id+'" data-f="item"><option value="">Pilih item barang...</option>'+items.map(function(v){return '<option'+(it.item===v?' selected':'')+'>'+v+'</option>'}).join('')+'</select></div>'
       +(it.item?'<div class="item-extra">'
         +(it.item==='Isi Sendiri'?'<div><label class="lbl" for="itemc-'+id+'">Nama barang</label><input id="itemc-'+id+'" data-f="itemCustom" value="'+esc(it.itemCustom)+'" placeholder="Ketik nama barang" autocomplete="off"></div>':'')
         +'<div><label class="lbl" for="note-'+id+'">Keterangan</label><input id="note-'+id+'" data-f="note" value="'+esc(it.note)+'" placeholder="Isi keterangan" autocomplete="off"></div>'
-        +'<div><label class="lbl" for="unit-'+id+'">Satuan</label><select id="unit-'+id+'" data-f="unit">'+['-','Pcs','Meter'].map(function(v){return '<option'+(it.unit===v?' selected':'')+'>'+v+'</option>'}).join('')+'</select></div></div>':'');
+        +'</div>':'');
   }
   if(it.kind==='text') return '<textarea id="foc-'+id+'" data-f="text" rows="2" aria-label="Isi baris" placeholder="mis. DVR 4 Ch + HDD 500 Gb">'+esc(it.text)+'</textarea>';
   var lab='<input id="lab-'+id+'" data-f="label" value="'+esc(it.label)+'" placeholder="Nama barang" aria-label="Nama barang" autocomplete="off">';
@@ -1011,15 +1127,15 @@ function render(){
   var r=cur();
   $('form').innerHTML=
    ''
-   +'<div class="card stack form-fields"><div class="form-field"><label class="field-label" for="customer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a4.2 4.2 0 1 0 0-8.4A4.2 4.2 0 0 0 12 12Zm-8 8.2c.4-4 3.5-6.2 8-6.2s7.6 2.2 8 6.2v.6H4z" fill="currentColor"/></svg>Nama Pelanggan <em>*</em></label><input id="customer" data-f="customer" value="'+esc(r.customer)+'" placeholder="Masukkan nama pelanggan..." autocomplete="off"></div>'
+   +'<div class="card stack form-shell"><div class="form-title"><div class="form-title-icon"><svg viewBox="0 0 64 64" fill="none" aria-hidden="true"><path d="M8 21a5 5 0 0 1 5-5h10l5-7h13l5 7h5a5 5 0 0 1 5 5v27a5 5 0 0 1-5 5H13a5 5 0 0 1-5-5V21Z" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/><circle cx="32" cy="33" r="11" stroke="currentColor" stroke-width="4"/><path d="M16 16h6" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg></div><div><h2>Buat Laporan CCTV</h2><p>Isi data laporan dengan lengkap</p></div></div><div class="stack form-fields"><div class="form-field"><label class="field-label" for="customer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a4.2 4.2 0 1 0 0-8.4A4.2 4.2 0 0 0 12 12Zm-8 8.2c.4-4 3.5-6.2 8-6.2s7.6 2.2 8 6.2v.6H4z" fill="currentColor"/></svg>Nama Pelanggan <em>*</em></label><input id="customer" data-f="customer" value="'+esc(r.customer)+'" placeholder="Masukkan nama pelanggan..." autocomplete="off"></div>'
    +'<div class="two form-two"><div class="form-field"><label class="field-label" for="date"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M7 3v4M17 3v4M3 10h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="15" r="2" fill="currentColor"/></svg>Tanggal Laporan <em>*</em></label><input id="date" type="date" data-f="date" value="'+esc(r.date)+'"></div>'
    +'<div class="form-field"><label class="field-label" for="tech"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.7 6.3a5 5 0 0 0-6.4 6.4L3 18l3 3 5.3-5.3a5 5 0 0 0 6.4-6.4l-3.1 3.1-3-3z" fill="currentColor"/></svg>Teknisi</label><input id="tech" data-f="tech" value="'+esc(r.tech)+'" placeholder="Nama teknisi" autocomplete="off"></div></div>'
    +'<div class="form-field"><label class="field-label" for="address"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-7.2 8-13a8 8 0 1 0-16 0c0 5.8 8 13 8 13Z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="9" r="2.5" fill="currentColor"/></svg>Alamat</label><input id="address" data-f="address" value="'+esc(r.address)+'" placeholder="Masukkan alamat pelanggan..." autocomplete="off"></div>'
    +'<label class="check"><input id="showMeta" type="checkbox" data-f="showMeta"'+(r.showMeta?' checked':'')+'><span>Cantumkan tanggal dan alamat di teks WhatsApp</span></label></div>'
    +r.sections.map(function(sec){if(!sec.items.length)sec.items.push(mk('structured',{item:''}));return sectionHTML(sec)}).join('')
    +'<div class="item-actions"><button type="button" class="btn" data-act="add-sec">+ Tambah pekerjaan</button></div>'
-   +'<div class="card stack form-note"><label class="field-label" for="catatan"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6z" fill="currentColor"/><path d="M9 11h7M9 15h7" stroke="white" stroke-width="1.7" stroke-linecap="round"/></svg>Keterangan Tambahan</label><textarea id="catatan" data-f="catatan" rows="3" placeholder="Masukkan keterangan tambahan...">'+esc(r.catatan||'')+'</textarea></div>'
-   +'<section class="attachment-panel" aria-label="Lampiran foto dan video"><div class="field-label attach-title"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h3l2-3h6l2 3h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2Z" fill="currentColor"/><circle cx="12" cy="13" r="4" fill="none" stroke="white" stroke-width="2"/></svg>Foto / Video (Opsional)<p class="hint">Maksimal 8 file</p></div><label class="btn ghost attachment-pick" for="attachmentInput">＋ Pilih Foto / Video</label><input id="attachmentInput" type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,video/mp4,video/quicktime,video/webm" multiple><div class="hint">Foto maks. 12 MB dan video maks. 80 MB per file.</div><div id="attachmentList" class="attachment-list"><span class="hint">Belum ada lampiran.</span></div></section>'
+   +'<div class="stack form-note"><label class="field-label" for="catatan"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6z" fill="currentColor"/><path d="M9 11h7M9 15h7" stroke="white" stroke-width="1.7" stroke-linecap="round"/></svg>Keterangan Tambahan</label><textarea id="catatan" data-f="catatan" rows="3" placeholder="Masukkan keterangan tambahan...">'+esc(r.catatan||'')+'</textarea></div>'
+   +'<section class="attachment-panel" aria-label="Lampiran foto dan video"><div class="field-label attach-title"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h3l2-3h6l2 3h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2Z" fill="currentColor"/><circle cx="12" cy="13" r="4" fill="none" stroke="white" stroke-width="2"/></svg>Foto / Video (Opsional)<p class="hint">Maksimal 8 file</p></div><label class="btn ghost attachment-pick" for="attachmentInput">＋ Pilih Foto / Video</label><input id="attachmentInput" type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,video/mp4,video/quicktime,video/webm" multiple><div class="hint">Foto maks. 12 MB dan video maks. 80 MB per file.</div><div id="attachmentList" class="attachment-list"><span class="hint">Belum ada lampiran.</span></div></section></div>'
    +'<div class="form-actions"><button type="button" class="btn ghost" data-act="reset-form">Reset</button><button type="button" class="btn save-report-btn" data-act="save-report">Simpan Laporan</button></div>';
   if(isReadOnly){
     var banner=document.createElement('div');banner.className='card';banner.style.cssText='border-color:#0b7895;background:#eef8fb;color:#075b73';
