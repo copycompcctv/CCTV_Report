@@ -325,6 +325,81 @@ textarea{min-height:86px}
  .form-actions{gap:9px}.form-actions .btn{min-height:52px;font-size:15px;border-radius:14px}
 }
 @media(max-width:390px){.form-two{grid-template-columns:1fr}}
+
+/* Final compact UI: clean, modern, dropdown-first */
+body{padding:10px 16px 28px;background:#fff;color:#10265a}
+.wrap{width:min(100%,900px);max-width:900px;gap:12px}
+.top{min-height:64px;padding:8px 12px;border:1px solid #dce7ff;border-radius:17px;box-shadow:0 3px 12px rgba(24,78,160,.055)}
+.brand{gap:10px}
+.mark{width:48px;max-height:38px;padding-right:9px;border-right:1.5px solid #10265a}
+.brand-name{font-size:16px;line-height:1.15}
+.brand-section{font-size:13px;line-height:1.2}
+.brand .sub{font-size:11px;margin-top:2px}
+.hbtns{gap:6px}
+.icon-btn{width:38px;height:38px;min-height:38px;border-radius:11px}
+.icon-btn svg{width:19px;height:19px}
+.tabs{padding:0;border:0;background:transparent;box-shadow:none}
+.tabs-in{gap:7px}
+.tab{min-height:40px;border:1px solid #dce7ff;border-radius:10px;background:#f7f9ff;font-size:13px;font-weight:650}
+.tab[aria-current=page]{background:#1768e8;color:#fff;box-shadow:0 3px 9px rgba(23,104,232,.14)}
+#form{gap:11px}
+#form .card,.card{padding:15px;border:1px solid #dce7ff;border-radius:16px;box-shadow:0 3px 12px rgba(24,78,160,.04)}
+#form .card{gap:12px}
+.form-title{display:none!important}
+.field-label,.job-label{font-size:14px;gap:8px;color:#10265a}
+.field-label svg,.job-label svg{width:21px;height:21px;color:#1768e8}
+.form-field{gap:5px}
+.form-field input,input,textarea,select{min-height:43px;padding:9px 12px;border:1px solid #cbdcff;border-radius:10px;background:#f8faff;color:#10265a;font-size:15px}
+textarea{min-height:76px}
+.form-two{gap:10px}
+#form .check{font-size:12px;min-height:28px;color:#6872b5}
+#form .sec-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}
+#form .sec-head .job-label{grid-column:1/-1}
+#form .sec-head select{grid-column:1;min-width:0}
+#form .sec-head .mini{grid-column:2}
+#form .structured-item{padding:11px;border-radius:12px;background:#f8faff;border:1px solid #dce7ff}
+#form .structured-item .lbl,.lbl{font-size:12px;margin-bottom:5px}
+#form .item-actions{margin-top:5px}
+#form .item-actions .btn{min-height:40px}
+.form-note{gap:8px!important}
+.form-note textarea{min-height:72px}
+.attachment-panel{padding:12px;border:1px dashed #a9c4f8;border-radius:13px;background:#fbfdff;gap:8px}
+.attach-title{font-size:14px}
+.attach-title svg{width:22px;height:22px}
+.attach-title .hint{font-size:11px}
+.attachment-pick{min-height:42px!important;border-radius:10px!important;font-size:13px!important}
+.attachment-panel .hint{font-size:11px}
+.form-actions{grid-template-columns:.8fr 1.35fr;gap:9px;margin-top:0}
+.form-actions .btn{min-height:45px;border-radius:11px;font-size:14px}
+#form .btn.ghost{background:#edf4ff;color:#1768e8;border:1px solid #dce7ff}
+.mini,.chip{min-height:36px;border-radius:9px;font-size:12px}
+.item{padding:10px;border-radius:12px}
+@media(min-width:960px){
+ body{padding:16px 20px 34px}
+ .wrap{width:min(100%,900px);max-width:900px}
+ .top{min-height:68px}
+ .mark{width:52px;max-height:40px}
+ .brand-name{font-size:17px}
+ .brand-section{font-size:14px}
+}
+@media(max-width:600px){
+ body{padding:8px 10px 24px}
+ .wrap{gap:10px}
+ .top{min-height:58px;padding:7px 8px;border-radius:14px}
+ .mark{width:42px;max-height:34px;padding-right:7px}
+ .brand{gap:8px}.brand-name{font-size:14px}.brand-section{font-size:12px}
+ .hbtns{gap:5px}.icon-btn{width:34px;height:34px;min-height:34px;border-radius:10px}
+ .icon-btn svg{width:18px;height:18px}
+ .tabs-in{gap:5px}.tab{min-height:37px;font-size:12px;padding:0 5px}
+ #form .card,.card{padding:12px;border-radius:14px}
+ #form .card{gap:10px}
+ .field-label,.job-label{font-size:13px}
+ .field-label svg,.job-label svg{width:19px;height:19px}
+ .form-field input,input,textarea,select{min-height:41px;font-size:14px;padding:8px 10px}
+ .form-two{gap:8px}
+ .attachment-panel{padding:10px}
+ .form-actions .btn{min-height:42px;font-size:13px}
+}
 </style>
 </head>
 <body>
@@ -911,7 +986,7 @@ function sectionHTML(s){
 function render(){
   var r=cur();
   $('form').innerHTML=
-   '<div class="form-title"><div class="form-title-icon"><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="4" y="20" width="56" height="33" rx="4" fill="none" stroke="currentColor" stroke-width="3"/><path d="M16 20l5-7h22l5 7" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="32" cy="36" r="11" fill="none" stroke="currentColor" stroke-width="4"/></svg></div><div><h2>Buat Laporan CCTV</h2><p>Isi data laporan dengan lengkap</p></div></div>'
+   ''
    +'<div class="card stack form-fields"><div class="form-field"><label class="field-label" for="customer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a4.2 4.2 0 1 0 0-8.4A4.2 4.2 0 0 0 12 12Zm-8 8.2c.4-4 3.5-6.2 8-6.2s7.6 2.2 8 6.2v.6H4z" fill="currentColor"/></svg>Nama Pelanggan <em>*</em></label><input id="customer" data-f="customer" value="'+esc(r.customer)+'" placeholder="Masukkan nama pelanggan..." autocomplete="off"></div>'
    +'<div class="two form-two"><div class="form-field"><label class="field-label" for="date"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M7 3v4M17 3v4M3 10h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="15" r="2" fill="currentColor"/></svg>Tanggal Laporan <em>*</em></label><input id="date" type="date" data-f="date" value="'+esc(r.date)+'"></div>'
    +'<div class="form-field"><label class="field-label" for="tech"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.7 6.3a5 5 0 0 0-6.4 6.4L3 18l3 3 5.3-5.3a5 5 0 0 0 6.4-6.4l-3.1 3.1-3-3z" fill="currentColor"/></svg>Teknisi</label><input id="tech" data-f="tech" value="'+esc(r.tech)+'" placeholder="Nama teknisi" autocomplete="off"></div></div>'
