@@ -1213,7 +1213,7 @@ function startRealtime(){
 }
 async function enterApp(user){
   currentUser=user;
-  try{await loadCloud();$('authGate').hidden=true;$('appRoot').hidden=false;setStatus();render();renderCatalog();renderHistory();setView('isi',true);startRealtime()}
+  try{await loadCloud();var firstDraft=blankReport();firstDraft.ownerId=currentUser.id;db.reports.push(firstDraft);db.currentId=firstDraft.id;$('authGate').hidden=true;$('appRoot').hidden=false;setStatus();render();renderCatalog();renderHistory();setView('isi',true);startRealtime()}
   catch(e){cloudReady=false;currentUser=null;currentProfile=null;$('appRoot').hidden=true;$('authGate').hidden=false;authMessage('Gagal memuat database: '+(e.message||'periksa SQL, izin Data API, dan koneksi'));console.error('Supabase bootstrap:',e)}
 }
 $('authForm').addEventListener('submit',async function(e){
