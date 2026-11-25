@@ -296,30 +296,12 @@ input,textarea,select{border-color:#d7e2f7;border-radius:10px;background:#fff}
       </section>
     </div>
 
-    <aside id="v-hasil">
+    <aside id="v-hasil" hidden>
       <div class="card stack">
-        <div class="out-heading"><span class="lbl" style="margin:0">Isi Laporan</span></div>
         <pre id="out" class="bubble"></pre>
         <div id="stats" class="stats"></div>
-        <div class="actions">
-          <section class="attachment-panel" aria-label="Lampiran foto dan video">
-            <div class="lbl" style="margin:0 0 8px">Lampiran Foto / Video</div>
-            <label class="btn ghost attachment-pick" for="attachmentInput">＋ Tambah foto atau video</label>
-            <input id="attachmentInput" type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,video/mp4,video/quicktime,video/webm" multiple>
-            <div class="hint">Maksimal 8 file. Foto maks. 12 MB dan video maks. 80 MB per file. Lampiran ikut tersimpan saat menekan Simpan laporan.</div>
-            <div id="attachmentList" class="attachment-list"><span class="hint">Belum ada lampiran.</span></div>
-          </section>
-          <button type="button" class="btn save-report-btn" data-act="save-report">Simpan laporan</button>
-          <button type="button" class="btn" data-act="copy">Salin teks</button>
-          <a id="wa" class="btn wa wa-btn" href="https://wa.me/" target="_blank" rel="noopener" aria-label="Kirim lewat WhatsApp" title="Kirim lewat WhatsApp">
-            <svg class="wa-icon" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
-              <path d="M16 3.2A12.2 12.2 0 0 0 5.5 21.6L4 28l6.6-1.7A12.2 12.2 0 1 0 16 3.2Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
-              <path d="M12.1 10.2c-.0-.7.4-1.1.9-1.1h1c.3 0 .6.2.7.6l1 2.3c.1.3.1.6-.1.8l-.8 1c-.2.2-.2.5 0 .8.8 1.3 1.9 2.4 3.3 3.1.3.2.6.1.8-.1l1-1.2c.2-.3.5-.3.8-.2l2.1 1c.4.2.6.5.5.9-.1 1-.6 1.8-1.5 2.2-1 .5-2.4.4-4.1-.3-2-.8-4.1-2.6-5.4-4.4-1.2-1.7-1.7-3.4-1.5-4.5.1-.4.5-.9 1.3-.9Z" fill="currentColor"/>
-            </svg>
-            <span>WhatsApp</span>
-          </a>
-          <button type="button" class="btn ghost" data-act="pdf">Unduh PDF</button>
-        </div>
+        <a id="wa" href="https://wa.me/" target="_blank" rel="noopener">WhatsApp</a>
+        <button type="button" data-act="pdf">Unduh PDF</button>
       </div>
     </aside>
   </div>
@@ -787,7 +769,8 @@ function sectionHTML(s){
 function render(){
   var r=cur();
   $('form').innerHTML=
-   '<div class="card stack"><div><label class="lbl" for="customer">Pelanggan</label><input id="customer" data-f="customer" value="'+esc(r.customer)+'" placeholder="Nama Pelanggan" autocomplete="off"></div>'
+   '<div class="form-title"><div><h2>Buat Laporan Baru</h2><p>Isi pekerjaan dan barang yang digunakan.</p></div></div>'
+   +'<div class="card stack"><div><label class="lbl" for="customer">Pelanggan</label><input id="customer" data-f="customer" value="'+esc(r.customer)+'" placeholder="Nama Pelanggan" autocomplete="off"></div>'
    +'<div class="two"><div><label class="lbl" for="date">Tanggal</label><input id="date" type="date" data-f="date" value="'+esc(r.date)+'"></div>'
    +'<div><label class="lbl" for="tech">Teknisi</label><input id="tech" data-f="tech" value="'+esc(r.tech)+'" placeholder="Nama Teknisi" autocomplete="off"></div></div>'
    +'<div><label class="lbl" for="address">Alamat</label><input id="address" data-f="address" value="'+esc(r.address)+'" placeholder="Alamat Pelanggan" autocomplete="off"></div>'
@@ -796,7 +779,6 @@ function render(){
    +'<div class="item-actions"><button type="button" class="btn" data-act="add-sec">+ Tambah pekerjaan</button></div>'
    +'<div class="card stack"><label class="lbl" for="catatan">Keterangan tambahan</label><textarea id="catatan" data-f="catatan" rows="3" placeholder="Keterangan tambahan (opsional)">'+esc(r.catatan||'')+'</textarea></div>'
    +'<section class="attachment-panel" aria-label="Lampiran foto dan video"><div><strong>Lampiran Foto / Video</strong><p class="hint">Opsional · Maksimal 8 file</p></div><label class="btn ghost attachment-pick" for="attachmentInput">＋ Pilih Foto / Video</label><input id="attachmentInput" type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,video/mp4,video/quicktime,video/webm" multiple><div class="hint">Foto maks. 12 MB dan video maks. 80 MB per file.</div><div id="attachmentList" class="attachment-list"><span class="hint">Belum ada lampiran.</span></div></section>'
-   +'<div class="form-title"><div><h2>Buat Laporan Baru</h2><p>Periksa data sebelum menyimpan.</p></div></div>'
    +'<div class="form-actions"><button type="button" class="btn ghost" data-act="reset-form">Reset</button><button type="button" class="btn save-report-btn" data-act="save-report">Simpan Laporan</button></div>';
   if(isReadOnly){
     var banner=document.createElement('div');banner.className='card';banner.style.cssText='border-color:#0b7895;background:#eef8fb;color:#075b73';
@@ -885,7 +867,7 @@ function renderHistory(){
     return '<article class="card hrow'+(r.id===db.currentId?' cur':'')+'" data-rid="'+id+'">'
      +'<div><strong>'+esc((r.customer||'').trim()||'Tanpa nama')+'</strong>'+(r.example?'<span class="tag">Contoh</span>':'')
      +'<div class="hmeta">'+esc([d,n+' baris',tc>0?'kabel '+fmt(tc)+' M':''].filter(Boolean).join(' · '))+'</div></div>'
-     +'<div class="hact"><button type="button" class="mini" data-act="h-open">Buka</button><button type="button" class="mini" data-act="h-edit">Edit</button><button type="button" class="mini" data-act="h-dup">Salin</button><button type="button" class="mini" data-act="h-wa">WhatsApp</button><button type="button" class="mini" data-act="h-pdf">Cetak / PDF</button><button type="button" class="mini danger" data-act="h-del">Hapus</button></div></article>';
+     +'<div class="hact"><button type="button" class="mini" data-act="h-open">Buka</button><button type="button" class="mini" data-act="h-edit">Edit</button><button type="button" class="mini" data-act="h-dup">Salin</button><button type="button" class="mini" data-act="h-copy">Salin Teks</button><button type="button" class="mini" data-act="h-wa">WhatsApp</button><button type="button" class="mini" data-act="h-pdf">Cetak / PDF</button><button type="button" class="mini danger" data-act="h-del">Hapus</button></div></article>';
   }).join(''):'<p class="empty">Tidak ada laporan yang cocok.</p>';
 }
 
@@ -1040,6 +1022,7 @@ document.addEventListener('click',function(e){
       db.catalog=db.catalog.filter(function(x){return x!==c});save();renderCatalog();break;
     }
     case 'h-detail':{id=b.closest('[data-rid]').dataset.rid;var rr=db.reports.find(function(x){return String(x.id)===String(id)});if(rr)showReportPopup('Laporan CCTV',buildText(rr));break;}
+    case 'h-copy':{id=b.closest('[data-rid]').dataset.rid;var cr=db.reports.find(function(x){return String(x.id)===String(id)});if(cr){copyText(buildText(cr)).then(function(ok){toast(ok?'Teks laporan disalin':'Gagal menyalin teks')})}break;}
     case 'h-wa':{id=b.closest('[data-rid]').dataset.rid;var wr=db.reports.find(function(x){return String(x.id)===String(id)});if(wr){var wt=buildText(wr);if(wt)window.open('https://wa.me/?text='+encodeURIComponent(wt),'_blank','noopener,noreferrer');else toast('Laporan masih kosong')}break;}
     case 'h-pdf':{id=b.closest('[data-rid]').dataset.rid;var pr=db.reports.find(function(x){return String(x.id)===String(id)});if(pr)sharePdf(null,pr);break;}
     case 'h-edit':id=b.closest('[data-rid]').dataset.rid;db.currentId=id;isReadOnly=false;setView('isi');toast('Mode edit aktif. Perubahan tersimpan setelah menekan Simpan laporan.');break;
