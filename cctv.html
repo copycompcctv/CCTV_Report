@@ -473,7 +473,7 @@ function str(v){return typeof v==='string'?v:(v==null?'':String(v))}
 function normItem(it){
   it=it||{};
   return {id:str(it.id)||uid(),kind:['text','qty','cable','structured'].indexOf(it.kind)>=0?it.kind:'text',
-    label:str(it.label),text:str(it.text),qty:str(it.qty),expr:str(it.expr),colon:it.colon!==false,join:!!it.join,job:str(it.job)||'Pasang Baru',jobCustom:str(it.jobCustom),item:str(it.item)||'DVR',itemCustom:str(it.itemCustom),note:str(it.note),unit:str(it.unit)||'Pcs'};
+    label:str(it.label),text:str(it.text),qty:str(it.qty),expr:str(it.expr),colon:it.colon!==false,join:!!it.join,job:str(it.job)||'Pasang Baru',jobCustom:str(it.jobCustom),item:str(it.item)||'Isi Sendiri',itemCustom:str(it.itemCustom),note:str(it.note),unit:str(it.unit)||'-'};
 }
 function normReport(r){
   if(!r||typeof r!=='object') return null;
@@ -816,7 +816,7 @@ function fieldsHTML(it){
       +'<div><label class="lbl" for="item-'+id+'">Item barang</label><select id="item-'+id+'" data-f="item">'+items.map(function(v){return '<option'+(it.item===v?' selected':'')+'>'+v+'</option>'}).join('')+'</select></div>'
       +(it.item==='Isi Sendiri'?'<div><label class="lbl" for="itemc-'+id+'">Nama barang</label><input id="itemc-'+id+'" data-f="itemCustom" value="'+esc(it.itemCustom)+'" placeholder="Ketik nama barang" autocomplete="off"></div>':'')
       +'<div><label class="lbl" for="note-'+id+'">Keterangan</label><input id="note-'+id+'" data-f="note" value="'+esc(it.note)+'" placeholder="Isi keterangan" autocomplete="off"></div>'
-      +'<div><label class="lbl" for="unit-'+id+'">Satuan</label><select id="unit-'+id+'" data-f="unit">'+['Pcs','Meter','-'].map(function(v){return '<option'+(it.unit===v?' selected':'')+'>'+v+'</option>'}).join('')+'</select></div></div>';
+      +'<div><label class="lbl" for="unit-'+id+'">Satuan</label><select id="unit-'+id+'" data-f="unit">'+['-','Pcs','Meter'].map(function(v){return '<option'+(it.unit===v?' selected':'')+'>'+v+'</option>'}).join('')+'</select></div></div>';
   }
   if(it.kind==='text') return '<textarea id="foc-'+id+'" data-f="text" rows="2" aria-label="Isi baris" placeholder="mis. DVR 4 Ch + HDD 500 Gb">'+esc(it.text)+'</textarea>';
   var lab='<input id="lab-'+id+'" data-f="label" value="'+esc(it.label)+'" placeholder="Nama barang" aria-label="Nama barang" autocomplete="off">';
