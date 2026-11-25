@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Nota Tagihan | Copy Computer</title><meta name="theme-color" content="#0A6C8B">
+<title>Nota Tagihan | Copy Computer</title><meta name="theme-color" content="#ffffff">
 <link rel="icon" type="image/png" href="icon-192.png">
 <style>
 :root{--ink:#17283d;--muted:#68798d;--line:#dce4ec;--bg:#f2f5f9;--teal:#0a6c8b;--green:#16845b}
@@ -54,10 +54,31 @@ header img{width:62px;height:auto;max-height:48px;object-fit:contain;flex:none}
 header .brand-copy{min-width:0;line-height:1.25}header .brand-copy strong{display:block;font-size:16px;font-weight:800;color:#10265a;letter-spacing:.02em}header .brand-copy small{display:block;color:#1768e8;font-size:12px;margin-top:3px}
 header .header-spacer{flex:1}header .nav-icon{width:42px;height:42px;min-width:42px;padding:0;border:1px solid #dfe8f7;border-radius:12px;background:#f4f8ff;color:#174a9c;display:inline-grid;place-items:center;text-decoration:none}header .nav-icon svg{width:20px;height:20px;display:block}
 @media(max-width:520px){header{padding:9px 12px;gap:9px}header img{width:52px;max-height:42px}header .brand-copy strong{font-size:14px}header .brand-copy small{font-size:11px}header .nav-icon{width:39px;height:39px;min-width:39px}}
+
+/* Penyelarasan desain minimalis Copy Computer */
+:root{--ink:#10265a;--muted:#71809a;--line:#dfe8f7;--bg:#fff;--teal:#1768e8;--green:#1768e8}
+body{background:#fff;color:var(--ink)}
+header{padding:9px max(18px,calc((100% - 980px)/2));gap:12px;min-height:66px}
+header img{width:58px;height:auto;max-height:44px}
+header strong{font-size:16px;color:#10265a}
+header small{font-size:12px;color:#1768e8}
+.wrap{max-width:980px;margin:28px auto}
+.top{margin-bottom:12px}
+h1{font-size:22px;line-height:1.25;color:#10265a}
+.panel{border:1px solid #dfe8f7;border-radius:13px;padding:15px;box-shadow:none}
+input,select,textarea{border-color:#d7e2f7;border-radius:9px}
+button,.btn{background:#1768e8;border-radius:10px}
+button.secondary,.btn.secondary{background:#f4f8ff;color:#174a9c;border:1px solid #dfe8f7}
+.total{background:#f3f7ff;color:#10265a}
+.grand{color:#1768e8}
+.notice{background:#f3f7ff;color:#34527c;border-radius:10px}
+.listcard{border-color:#dfe8f7;border-radius:11px}
+.top-actions{min-width:0}
+@media(max-width:520px){header{padding:8px 14px}.wrap{margin:20px auto;padding:0 14px}.panel{padding:13px}.top{align-items:flex-start}h1{font-size:20px}}
 </style></head><body>
 <header><img src="logo-copy-computer.PNG" alt="Logo Copy Computer"><div class="brand-copy"><strong>COPY COMPUTER</strong><small>Buat Nota</small></div><span class="header-spacer"></span><a class="nav-icon" href="../" aria-label="Menu utama" title="Menu utama"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg></a><button class="nav-icon" type="button" onclick="if(history.length>1)history.back();else location.href='../'" aria-label="Kembali" title="Kembali"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6M9 12h12"/></svg></button></header>
 <main class="wrap">
-<div class="top"><div><h1>Nota Tagihan</h1><div class="muted">Buat nota dari laporan CCTV, pesanan khusus, atau data servisan yang sudah tersimpan.</div></div><div class="top-actions"><a class="btn secondary" href="./">← Menu Utama</a><button id="clearInvoiceBtn" class="secondary" type="button">Buat Nota Baru / Bersihkan</button></div></div>
+<div class="top"><div><h1>Nota Tagihan</h1><div class="muted">Buat nota dari laporan CCTV, pesanan khusus, atau data servisan yang sudah tersimpan.</div></div><div class="top-actions"><button id="clearInvoiceBtn" class="secondary" type="button">Buat Nota Baru / Bersihkan</button></div></div>
 <div id="status" class="notice">Memeriksa sesi dan memuat data...</div>
 <div class="grid">
 <section>
