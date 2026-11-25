@@ -856,7 +856,7 @@ function sectionHTML(s){
 function render(){
   var r=cur();
   $('form').innerHTML=
-   '<div class="form-title"><div><h2>Buat Laporan Baru</h2><p>Isi pekerjaan dan barang yang digunakan.</p></div></div>'
+   '<div class="form-title"><div class="form-title-icon"><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="4" y="20" width="56" height="33" rx="4" fill="none" stroke="currentColor" stroke-width="3"/><path d="M16 20l5-7h22l5 7" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="32" cy="36" r="11" fill="none" stroke="currentColor" stroke-width="4"/></svg></div><div><h2>Buat Laporan CCTV</h2><p>Isi data laporan dengan lengkap</p></div></div>'
    +'<div class="card stack"><div><label class="lbl" for="customer">Pelanggan</label><input id="customer" data-f="customer" value="'+esc(r.customer)+'" placeholder="Nama Pelanggan" autocomplete="off"></div>'
    +'<div class="two"><div><label class="lbl" for="date">Tanggal</label><input id="date" type="date" data-f="date" value="'+esc(r.date)+'"></div>'
    +'<div><label class="lbl" for="tech">Teknisi</label><input id="tech" data-f="tech" value="'+esc(r.tech)+'" placeholder="Nama Teknisi" autocomplete="off"></div></div>'
