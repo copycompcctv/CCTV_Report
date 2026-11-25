@@ -270,6 +270,21 @@ textarea{min-height:86px}
  .item{padding:10px;border-radius:12px}
 }
 
+/* Modern CCTV form details */
+.form-title{display:flex;align-items:center;justify-content:flex-start;gap:16px}
+.form-title-icon{width:76px;height:76px;flex:none;border-radius:22px;background:#edf4ff;color:#1768e8;display:grid;place-items:center}
+.form-title-icon svg{width:48px;height:48px}
+.form-title h2{font-size:clamp(22px,3vw,30px);line-height:1.15;font-weight:800;letter-spacing:-.035em;color:#10265a}
+.form-title p{margin:5px 0 0;font-size:clamp(14px,1.8vw,18px);color:#6872b5}
+#form .card{border-radius:20px}
+#form .sec-head{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center}
+#form .sec-head .lbl{grid-column:1/-1;margin:0}
+#form .sec-head select{grid-column:1;min-width:0}
+#form .sec-head .mini{grid-column:2}
+#form .structured-item{background:#f8faff;border:1px solid #dce7ff}
+#form .item-actions{margin-top:2px}
+#form .item-actions .btn{min-height:48px}
+@media(max-width:520px){.form-title{gap:12px;padding-bottom:14px}.form-title-icon{width:58px;height:58px;border-radius:18px}.form-title-icon svg{width:36px;height:36px}#form .card{padding:14px;border-radius:17px}#form .sec-head .mini{padding:7px 9px}}
 </style>
 </head>
 <body>
