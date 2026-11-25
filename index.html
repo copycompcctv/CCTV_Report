@@ -80,26 +80,22 @@ main{width:min(1160px,100%);margin:58px auto 42px;padding:0 24px}
   <a class="module" href="./cctv.html" aria-label="CCTV Report">
     <div class="symbol" aria-hidden="true"><svg viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg" fill="none" aria-hidden="true">
 <defs>
- <linearGradient id="cctvBody" x1="25" y1="25" x2="105" y2="93" gradientUnits="userSpaceOnUse"><stop stop-color="#102F91"/><stop offset=".52" stop-color="#0868D8"/><stop offset="1" stop-color="#08BBD8"/></linearGradient>
- <linearGradient id="cctvShade" x1="24" y1="65" x2="94" y2="92" gradientUnits="userSpaceOnUse"><stop stop-color="#10266F"/><stop offset="1" stop-color="#0754B8"/></linearGradient>
- <linearGradient id="cctvSignal" x1="91" y1="69" x2="119" y2="108" gradientUnits="userSpaceOnUse"><stop stop-color="#05C4D8"/><stop offset="1" stop-color="#0872E8"/></linearGradient>
+ <linearGradient id="camHood" x1="30" y1="29" x2="105" y2="72" gradientUnits="userSpaceOnUse"><stop stop-color="#102B83"/><stop offset=".58" stop-color="#0868D8"/><stop offset="1" stop-color="#08C0D8"/></linearGradient>
+ <linearGradient id="camBody" x1="22" y1="69" x2="91" y2="96" gradientUnits="userSpaceOnUse"><stop stop-color="#10266F"/><stop offset="1" stop-color="#0754B8"/></linearGradient>
+ <linearGradient id="camWave" x1="91" y1="70" x2="116" y2="108" gradientUnits="userSpaceOnUse"><stop stop-color="#08C4D8"/><stop offset="1" stop-color="#0872E8"/></linearGradient>
 </defs>
-<!-- one-piece outdoor camera hood -->
-<path d="M25 42 79 17C92 11 106 18 110 31C113 42 107 52 96 58L57 78 39 66 25 42Z" fill="url(#cctvBody)"/>
-<!-- camera barrel and underside -->
-<path d="M31 48C39 42 49 43 57 49L79 65C86 70 95 69 102 63L108 58C108 71 101 81 89 87L63 99C49 106 34 100 29 86L21 66C18 59 22 52 31 48Z" fill="url(#cctvShade)"/>
-<!-- clean lens face, single rim -->
-<path d="M27 47C36 42 47 48 51 58L57 74C61 85 72 88 83 82" stroke="#F7FBFF" stroke-width="6" stroke-linecap="round"/>
-<ellipse cx="34" cy="68" rx="13" ry="17" fill="#102B78"/>
-<ellipse cx="36" cy="68" rx="7" ry="10" fill="#F7FBFF"/>
-<ellipse cx="37" cy="68" rx="3.5" ry="5.5" fill="#123B9B"/>
-<!-- mounting arm and wall plate -->
-<path d="M79 83 84 91 84 103 96 103" stroke="#123A9B" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
-<rect x="91" y="96" width="17" height="22" rx="4" fill="#0871E3"/>
-<circle cx="99.5" cy="107" r="2.2" fill="#DDF8FF"/>
-<!-- wireless / recording signal -->
-<path d="M91 70C98 77 98 88 91 95" stroke="url(#cctvSignal)" stroke-width="6" stroke-linecap="round"/>
-<path d="M103 62C115 74 115 91 103 103" stroke="url(#cctvSignal)" stroke-width="6" stroke-linecap="round"/>
+<!-- broad, solid outdoor-camera sunshield -->
+<path d="M18 48 78 19C91 13 105 19 109 31C113 44 106 55 95 61L49 84 34 72 18 48Z" fill="url(#camHood)"/>
+<!-- lower camera housing -->
+<path d="M28 52C38 45 49 47 57 54L75 69C82 75 92 74 101 66L104 63C104 76 96 86 84 91L57 102C43 107 29 100 25 87L19 68C17 61 21 56 28 52Z" fill="url(#camBody)"/>
+<!-- lens ring and glass -->
+<path d="M27 51C36 46 47 51 51 62L57 78C61 88 71 91 81 85" stroke="#F7FBFF" stroke-width="6.5" stroke-linecap="round"/>
+<ellipse cx="32.5" cy="69" rx="14.5" ry="18" fill="#102B78"/>
+<ellipse cx="34" cy="69" rx="8.5" ry="12" fill="#F8FCFF"/>
+<ellipse cx="35" cy="69" rx="4.5" ry="7.5" fill="#123B9B"/>
+<!-- three bold wireless / report signal waves -->
+<path d="M88 76C95 83 95 94 88 101" stroke="url(#camWave)" stroke-width="7" stroke-linecap="round"/>
+<path d="M100 67C112 80 112 98 100 111" stroke="url(#camWave)" stroke-width="7" stroke-linecap="round"/>
 </svg></div>
     <h2>CCTV <span>Report</span></h2>
   </a>
