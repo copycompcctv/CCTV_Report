@@ -79,19 +79,23 @@ main{width:min(1160px,100%);margin:58px auto 42px;padding:0 24px}
 <nav class="menu" aria-label="Menu aplikasi">
   <a class="module" href="./cctv.html" aria-label="CCTV Report">
     <div class="symbol" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <defs><linearGradient id="cctvDome2D" x1="8" y1="5" x2="56" y2="58" gradientUnits="userSpaceOnUse"><stop stop-color="#08c5d9"/><stop offset="1" stop-color="#123caa"/></linearGradient></defs>
-      <!-- flat front-view ceiling mount -->
-      <path d="M13 7h38a4 4 0 0 1 4 4v5H9v-5a4 4 0 0 1 4-4Z" fill="url(#cctvDome2D)"/>
-      <path d="M18 11h28" stroke="white" stroke-width="2" stroke-linecap="round" opacity=".9"/>
-      <path d="M23 16h18v6H23z" fill="url(#cctvDome2D)"/>
-      <!-- dome body -->
-      <path d="M6 35c0-10.8 11.6-15 26-15s26 4.2 26 15v3a8 8 0 0 1-8 8H14a8 8 0 0 1-8-8v-3Z" fill="url(#cctvDome2D)"/>
-      <path d="M8 35c6 4.7 14 7 24 7s18-2.3 24-7" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
-      <!-- clear smoked dome and centered lens -->
-      <path d="M13 41c4.2 8.2 10.5 12.2 19 12.2S46.8 49.2 51 41c-2.1 10-8.5 15.2-19 15.2S15.1 51 13 41Z" fill="#eaf7ff" stroke="#123caa" stroke-width="1.6"/>
-      <ellipse cx="32" cy="46" rx="8" ry="6" fill="#123caa"/>
-      <circle cx="32" cy="46" r="3.5" fill="#071a42"/>
-      <circle cx="29.7" cy="43.9" r="1.5" fill="white"/>
+      <defs><linearGradient id="cctvCameraIcon" x1="7" y1="5" x2="57" y2="59" gradientUnits="userSpaceOnUse"><stop stop-color="#08c5d9"/><stop offset="1" stop-color="#123caa"/></linearGradient></defs>
+      <!-- wall bracket -->
+      <path d="M12 12h8v8h-4v8h-6v-8a8 8 0 0 1 2-8Z" fill="url(#cctvCameraIcon)"/>
+      <path d="M15 15v4" stroke="white" stroke-width="2" stroke-linecap="round"/>
+      <!-- camera body -->
+      <path d="M18 22h28c3.3 0 6 2.7 6 6v10c0 3.3-2.7 6-6 6H18c-3.3 0-6-2.7-6-6V28c0-3.3 2.7-6 6-6Z" fill="url(#cctvCameraIcon)"/>
+      <path d="M20 26h21" stroke="white" stroke-width="2" stroke-linecap="round" opacity=".85"/>
+      <!-- lens housing -->
+      <path d="M44 25h8a5 5 0 0 1 5 5v6a5 5 0 0 1-5 5h-8V25Z" fill="#eaf7ff" stroke="#123caa" stroke-width="2"/>
+      <circle cx="51" cy="33" r="5.2" fill="#123caa"/>
+      <circle cx="51" cy="33" r="2.5" fill="#071a42"/>
+      <circle cx="49.5" cy="31.5" r="1.2" fill="white"/>
+      <!-- lower mounting arm -->
+      <path d="M25 44v5h12v-5" stroke="url(#cctvCameraIcon)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M21 53h20" stroke="#123caa" stroke-width="4" stroke-linecap="round"/>
+      <!-- small status light -->
+      <circle cx="18" cy="35" r="2" fill="white"/>
     </svg></div>
     <h2>CCTV <span>Report</span></h2>
   </a>
