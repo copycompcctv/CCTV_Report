@@ -839,9 +839,9 @@ function itemHTML(it,idx){
    +'</div>';
 }
 function sectionHTML(s){
-  var id=esc(s.id),jobs=['Pasang Baru','Servis Kamera','Servis Lainnya'];
+  var id=esc(s.id),jobs=['Instalasi Listrik','Krimping Ulang','Pasang Kamera Baru','Pasang Ulang Kamera','Reset DVR','Servis DVR/NVR','Servis Kamera','Servis Lainnya','Setting Online ke HP'],selectedJob=(s.job||s.title||'Pasang Kamera Baru');if(selectedJob==='Pasang Baru')selectedJob='Pasang Kamera Baru';
   return '<section class="card" data-sec="'+id+'">'
-   +'<div class="sec-head"><label class="lbl" for="jobsec-'+id+'">Item pekerjaan</label><select id="jobsec-'+id+'" data-f="job">'+jobs.map(function(v){return '<option'+((s.job||s.title||'Pasang Baru')===v?' selected':'')+'>'+v+'</option>'}).join('')+'</select>'
+   +'<div class="sec-head"><label class="lbl" for="jobsec-'+id+'">Item pekerjaan</label><select id="jobsec-'+id+'" data-f="job">'+jobs.map(function(v){return '<option'+(selectedJob===v?' selected':'')+'>'+v+'</option>'}).join('')+'</select>'
    +'<button type="button" class="mini danger" data-act="del-sec">Hapus pekerjaan</button></div>'
    +s.items.map(itemHTML).join('')
    +'<div class="stack"><span class="lbl">Tambah item dari stok barang</span><div class="chips">'+db.catalog.map(function(cat){return '<button type="button" class="chip" data-act="add-cat" data-cid="'+esc(cat.id)+'">＋ '+esc(cat.label)+'</button>'}).join('')+'</div></div>'
