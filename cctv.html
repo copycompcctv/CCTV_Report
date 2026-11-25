@@ -756,7 +756,9 @@ var MONTHS=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','D
 var DEFAULT_KOP={name:'Copy Computer',tag:'',addr:'Jl. Sicengkir No. 3 Troso, Kec. Pecangaan Kab. Jepara 59462'};
 function uid(){return Math.random().toString(36).slice(2,9)+Date.now().toString(36).slice(-3)}
 function todayISO(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
-function fmtDate(iso){var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(iso||'');if(!m)return '';return (+m[3])+' '+MONTHS[+m[2]-1]+' '+m[1]}
+function fmtDate(iso){var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(iso||'');if(!m)return '';return m[3]+'/'+m[2]+'/'+m[1].slice(-2)}
+function dateInputValue(iso){var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(iso||'');return m?m[3]+'/'+m[2]+'/'+m[1].slice(-2):str(iso)}
+function dateInputISO(value){var m=/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{2}|\d{4})$/.exec(String(value||'').trim());if(!m)return '';var d=+m[1],mo=+m[2],y=+m[3];if(y<100)y+=2000;var dt=new Date(y,mo-1,d);if(dt.getFullYear()!==y||dt.getMonth()!==mo-1||dt.getDate()!==d)return '';return y+'-'+String(mo).padStart(2,'0')+'-'+String(d).padStart(2,'0')}
 function fmt(n){return String(Math.round(n*100)/100).replace('.',',')}
 function parseExpr(s){
   var c=String(s||'').replace(/\s+/g,'').replace(/,/g,'.');
@@ -1213,7 +1215,7 @@ function render(){
   $('form').innerHTML=
    ''
    +'<div class="card stack form-shell"><div class="stack form-fields">'
-   +'<div class="form-field"><label class="field-label" for="date"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M7 3v4M17 3v4M3 10h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Tanggal Laporan <em>*</em></label><input id="date" type="date" data-f="date" value="'+esc(r.date)+'"></div>'
+   +'<div class="form-field"><label class="field-label" for="date"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M7 3v4M17 3v4M3 10h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Tanggal Laporan <em>*</em></label><input id="date" type="text" inputmode="numeric" maxlength="8" data-f="date" value="'+esc(dateInputValue(r.date))+'" placeholder="DD/MM/YY" autocomplete="off"></div>'
    +'<div class="form-field"><label class="field-label" for="customer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a4.2 4.2 0 1 0 0-8.4A4.2 4.2 0 0 0 12 12Zm-8 8.2c.4-4 3.5-6.2 8-6.2s7.6 2.2 8 6.2v.6H4z" fill="currentColor"/></svg>Nama Pelanggan <em>*</em></label><input id="customer" data-f="customer" value="'+esc(r.customer)+'" placeholder="Masukkan nama pelanggan..." autocomplete="off"></div>'
    +'<div class="form-field"><label class="field-label" for="address"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-7.2 8-13a8 8 0 1 0-16 0c0 5.8 8 13 8 13Z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="9" r="2.5" fill="currentColor"/></svg>Alamat</label><input id="address" data-f="address" value="'+esc(r.address)+'" placeholder="Masukkan alamat pelanggan..." autocomplete="off"></div></div>'
    +r.sections.map(function(sec,index){if(!sec.items.length)sec.items.push(mk('structured',{item:''}));return sectionHTML(sec,index)}).join('')
@@ -1353,7 +1355,7 @@ document.addEventListener('input',function(e){
     save();return;
   }
   var r=cur();
-  if(f==='customer'||f==='address'||f==='date'||f==='showMeta'||f==='tech'||f==='catatan'){r[f]=v;if(f==='tech')db.lastTech=v}
+  if(f==='customer'||f==='address'||f==='date'||f==='showMeta'||f==='tech'||f==='catatan'){if(f==='date'){var iso=dateInputISO(v);r.date=iso||v;}else r[f]=v;if(f==='tech')db.lastTech=v}
   else{
     var sec=getSec(t);if(!sec)return;
     if(f==='title')sec.title=v;
