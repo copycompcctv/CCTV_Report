@@ -1202,7 +1202,7 @@ function itemHTML(it,idx){
 }
 function sectionHTML(s,index){
   var id=esc(s.id),jobs=['Instalasi Listrik','Krimping Ulang','Pasang Kamera Baru','Pasang Ulang Kamera','Reset DVR','Servis DVR/NVR','Servis Kamera','Servis Lainnya','Setting Online ke HP'],selectedJob=(s.job||s.title||'');if(selectedJob==='Pasang Baru')selectedJob='Pasang Kamera Baru';
-  return '<section class="card" data-sec="'+id+'">'
+  return '<section class="job-section" data-sec="'+id+'">'
    +'<div class="sec-head"><label class="lbl job-label" for="jobsec-'+id+'"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.7 6.3a6 6 0 0 1-7.9 7.9L7 21a2.1 2.1 0 0 1-3-3l6.8-6.8a6 6 0 0 1 7.9-7.9l-3.5 3.5 3.1 3.1 3.4-3.6Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="m5.1 18.9 2 2" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>Jenis Pekerjaan <em>*</em></label><select id="jobsec-'+id+'" data-f="job"><option value=""'+(!selectedJob?' selected':'')+' disabled>Pilih jenis pekerjaan...</option>'+jobs.map(function(v){return '<option value="'+esc(v)+'"'+(selectedJob===v?' selected':'')+'>'+v+'</option>'}).join('')+'</select>'
    +'</div>'
    +s.items.map(itemHTML).join('')
@@ -1220,8 +1220,8 @@ function render(){
    +'<div class="form-field"><label class="field-label" for="address"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-7.2 8-13a8 8 0 1 0-16 0c0 5.8 8 13 8 13Z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="9" r="2.5" fill="currentColor"/></svg>Alamat</label><input id="address" data-f="address" value="'+esc(r.address)+'" placeholder="Masukkan alamat pelanggan..." autocomplete="off"></div></div>'
    +r.sections.map(function(sec,index){if(!sec.items.length)sec.items.push(mk('structured',{item:''}));return sectionHTML(sec,index)}).join('')
    +'<div class="stack form-note"><label class="field-label" for="catatan"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6z" fill="currentColor"/><path d="M9 11h7M9 15h7" stroke="white" stroke-width="1.7" stroke-linecap="round"/></svg>Keterangan Tambahan</label><textarea id="catatan" data-f="catatan" rows="3" placeholder="Masukkan keterangan tambahan...">'+esc(r.catatan||'')+'</textarea></div>'
-   +'<section class="attachment-panel" aria-label="Lampiran foto dan video"><div class="field-label attach-title"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h3l2-3h6l2 3h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2Z" fill="currentColor"/><circle cx="12" cy="13" r="4" fill="none" stroke="white" stroke-width="2"/></svg>Foto / Video (Opsional)<p class="hint">Maksimal 8 file</p></div><label class="btn ghost attachment-pick" for="attachmentInput">＋ Pilih Foto / Video</label><input id="attachmentInput" type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,video/mp4,video/quicktime,video/webm" multiple><div class="hint">Foto maks. 12 MB dan video maks. 80 MB per file.</div><div id="attachmentList" class="attachment-list"><span class="hint">Belum ada lampiran.</span></div></section></div>'
-   +'<div class="form-actions"><button type="button" class="btn ghost" data-act="reset-form">Reset</button><button type="button" class="btn save-report-btn" data-act="save-report">Simpan Laporan</button></div>';
+   +'<section class="attachment-panel" aria-label="Lampiran foto dan video"><div class="field-label attach-title"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h3l2-3h6l2 3h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2Z" fill="currentColor"/><circle cx="12" cy="13" r="4" fill="none" stroke="white" stroke-width="2"/></svg>Foto / Video (Opsional)</div><label class="attachment-pick" for="attachmentInput"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="4" y="7" width="31" height="29" rx="4" fill="none" stroke="currentColor" stroke-width="3.5"/><circle cx="14" cy="17" r="3.5" fill="currentColor"/><path d="m7 32 10-10 7 7 5-5 5 4" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M38 27v16M30 35h16" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg><span><strong>Pilih Foto / Video</strong><small>atau Drag &amp; Drop (Maks 8 File)</small></span></label><input id="attachmentInput" type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,video/mp4,video/quicktime,video/webm" multiple><div class="hint attachment-size-hint">Foto maks. 12 MB dan video maks. 80 MB per file.</div><div id="attachmentList" class="attachment-list"><span class="hint">Belum ada lampiran.</span></div></section></div>'
+   +'<div class="form-actions"><button type="button" class="btn ghost" data-act="reset-form"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11a9 9 0 1 1 2.6 6.4M3 4v7h7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Reset</span></button><button type="button" class="btn save-report-btn" data-act="save-report"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 3h14l3 3v15H3V3h1Zm3 0v7h10V3M7 21v-8h10v8" fill="currentColor" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><path d="M9 3h6v5H9z" fill="#fff"/></svg><span>Simpan Laporan</span></button></div>';
   if(isReadOnly){
     var banner=document.createElement('div');banner.className='card';banner.style.cssText='border-color:#0b7895;background:#eef8fb;color:#075b73';
     banner.innerHTML='<strong>Mode lihat laporan</strong><div class="hint">Laporan tersimpan ditampilkan hanya untuk dibaca. Data tidak bisa diubah dari tampilan ini.</div><button type="button" class="btn ghost" data-act="view" data-v="riwayat">Kembali ke riwayat</button>';
@@ -1718,5 +1718,83 @@ $('logoutBtn').addEventListener('click',async function(){
 @media(max-width:520px){
  #form .field-label,#form .job-label,#form .item-field-label,#form .attach-title{font-size:15px!important}
  #form input:not([type=file]),#form select,#form textarea{font-size:15px!important;min-height:46px!important}
+}
+</style>
+<style>
+/* Tata letak Jenis Pekerjaan dan Item Barang sejajar dengan field utama */
+#form .job-section{
+ display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:12px!important;
+ width:100%!important;min-width:0!important;margin:0!important;padding:0!important;
+ border:0!important;border-radius:0!important;background:transparent!important;
+ box-shadow:none!important;
+}
+#form .job-section .sec-head{
+ display:grid!important;grid-template-columns:minmax(0,1fr)!important;
+ width:100%!important;gap:7px!important;margin:0!important;padding:0!important;
+}
+#form .job-section .job-label{grid-column:1!important;margin:0!important}
+#form .job-section .sec-head select{
+ grid-column:1!important;width:100%!important;min-width:0!important;
+}
+#form .job-section .structured-item{
+ width:100%!important;margin:0!important;padding:0!important;
+ border:0!important;border-radius:0!important;background:transparent!important;
+ box-shadow:none!important;
+}
+#form .job-section .structured-grid,
+#form .job-section .item-choice{width:100%!important;min-width:0!important}
+#form .job-section .item-actions{width:100%!important;margin-top:3px!important}
+#form .job-section .item-field-label{margin:0 0 7px!important}
+
+/* Area foto/video mengikuti referensi: panel garis putus-putus dan ikon gambar tambah */
+#form .attachment-panel{
+ display:grid!important;gap:10px!important;padding:14px!important;
+ border:0!important;border-radius:0!important;background:transparent!important;
+}
+#form .attachment-panel .attach-title{margin:0!important}
+#form .attachment-pick{
+ width:100%!important;max-width:none!important;min-height:112px!important;
+ display:flex!important;flex-direction:column!important;align-items:center!important;
+ justify-content:center!important;gap:5px!important;cursor:pointer!important;
+ padding:12px!important;border:1.8px dashed #8eb3ff!important;
+ border-radius:17px!important;background:#f7faff!important;color:#0860ed!important;
+ text-align:center!important;
+}
+#form .attachment-pick>svg{width:40px!important;height:40px!important;flex:none!important}
+#form .attachment-pick span{display:grid;gap:2px}
+#form .attachment-pick strong{font-size:16px!important;font-weight:700!important}
+#form .attachment-pick small{font-size:13px!important;font-weight:500!important;color:#6872b5!important}
+#form #attachmentInput{
+ position:absolute!important;width:1px!important;height:1px!important;padding:0!important;
+ margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;
+ white-space:nowrap!important;border:0!important;
+}
+#form .attachment-size-hint{font-size:11px!important;margin:0!important}
+
+/* Tombol Reset dan Simpan seperti referensi */
+#form .form-actions{
+ display:grid!important;grid-template-columns:.85fr 1.2fr!important;
+ align-items:stretch!important;gap:12px!important;margin:8px 0 0!important;
+}
+#form .form-actions>.btn{
+ width:100%!important;min-height:68px!important;padding:12px 16px!important;
+ display:flex!important;align-items:center!important;justify-content:center!important;
+ gap:12px!important;border:0!important;border-radius:22px!important;
+ font-size:clamp(16px,2vw,21px)!important;font-weight:750!important;
+ letter-spacing:-.02em!important;white-space:nowrap!important;
+}
+#form .form-actions>.btn svg{width:32px!important;height:32px!important;flex:0 0 32px!important}
+#form .form-actions>[data-act="reset-form"]{
+ background:#dce8ff!important;color:#075bea!important;
+}
+#form .form-actions>[data-act="save-report"]{
+ background:#075bea!important;color:#fff!important;
+ box-shadow:0 5px 12px rgba(7,91,234,.14)!important;
+}
+@media(max-width:520px){
+ #form .form-actions{grid-template-columns:.85fr 1.2fr!important;gap:9px!important}
+ #form .form-actions>.btn{min-height:60px!important;padding:9px 8px!important;gap:7px!important;border-radius:17px!important;font-size:15px!important}
+ #form .form-actions>.btn svg{width:25px!important;height:25px!important;flex-basis:25px!important}
+ #form .attachment-pick{min-height:104px!important}
 }
 </style>
