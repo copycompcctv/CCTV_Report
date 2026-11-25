@@ -400,6 +400,29 @@ textarea{min-height:76px}
  .attachment-panel{padding:10px}
  .form-actions .btn{min-height:42px;font-size:13px}
 }
+
+/* Consistent form hierarchy and progressive item details */
+#form .field-label,#form .job-label,#form .item-heading{display:flex;align-items:center;gap:9px;margin:0;color:#10265a;font-size:14px!important;font-weight:650;line-height:1.35;letter-spacing:0}
+#form .field-label svg,#form .job-label svg,#form .item-heading svg{display:block;flex:0 0 21px;width:21px!important;height:21px!important;color:#1768e8}
+#form .job-label em{font-style:normal;color:#e11d48}
+#form .sec-head{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px;margin-bottom:10px}
+#form .sec-head .job-label{grid-column:1/-1}
+#form .sec-head select{grid-column:1;min-width:0}
+#form .sec-head .mini{grid-column:2}
+#form .structured-item{padding:12px;background:#f8faff;border:1px solid #dce7ff;border-radius:13px;gap:10px}
+#form .structured-item .item-top{display:flex;align-items:center;gap:8px;margin:0 0 2px}
+#form .item-heading{font-size:14px!important}
+#form .structured-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:9px}
+#form .structured-grid>div{min-width:0;display:grid;gap:5px}
+#form .structured-grid .lbl{font-size:12px!important;font-weight:600;line-height:1.3;color:#52658f;margin:0}
+#form .structured-grid select,#form .structured-grid input{width:100%;min-width:0;min-height:42px;font-size:14px}
+#form .item-extra{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;padding-top:2px;animation:itemReveal .18s ease-out}
+#form .item-extra>div{display:grid;gap:5px;min-width:0}
+#form .item-extra>div:has([data-f="note"]){grid-column:1/-1}
+#form .item-actions{margin-top:4px}
+#form .item-actions .btn{min-height:40px;font-size:13px}
+@keyframes itemReveal{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:520px){#form .item-extra{grid-template-columns:1fr}#form .item-extra>div:has([data-f="note"]){grid-column:auto}}
 </style>
 </head>
 <body>
@@ -545,7 +568,7 @@ function parseExpr(s){
   var total=terms.reduce(function(a,t){return a+parseFloat(t)},0);
   return {ok:true,terms:terms.map(function(t){return t.replace(/\./g,',')}),total:total};
 }
-function mk(kind,o){return Object.assign({id:uid(),kind:kind,label:'',text:'',qty:'',expr:'',colon:true,join:false,job:'Pasang Kamera Baru',jobCustom:'',item:'Isi Sendiri',itemCustom:'',note:'',unit:'-'},o||{})}
+function mk(kind,o){return Object.assign({id:uid(),kind:kind,label:'',text:'',qty:'',expr:'',colon:true,join:false,job:'Pasang Kamera Baru',jobCustom:'',item:'',itemCustom:'',note:'',unit:'-'},o||{})}
 function itemLine(it){
   var label=(it.label||'').trim();
   if(it.kind==='structured'){var nm=it.item==='Isi Sendiri'?(it.itemCustom||''):it.item;var detail=(it.note||'').trim();var unit=it.unit&&it.unit!=='-'?it.unit:'';return [nm,detail].filter(Boolean).join(' : ')+(unit?' '+unit:'')}
@@ -603,7 +626,7 @@ function str(v){return typeof v==='string'?v:(v==null?'':String(v))}
 function normItem(it){
   it=it||{};
   return {id:str(it.id)||uid(),kind:['text','qty','cable','structured'].indexOf(it.kind)>=0?it.kind:'text',
-    label:str(it.label),text:str(it.text),qty:str(it.qty),expr:str(it.expr),colon:it.colon!==false,join:!!it.join,job:str(it.job)||'Pasang Baru',jobCustom:str(it.jobCustom),item:str(it.item)||'Isi Sendiri',itemCustom:str(it.itemCustom),note:str(it.note),unit:str(it.unit)||'-'};
+    label:str(it.label),text:str(it.text),qty:str(it.qty),expr:str(it.expr),colon:it.colon!==false,join:!!it.join,job:str(it.job)||'Pasang Baru',jobCustom:str(it.jobCustom),item:str(it.item),itemCustom:str(it.itemCustom),note:str(it.note),unit:str(it.unit)||'-'};
 }
 function normReport(r){
   if(!r||typeof r!=='object') return null;
@@ -655,7 +678,7 @@ function mergeCatalog(cats){
 }
 function blankReport(){
   return {id:uid(),example:false,saved:false,customer:'',address:'',tech:'',date:todayISO(),createdAt:Date.now(),showMeta:false,updatedAt:Date.now(),
-    catatan:'',sections:[{id:uid(),title:'',job:'Pasang Kamera Baru',bold:true,items:[mk('structured',{item:'Isi Sendiri',unit:'-'})]}]};
+    catatan:'',sections:[{id:uid(),title:'',job:'Pasang Kamera Baru',bold:true,items:[mk('structured',{item:'',unit:'-'})]}]};
 }
 function sampleReports(){
   var a={id:uid(),example:true,customer:'H. Jamal',address:'',tech:'',date:todayISO(),createdAt:Date.now(),showMeta:false,updatedAt:Date.now(),sections:[
@@ -950,10 +973,11 @@ function fieldsHTML(it){
   if(it.kind==='structured'){
     var items=['Adaptor','Baterai CMOS','DVR','DVR 4 CH','DVR 8 CH','DVR 16 CH','Duradus','Hardisk','Hardisk 500 GB','Hardisk 1 TB','Hardisk 2 TB','Isi Sendiri','Jack BNC','Jack DC','Kabel CCTV','Kabel LAN','Kabel Listrik','Kamera Indoor','Kamera Outdoor','MMC 32 GB','MMC 64 GB','MMC 128 GB','NVR','NVR 5 CH','NVR 10 CH','NVR 20 CH','POE 4 Port','POE 8 Port','PSU','Steker Bulat Male','Steker Gepeng Female','Steker Gepeng Male','Stopkontak','Stopkontak 1 lubang','Stopkontak 2 lubang','Stopkontak 3 lubang','TC Duck'];
     return '<div class="structured-grid">'
-      +'<div><label class="lbl" for="item-'+id+'">Item barang</label><select id="item-'+id+'" data-f="item">'+items.map(function(v){return '<option'+(it.item===v?' selected':'')+'>'+v+'</option>'}).join('')+'</select></div>'
-      +(it.item==='Isi Sendiri'?'<div><label class="lbl" for="itemc-'+id+'">Nama barang</label><input id="itemc-'+id+'" data-f="itemCustom" value="'+esc(it.itemCustom)+'" placeholder="Ketik nama barang" autocomplete="off"></div>':'')
-      +'<div><label class="lbl" for="note-'+id+'">Keterangan</label><input id="note-'+id+'" data-f="note" value="'+esc(it.note)+'" placeholder="Isi keterangan" autocomplete="off"></div>'
-      +'<div><label class="lbl" for="unit-'+id+'">Satuan</label><select id="unit-'+id+'" data-f="unit">'+['-','Pcs','Meter'].map(function(v){return '<option'+(it.unit===v?' selected':'')+'>'+v+'</option>'}).join('')+'</select></div></div>';
+      +'<div class="item-choice"><label class="lbl" for="item-'+id+'">Pilih item barang</label><select id="item-'+id+'" data-f="item"><option value="">Pilih item barang...</option>'+items.map(function(v){return '<option'+(it.item===v?' selected':'')+'>'+v+'</option>'}).join('')+'</select></div>'
+      +(it.item?'<div class="item-extra">'
+        +(it.item==='Isi Sendiri'?'<div><label class="lbl" for="itemc-'+id+'">Nama barang</label><input id="itemc-'+id+'" data-f="itemCustom" value="'+esc(it.itemCustom)+'" placeholder="Ketik nama barang" autocomplete="off"></div>':'')
+        +'<div><label class="lbl" for="note-'+id+'">Keterangan</label><input id="note-'+id+'" data-f="note" value="'+esc(it.note)+'" placeholder="Isi keterangan" autocomplete="off"></div>'
+        +'<div><label class="lbl" for="unit-'+id+'">Satuan</label><select id="unit-'+id+'" data-f="unit">'+['-','Pcs','Meter'].map(function(v){return '<option'+(it.unit===v?' selected':'')+'>'+v+'</option>'}).join('')+'</select></div></div>':'');
   }
   if(it.kind==='text') return '<textarea id="foc-'+id+'" data-f="text" rows="2" aria-label="Isi baris" placeholder="mis. DVR 4 Ch + HDD 500 Gb">'+esc(it.text)+'</textarea>';
   var lab='<input id="lab-'+id+'" data-f="label" value="'+esc(it.label)+'" placeholder="Nama barang" aria-label="Nama barang" autocomplete="off">';
@@ -961,7 +985,7 @@ function fieldsHTML(it){
   return lab+'<input id="val-'+id+'" class="mono" data-f="expr" value="'+esc(it.expr)+'" inputmode="tel" placeholder="50+10+5" aria-label="Panjang kabel dalam meter" autocomplete="off">';
 }
 function itemHTML(it,idx){
-  if(it.kind==='structured') return '<div class="item structured-item" data-item="'+esc(it.id)+'"><div class="item-top"><strong>Item barang</strong><span class="sp"></span><button type="button" class="mini danger" data-act="del-item">Hapus</button></div>'+fieldsHTML(it)+'</div>';
+  if(it.kind==='structured') return '<div class="item structured-item" data-item="'+esc(it.id)+'"><div class="item-top"><strong class="item-heading"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2 9 5-9 5-9-5 9-5Zm-9 7 8 4.5V22l-8-4.5V9Zm18 0v8.5L13 22v-8.5L21 9Z" fill="currentColor"/></svg>Item Barang</strong><span class="sp"></span><button type="button" class="mini danger" data-act="del-item">Hapus</button></div>'+fieldsHTML(it)+'</div>';
   var kinds=[['text','Teks'],['qty','Barang'],['cable','Kabel']];
   var c=it.kind==='cable'?calcInfo(it):null;
   return '<div class="item" data-item="'+esc(it.id)+'">'
@@ -992,7 +1016,7 @@ function render(){
    +'<div class="form-field"><label class="field-label" for="tech"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.7 6.3a5 5 0 0 0-6.4 6.4L3 18l3 3 5.3-5.3a5 5 0 0 0 6.4-6.4l-3.1 3.1-3-3z" fill="currentColor"/></svg>Teknisi</label><input id="tech" data-f="tech" value="'+esc(r.tech)+'" placeholder="Nama teknisi" autocomplete="off"></div></div>'
    +'<div class="form-field"><label class="field-label" for="address"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-7.2 8-13a8 8 0 1 0-16 0c0 5.8 8 13 8 13Z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="9" r="2.5" fill="currentColor"/></svg>Alamat</label><input id="address" data-f="address" value="'+esc(r.address)+'" placeholder="Masukkan alamat pelanggan..." autocomplete="off"></div>'
    +'<label class="check"><input id="showMeta" type="checkbox" data-f="showMeta"'+(r.showMeta?' checked':'')+'><span>Cantumkan tanggal dan alamat di teks WhatsApp</span></label></div>'
-   +r.sections.map(function(sec){if(!sec.items.length)sec.items.push(mk('structured',{item:'Isi Sendiri'}));return sectionHTML(sec)}).join('')
+   +r.sections.map(function(sec){if(!sec.items.length)sec.items.push(mk('structured',{item:''}));return sectionHTML(sec)}).join('')
    +'<div class="item-actions"><button type="button" class="btn" data-act="add-sec">+ Tambah pekerjaan</button></div>'
    +'<div class="card stack form-note"><label class="field-label" for="catatan"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6z" fill="currentColor"/><path d="M9 11h7M9 15h7" stroke="white" stroke-width="1.7" stroke-linecap="round"/></svg>Keterangan Tambahan</label><textarea id="catatan" data-f="catatan" rows="3" placeholder="Masukkan keterangan tambahan...">'+esc(r.catatan||'')+'</textarea></div>'
    +'<section class="attachment-panel" aria-label="Lampiran foto dan video"><div class="field-label attach-title"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h3l2-3h6l2 3h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2Z" fill="currentColor"/><circle cx="12" cy="13" r="4" fill="none" stroke="white" stroke-width="2"/></svg>Foto / Video (Opsional)<p class="hint">Maksimal 8 file</p></div><label class="btn ghost attachment-pick" for="attachmentInput">＋ Pilih Foto / Video</label><input id="attachmentInput" type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,video/mp4,video/quicktime,video/webm" multiple><div class="hint">Foto maks. 12 MB dan video maks. 80 MB per file.</div><div id="attachmentList" class="attachment-list"><span class="hint">Belum ada lampiran.</span></div></section>'
