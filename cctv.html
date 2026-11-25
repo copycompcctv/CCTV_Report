@@ -517,6 +517,12 @@ var DEFAULT_CATALOG=[
   {label:'TC',kind:'qty',note:'',colon:false},
   {label:'Baterai CMOS',kind:'qty',note:'',colon:true},{label:'DVR 4 CH',kind:'qty',note:'',colon:true},{label:'DVR 8 CH',kind:'qty',note:'',colon:true},{label:'DVR 16 CH',kind:'qty',note:'',colon:true},{label:'Hardisk 500 GB',kind:'qty',note:'',colon:true},{label:'Hardisk 1 TB',kind:'qty',note:'',colon:true},{label:'Hardisk 2 TB',kind:'qty',note:'',colon:true},{label:'MMC 32 GB',kind:'qty',note:'',colon:true},{label:'MMC 64 GB',kind:'qty',note:'',colon:true},{label:'MMC 128 GB',kind:'qty',note:'',colon:true},{label:'NVR 5 CH',kind:'qty',note:'',colon:true},{label:'NVR 10 CH',kind:'qty',note:'',colon:true},{label:'NVR 20 CH',kind:'qty',note:'',colon:true},{label:'POE 4 Port',kind:'qty',note:'',colon:true},{label:'POE 8 Port',kind:'qty',note:'',colon:true},{label:'Steker Gepeng Female',kind:'qty',note:'',colon:true},{label:'Steker Gepeng Male',kind:'qty',note:'',colon:true},{label:'Stopkontak 1 lubang',kind:'qty',note:'',colon:true},{label:'Stopkontak 2 lubang',kind:'qty',note:'',colon:true}
 ];
+function mergeCatalog(cats){
+ var all=(Array.isArray(cats)?cats:[]).map(normCat).filter(function(c){return c&&c.label.trim()});
+ DEFAULT_CATALOG.forEach(function(c){all.push(normCat(c))});
+ var seen={};all=all.filter(function(c){var k=c.label.trim().toLowerCase();if(seen[k])return false;seen[k]=true;return true});
+ all.sort(function(a,b){return a.label.localeCompare(b.label)});return all;
+}
 function blankReport(){
   return {id:uid(),example:false,saved:false,customer:'',address:'',tech:'',date:todayISO(),createdAt:Date.now(),showMeta:false,updatedAt:Date.now(),
     catatan:'',sections:[{id:uid(),title:'',job:'Pasang Kamera Baru',bold:true,items:[mk('structured',{item:'Isi Sendiri',unit:'-'})]}]};
@@ -682,7 +688,7 @@ function loadDb(){
   try{raw=localStorage.getItem(KEY);hadLocalDb=!!raw}catch(e){storageOk=false}
   try{d=raw?JSON.parse(raw):null}catch(e){d=null}
   var reports=d&&Array.isArray(d.reports)?d.reports.map(normReport).filter(Boolean):[];
-  var catalog=d&&Array.isArray(d.catalog)?d.catalog.map(normCat).filter(Boolean):DEFAULT_CATALOG.map(function(c){return normCat(c)});
+  var catalog=mergeCatalog(d&&Array.isArray(d.catalog)?d.catalog:[]);
   if(!reports.length) reports=sampleReports();
   var cid=d&&reports.some(function(r){return r.id===d.currentId})?d.currentId:reports[0].id;
   return {reports:reports,catalog:catalog,currentId:cid,kop:normKop(d&&d.kop),lastTech:str(d&&d.lastTech)};
@@ -1188,7 +1194,7 @@ async function loadCloud(){
   }
   var ss=await sb.from('user_settings').select('catalog,kop,last_tech').eq('user_id',currentUser.id).maybeSingle();
   if(ss.error)throw ss.error;
-  if(ss.data){db.catalog=Array.isArray(ss.data.catalog)?ss.data.catalog.map(normCat).filter(Boolean):db.catalog;db.kop=normKop(ss.data.kop);db.lastTech=str(ss.data.last_tech)}
+  if(ss.data){db.catalog=mergeCatalog(Array.isArray(ss.data.catalog)?ss.data.catalog:db.catalog);db.kop=normKop(ss.data.kop);db.lastTech=str(ss.data.last_tech)}
   else{var initSettings=await sb.from('user_settings').upsert({user_id:currentUser.id,catalog:db.catalog,kop:db.kop,last_tech:db.lastTech||''},{onConflict:'user_id'});if(initSettings.error)throw initSettings.error}
   cloudReady=true;try{localStorage.setItem(KEY,JSON.stringify(db))}catch(e){}
 }
