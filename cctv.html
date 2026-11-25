@@ -1381,6 +1381,9 @@ document.addEventListener('change',function(e){
     pendingFiles[r.id]=current;renderAttachments();e.target.value='';
   }
 });
+document.addEventListener('dragover',function(e){var panel=e.target.closest&&e.target.closest('.attachment-panel');if(panel){e.preventDefault();panel.classList.add('drag-active')}});
+document.addEventListener('dragleave',function(e){var panel=e.target.closest&&e.target.closest('.attachment-panel');if(panel&&!panel.contains(e.relatedTarget))panel.classList.remove('drag-active')});
+document.addEventListener('drop',function(e){var panel=e.target.closest&&e.target.closest('.attachment-panel');if(!panel)return;e.preventDefault();panel.classList.remove('drag-active');var input=panel.querySelector('#attachmentInput');if(!input||!e.dataTransfer||!e.dataTransfer.files.length)return;try{input.files=e.dataTransfer.files;input.dispatchEvent(new Event('change',{bubbles:true}))}catch(err){toast('Gunakan tombol Pilih Foto / Video untuk memilih lampiran.')}});
 $('sq').addEventListener('input',renderHistory);
 /* ---------- Klik ---------- */
 document.addEventListener('click',function(e){
@@ -1796,5 +1799,12 @@ $('logoutBtn').addEventListener('click',async function(){
  #form .form-actions>.btn{min-height:60px!important;padding:9px 8px!important;gap:7px!important;border-radius:17px!important;font-size:15px!important}
  #form .form-actions>.btn svg{width:25px!important;height:25px!important;flex-basis:25px!important}
  #form .attachment-pick{min-height:104px!important}
+}
+</style>
+
+<style>
+#form .attachment-panel.drag-active .attachment-pick{
+ background:#e8f1ff!important;border-color:#075bea!important;border-style:solid!important;
+ box-shadow:0 0 0 3px rgba(7,91,234,.1)!important;
 }
 </style>
