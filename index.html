@@ -78,32 +78,31 @@ main{width:min(1160px,100%);margin:58px auto 42px;padding:0 24px}
 <main>
 <nav class="menu" aria-label="Menu aplikasi">
   <a class="module" href="./cctv.html" aria-label="CCTV Report">
-    <div class="symbol" aria-hidden="true"><svg viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg" fill="none" role="img" aria-label="Ikon kamera CCTV outdoor tampak samping">
+    <div class="symbol" aria-hidden="true"><svg viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg" fill="none" role="img" aria-label="Logo kamera CCTV outdoor tampak samping">
   <defs>
-    <linearGradient id="camShell" x1="25" y1="39" x2="95" y2="91" gradientUnits="userSpaceOnUse"><stop stop-color="#173B91"/><stop offset=".62" stop-color="#1768E8"/><stop offset="1" stop-color="#08AFCB"/></linearGradient>
-    <linearGradient id="camGlass" x1="13" y1="55" x2="36" y2="83" gradientUnits="userSpaceOnUse"><stop stop-color="#6DE7F5"/><stop offset="1" stop-color="#1768E8"/></linearGradient>
+    <linearGradient id="cctvBody" x1="25" y1="42" x2="91" y2="91" gradientUnits="userSpaceOnUse"><stop stop-color="#347BEA"/><stop offset="1" stop-color="#08B7C9"/></linearGradient>
+    <linearGradient id="cctvLens" x1="16" y1="55" x2="37" y2="82" gradientUnits="userSpaceOnUse"><stop stop-color="#9AF4FF"/><stop offset="1" stop-color="#2472E8"/></linearGradient>
   </defs>
-  <!-- wall plate and compact rear mounting arm -->
-  <path d="M108 54h10a4 4 0 0 1 4 4v31a4 4 0 0 1-4 4h-10z" fill="#173B91"/>
-  <path d="M94 61 112 57v29l-18-5z" fill="#1768E8"/>
-  <path d="M87 67 103 63v17l-16-3z" fill="#0E347F"/>
-  <!-- short top-mounted joint -->
-  <path d="M82 42 98 34l9 8-8 12-15 2z" fill="#173B91"/>
-  <circle cx="92" cy="48" r="6" fill="#DCEBFF" stroke="#173B91" stroke-width="3"/>
-  <!-- broad sunshade: flat, angular outdoor-camera profile -->
-  <path d="M17 40 27 31h63l12 9-5 7H22z" fill="#10265A"/>
-  <path d="M27 34h61l8 6H21z" fill="#2C61C4"/>
-  <!-- tapered rectangular camera housing, deliberately not cylindrical -->
-  <path d="M27 46h57l13 9v22l-14 12H29L18 78V57z" fill="url(#camShell)" stroke="#10265A" stroke-width="3" stroke-linejoin="round"/>
-  <path d="M38 52h43" stroke="#B6F1FF" stroke-width="3" stroke-linecap="round" opacity=".85"/>
-  <path d="M46 86h34" stroke="#0C367F" stroke-width="3" stroke-linecap="round" opacity=".65"/>
-  <!-- front face and lens ring -->
-  <path d="M28 48 19 54v28l10 8 8-7V55z" fill="#10265A" stroke="#F5FAFF" stroke-width="2.5" stroke-linejoin="round"/>
-  <circle cx="24" cy="68" r="12" fill="#0C2869" stroke="#B9EFFF" stroke-width="3"/>
-  <circle cx="24" cy="68" r="7.5" fill="url(#camGlass)"/>
-  <circle cx="21.5" cy="65" r="2.3" fill="#F4FFFF"/>
-  <!-- small status indicator -->
-  <circle cx="76" cy="75" r="3" fill="#B9F5FF"/>
+  <!-- wall plate -->
+  <path d="M111 51h9a4 4 0 0 1 4 4v36a4 4 0 0 1-4 4h-9z" fill="#173B83"/>
+  <circle cx="117" cy="61" r="2" fill="#BCEBFF"/><circle cx="117" cy="85" r="2" fill="#BCEBFF"/>
+  <!-- curved outdoor mounting arm -->
+  <path d="M105 58c-2-12-10-19-22-19H72v10h10c7 0 11 5 12 12l2 14c1 8 6 13 15 14V78c-3-1-5-3-5-7z" fill="#1C4EAA"/>
+  <path d="M97 72c2 8 6 12 14 13" stroke="#75DDF2" stroke-width="3" stroke-linecap="round"/>
+  <!-- flat sun hood -->
+  <path d="M17 40 25 31h62l12 9-5 7H22z" fill="#102B62"/>
+  <path d="M26 34h59l8 6H21z" fill="#4B8CF0"/>
+  <!-- horizontal camera body -->
+  <path d="M29 45h53l12 8v26l-12 9H29L20 79V55z" fill="url(#cctvBody)" stroke="#12336F" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M40 51h38" stroke="#D8F8FF" stroke-width="3" stroke-linecap="round" opacity=".8"/>
+  <path d="M48 82h29" stroke="#07518B" stroke-width="3" stroke-linecap="round" opacity=".5"/>
+  <!-- front lens housing -->
+  <path d="M29 47 20 54v26l9 8 8-7V54z" fill="#102B62" stroke="#EAFBFF" stroke-width="2.5" stroke-linejoin="round"/>
+  <circle cx="25" cy="67" r="12" fill="#0C2864" stroke="#B9F2FF" stroke-width="3"/>
+  <circle cx="25" cy="67" r="7.5" fill="url(#cctvLens)"/>
+  <circle cx="22.5" cy="64.5" r="2.4" fill="white"/>
+  <!-- status light -->
+  <circle cx="76" cy="72" r="2.8" fill="#D9FFFF"/>
 </svg></div>
     <h2>CCTV <span>Report</span></h2>
   </a>
