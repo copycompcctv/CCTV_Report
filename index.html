@@ -80,26 +80,28 @@ main{width:min(1160px,100%);margin:58px auto 42px;padding:0 24px}
   <a class="module" href="./cctv.html" aria-label="CCTV Report">
     <div class="symbol" aria-hidden="true"><svg viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
 <defs>
- <linearGradient id="camFinalBody" x1="17" y1="27" x2="79" y2="60" gradientUnits="userSpaceOnUse"><stop stop-color="#08BED2"/><stop offset="1" stop-color="#1768E8"/></linearGradient>
+ <linearGradient id="cctvHousing" x1="20" y1="31" x2="78" y2="62" gradientUnits="userSpaceOnUse"><stop stop-color="#08BED2"/><stop offset="1" stop-color="#1768E8"/></linearGradient>
 </defs>
-<!-- small curved rear cable -->
-<path d="M22 30C15 22 9 20 7 24C5 28 10 34 18 39" stroke="#16459D" stroke-width="3.5" stroke-linecap="round"/>
-<!-- broad sunshield -->
-<path d="M19 22C26 17 35 17 48 18L75 20C82 21 86 27 88 38L29 38L18 31L19 22Z" fill="#16459D"/>
-<!-- horizontal outdoor camera body -->
-<path d="M29 34H70C77 34 82 39 84 45L85 52C85 59 80 63 73 63H30C24 63 20 58 20 52V45C20 39 24 35 29 34Z" fill="url(#camFinalBody)"/>
-<!-- oval front lens, restrained side-view detail -->
-<path d="M29 35C21 36 16 42 16 49C16 57 21 63 29 64" stroke="#16459D" stroke-width="4.5" stroke-linecap="round"/>
-<ellipse cx="27" cy="49.5" rx="8.3" ry="13.2" stroke="#E8FCFF" stroke-width="2.1"/>
-<ellipse cx="27" cy="49.5" rx="5.4" ry="10.1" stroke="#16459D" stroke-width="2"/>
-<ellipse cx="27" cy="49.5" rx="3" ry="7.2" fill="#09265F"/>
-<path d="M48 36C51 43 51 55 48 62" stroke="#DDFBFF" stroke-width="2" stroke-linecap="round"/>
-<path d="M59 35C66 35 69 39 73 42C77 44 81 44 85 43" stroke="#DDFBFF" stroke-width="2" stroke-linecap="round"/>
-<!-- bracket like reference: short vertical neck, horizontal arm to the right -->
-<path d="M65 62V69C65 72 67 74 70 74H83" stroke="#16459D" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
-<!-- side wall plate, broad vertical curved plate at the far right -->
-<path d="M80 66C85 63 91 67 91 73V84C91 90 86 92 80 88L78 84V70C78 68 79 67 80 66Z" fill="#1768E8" stroke="#16459D" stroke-width="1.8"/>
-<circle cx="85" cy="77.5" r="1.9" fill="#DDFBFF"/>
+<!-- cable loop at the front -->
+<path d="M22 31C15 23 9 21 7 25C5 29 10 34 17 38" stroke="#123F91" stroke-width="3" stroke-linecap="round"/>
+<!-- long upper sunshade, characteristic outdoor-camera silhouette -->
+<path d="M18 25L24 19C28 17 35 17 45 18L76 20C82 21 86 27 88 37L27 37L18 31V25Z" fill="#123F91"/>
+<!-- main body with tapered rear -->
+<path d="M27 34H67C74 34 79 37 83 43L85 49V54C85 59 81 62 75 62H31C24 62 20 57 20 51V45C20 39 23 35 27 34Z" fill="url(#cctvHousing)"/>
+<!-- lens barrel: oval side profile, no concentric target rings -->
+<path d="M29 35C21 36 16 42 16 49C16 56 21 62 29 63" stroke="#123F91" stroke-width="4" stroke-linecap="round"/>
+<ellipse cx="27" cy="49" rx="7.5" ry="12.2" fill="#0B2868" stroke="#E8FCFF" stroke-width="2"/>
+<path d="M25 40C21 43 20 54 24 58" stroke="#54E5F0" stroke-width="1.8" stroke-linecap="round"/>
+<!-- subtle housing seam and rear edge -->
+<path d="M47 36C50 42 50 55 47 61" stroke="#C9F8FF" stroke-width="1.8" stroke-linecap="round"/>
+<path d="M59 35C65 35 69 39 73 42C77 44 81 44 85 43" stroke="#DDFBFF" stroke-width="1.8" stroke-linecap="round"/>
+<!-- short mounting neck under rear of camera -->
+<path d="M66 61V67C66 70 68 72 71 72H75" stroke="#123F91" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<!-- clearly visible horizontal support arm running to the RIGHT -->
+<path d="M71 72H86" stroke="#123F91" stroke-width="5.5" stroke-linecap="round"/>
+<!-- curved vertical wall bracket at the far right -->
+<path d="M84 64C90 64 93 68 93 74V83C93 89 89 91 83 88L81 85V69C81 66 82 65 84 64Z" fill="#1768E8" stroke="#123F91" stroke-width="1.8"/>
+<circle cx="87.5" cy="77.5" r="1.7" fill="#DDFBFF"/>
 </svg></div>
     <h2>CCTV <span>Report</span></h2>
   </a>
