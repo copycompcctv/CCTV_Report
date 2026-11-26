@@ -1553,10 +1553,16 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
 /* ---------- Login, database online, dan realtime ---------- */
 function authMessage(message,ok){var el=$('authMessage');el.textContent=message||'';el.className='auth-message'+(ok?' ok':'')}
 async function loadCloud(){
-  var p=await sb.from('profiles').select('id,display_name,role').eq('id',currentUser.id).single();
+  /* Ambil profil, laporan, dan pengaturan secara paralel agar waktu tunggu tidak menumpuk. */
+  var results=await Promise.all([
+    sb.from('profiles').select('id,display_name,role').eq('id',currentUser.id).single(),
+    sb.from('reports').select('id,owner_id,payload,created_at,updated_at').order('created_at',{ascending:false}),
+    sb.from('user_settings').select('catalog,kop,last_tech').eq('user_id',currentUser.id).maybeSingle()
+  ]);
+  var p=results[0],rr=results[1],ss=results[2];
   if(p.error)throw p.error;currentProfile=p.data;
-  var rr=await sb.from('reports').select('id,owner_id,payload,created_at,updated_at').order('created_at',{ascending:false});
   if(rr.error)throw rr.error;
+  if(ss.error)throw ss.error;
   var local=db;
   if(rr.data&&rr.data.length){
     db.reports=rr.data.map(function(row){var x=normReport(row.payload)||blankReport();x.id=row.id;x.ownerId=row.owner_id;x.createdAt=+x.createdAt||Date.parse(row.created_at)||(x.date?new Date(x.date+'T00:00:00').getTime():0)||Date.now();x.updatedAt=+x.updatedAt||Date.parse(row.updated_at)||Date.now();return x});
@@ -1567,8 +1573,6 @@ async function loadCloud(){
     db.currentId=db.reports.some(function(x){return x.id===local.currentId})?local.currentId:db.reports[0].id;
     if(db.reports.some(function(x){return x.saved!==false})){var initial=await sb.from('reports').upsert(db.reports.filter(function(x){return x.saved!==false}).map(cloudRow),{onConflict:'id'});if(initial.error)throw initial.error;}
   }
-  var ss=await sb.from('user_settings').select('catalog,kop,last_tech').eq('user_id',currentUser.id).maybeSingle();
-  if(ss.error)throw ss.error;
   if(ss.data){db.catalog=mergeCatalog(Array.isArray(ss.data.catalog)?ss.data.catalog:db.catalog);db.kop=normKop(ss.data.kop);db.lastTech=str(ss.data.last_tech)}
   else{var initSettings=await sb.from('user_settings').upsert({user_id:currentUser.id,catalog:db.catalog,kop:db.kop,last_tech:db.lastTech||''},{onConflict:'user_id'});if(initSettings.error)throw initSettings.error}
   cloudReady=true;try{localStorage.setItem(KEY,JSON.stringify(db))}catch(e){}
