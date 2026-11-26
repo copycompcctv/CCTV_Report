@@ -142,6 +142,27 @@ main{margin:10px auto 30px!important}
 .home-install-hint{max-width:340px;margin:0;color:#71809a;text-align:center;font-size:11px;line-height:1.45}
 
 </style>
+<style id="iphone-viewport-fit">
+html{width:100%;max-width:100%;overflow-x:hidden;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{width:100%;max-width:100%;min-width:0;overflow-x:hidden;min-height:100vh;min-height:100svh}
+main{width:100%;max-width:100%;padding-left:max(14px,env(safe-area-inset-left));padding-right:max(14px,env(safe-area-inset-right))}
+.welcome-brand,.welcome-login,.menu-toolbar,.menu{max-width:100%}
+@media(max-width:680px){
+  main{margin:clamp(8px,2vh,18px) auto 20px!important}
+  .welcome-brand{width:min(390px,100%);margin:4px auto 14px;padding-left:0;padding-right:0}
+  .welcome-login{width:min(420px,100%);margin:0 auto 18px;padding:20px 17px}
+  .welcome-info{width:100%}
+  .date-time-row{grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:7px}
+  .date-chip{min-width:0;padding:8px 7px;gap:6px}
+  .date-chip strong,.date-chip-right strong{font-size:clamp(10px,2.8vw,12px)}
+  .menu-toolbar{padding-left:0;padding-right:0}
+  .menu{gap:10px}
+  .module{min-width:0}
+}
+@supports(padding:max(0px)){
+  main{padding-bottom:max(16px,env(safe-area-inset-bottom))}
+}
+</style>
 </head>
 <body>
 <main>
