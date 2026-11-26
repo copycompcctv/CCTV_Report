@@ -122,11 +122,23 @@ main{margin:10px auto 30px!important}
 .date-chip-right strong{font-size:11px}
 @media(max-width:680px){.welcome-login{padding:23px 19px 22px}.welcome-logo{width:88px;height:88px}.welcome-logo img{width:76px;max-height:74px}.weather-tile{padding:12px}.weather-symbol{width:48px;height:48px}.date-chip{padding:9px 8px;gap:7px}.date-chip strong{font-size:11px}.date-chip-right strong{font-size:10px}}
 
+
+/* Shared centered brand header for login and app menu */
+.welcome-brand{width:min(420px,100%);margin:12px auto 20px;display:flex;flex-direction:column;align-items:center;text-align:center}
+.welcome-brand .welcome-logo{margin:0 auto 14px}
+.welcome-brand .welcome-info{width:100%;margin:0}
+.welcome-login{margin:0 auto 28px;padding:22px 26px 22px}
+.menu-toolbar{width:min(960px,100%);height:42px;margin:0 auto 8px;display:flex;justify-content:flex-end;align-items:center}
+.lock-btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;border:1px solid #dce7ff;background:#fff;border-radius:12px;padding:9px 13px;color:#34517f;font-size:13px;font-weight:700;cursor:pointer}
+.lock-btn svg{width:17px;height:17px;display:block}
+.menu{width:min(960px,100%);margin:0 auto;justify-content:center}
+@media(max-width:680px){.welcome-brand{width:min(390px,100%);margin:8px auto 16px;padding:0 12px}.welcome-brand .welcome-logo{margin-bottom:12px}.welcome-login{margin:0 auto 22px;padding:20px 19px}.menu-toolbar{width:100%;margin-bottom:8px;padding:0 2px}.menu{width:100%}}
+
 </style>
 </head>
 <body>
 <main>
-<section id="loginPanel" class="welcome-login">
+<section class="welcome-brand" aria-label="Informasi dan cuaca">
   <div class="welcome-logo"><img src="logo-copy-computer.PNG" alt="Logo Copy Computer"></div>
 <div class="welcome-info">
   <div class="weather-tile">
@@ -139,6 +151,8 @@ main{margin:10px auto 30px!important}
     <div class="date-chip date-chip-right"><span class="mini-icon">▦</span><div><small>HARI & TANGGAL</small><strong id="welcomeDate">Memuat...</strong></div></div>
   </div>
 </div>
+</section>
+<section id="loginPanel" class="welcome-login">
   <p class="welcome-sub" style="margin:0 0 16px">Masukkan password untuk melanjutkan</p>
   <form id="welcomeForm">
     <label for="welcomePassword">Password bersama</label>
@@ -148,7 +162,7 @@ main{margin:10px auto 30px!important}
   </form>
 </section>
 <section id="menuPanel" hidden>
-  <div class="welcome-heading"><div><p class="eyebrow">WELCOME BACK</p><h1>Pilih <span>Menu</span></h1><p class="welcome-sub">Silakan pilih layanan yang ingin dibuka.</p></div><button id="lockButton" class="lock-btn" type="button" title="Kunci aplikasi">Kunci <span>↗</span></button></div>
+  <div class="menu-toolbar"><button id="lockButton" class="lock-btn" type="button" title="Keluar" aria-label="Keluar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v9M6.2 5.8a9 9 0 1 0 11.6 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span>Keluar</span></button></div>
 <nav class="menu" aria-label="Menu aplikasi">
   <a class="module" href="./cctv.html" aria-label="CCTV Report">
     <div class="symbol" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="cctvReportIcon" x1="7" y1="8" x2="56" y2="57" gradientUnits="userSpaceOnUse"><stop stop-color="#08c5d9"/><stop offset="1" stop-color="#123caa"/></linearGradient></defs>
