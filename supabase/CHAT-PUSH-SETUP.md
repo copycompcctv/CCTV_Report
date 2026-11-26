@@ -1,40 +1,28 @@
-# Setup notifikasi chat servis
+# Notifikasi chat pelanggan — Copy Computer
 
-File ini melengkapi chat servis yang sudah aktif. Jalankan hanya setelah deploy Edge Function.
+Implementasi Web Push sudah dipasang pada project Supabase `ogolkyowgvypstjmxxde` dan Edge Function `service-chat-push` sudah aktif. Database trigger, tabel subscription, dan empat secret terenkripsi di Supabase Vault juga sudah dibuat. Jangan jalankan ulang SQL referensi lama secara manual.
 
-## 1. Deploy Edge Function
+## Perangkat yang didukung
 
-Deploy folder `supabase/functions/service-chat-push` ke project Supabase `ogolkyowgvypstjmxxde`.
+- **Windows:** Chrome atau Microsoft Edge terbaru. Push dapat muncul saat tab ditutup; browser harus tetap diizinkan berjalan di latar belakang oleh sistem.
+- **Android:** Chrome terbaru. Izinkan notifikasi saat diminta.
+- **iPhone/iPad:** iOS/iPadOS 16.4 atau lebih baru. Pilih Share → Add to Home Screen, buka aplikasi dari ikon Home Screen, lalu aktifkan notifikasi.
 
-Dengan Supabase CLI:
-```bash
-supabase link --project-ref ogolkyowgvypstjmxxde
-supabase functions deploy service-chat-push
-```
-Konfigurasi `supabase/config.toml` mematikan pemeriksaan JWT bawaan hanya untuk fungsi ini. Fungsi tetap memeriksa header rahasia `x-push-secret`.
+## Aktivasi per perangkat
 
-## 2. Pasang Edge Function secrets
+1. Buka https://copycompcctv.github.io/CCTV_Report/servisan/app.html dan login seperti biasa.
+2. Tekan ikon lonceng di kanan atas.
+3. Pilih Izinkan/Allow pada permintaan notifikasi browser.
+4. Pastikan ikon lonceng berubah menjadi status aktif. Ulangi pada setiap perangkat yang ingin menerima notifikasi.
 
-Tambahkan empat secrets di Supabase Dashboard > Edge Functions > Secrets:
-- `PUSH_WEBHOOK_SECRET`: token acak rahasia buatan pemilik project.
-- `VAPID_PUBLIC_KEY`: harus sama dengan kunci publik di `servisan/app.html`.
-- `VAPID_PRIVATE_KEY`: pasangan privat VAPID, jangan pernah dimasukkan ke GitHub atau browser.
-- `VAPID_SUBJECT`: alamat kontak, misalnya `mailto:cctv@copycomputer.app`.
+Setiap perangkat menyimpan subscription sendiri. Logout aplikasi akan mencoba menghapus subscription perangkat tersebut dari daftar penerima.
 
-Supabase menyediakan `SUPABASE_URL` dan `SUPABASE_SERVICE_ROLE_KEY` di lingkungan Edge Function.
+## Alur notifikasi
 
-## 3. Jalankan SQL
+Pesan yang dikirim pelanggan ke chat tiket servis memicu database trigger, lalu Edge Function mengirim Web Push ke perangkat yang sudah mendaftar. Saat aplikasi sedang terbuka dan fokus, notifikasi ditampilkan sebagai toast agar tidak menggandakan notifikasi sistem. Saat aplikasi tidak sedang aktif, Service Worker menampilkan notifikasi sistem; mengetuknya membuka Manajemen Servis pada riwayat servis.
 
-Buka `supabase/service-chat-push.sql`. Ganti `PASTE_WEBHOOK_SECRET_HERE` dengan nilai yang sama persis seperti `PUSH_WEBHOOK_SECRET`, lalu jalankan seluruh SQL satu kali di Supabase SQL Editor.
+## Catatan uji
 
-SQL membuat tabel subscription perangkat, RPC terkontrol, Vault secrets, dan trigger setelah pesan pelanggan masuk. Tidak menghapus tabel atau data servis/chat yang sudah ada.
+Database sudah diverifikasi: trigger aktif, tabel subscription tersedia, empat secret Vault tersedia, dan Edge Function berstatus ACTIVE. Belum ada perangkat yang mendaftar saat verifikasi terakhir (0 subscription), jadi pengiriman nyata baru dapat dites setelah ikon lonceng diaktifkan minimal pada satu perangkat.
 
-## 4. Aktifkan di setiap perangkat
-
-Buka `https://copycompcctv.github.io/CCTV_Report/servisan/app.html`, login, lalu tekan ikon lonceng di kanan atas dan izinkan notifikasi. Ulangi pada setiap PC Windows, HP Android, dan iPhone.
-
-Untuk iPhone, gunakan iOS 16.4 atau lebih baru, pilih Share > Add to Home Screen, lalu buka aplikasi dari ikon Home Screen sebelum mengaktifkan izin notifikasi.
-
-## 5. Uji
-
-Kirim pesan dari halaman cek status pelanggan ke tiket servis aktif. Perangkat yang sudah berlangganan harus menerima push meskipun halaman aplikasi tidak sedang terbuka. Saat aplikasi sedang aktif, pesan baru juga muncul sebagai toast dan angka belum dibaca tetap ditampilkan di tombol Chat Pelanggan.
+Untuk iPhone, web push hanya tersedia dari aplikasi yang ditambahkan ke Home Screen; membuka tab Safari biasa tidak cukup.
