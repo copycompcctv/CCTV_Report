@@ -426,7 +426,7 @@ body{padding:14px 20px 112px!important}
  #appShell nav.tabs .tab{font-size:11px!important}
 }
 
-.notify-btn{position:relative}.notify-btn.push-enabled{background:#e8f8ef!important;color:#16845b!important;border-color:#b8e8cc!important}.notify-btn.push-enabled:after{content:"";position:absolute;width:9px;height:9px;border-radius:50%;right:5px;top:5px;background:#16a34a;border:2px solid #fff}#serviceChatToast{position:fixed;right:18px;bottom:18px;z-index:100001;max-width:min(390px,calc(100vw - 36px));background:#10265a;color:#fff;padding:13px 16px;border-radius:13px;box-shadow:0 10px 32px #10265a35;font:600 13px/1.45 system-ui;opacity:0;transform:translateY(12px);transition:.2s;pointer-events:none}#serviceChatToast.show{opacity:1;transform:translateY(0)}
+.notify-btn{position:relative;width:auto!important;min-width:40px;padding:0 11px!important;display:inline-flex!important;align-items:center;justify-content:center;gap:7px;font-size:12px;font-weight:700;white-space:nowrap}.notify-btn svg{width:18px;height:18px;flex:none}.notify-btn.push-enabled{background:#e8f8ef!important;color:#16845b!important;border-color:#b8e8cc!important}.notify-btn.push-enabled span{font-size:12px}.notify-btn.push-enabled:after{content:"";position:absolute;width:9px;height:9px;border-radius:50%;right:5px;top:5px;background:#16a34a;border:2px solid #fff}#serviceChatToast{position:fixed;right:18px;bottom:18px;z-index:100001;max-width:min(390px,calc(100vw - 36px));background:#10265a;color:#fff;padding:13px 16px;border-radius:13px;box-shadow:0 10px 32px #10265a35;font:600 13px/1.45 system-ui;opacity:0;transform:translateY(12px);transition:.2s;pointer-events:none}#serviceChatToast.show{opacity:1;transform:translateY(0)}
 </style>
 <style id="service-order-form-icons">
 #orderForm .field-label{display:flex;align-items:center;gap:9px;font-weight:700;color:#102b59}
@@ -443,7 +443,7 @@ body{padding:14px 20px 112px!important}
 <img class="mark" src="../logo-copy-computer.PNG" alt="Logo asli Copy Computer">
 <div><div class="brand-name">COPY COMPUTER</div><p class="brand-section">Manajemen Servis</p></div>
 </div>
-<div class="hbtns"><button type="button" class="icon-btn notify-btn" id="servicePushButton" onclick="enableServiceChatNotifications()" aria-label="Aktifkan notifikasi chat" title="Aktifkan notifikasi chat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg></button><button type="button" class="icon-btn" onclick="if(history.length>1)history.back();else location.href='../'" aria-label="Kembali" title="Kembali"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/><path d="M9 12h12"/></svg></button></div>
+<div class="hbtns"><button type="button" class="icon-btn notify-btn" id="servicePushButton" onclick="enableServiceChatNotifications()" aria-label="Aktifkan notifikasi chat" title="Aktifkan notifikasi chat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg><span>Aktifkan Notifikasi</span></button><button type="button" class="icon-btn" onclick="if(history.length>1)history.back();else location.href='../'" aria-label="Kembali" title="Kembali"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/><path d="M9 12h12"/></svg></button></div>
 </header>
 <nav class="tabs" aria-label="Menu Manajemen Servis"><div class="tabs-in">
 <button type="button" class="tab" id="receiveTab" aria-current="page" onclick="showServiceForm('receive')"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 5 4 4M4 20l4.2-.9L20 7.3 16.7 4 4.9 15.8 4 20Z"/></svg><span>Penerimaan Servis</span></button>
@@ -625,7 +625,7 @@ function showServiceChatToast(message){
 }
 function urlBase64ToUint8Array(value){const padding='='.repeat((4-value.length%4)%4),base64=(value+padding).replace(/-/g,'+').replace(/_/g,'/'),raw=atob(base64);return Uint8Array.from(raw,c=>c.charCodeAt(0))}
 async function syncServicePushButtonState(){
- try{if(!('serviceWorker' in navigator))return;const reg=await navigator.serviceWorker.getRegistration('../');const sub=reg&&await reg.pushManager.getSubscription();if(sub&&Notification.permission==='granted'){$('servicePushButton')?.classList.add('push-enabled');$('servicePushButton')?.setAttribute('title','Notifikasi chat aktif')}}catch(e){console.debug(e)}
+ try{const btn=$('servicePushButton');if(!btn)return;if(!('serviceWorker' in navigator)||!('Notification' in window))return;const reg=await navigator.serviceWorker.getRegistration('../');const sub=reg&&await reg.pushManager.getSubscription();if(sub&&Notification.permission==='granted'){btn.classList.add('push-enabled');btn.title='Notifikasi chat aktif';btn.setAttribute('aria-label','Notifikasi chat aktif');const label=btn.querySelector('span');if(label)label.textContent='Notifikasi Aktif'}else{btn.classList.remove('push-enabled');btn.title='Aktifkan notifikasi chat';btn.setAttribute('aria-label','Aktifkan notifikasi chat');const label=btn.querySelector('span');if(label)label.textContent='Aktifkan Notifikasi'}}catch(e){console.debug(e)}
 }
 async function removeThisDevicePushSubscription(){
  try{if(!('serviceWorker' in navigator))return;const regs=await navigator.serviceWorker.getRegistrations();for(const reg of regs){const sub=await reg.pushManager.getSubscription();if(sub){await sb.rpc('staff_remove_service_push_subscription',{p_endpoint:sub.endpoint});await sub.unsubscribe()}}}catch(e){console.warn('Tidak dapat menghapus langganan notifikasi perangkat ini',e)}
@@ -642,7 +642,7 @@ async function enableServiceChatNotifications(){
   if(!subscription)subscription=await registration.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:urlBase64ToUint8Array(SERVICE_CHAT_VAPID_PUBLIC_KEY)});
   const {data,error}=await sb.rpc('staff_save_service_push_subscription',{p_subscription:subscription.toJSON()});if(error)throw error;
   if(data!==true)throw new Error('Server menolak pendaftaran perangkat.');
-  if(btn){btn.classList.add('push-enabled');btn.title='Notifikasi chat aktif';btn.setAttribute('aria-label','Notifikasi chat aktif')}
+  if(btn){btn.classList.add('push-enabled');btn.title='Notifikasi chat aktif';btn.setAttribute('aria-label','Notifikasi chat aktif');const label=btn.querySelector('span');if(label)label.textContent='Notifikasi Aktif'}
   showServiceChatToast('Notifikasi chat Copy Computer berhasil diaktifkan di perangkat ini.');
  }catch(e){console.error('Aktivasi notifikasi chat:',e);alert('Notifikasi belum berhasil diaktifkan: '+(e.message||e))}
  finally{if(btn)btn.disabled=false}
