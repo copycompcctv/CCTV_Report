@@ -620,7 +620,11 @@ function touch(){var n=Date.now();if(n-last>900){last=n;localStorage.setItem('cc
 ['pointerdown','keydown','touchstart','click','scroll'].forEach(function(e){document.addEventListener(e,touch,{passive:true})});
 document.documentElement.classList.remove('cc-gate-pending');
 })();
-</script></head>
+</script><style>
+/* CCTV Report: header actions are limited to the back button */
+#logoutBtn,#installBtn,#install{display:none!important}
+</style>
+</head>
 <body>
 <div class="wrap" id="appRoot">
   <header class="top">
