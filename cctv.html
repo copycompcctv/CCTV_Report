@@ -615,11 +615,9 @@ body{background:#f7f9fd;color:var(--ink);padding:14px 20px 38px}
 document.documentElement.classList.add('cc-gate-pending');
 var unlocked=sessionStorage.getItem('cc_app_unlocked')==='1';
 var last=Number(localStorage.getItem('cc_last_activity'))||0;
-if(!unlocked||!last||Date.now()-last>=300000){sessionStorage.removeItem('cc_app_unlocked');location.replace('./');return}
+if(!unlocked){location.replace('./');return}
 function touch(){var n=Date.now();if(n-last>900){last=n;localStorage.setItem('cc_last_activity',String(n))}}
 ['pointerdown','keydown','touchstart','click','scroll'].forEach(function(e){document.addEventListener(e,touch,{passive:true})});
-setInterval(function(){if(Date.now()-last>=300000){sessionStorage.removeItem('cc_app_unlocked');location.replace('./')}} ,1000);
-document.addEventListener('visibilitychange',function(){if(!document.hidden&&Date.now()-last>=300000){sessionStorage.removeItem('cc_app_unlocked');location.replace('./')}});
 document.documentElement.classList.remove('cc-gate-pending');
 })();
 </script></head>
