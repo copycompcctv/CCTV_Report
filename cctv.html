@@ -790,9 +790,8 @@ function structure(r){
       if(it.join&&lines.length&&i>0) lines[lines.length-1]+=' + '+l; else lines.push(l);
     });
     var title=(s.job||s.title||'').trim();
-    if(title||lines.length) secs.push({title:title,bold:true,lines:lines});
     var customTitle=s.job==='Servis Lainnya'?(s.jobCustom||'').trim():'';
-    if(customTitle) secs.push({title:customTitle,bold:true,lines:[]});
+    if(title||lines.length||customTitle) secs.push({title:title,subTitle:customTitle,bold:true,lines:lines});
   });
   var meta=[];
   if(r.showMeta){ if((r.address||'').trim()) meta.push(r.address.trim()); var d=fmtDate(r.date); if(d) meta.push(d); }
@@ -808,6 +807,7 @@ function buildText(r){
   st.secs.forEach(function(s,i){
     if(i===0&&meta.length)out.push('');else if(i>0)out.push('');
     if(s.title) out.push(s.bold?'*'+s.title+'*':s.title);
+    if(s.subTitle) out.push('*'+s.subTitle+'*');
     s.lines.forEach(function(l){var p=l.indexOf(' : ');if(p>=0)l=l.slice(0,p).padEnd(detailWidth,' ')+l.slice(p);out.push('- '+l)});
   });
   if(st.catatan){out.push('');out.push('Keterangan Tambahan: '+st.catatan)}
@@ -1210,7 +1210,7 @@ function itemHTML(it,idx){
 function sectionHTML(s,index){
   var id=esc(s.id),jobs=['Instalasi Listrik','Krimping Ulang','Pasang Kamera Baru','Pasang Ulang Kamera','Reset DVR','Servis DVR/NVR','Servis Kamera','Servis Lainnya','Setting Online ke HP'],selectedJob=(s.job||s.title||'');if(selectedJob==='Pasang Baru')selectedJob='Pasang Kamera Baru';
   return '<section class="job-section" data-sec="'+id+'">'
-   +'<div class="sec-head"><label class="lbl job-label" for="jobsec-'+id+'"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.7 6.3a6 6 0 0 1-7.9 7.9L7 21a2.1 2.1 0 0 1-3-3l6.8-6.8a2.1 2.1 0 0 1-3-3l6.8-6.8a6 6 0 0 1 7.9-7.9l-3.5 3.5 3.1 3.1 3.4-3.6Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Jenis Pekerjaan <em>*</em></label>'+(index>0?'<button type="button" class="mini danger del-job-btn" data-act="del-sec" aria-label="Hapus pekerjaan">Hapus pekerjaan</button>':'')+'<select id="jobsec-'+id+'" data-f="job"><option value=""'+(!selectedJob?' selected':'')+'>Pilih jenis pekerjaan...</option>'+jobs.map(function(v){return '<option value="'+esc(v)+'"'+(selectedJob===v?' selected':'')+'>'+v+'</option>'}).join('')+'</select></div>'
+   +'<div class="sec-head"><label class="lbl job-label" for="jobsec-'+id+'"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.7 6.3a6 6 0 0 1-7.9 7.9L7 21a2.1 2.1 0 0 1-3-3l6.8-6.8a6 6 0 0 1 7.9-7.9l-3.5 3.5 3.1 3.1 3.4-3.6Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="m5.1 18.9 2 2" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>Jenis Pekerjaan <em>*</em></label>'+(index>0?'<button type="button" class="mini danger del-job-btn" data-act="del-sec" aria-label="Hapus pekerjaan">Hapus pekerjaan</button>':'')+'<select id="jobsec-'+id+'" data-f="job"><option value=""'+(!selectedJob?' selected':'')+'>Pilih jenis pekerjaan...</option>'+jobs.map(function(v){return '<option value="'+esc(v)+'"'+(selectedJob===v?' selected':'')+'>'+v+'</option>'}).join('')+'</select></div>'
    +(selectedJob==='Servis Lainnya'?'<div class="job-custom-wrap"><label class="lbl" for="jobcustom-'+id+'">Nama pekerjaan</label><input id="jobcustom-'+id+'" data-f="jobCustom" value="'+esc(s.jobCustom||'')+'" placeholder="Tulis jenis pekerjaan lainnya..." autocomplete="off"></div>':'')
    +s.items.map(itemHTML).join('')
    +'<div class="item-actions"><button type="button" class="btn small" data-act="add-structured">＋ Tambah item barang</button>'
