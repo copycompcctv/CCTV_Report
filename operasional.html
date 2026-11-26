@@ -96,7 +96,7 @@ const fmtTime=v=>v?new Intl.DateTimeFormat('id-ID',{timeZone:'Asia/Jakarta',hour
 const fmtDate=v=>v?new Intl.DateTimeFormat('id-ID',{timeZone:'Asia/Jakarta',day:'2-digit',month:'long',year:'numeric'}).format(new Date(v+'T12:00:00+07:00')):'';
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const svgUser='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>';
-let sourceRows=[];
+let sourceRows=[],selectedSource={source_type:'manual',source_id:null};
 async function guard(){
  const last=Number(localStorage.getItem('cc_last_activity'))||0;
  if(sessionStorage.getItem('cc_app_unlocked')!=='1'||!last||Date.now()-last>=5*60*1000){location.replace('./');return false}
@@ -114,7 +114,7 @@ window.showTab=function(tab){
  if(schedule)loadSchedules();else loadAttendance();
 };
 function resetSchedule(){
- $('scheduleForm').reset();$('editId').value='';$('visitDate').value=today();$('visitTime').value='09:00';
+ $('scheduleForm').reset();$('editId').value='';selectedSource={source_type:'manual',source_id:null};$('visitDate').value=today();$('visitTime').value='09:00';
  $('saveSchedule').innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>Simpan Jadwal>';
  $('technicianChecks').querySelectorAll('input').forEach(x=>x.checked=false);
 }
@@ -133,7 +133,7 @@ function renderSourceOptions(){
 $('sourceType').addEventListener('change',renderSourceOptions);
 $('useSource').addEventListener('click',()=>{
  const row=sourceRows.find(r=>r.id===$('sourceRecord').value);if(!row){alert('Pilih data terlebih dahulu.');return}
- const p=row.payload||{};$('customerName').value=p.nama||p.customer||p.pelanggan||'';
+ const p=row.payload||{};selectedSource={source_type:row.record_type,source_id:row.id};$('customerName').value=p.nama||p.customer||p.pelanggan||'';
  $('customerAddress').value=p.alamat||p.address||'';
  $('jobType').value=p.jenis||p.detail||p.keluhan||p.perangkat||'';
  $('scheduleNotes').value=p.catatan||p.keluhan||'';
@@ -141,7 +141,7 @@ $('useSource').addEventListener('click',()=>{
 });
 $('scheduleForm').addEventListener('submit',async e=>{
  e.preventDefault();const technicians=selectedTechs();if(!technicians.length){alert('Pilih minimal satu teknisi.');return}
- const payload={visit_date:$('visitDate').value,visit_time:$('visitTime').value,customer_name:$('customerName').value.trim(),customer_address:$('customerAddress').value.trim(),job_type:$('jobType').value.trim(),technicians,notes:$('scheduleNotes').value.trim()};
+ const payload={visit_date:$('visitDate').value,visit_time:$('visitTime').value,customer_name:$('customerName').value.trim(),customer_address:$('customerAddress').value.trim(),job_type:$('jobType').value.trim(),technicians,notes:$('scheduleNotes').value.trim(),source_type:selectedSource.source_type,source_id:selectedSource.source_id};
  if(!payload.visit_date||!payload.visit_time||!payload.customer_name||!payload.job_type){alert('Lengkapi tanggal, jam, pelanggan, dan pekerjaan.');return}
  const btn=$('saveSchedule');btn.disabled=true;
  try{
