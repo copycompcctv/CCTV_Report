@@ -891,7 +891,7 @@ body{width:100%;max-width:100%;min-width:0;overflow-x:hidden}
 
       <section id="v-riwayat" hidden>
         <div class="stack">
-          <div><label class="lbl" for="sq">Cari pelanggan</label><input id="sq" type="search" placeholder="Nama atau alamat" autocomplete="off"></div>
+          <div><input id="sq" type="search" placeholder="Nama atau alamat" aria-label="Cari pelanggan" autocomplete="off"></div>
           <div id="hist" class="stack"></div>
           <details class="card">
             <summary>Cadangan data</summary>
@@ -1526,7 +1526,7 @@ function catRowHTML(c){
 function renderCatalog(){
   var options=getStructuredItemOptions(),hidden=(db.catalog||[]).filter(function(c){return c.hiddenItemOption}).length;
   $('cats').hidden=false;
-  $('cats').innerHTML='<div class="item-option-head"><strong>Daftar pilihan Item Barang</strong><span>'+options.length+' item</span></div><input id="itemOptionSearch" type="search" placeholder="Cari item yang ingin dihapus..." aria-label="Cari item barang">'
+  $('cats').innerHTML='<div class="item-option-head"><strong>Daftar pilihan Item Barang</strong><span>'+options.length+' item</span></div><div class="item-option-search"><span class="item-option-search-icon" aria-hidden="true">⌕</span><input id="itemOptionSearch" type="search" placeholder="Cari item yang ingin dihapus..." aria-label="Cari item barang"></div>'
     +options.map(function(label){var meta=(db.catalog||[]).filter(function(c){return !c.hiddenItemOption&&c.label.toLowerCase()===label.toLowerCase()})[0];var detail=meta?[meta.type,meta.note].filter(Boolean).join(' · '):'';return '<div class="item-option-row" data-search="'+esc((label+' '+detail).toLowerCase())+'"><div class="item-option-info"><strong>'+esc(label)+'</strong>'+(detail?'<small>'+esc(detail)+'</small>':'')+'</div><button type="button" class="item-option-delete" data-act="item-option-del" data-option="'+esc(label)+'" aria-label="Hapus '+esc(label)+'" title="Hapus item">×</button></div>'}).join('')
     +(hidden?'<button type="button" class="btn ghost restore-item-options" data-act="restore-item-options">Pulihkan item bawaan</button>':'');
   $('kn').value=db.kop.name;$('kt').value=db.kop.tag;$('ka').value=db.kop.addr;
@@ -2392,6 +2392,10 @@ $('logoutBtn').addEventListener('click',async function(){
  #v-barang .item-option-info small{font-size:12px!important}
  #v-barang .card.stack>[data-act="cat-add"]{min-height:46px!important;font-size:14px!important}
 }
+
+#v-barang .item-option-search{position:relative;width:100%}
+#v-barang .item-option-search-icon{position:absolute;left:13px;top:50%;transform:translateY(-50%);font-size:24px;line-height:1;color:#1b66e8;pointer-events:none}
+#v-barang #itemOptionSearch{padding-left:42px!important}
 </style>
 
 </html>
