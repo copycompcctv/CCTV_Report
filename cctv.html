@@ -1098,16 +1098,28 @@ function setStatus(){
   }else{el.textContent='';el.hidden=true;$('logoutBtn').hidden=true}
 }
 function cloudRow(r){return {id:r.id,owner_id:r.ownerId||currentUser.id,customer:r.customer||'',address:r.address||'',report_date:r.date||null,payload:r}}
+async function saveOneCloudReport(report){
+  if(!cloudReady||!currentUser)throw new Error('Belum login ke database online');
+  var payload=JSON.parse(JSON.stringify(report));delete payload._cloudUpdatedAt;
+  var owner=report.ownerId||currentUser.id;payload.ownerId=owner;
+  var result=await sb.rpc('save_report_if_version',{
+    p_id:report.id,p_owner_id:owner,p_customer:report.customer||'',
+    p_address:report.address||'',p_report_date:report.date||null,
+    p_payload:payload,p_expected_updated_at:report._cloudUpdatedAt||null
+  });
+  if(result.error)throw result.error;
+  report.ownerId=owner;report._cloudUpdatedAt=result.data.updated_at;
+  return result.data;
+}
 async function saveCloudNow(forceId){
   if(!cloudReady||!currentUser)throw new Error('Belum login ke database online');
   clearTimeout(cloudTimer);
   var ids=Object.keys(cloudPending);
   if(forceId&&ids.indexOf(forceId)<0)ids.push(forceId);
-  if(!ids.length)ids=[cur().id];
-  var rows=[];
-  ids.forEach(function(id){var r=db.reports.filter(function(x){return x.id===id})[0];if(r){var owner=r.ownerId||currentUser.id,payload=JSON.parse(JSON.stringify(r));payload.ownerId=owner;rows.push(cloudRow(payload))}});
-  if(rows.length){var result=await sb.from('reports').upsert(rows,{onConflict:'id'});if(result.error)throw result.error;
-    rows.forEach(function(row){var r=db.reports.filter(function(x){return x.id===row.id})[0];if(r)r.ownerId=row.owner_id;delete cloudPending[row.id]});
+  if(!ids.length)return;
+  for(var i=0;i<ids.length;i++){
+    var id=ids[i],report=db.reports.filter(function(x){return x.id===id})[0];
+    if(report){await saveOneCloudReport(report);delete cloudPending[id]}
   }
   var settings=await sb.from('user_settings').upsert({user_id:currentUser.id,catalog:db.catalog,kop:db.kop,last_tech:db.lastTech||''},{onConflict:'user_id'});
   if(settings.error)throw settings.error;
@@ -1490,17 +1502,18 @@ document.addEventListener('click',function(e){
           renderHistory();
           if(cloudReady){
             toast('Menyimpan laporan ke database online...');
-            var owner=report.ownerId||currentUser.id;
-            var payload=JSON.parse(JSON.stringify(report));payload.ownerId=owner;
-            var cloudResult=await sb.from('reports').upsert(cloudRow(payload),{onConflict:'id'});
-            if(cloudResult.error)throw cloudResult.error;
-            report.ownerId=owner;delete cloudPending[report.id];
+            clearTimeout(cloudTimer);delete cloudPending[report.id];
+            await saveOneCloudReport(report);
             var settingsResult=await sb.from('user_settings').upsert({user_id:currentUser.id,catalog:db.catalog,kop:db.kop,last_tech:db.lastTech||''},{onConflict:'user_id'});
             if(settingsResult.error)throw settingsResult.error;
-            toast('Laporan berhasil disimpan dan disinkronkan. Buka ulang Riwayat di perangkat lain.');
+            toast('Laporan berhasil disimpan dan disinkronkan.');
           }else toast('Laporan tersimpan di perangkat ini saja. Login online diperlukan untuk sinkronisasi.');
           renderHistory();renderAttachments();
-        }catch(err){toast('Gagal sinkronisasi: '+(err.message||'periksa koneksi/login'));console.error('Simpan laporan:',err)}
+        }catch(err){
+          toast('Gagal sinkronisasi: '+(err.message||'periksa koneksi/login'));
+          console.error('Simpan laporan:',err);
+          if(cloudReady&&String(err.message||'').indexOf('KONFLIK_DATA')>=0){delete cloudPending[report.id];await refreshCloudHistory()}
+        }
       })();break;
     }
     case 'remove-pending':{
@@ -1542,12 +1555,20 @@ document.addEventListener('click',function(e){
     case 'h-del':{
       id=b.closest('[data-rid]').dataset.rid;
       if(!arm(b,'r:'+id,'Yakin hapus?'))break;
-      db.reports=db.reports.filter(function(x){return x.id!==id});
-      if(!db.reports.length){db.reports.push(blankReport())}
-      if(db.currentId===id)db.currentId=db.reports[0].id;
-      save();
-      if(cloudReady){delete cloudPending[id];sb.from('reports').delete().eq('id',id).then(function(x){if(x.error)toast('Gagal menghapus di cloud: '+x.error.message)})}
-      renderHistory();break;
+      (async function(){
+        var target=db.reports.filter(function(x){return x.id===id})[0];
+        try{
+          if(cloudReady){
+            var result=await sb.rpc('delete_report_if_version',{p_id:id,p_owner_id:target.ownerId||currentUser.id,p_expected_updated_at:target._cloudUpdatedAt});
+            if(result.error)throw result.error;
+          }
+          delete cloudPending[id];
+          db.reports=db.reports.filter(function(x){return x.id!==id});
+          if(!db.reports.length){db.reports.push(blankReport())}
+          if(db.currentId===id)db.currentId=db.reports[0].id;
+          save();renderHistory();
+        }catch(err){toast('Laporan tidak dihapus: '+(err.message||'periksa koneksi'));if(cloudReady)await refreshCloudHistory()}
+      })();break;
     }
     case 'bk-copy':{
       var js=JSON.stringify({v:2,reports:db.reports,catalog:db.catalog,kop:db.kop});
@@ -1607,7 +1628,7 @@ async function loadCloud(){
   if(ss.error)throw ss.error;
   var local=db;
   if(rr.data&&rr.data.length){
-    db.reports=rr.data.map(function(row){var x=normReport(row.payload)||blankReport();x.id=row.id;x.ownerId=row.owner_id;x.createdAt=+x.createdAt||Date.parse(row.created_at)||(x.date?new Date(x.date+'T00:00:00').getTime():0)||Date.now();x.updatedAt=+x.updatedAt||Date.parse(row.updated_at)||Date.now();return x});
+    db.reports=rr.data.map(function(row){var x=normReport(row.payload)||blankReport();x.id=row.id;x.ownerId=row.owner_id;x.createdAt=+x.createdAt||Date.parse(row.created_at)||(x.date?new Date(x.date+'T00:00:00').getTime():0)||Date.now();x.updatedAt=+x.updatedAt||Date.parse(row.updated_at)||Date.now();x._cloudUpdatedAt=row.updated_at;return x});
     db.currentId=db.reports.some(function(x){return x.id===local.currentId})?local.currentId:db.reports[0].id;
   }else{
     db.reports=(currentProfile.role==='admin'&&hadLocalDb?local.reports.filter(function(x){return x.saved!==false}):[]).map(function(x){x.ownerId=currentUser.id;return x});
@@ -1623,8 +1644,8 @@ async function refreshCloudHistory(){
   if(!cloudReady)return;
   var rr=await sb.from('reports').select('id,owner_id,payload,created_at,updated_at').order('created_at',{ascending:false});if(rr.error){console.error(rr.error);return}
   var local=db.reports.slice(),merged=(rr.data||[]).map(function(row){
-    var remote=normReport(row.payload)||blankReport();remote.id=row.id;remote.ownerId=row.owner_id;remote.createdAt=+remote.createdAt||Date.parse(row.created_at)||(remote.date?new Date(remote.date+'T00:00:00').getTime():0)||Date.now();remote.updatedAt=+remote.updatedAt||Date.parse(row.updated_at)||Date.now();
-    var old=local.filter(function(x){return x.id===remote.id})[0];return old&&old.updatedAt>remote.updatedAt?old:remote;
+    var remote=normReport(row.payload)||blankReport();remote.id=row.id;remote.ownerId=row.owner_id;remote.createdAt=+remote.createdAt||Date.parse(row.created_at)||(remote.date?new Date(remote.date+'T00:00:00').getTime():0)||Date.now();remote.updatedAt=+remote.updatedAt||Date.parse(row.updated_at)||Date.now();remote._cloudUpdatedAt=row.updated_at;
+    var old=local.filter(function(x){return x.id===remote.id})[0];return old&&cloudPending[remote.id]?old:remote;
   });
   local.forEach(function(old){if(!merged.some(function(x){return x.id===old.id})&&old.updatedAt>Date.now()-12000)merged.push(old)});
   db.reports=merged;if(!db.reports.length)db.reports=[blankReport()];
