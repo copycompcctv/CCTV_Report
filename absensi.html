@@ -48,6 +48,16 @@ input,select,textarea{font-size:16px!important;border:1px solid #d7e2f7;border-r
 .form-actions .btn:not(.light){background:#1768e8;color:#fff}
 @media(max-width:850px){body{padding:10px 12px 28px}.wrap{margin:12px auto;gap:12px}}
 @media(max-width:520px){header{min-height:70px;padding:8px 10px;border-radius:17px}.brand-logo{width:48px!important;height:44px!important}.brand-copy strong{font-size:15px!important}.brand-copy small{font-size:12px!important}.wrap{margin:10px auto}.panel{padding:12px}.form-actions{margin:16px -12px -12px;padding:9px 12px calc(9px + env(safe-area-inset-bottom,0px));grid-template-columns:.85fr 1.35fr}.form-actions>*{min-height:48px;font-size:14px}}
+
+/* Tombol absensi model push button alarm kebakaran: bulat dan menonjol */
+#attendanceCards .punches{display:flex;align-items:center;justify-content:center;gap:28px;padding:12px 4px 16px}
+#attendanceCards .punch{width:116px;height:116px;min-height:116px;flex:0 0 116px;padding:12px;border-radius:50%;border:7px solid #f8b0aa;background:radial-gradient(circle at 36% 27%,#ff8175 0%,#f04438 42%,#c91f18 78%,#94140f 100%);box-shadow:inset 0 5px 8px rgba(255,255,255,.55),inset 0 -7px 9px rgba(105,0,0,.28),0 5px 0 #9e211b,0 9px 14px rgba(165,35,27,.22);color:#fff;font-size:13px;line-height:1.15;gap:4px;transition:transform .12s,filter .12s}
+#attendanceCards .punch:not(:disabled):active{transform:translateY(4px);box-shadow:inset 0 4px 8px rgba(0,0,0,.18),0 1px 0 #9e211b}
+#attendanceCards .punch svg{width:25px;height:25px;stroke-width:2.4}
+#attendanceCards .punch small{font-size:10px;max-width:84px;line-height:1.2}
+#attendanceCards .punch.done{border-color:#a7e7bb;background:radial-gradient(circle at 36% 27%,#72e39a 0%,#22b957 43%,#12833b 78%,#075d2b 100%);box-shadow:inset 0 5px 8px rgba(255,255,255,.5),inset 0 -7px 9px rgba(0,70,20,.25),0 5px 0 #087334,0 9px 14px rgba(12,130,57,.18)}
+#attendanceCards .punch:disabled:not(.done){filter:grayscale(.55);opacity:.58}
+@media(max-width:680px){#attendanceCards .punches{gap:22px;padding:12px 2px 16px}#attendanceCards .punch{width:108px;height:108px;min-height:108px;flex-basis:108px}}
 </style></head><body>
 <header>
 <img class="brand-logo" src="logo-copy-computer.PNG" alt="Copy Computer">
