@@ -1,5 +1,8 @@
--- Copy Computer: Web Push notifikasi chat servis untuk Windows, Android, iPhone.
--- Jalankan SATU KALI di Supabase SQL Editor SETELAH mengisi WEBHOOK_SECRET.
+-- REFERENSI SAJA — jangan jalankan file ini pada project produksi yang sudah terpasang.
+-- Setup aktif sudah diterapkan langsung pada Supabase ogolkyowgvypstjmxxde.
+-- Secret aktif disimpan terenkripsi di Supabase Vault.
+-- Lihat supabase/CHAT-PUSH-SETUP.md untuk langkah aktivasi perangkat dan status verifikasi.
+
 -- Tidak mengubah atau menghapus data servis/chat lama.
 
 create extension if not exists pg_net with schema extensions;
