@@ -598,7 +598,7 @@ body{padding:14px 20px 112px!important}
 <div class="layout history-layout">
 <section class="panel"><h2>History Servis</h2><div class="toolbar"><input id="search" placeholder="Cari tiket / nama / perangkat..." oninput="render()"><select id="filter" onchange="render()" style="max-width:145px"><option value="">Semua status</option><option>Menunggu pemeriksaan</option><option>Sedang dikerjakan</option><option>Menunggu sparepart</option><option>Menunggu persetujuan</option><option>Selesai - siap diambil</option><option>Sudah diambil</option></select></div><div id="jobs"></div></section>
 
-<section class="panel"><h2>Riwayat Pesanan Khusus</h2><div id="orderList" class="empty">Belum ada pesanan khusus.</div></section>
+<section class="panel"><h2>History Pesanan Khusus</h2><div id="orderList" class="empty">Belum ada pesanan khusus.</div></section>
 </div>
 </section>
 <section class="panel" id="settingsView" style="display:none;margin-top:16px"><div class="top" style="margin-bottom:10px"><div><h1 style="font-size:21px">Pengaturan Servis</h1><div class="sub">Kelola pilihan status yang digunakan teknisi saat memperbarui servis.</div></div><button class="secondary" onclick="showServiceView()">Kembali</button></div><h2>Daftar Status Servis</h2><div id="statusSettingsList"></div><div class="actions"><button class="secondary" type="button" onclick="addServiceStatus()">＋ Tambah Status</button><button type="button" onclick="saveServiceStatuses()">Simpan Pengaturan</button></div><p class="sub" id="settingsMessage">Pengaturan tersimpan online dan digunakan bersama oleh teknisi.</p></section>
