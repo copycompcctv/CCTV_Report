@@ -209,6 +209,45 @@ button.secondary,.btn.secondary{background:#edf3ff!important;color:#1749a4!impor
   .source-tabs button{font-size:11px!important;padding:6px 3px!important}
 }
 
+
+/* Header Nota: samakan ukuran logo, teks, dan tombol dengan Manajemen Servis */
+@media screen{
+  .service-header .service-brand img{
+    width:64px!important;height:64px!important;max-height:64px!important;
+    padding:0!important;border:0!important;object-fit:contain!important;flex:none!important
+  }
+  .service-header .service-brand strong{
+    display:block!important;font-size:17px!important;line-height:1.25!important;
+    font-weight:800!important;letter-spacing:.01em!important;color:#10265a!important
+  }
+  .service-header .service-brand small{
+    display:block!important;font-size:13px!important;line-height:1.25!important;
+    font-weight:650!important;color:#1768e8!important;margin:1px 0 0!important
+  }
+  .service-header .nav-icon{
+    width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important;
+    padding:0!important;border:1px solid #dfe8fb!important;border-radius:13px!important;
+    background:#f4f7ff!important;color:#123b91!important;transition:background .15s,color .15s,border-color .15s!important
+  }
+  .service-header .nav-icon svg{width:22px!important;height:22px!important}
+  .service-header .nav-icon:hover,
+  .service-header .nav-icon:focus,
+  .service-header .nav-icon:active{
+    background:#1768e8!important;border-color:#1768e8!important;color:#fff!important;outline:none!important
+  }
+}
+@media screen and (max-width:520px){
+  .service-header .service-brand img{
+    width:48px!important;height:44px!important;max-height:44px!important
+  }
+  .service-header .service-brand strong{font-size:15px!important}
+  .service-header .service-brand small{font-size:12px!important}
+  .service-header .nav-icon{
+    width:40px!important;height:40px!important;min-width:40px!important;min-height:40px!important;border-radius:12px!important
+  }
+  .service-header .nav-icon svg{width:20px!important;height:20px!important}
+}
+
 </style><style>html.cc-gate-pending body{visibility:hidden}</style><script>
 (function(){
 'use strict';
