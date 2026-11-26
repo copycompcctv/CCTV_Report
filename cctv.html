@@ -678,23 +678,17 @@ body{background:#f7f9fd;color:var(--ink);padding:14px 20px 38px}
 
       <section id="v-barang" hidden>
         <div class="stack">
-          <p class="hint">Daftar barang menjadi tombol cepat di halaman Isi. Pilih barang, lalu isi keterangannya, misalnya Kabel dengan 100 meter. Tambah, ubah, atau hapus sesuai kebutuhan.</p>
+          <p class="hint">Daftar barang menjadi tombol cepat di halaman Buat Laporan. Isi nama barang, jenis/type, dan keterangan sesuai kebutuhan.</p>
           <div class="card stack">
             <span class="lbl" style="margin:0">Tambah barang</span>
             <div class="catgrid">
-              <div><label class="lbl" for="nl">Nama barang</label><input id="nl" autocomplete="off" placeholder="mis. Duradus"></div>
-              <div><label class="lbl" for="nn">Keterangan bawaan</label><input id="nn" autocomplete="off" placeholder="Alamat Pelanggan"></div>
-              <div><label class="lbl" for="nk">Jenis</label>
-                <select id="nk">
-                  <option value="qty">Barang + keterangan</option>
-                  <option value="cable">Kabel (hitung meter)</option>
-                  <option value="text">Teks bebas</option>
-                </select>
-              </div>
+              <div><label class="lbl" for="nl">Nama Barang</label><input id="nl" autocomplete="off" placeholder="" value=""></div>
+              <div><label class="lbl" for="nt">Jenis / Type</label><input id="nt" autocomplete="off" placeholder="" value=""></div>
+              <div><label class="lbl" for="nn">Keterangan</label><input id="nn" autocomplete="off" placeholder="" value=""></div>
             </div>
-            <button type="button" class="btn" data-act="cat-add">Tambah ke daftar</button>
+            <button type="button" class="btn" data-act="cat-add">Tambah Daftar</button>
           </div>
-          <div id="cats" class="stack"></div>
+          <div id="cats" class="stack" hidden></div>
           <details class="card">
             <summary>Kop PDF</summary>
             <div class="stack">
@@ -850,7 +844,7 @@ function normReport(r){
 }
 function normCat(c){
   if(!c||typeof c!=='object') return null;
-  return {id:str(c.id)||uid(),label:str(c.label),note:str(c.note),
+  return {id:str(c.id)||uid(),label:str(c.label),type:str(c.type),note:str(c.note),
     kind:['text','qty','cable'].indexOf(c.kind)>=0?c.kind:'qty',colon:c.colon!==false};
 }
 function normKop(k){
@@ -1308,7 +1302,8 @@ function catRowHTML(c){
    +'<button type="button" class="mini danger" data-act="cat-del">Hapus</button></div></div>';
 }
 function renderCatalog(){
-  $('cats').innerHTML=db.catalog.length?db.catalog.map(catRowHTML).join(''):'<p class="empty">Daftar barang kosong. Tambah barang pertama di atas.</p>';
+  /* Data katalog tetap disimpan untuk dropdown laporan; rincian daftar tidak ditampilkan di halaman Stok Barang. */
+  $('cats').innerHTML='';
   $('kn').value=db.kop.name;$('kt').value=db.kop.tag;$('ka').value=db.kop.addr;
 }
 
@@ -1347,7 +1342,7 @@ function setView(v,keepScroll){
   document.querySelectorAll('.tab').forEach(function(b){if(b.dataset.v===v)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});
   if(v==='isi')render();
   if(v==='riwayat')renderHistory();
-  if(v==='barang'){ $('nl').value='';$('nn').value='';$('nk').value='qty';renderCatalog();}
+  if(v==='barang'){ $('nl').value='';$('nt').value='';$('nn').value='';renderCatalog();}
   renderNote();
   if(!keepScroll)window.scrollTo(0,0);
 }
@@ -1434,7 +1429,7 @@ document.addEventListener('click',function(e){
       sec=getSec(b);c=db.catalog.filter(function(x){return x.id===b.dataset.cid})[0];if(!sec||!c)break;
       if(c.kind==='text')it=mk('text',{text:c.label+' '+(c.note||'')});
       else if(c.kind==='cable')it=mk('cable',{label:c.label});
-      else it=mk('qty',{label:c.label,qty:c.note||'',colon:c.colon!==false});
+      else it=mk('qty',{label:c.label,qty:[c.type,c.note].filter(Boolean).join(' '),colon:c.colon!==false});
       sec.items.push(it);changed();render();focusItem(it);break;
     }
     case 'add-sec':{var s={id:uid(),title:'',job:'Pasang Kamera Baru',bold:true,items:[mk('structured',{item:'Isi Sendiri'})]};r.sections.push(s);changed();render();break}
@@ -1478,8 +1473,8 @@ document.addEventListener('click',function(e){
     case 'pdf':sharePdf(b);break;
     case 'cat-add':{
       var lab=$('nl').value.trim();if(!lab){toast('Isi nama barang dulu');focusEl('nl');break}
-      db.catalog.push({id:uid(),label:lab,note:$('nn').value.trim(),kind:$('nk').value,colon:true});
-      $('nl').value='';$('nn').value='';save();renderCatalog();toast('Ditambahkan ke daftar barang');break;
+      db.catalog.push({id:uid(),label:lab,type:$('nt').value.trim(),note:$('nn').value.trim(),kind:'qty',colon:true});
+      $('nl').value='';$('nt').value='';$('nn').value='';save();renderCatalog();toast('Ditambahkan ke daftar barang');break;
     }
     case 'cat-del':{
       c=getCat(b);if(!c)break;
