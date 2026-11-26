@@ -1968,6 +1968,46 @@ $('logoutBtn').addEventListener('click',async function(){
 
 
 </body>
+
+<style id="compact-brand-header">
+/* Header ringkas: hilangkan status akun agar tombol kembali tidak terdorong */
+@media screen {
+  #appRoot .top{
+    min-height:72px!important;
+    height:auto!important;
+    padding:8px 12px!important;
+    margin:0 0 10px!important;
+    gap:10px!important;
+    align-items:center!important;
+    flex-wrap:nowrap!important;
+  }
+  #appRoot .brand{gap:10px!important;min-width:0!important;flex:1 1 auto!important}
+  #appRoot .brand>div{min-width:0!important}
+  #appRoot .brand .sub,#appRoot #status{display:none!important}
+  #appRoot .mark{
+    width:56px!important;max-width:56px!important;height:auto!important;
+    max-height:42px!important;padding:0!important;border:0!important;
+  }
+  #appRoot .brand-name{font-size:16px!important;line-height:1.15!important}
+  #appRoot .brand-section{font-size:14px!important;line-height:1.2!important;margin:2px 0 0!important}
+  #appRoot .hbtns{flex:0 0 auto!important;display:flex!important;align-items:center!important;gap:6px!important}
+  #appRoot .icon-btn{
+    width:42px!important;height:42px!important;min-width:42px!important;min-height:42px!important;
+    border-radius:12px!important;
+  }
+  #appRoot .icon-btn svg{width:21px!important;height:21px!important}
+}
+@media screen and (max-width:600px){
+  #appRoot .top{min-height:66px!important;padding:7px 9px!important;margin-bottom:9px!important;border-radius:16px!important}
+  #appRoot .mark{width:48px!important;max-width:48px!important;max-height:38px!important}
+  #appRoot .brand{gap:9px!important}
+  #appRoot .brand-name{font-size:14px!important}
+  #appRoot .brand-section{font-size:12px!important}
+  #appRoot .icon-btn{width:38px!important;height:38px!important;min-width:38px!important;min-height:38px!important}
+  #appRoot .icon-btn svg{width:19px!important;height:19px!important}
+}
+</style>
+
 </html>
 
 <style>
