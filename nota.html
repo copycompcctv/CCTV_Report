@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Nota Tagihan | Copy Computer</title><meta name="theme-color" content="#0A6C8B">
 <link rel="icon" type="image/png" href="icon-192.png">
 <style>
@@ -148,7 +148,22 @@ function touch(){var n=Date.now();if(n-last>900){last=n;localStorage.setItem('cc
 ['pointerdown','keydown','touchstart','click','scroll'].forEach(function(e){document.addEventListener(e,touch,{passive:true})});
 document.documentElement.classList.remove('cc-gate-pending');
 })();
-</script></head><body>
+</script><style id="iphone-viewport-fit">
+html{width:100%;max-width:100%;overflow-x:hidden;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{width:100%;max-width:100%;min-width:0;overflow-x:hidden}
+.wrap,.grid,.panel,.top{min-width:0;max-width:100%}
+@media(max-width:650px){
+  body{padding-left:max(10px,env(safe-area-inset-left));padding-right:max(10px,env(safe-area-inset-right));padding-bottom:max(20px,env(safe-area-inset-bottom))}
+  .wrap{width:100%;max-width:100%;margin:18px auto!important;padding:0 2px!important}
+  .top{gap:10px}
+  .top-actions{min-width:0;width:100%}
+  .grid{width:100%;min-width:0}
+  .panel{min-width:0;padding:13px!important}
+  input,select,textarea{font-size:16px!important;min-width:0}
+  .itemgrid{grid-template-columns:minmax(0,1fr) 72px 100px}
+}
+</style>
+</head><body>
 <header><img src="logo-copy-computer.PNG" alt="Logo Copy Computer"><div class="brand-copy"><strong>COPY COMPUTER</strong><small>Buat Nota</small></div><span class="header-spacer"></span><a class="nav-icon" href="../" aria-label="Menu utama" title="Menu utama"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg></a><button class="nav-icon" type="button" onclick="if(history.length>1)history.back();else location.href='../'" aria-label="Kembali" title="Kembali"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6M9 12h12"/></svg></button></header>
 <main class="wrap">
 <div class="top"><div><h1>Nota Tagihan</h1><div class="muted">Buat nota dari laporan CCTV, pesanan khusus, atau data servisan yang sudah tersimpan.</div></div><div class="top-actions"><a class="btn secondary" href="./">← Menu Utama</a><button id="clearInvoiceBtn" class="secondary" type="button">Buat Nota Baru / Bersihkan</button></div></div>
