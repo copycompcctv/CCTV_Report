@@ -87,6 +87,20 @@ header img{object-fit:contain}
   <strong>COPY <span>COMPUTER</span></strong>
 </header>
 <main>
+<section id="loginPanel" class="welcome-login">
+  <div class="welcome-logo"><img src="logo-copy-computer.PNG" alt="Logo Copy Computer"></div>
+  <p class="eyebrow">SELAMAT DATANG</p>
+  <h1>Copy <span>Computer</span></h1>
+  <p class="welcome-sub">Masuk untuk melanjutkan ke aplikasi</p>
+  <form id="welcomeForm">
+    <label for="welcomePassword">Password bersama</label>
+    <div class="password-wrap"><input id="welcomePassword" type="password" autocomplete="current-password" placeholder="Masukkan password" required><button type="button" id="togglePassword" aria-label="Lihat password">◉</button></div>
+    <p id="welcomeMessage" role="status"></p>
+    <button class="enter-btn" type="submit">Masuk <span>→</span></button>
+  </form>
+</section>
+<section id="menuPanel" hidden>
+  <div class="welcome-heading"><div><p class="eyebrow">WELCOME BACK</p><h1>Pilih <span>Menu</span></h1><p class="welcome-sub">Silakan pilih layanan yang ingin dibuka.</p></div><button id="lockButton" class="lock-btn" type="button" title="Kunci aplikasi">Kunci <span>↗</span></button></div>
 <nav class="menu" aria-label="Menu aplikasi">
   <a class="module" href="./cctv.html" aria-label="CCTV Report">
     <div class="symbol" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="cctvReportIcon" x1="7" y1="8" x2="56" y2="57" gradientUnits="userSpaceOnUse"><stop stop-color="#08c5d9"/><stop offset="1" stop-color="#123caa"/></linearGradient></defs>
@@ -111,9 +125,49 @@ header img{object-fit:contain}
     <h2>Buat <span>Nota</span></h2>
   </a>
 </nav>
+</section>
 </main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+(function(){
+'use strict';
+var URL='https://ogolkyowgvypstjmxxde.supabase.co',KEY='sb_publishable_8NQAMLU4WhrHfn5nwf4gjQ_rr9egknn',EMAIL='cctv@copycomputer.app';
+var sb=window.supabase.createClient(URL,KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+var login=$('loginPanel'),menu=$('menuPanel'),form=$('welcomeForm'),msg=$('welcomeMessage'),pass=$('welcomePassword');
+function $(id){return document.getElementById(id)}
+function showLogin(message){login.hidden=false;menu.hidden=true;msg.textContent=message||'';pass.value=''}
+function showMenu(){login.hidden=true;menu.hidden=false;sessionStorage.setItem('cc_app_unlocked','1');localStorage.setItem('cc_last_activity',String(Date.now()))}
+async function lock(message){sessionStorage.removeItem('cc_app_unlocked');localStorage.removeItem('cc_last_activity');try{await sb.auth.signOut()}catch(e){}showLogin(message||'Aplikasi terkunci. Masukkan password untuk melanjutkan.')}
+var lastTouch=0;function activity(){if(sessionStorage.getItem('cc_app_unlocked')==='1'){var now=Date.now();if(now-lastTouch>1000){localStorage.setItem('cc_last_activity',String(now));lastTouch=now}}}
+['pointerdown','keydown','touchstart','click','scroll'].forEach(function(ev){document.addEventListener(ev,activity,{passive:true})});
+setInterval(function(){if(sessionStorage.getItem('cc_app_unlocked')==='1'){var last=Number(localStorage.getItem('cc_last_activity'))||0;if(!last||Date.now()-last>=300000)lock('Sesi berakhir setelah 5 menit tidak aktif. Masukkan password kembali.')}},1000);
+document.addEventListener('visibilitychange',function(){if(!document.hidden&&sessionStorage.getItem('cc_app_unlocked')==='1'){var last=Number(localStorage.getItem('cc_last_activity'))||0;if(Date.now()-last>=300000)lock('Sesi berakhir setelah 5 menit tidak aktif. Masukkan password kembali.')}});
+$('togglePassword').addEventListener('click',function(){pass.type=pass.type==='password'?'text':'password'});
+form.addEventListener('submit',async function(e){e.preventDefault();var btn=form.querySelector('button[type=submit]');btn.disabled=true;btn.textContent='Memeriksa...';msg.textContent='Menghubungkan ke akun Copy Computer...';try{var result=await sb.auth.signInWithPassword({email:EMAIL,password:pass.value});if(result.error)throw result.error;showMenu()}catch(err){msg.textContent='Password salah atau koneksi bermasalah. Coba kembali.';pass.focus()}finally{btn.disabled=false;btn.innerHTML='Masuk <span>→</span>'}});
+$('lockButton').addEventListener('click',function(){lock('Aplikasi dikunci. Masukkan password untuk melanjutkan.')});
+(async function init(){var valid=sessionStorage.getItem('cc_app_unlocked')==='1',last=Number(localStorage.getItem('cc_last_activity'))||0;if(valid&&last&&Date.now()-last<300000){var x=await sb.auth.getSession();if(x.data.session&&(x.data.session.user.email||'').toLowerCase()===EMAIL)showMenu();else showLogin()}else{sessionStorage.removeItem('cc_app_unlocked');if(last&&Date.now()-last>=300000)await sb.auth.signOut();showLogin()}})();
+})();
 if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('./sw.js').catch(function(){})})}
 </script>
 </body>
 </html>
+<style>
+[hidden]{display:none!important}
+main{margin:48px auto 56px!important}
+.welcome-login{width:min(440px,100%);margin:6vh auto 0;padding:34px 32px 30px;border:1px solid #dce7ff;border-radius:28px;background:#fff;box-shadow:0 14px 42px rgba(24,78,160,.08);text-align:center}
+.welcome-logo{width:112px;height:112px;margin:0 auto 18px;display:grid;place-items:center;border-radius:28px;background:#f4f8ff}.welcome-logo img{width:92px;max-height:88px;object-fit:contain}
+.eyebrow{margin:0 0 7px;color:#1768e8;font-size:11px;font-weight:800;letter-spacing:.16em}
+.welcome-login h1,.welcome-heading h1{margin:0;color:#10265a;font-size:clamp(27px,4vw,34px);letter-spacing:-.045em}.welcome-login h1 span,.welcome-heading h1 span{color:#1768e8}
+.welcome-sub{margin:8px 0 24px;color:#71809a;font-size:14px}
+#welcomeForm{text-align:left}#welcomeForm label{display:block;margin-bottom:8px;font-size:13px;font-weight:700;color:#24395f}
+.password-wrap{display:flex;align-items:center;border:1px solid #d6e1f5;border-radius:14px;background:#f8faff;overflow:hidden}
+.password-wrap input{width:100%;min-width:0;border:0;outline:0;background:transparent;padding:14px 15px;font:inherit;font-size:15px}
+.password-wrap button{border:0;background:transparent;color:#60749a;padding:0 15px;font-size:18px;cursor:pointer}
+#welcomeMessage{min-height:20px;margin:8px 0;color:#c0394a;font-size:12px}
+.enter-btn{width:100%;height:50px;border:0;border-radius:14px;background:linear-gradient(110deg,#1768e8,#123caa);color:#fff;font:700 15px system-ui;cursor:pointer;box-shadow:0 7px 16px rgba(23,104,232,.18)}
+.enter-btn span{margin-left:8px;font-size:19px}.enter-btn:disabled{opacity:.65}
+.welcome-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px}
+.welcome-heading .welcome-sub{margin:5px 0 0}
+.lock-btn{border:1px solid #dce7ff;background:#fff;border-radius:12px;padding:10px 14px;color:#34517f;font-weight:650;cursor:pointer}
+@media(max-width:680px){main{margin:28px auto 24px!important}.welcome-login{margin:5vh auto 0;padding:28px 22px 24px;border-radius:23px}.welcome-logo{width:94px;height:94px}.welcome-logo img{width:78px;max-height:76px}.welcome-heading{align-items:flex-start}.welcome-heading h1{font-size:27px}}
+</style>
