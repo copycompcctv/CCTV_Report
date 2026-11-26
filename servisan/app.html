@@ -657,8 +657,7 @@ async function refreshServiceChatUnreadCounts(){
    Object.keys(next).forEach(ticket=>{const delta=next[ticket]-(serviceChatUnreadCounts[ticket]||0);if(delta>0){
     const job=jobs.find(x=>x.ticket===ticket),name=job?.nama||ticket,msg=(delta===1?'Pesan baru':' '+delta+' pesan baru')+' dari '+name+' ('+ticket+')';
     showServiceChatToast(msg);
-    if(document.hidden&&Notification.permission==='granted')new Notification('COPY COMPUTER · Chat pelanggan',{body:msg,icon:'../icon-192.png',tag:'service-chat-'+ticket,data:{url:'./servisan/app.html#jobs'}});
-   }});
+       }});
   }
   serviceChatCountsInitialized=true;serviceChatUnreadCounts=next;
   if($('historyView')&&$('historyView').style.display!=='none')render();
