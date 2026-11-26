@@ -663,6 +663,7 @@ body{width:100%;max-width:100%;min-width:0;overflow-x:hidden}
 #v-barang .item-options-list{gap:7px!important;margin-top:4px}
 #v-barang .item-option-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:4px 2px 8px;color:#10265a}
 #v-barang .item-option-head span{font-size:12px;color:#64748b}
+#v-barang #itemOptionSearch{width:100%;min-height:42px;border:1px solid #dbe6fb;border-radius:10px;padding:9px 12px;font-size:14px;background:#f8faff}
 #v-barang .item-option-row{display:flex;align-items:center;justify-content:space-between;gap:12px;min-width:0;padding:9px 10px 9px 13px;border:1px solid #dbe6fb;border-radius:11px;background:#fff}
 #v-barang .item-option-info{display:flex;flex-direction:column;gap:2px;min-width:0}
 #v-barang .item-option-info strong{font-size:14px;font-weight:650;color:#10265a;overflow-wrap:anywhere}
@@ -1373,8 +1374,8 @@ function catRowHTML(c){
 function renderCatalog(){
   var options=getStructuredItemOptions(),hidden=(db.catalog||[]).filter(function(c){return c.hiddenItemOption}).length;
   $('cats').hidden=false;
-  $('cats').innerHTML='<div class="item-option-head"><strong>Daftar pilihan Item Barang</strong><span>'+options.length+' item</span></div>'
-    +options.map(function(label){var meta=(db.catalog||[]).filter(function(c){return !c.hiddenItemOption&&c.label.toLowerCase()===label.toLowerCase()})[0];var detail=meta?[meta.type,meta.note].filter(Boolean).join(' · '):'';return '<div class="item-option-row"><div class="item-option-info"><strong>'+esc(label)+'</strong>'+(detail?'<small>'+esc(detail)+'</small>':'')+'</div><button type="button" class="item-option-delete" data-act="item-option-del" data-option="'+esc(label)+'" aria-label="Hapus '+esc(label)+'" title="Hapus item">×</button></div>'}).join('')
+  $('cats').innerHTML='<div class="item-option-head"><strong>Daftar pilihan Item Barang</strong><span>'+options.length+' item</span></div><input id="itemOptionSearch" type="search" placeholder="Cari item yang ingin dihapus..." aria-label="Cari item barang">'
+    +options.map(function(label){var meta=(db.catalog||[]).filter(function(c){return !c.hiddenItemOption&&c.label.toLowerCase()===label.toLowerCase()})[0];var detail=meta?[meta.type,meta.note].filter(Boolean).join(' · '):'';return '<div class="item-option-row" data-search="'+esc((label+' '+detail).toLowerCase())+'"><div class="item-option-info"><strong>'+esc(label)+'</strong>'+(detail?'<small>'+esc(detail)+'</small>':'')+'</div><button type="button" class="item-option-delete" data-act="item-option-del" data-option="'+esc(label)+'" aria-label="Hapus '+esc(label)+'" title="Hapus item">×</button></div>'}).join('')
     +(hidden?'<button type="button" class="btn ghost restore-item-options" data-act="restore-item-options">Pulihkan item bawaan</button>':'');
   $('kn').value=db.kop.name;$('kt').value=db.kop.tag;$('ka').value=db.kop.addr;
 }
@@ -1432,6 +1433,7 @@ else if(mq.addListener)mq.addListener(function(){setView(view,true)});
 document.addEventListener('change',function(e){var t=e.target,f=t.dataset&&t.dataset.f;if(f==='job'){var sec=getSec(t);if(!sec)return;sec.job=t.value;sec.title='';if(t.value!=='Servis Lainnya')sec.jobCustom='';changed();render()}else if(f==='item'){var it=getItem(t);if(!it)return;it.item=t.value;it.itemCustom='';it.note='';changed();render()}});
 document.addEventListener('input',function(e){
   var t=e.target,f=t.dataset&&t.dataset.f;
+  if(t.id==='itemOptionSearch'){var q=t.value.toLowerCase().trim();document.querySelectorAll('#cats .item-option-row').forEach(function(row){row.hidden=!!q&&row.dataset.search.indexOf(q)<0});return}
   if(!f) return;
   var v=t.type==='checkbox'?t.checked:t.value;
   if(f.indexOf('kop')===0){db.kop[f.slice(3)]=v;setStatus();save();return}
