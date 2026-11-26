@@ -810,7 +810,7 @@ function buildText(r){
   var allLines=[];st.secs.forEach(function(sec){sec.lines.forEach(function(line){allLines.push(line)})});
   var detailWidth=allLines.reduce(function(n,line){var p=line.indexOf(' : ');return p>=0?Math.max(n,p):n},0);
   st.secs.forEach(function(s,i){
-    if(i===0&&s.title)out.push('');else if(i>0)out.push('');
+    if(i===0&&meta.length)out.push('');else if(i>0)out.push('');
     if(s.title) out.push(s.bold?'*'+s.title+'*':s.title);
     s.lines.forEach(function(l){var p=l.indexOf(' : ');if(p>=0)l=l.slice(0,p).padEnd(detailWidth,' ')+l.slice(p);out.push('- '+l)});
   });
@@ -985,13 +985,20 @@ function buildPdf(r,kop,logoJpeg){
   if(!s.secs.length){T('Belum ada isi laporan.',M,y,11,'F3',MUTE);y-=16}
   s.secs.forEach(function(sec){
     if(sec.title){need(44);T(sec.title,M,y,11.5,'F2',ACC);y-=7;L(M,y,PW-M,y,0.5,RULE);y-=17}
+    var detailLabelW=sec.lines.reduce(function(w,line){var p=line.indexOf(' : ');return p>=0?Math.max(w,tw(line.slice(0,p),10.5,false)):w},0);
     sec.lines.forEach(function(item){
       var first=true;
       item.split('\n').forEach(function(p){
-        wrapText(p,10.5,CW-16,false).forEach(function(ln,i){
+        var at=p.indexOf(' : '),hasColon=at>=0,label=hasColon?p.slice(0,at):'',value=hasColon?p.slice(at+3):p;
+        var valueX=hasColon?M+16+detailLabelW+8:M+16;
+        var chunks=hasColon?wrapText(value,10.5,PW-M-valueX,false):wrapText(value,10.5,CW-16,false);
+        if(hasColon&&tw(label,10.5,false)>detailLabelW)chunks=wrapText(p,10.5,CW-16,false);
+        chunks.forEach(function(ln,i){
           need(16);
           if(first&&i===0)T('-',M+2,y,10.5,'F1',MUTE);
-          T(ln,M+16,y,10.5,'F1',INK);y-=15;
+          if(hasColon&&tw(label,10.5,false)<=detailLabelW&&i===0){T(label,M+16,y,10.5,'F1',INK);T(':',M+16+detailLabelW+3,y,10.5,'F1',INK);T(ln,valueX,y,10.5,'F1',INK)}
+          else T(ln,M+16,y,10.5,'F1',INK);
+          y-=15;
         });
         first=false;
       });
