@@ -28,13 +28,38 @@ button{background:var(--blue)!important;border-radius:14px!important;min-height:
 <form id="lookup"><label for="ticket">Nomor antrian servis</label><input id="ticket" required placeholder="Contoh: SRV-0001" autocomplete="off">
 <label for="pin">PIN pengecekan</label><input id="pin" required inputmode="numeric" pattern="[0-9]{6}" maxlength="6" placeholder="6 digit PIN" autocomplete="off">
 <button id="submit" type="submit">Cek Status</button></form><p id="message" class="msg" role="alert"></p>
-<section id="result" class="result hide"><div class="muted">Status perbaikan saat ini</div><div id="status" class="status"></div><div class="grid"><b>Nomor tiket</b><span id="r-ticket"></span><b>Tanggal masuk</b><span id="r-date"></span><b>Perangkat</b><span id="r-device"></span><b>Model</b><span id="r-model"></span><b>Teknisi</b><span id="r-tech"></span><b>Catatan</b><span id="r-note"></span></div><p class="muted" style="font-size:12px;margin-top:18px">Status diperbarui oleh teknisi Copy Computer. Silakan cek kembali halaman ini untuk melihat perkembangan terbaru.</p></section>
+<section id="result" class="result hide"><div class="muted">Status perbaikan saat ini</div><div id="status" class="status"></div><div class="grid"><b>Nomor tiket</b><span id="r-ticket"></span><b>Tanggal masuk</b><span id="r-date"></span><b>Perangkat</b><span id="r-device"></span><b>Model</b><span id="r-model"></span><b>Teknisi</b><span id="r-tech"></span><b>Catatan</b><span id="r-note"></span></div><p class="muted" style="font-size:12px;margin-top:18px">Status diperbarui oleh teknisi Copy Computer. Silakan cek kembali halaman ini untuk melihat perkembangan terbaru.</p>
+<section id="customerChat" style="margin-top:22px;border-top:1px solid var(--line);padding-top:18px">
+<h2 style="font-size:18px;margin:0 0 5px;color:var(--navy)">Chat dengan teknisi</h2><p class="muted" style="font-size:12px;margin:0 0 12px">Kirim pesan jika ingin menanyakan perkembangan servis.</p>
+<div id="chatMessages" aria-live="polite" style="display:flex;flex-direction:column;gap:9px;max-height:340px;overflow:auto;padding:4px 0 10px"></div>
+<form id="chatForm"><label for="chatInput">Pesan Anda</label><textarea id="chatInput" required maxlength="2000" rows="3" placeholder="Tulis pesan..." style="width:100%;border:1.5px solid #cbdcff;border-radius:13px;background:#f7f9ff;color:var(--navy);padding:12px;font:inherit;resize:vertical"></textarea><button id="chatSend" type="submit">Kirim Pesan</button></form><p id="chatMessage" class="muted" style="font-size:12px;margin:8px 0 0"></p>
+</section></section>
 </section><p class="muted" style="text-align:center;font-size:12px;margin-top:18px"><a href="./">Kembali ke Menu Utama</a></p></main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>
 const sb=window.supabase.createClient('https://ogolkyowgvypstjmxxde.supabase.co','sb_publishable_8NQAMLU4WhrHfn5nwf4gjQ_rr9egknn');
 const $=id=>document.getElementById(id);
-$('lookup').addEventListener('submit',async e=>{e.preventDefault();$('message').textContent='Memeriksa data...';$('result').classList.add('hide');$('submit').disabled=true;
-try{const {data,error}=await sb.rpc('check_service_status',{p_ticket:$('ticket').value.trim(),p_pin:$('pin').value.trim()});if(error)throw error;const x=data&&data[0];if(!x){$('message').textContent='Nomor tiket atau PIN tidak cocok. Periksa kembali data pada nota servis.';return}
-$('message').textContent='';$('status').textContent=x.status||'Belum ada status';$('r-ticket').textContent=x.ticket||'-';$('r-date').textContent=x.received_at||'-';$('r-device').textContent=x.device||'-';$('r-model').textContent=x.model||'-';$('r-tech').textContent=x.technician||'-';$('r-note').textContent=x.note||'-';$('result').classList.remove('hide');
+let activeTicket='',activePin='',chatTimer=null,chatBusy=false;
+function safeText(v){return String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function stopChat(){if(chatTimer){clearInterval(chatTimer);chatTimer=null}activeTicket='';activePin=''}
+async function loadCustomerChat(){
+ if(!activeTicket||chatBusy)return;chatBusy=true;
+ try{
+  const {data,error}=await sb.rpc('customer_read_service_chat',{p_ticket:activeTicket,p_pin:activePin});if(error)throw error;
+  const box=$('chatMessages'),rows=data||[];
+  box.innerHTML=rows.length?rows.map(m=>'<div style="max-width:88%;align-self:'+(m.sender_role==='customer'?'flex-end':'flex-start')+';background:'+(m.sender_role==='customer'?'#eaf2ff':'#f2f5fa')+';border:1px solid #dce7ff;border-radius:13px;padding:9px 12px"><b style="font-size:12px;color:#174a9c">'+safeText(m.sender_name)+'</b><div style="white-space:pre-wrap;overflow-wrap:anywhere;margin-top:3px">'+safeText(m.message)+'</div><small style="color:#718096;font-size:10px">'+safeText(new Date(m.created_at).toLocaleString('id-ID'))+'</small></div>').join(''):'<p class="muted" style="font-size:12px">Belum ada percakapan. Silakan kirim pesan jika membutuhkan bantuan.</p>';
+  box.scrollTop=box.scrollHeight;
+ }catch(e){$('chatMessage').textContent='Chat belum dapat dimuat. Coba periksa tiket dan PIN kembali.';console.error(e)}finally{chatBusy=false}
+}
+$('chatForm').addEventListener('submit',async e=>{
+ e.preventDefault();const message=$('chatInput').value.trim();if(!message||!activeTicket)return;
+ $('chatSend').disabled=true;$('chatMessage').textContent='Mengirim pesan...';
+ try{const {data,error}=await sb.rpc('customer_send_service_chat',{p_ticket:activeTicket,p_pin:activePin,p_message:message});if(error)throw error;if(data!==true)throw new Error('Tiket tidak aktif');$('chatInput').value='';$('chatMessage').textContent='Pesan terkirim.';await loadCustomerChat()}
+ catch(err){$('chatMessage').textContent='Pesan gagal dikirim. Tiket mungkin sudah tidak aktif.';console.error(err)}
+ finally{$('chatSend').disabled=false}
+});
+$('lookup').addEventListener('submit',async e=>{e.preventDefault();stopChat();$('message').textContent='Memeriksa data...';$('result').classList.add('hide');$('submit').disabled=true;
+try{const ticket=$('ticket').value.trim(),pin=$('pin').value.trim();const {data,error}=await sb.rpc('check_active_service_status',{p_ticket:ticket,p_pin:pin});if(error)throw error;const x=data&&data[0];if(!x){$('message').textContent='Nomor tiket atau PIN tidak cocok, atau masa pengecekan sudah berakhir karena servis telah diambil.';return}
+activeTicket=ticket;activePin=pin;$('message').textContent='';$('status').textContent=x.status||'Belum ada status';$('r-ticket').textContent=x.ticket||'-';$('r-date').textContent=x.received_at||'-';$('r-device').textContent=x.device||'-';$('r-model').textContent=x.model||'-';$('r-tech').textContent=x.technician||'-';$('r-note').textContent=x.note||'-';$('result').classList.remove('hide');
+await loadCustomerChat();chatTimer=setInterval(loadCustomerChat,5000);
 }catch(err){$('message').textContent='Layanan belum siap atau koneksi bermasalah. Silakan coba lagi.';console.error(err)}finally{$('submit').disabled=false}});
 </script></body></html>
