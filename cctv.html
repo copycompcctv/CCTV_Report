@@ -1281,7 +1281,7 @@ function focusItem(it){
 function getSec(t){var n=t.closest('[data-sec]');if(!n)return null;return cur().sections.filter(function(s){return s.id===n.dataset.sec})[0]||null}
 function getItem(t){var s=getSec(t),n=t.closest('[data-item]');if(!s||!n)return null;return s.items.filter(function(i){return i.id===n.dataset.item})[0]||null}
 function getCat(t){var n=t.closest('[data-cat]');if(!n)return null;return db.catalog.filter(function(c){return c.id===n.dataset.cat})[0]||null}
-function changed(){var r=cur();r.updatedAt=Date.now();if(r.example){r.example=false;renderNote()}updateOut()}
+function changed(){var r=cur();r.updatedAt=Date.now();if(r.example){r.example=false;renderNote()}save();updateOut()}
 
 /* ---------- Hasil ---------- */
 function updateOut(){
@@ -1452,15 +1452,24 @@ document.addEventListener('click',function(e){
     }
     case 'save-report':{
       (async function(){
-        var report=cur();report.saved=true;
+        var report=cur();report.saved=true;report.updatedAt=Date.now();
         try{
           await uploadPendingAttachments(report);
           if(!saveNow())throw new Error('Penyimpanan perangkat penuh atau diblokir');
           renderHistory();
-          if(cloudReady){toast('Menyimpan laporan dan lampiran ke database online...');await saveCloudNow(report.id);toast('Laporan dan lampiran berhasil disimpan online.')}
-          else toast('Laporan tersimpan di perangkat ini.');
-          renderAttachments();
-        }catch(err){toast('Gagal menyimpan: '+(err.message||'periksa koneksi dan pengaturan Storage'))}
+          if(cloudReady){
+            toast('Menyimpan laporan ke database online...');
+            var owner=report.ownerId||currentUser.id;
+            var payload=JSON.parse(JSON.stringify(report));payload.ownerId=owner;
+            var cloudResult=await sb.from('reports').upsert(cloudRow(payload),{onConflict:'id'});
+            if(cloudResult.error)throw cloudResult.error;
+            report.ownerId=owner;delete cloudPending[report.id];
+            var settingsResult=await sb.from('user_settings').upsert({user_id:currentUser.id,catalog:db.catalog,kop:db.kop,last_tech:db.lastTech||''},{onConflict:'user_id'});
+            if(settingsResult.error)throw settingsResult.error;
+            toast('Laporan berhasil disimpan dan disinkronkan. Buka ulang Riwayat di perangkat lain.');
+          }else toast('Laporan tersimpan di perangkat ini saja. Login online diperlukan untuk sinkronisasi.');
+          renderHistory();renderAttachments();
+        }catch(err){toast('Gagal sinkronisasi: '+(err.message||'periksa koneksi/login'));console.error('Simpan laporan:',err)}
       })();break;
     }
     case 'remove-pending':{
