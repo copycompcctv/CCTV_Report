@@ -1729,6 +1729,13 @@ function startRealtime(){
   if(realtimeChannel)sb.removeChannel(realtimeChannel);
   realtimeChannel=sb.channel('laporan-realtime-'+currentUser.id)
     .on('postgres_changes',{event:'*',schema:'public',table:'reports'},function(){refreshCloudHistory()})
+    .on('postgres_changes',{event:'*',schema:'public',table:'user_settings',filter:'user_id=eq.'+currentUser.id},function(change){
+      if(!change.new)return;
+      db.catalog=mergeCatalog(Array.isArray(change.new.catalog)?change.new.catalog:db.catalog);
+      db.kop=normKop(change.new.kop);db.lastTech=str(change.new.last_tech);
+      try{localStorage.setItem(KEY,JSON.stringify(savedSnapshot()))}catch(e){}
+      renderCatalog();if(view==='isi')render();
+    })
     .subscribe(function(status){if(status==='SUBSCRIBED'&&currentProfile)$('status').textContent=(currentProfile.display_name||currentUser.email||'Pengguna')+' · '+(currentProfile.role==='admin'?'Admin':'Teknisi')+' · Realtime aktif'});
 }
 async function enterApp(user){
