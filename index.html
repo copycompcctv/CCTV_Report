@@ -241,10 +241,13 @@ var sb=window.supabase.createClient(URL,KEY,{auth:{persistSession:true,autoRefre
 var login=$('loginPanel'),menu=$('menuPanel'),form=$('welcomeForm'),msg=$('welcomeMessage'),pass=$('welcomePassword');
 function $(id){return document.getElementById(id)}
 function showLogin(message){login.hidden=false;menu.hidden=true;msg.textContent=message||'';pass.value=''}
+var IDLE_LIMIT=5*60*1000,lastTouch=0,locking=false;
 function showMenu(){login.hidden=true;menu.hidden=false;sessionStorage.setItem('cc_app_unlocked','1');localStorage.setItem('cc_last_activity',String(Date.now()))}
-async function lock(message){sessionStorage.removeItem('cc_app_unlocked');localStorage.removeItem('cc_last_activity');try{await sb.auth.signOut()}catch(e){}showLogin(message||'Aplikasi terkunci. Masukkan password untuk melanjutkan.')}
-var lastTouch=0;function activity(){if(sessionStorage.getItem('cc_app_unlocked')==='1'){var now=Date.now();if(now-lastTouch>1000){localStorage.setItem('cc_last_activity',String(now));lastTouch=now}}}
+async function lock(message){if(locking)return;locking=true;sessionStorage.removeItem('cc_app_unlocked');localStorage.removeItem('cc_last_activity');try{await sb.auth.signOut()}catch(e){}showLogin(message||'Sesi berakhir setelah 5 menit tidak aktif. Masukkan password kembali.');locking=false}
+function activity(){if(sessionStorage.getItem('cc_app_unlocked')==='1'){var now=Date.now();if(now-lastTouch>900){localStorage.setItem('cc_last_activity',String(now));lastTouch=now}}}
+function checkIdle(){if(sessionStorage.getItem('cc_app_unlocked')==='1'){var last=Number(localStorage.getItem('cc_last_activity'))||0;if(!last||Date.now()-last>=IDLE_LIMIT)lock()}}
 ['pointerdown','keydown','touchstart','click','scroll'].forEach(function(ev){document.addEventListener(ev,activity,{passive:true})});
+setInterval(checkIdle,1000);document.addEventListener('visibilitychange',function(){if(!document.hidden)checkIdle()});
 $('togglePassword').addEventListener('click',function(){pass.type=pass.type==='password'?'text':'password'});
 form.addEventListener('submit',async function(e){e.preventDefault();var btn=form.querySelector('button[type=submit]');btn.disabled=true;btn.textContent='Memeriksa...';msg.textContent='Menghubungkan ke akun Copy Computer...';try{var result=await sb.auth.signInWithPassword({email:EMAIL,password:pass.value});if(result.error)throw result.error;showMenu()}catch(err){msg.textContent='Password salah atau koneksi bermasalah. Coba kembali.';pass.focus()}finally{btn.disabled=false;btn.innerHTML='Masuk <span>→</span>'}});
 $('lockButton').addEventListener('click',function(){lock('Aplikasi dikunci. Masukkan password untuk melanjutkan.')});
@@ -262,7 +265,7 @@ if(homeInstallBtn&&!isStandalone){
   window.addEventListener('appinstalled',function(){homeInstallBtn.hidden=true;homeInstallHint.hidden=true});
 }
 
-(async function init(){try{var x=await sb.auth.getSession();if(x.data.session&&(x.data.session.user.email||'').toLowerCase()===EMAIL)showMenu();else showLogin()}catch(e){showLogin('Tidak dapat memeriksa sesi. Periksa koneksi internet.')}})();
+(async function init(){try{var x=await sb.auth.getSession(),last=Number(localStorage.getItem('cc_last_activity'))||0,active=sessionStorage.getItem('cc_app_unlocked')==='1'&&last>0&&Date.now()-last<IDLE_LIMIT;if(x.data.session&&(x.data.session.user.email||'').toLowerCase()===EMAIL&&active)showMenu();else await lock('Sesi berakhir. Masukkan password untuk melanjutkan.')}catch(e){showLogin('Tidak dapat memeriksa sesi. Periksa koneksi internet.')}})();
 })();
 if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('./sw.js').catch(function(){})})}
 </script>
