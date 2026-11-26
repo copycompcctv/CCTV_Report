@@ -16,7 +16,12 @@ Deno.serve(async (req: Request) => {
   }
 
   const supabaseUrl = Deno.env.get("SUPABASE_URL") || "";
-  const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || "";
+  const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || (() => {
+    try {
+      const keys = JSON.parse(Deno.env.get("SUPABASE_SECRET_KEYS") || "{}");
+      return keys.default || Object.values(keys)[0] || "";
+    } catch (_) { return ""; }
+  })();
   const vapidPublicKey = Deno.env.get("VAPID_PUBLIC_KEY") || "";
   const vapidPrivateKey = Deno.env.get("VAPID_PRIVATE_KEY") || "";
   const vapidSubject = Deno.env.get("VAPID_SUBJECT") || "mailto:admin@copycomputer.app";
