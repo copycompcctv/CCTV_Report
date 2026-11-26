@@ -455,16 +455,26 @@ body{width:100%;max-width:100%;min-width:0;overflow-x:hidden}
  .invoice-section-title button{min-height:40px!important;font-size:12px!important}
 }
 @media print{.invoice-section-title{display:none!important}}
+
+/* Navigasi sumber nota mengikuti tiga submenu Manajemen Servis */
+@media screen{
+ .source-tabs{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:5px!important;width:100%!important;margin:0 0 12px!important;padding:5px!important;background:#fff!important;border:1px solid #dce7ff!important;border-radius:16px!important;box-shadow:0 4px 14px rgba(24,78,160,.04)!important}
+ .source-tabs button{min-width:0!important;min-height:58px!important;border:0!important;border-radius:11px!important;background:#eef4ff!important;color:#1749a4!important;font-size:15px!important;font-weight:700!important;padding:9px 10px!important;white-space:normal!important}
+ .source-tabs button.active{background:#1768e8!important;color:#fff!important;box-shadow:0 4px 12px rgba(23,104,232,.16)!important}
+ .source-tabs button.secondary{background:#eef4ff!important;color:#1749a4!important}
+ .source-tabs button.active.secondary{background:#1768e8!important;color:#fff!important}
+}
+@media screen and (max-width:650px){.source-tabs{gap:4px!important;padding:4px!important;border-radius:13px!important}.source-tabs button{min-height:48px!important;font-size:12px!important;padding:7px 4px!important;border-radius:9px!important}}
 </style>
 </head><body>
 <header><img src="logo-copy-computer.PNG" alt="Logo Copy Computer"><div class="brand-copy"><strong>COPY COMPUTER</strong><small>Buat Nota</small></div><span class="header-spacer"></span><button class="nav-icon" type="button" onclick="if(history.length>1)history.back();else location.href='../'" aria-label="Kembali" title="Kembali"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6M9 12h12"/></svg></button></header>
 <main class="wrap">
 
 <div id="status" class="notice" hidden></div>
+<div class="source-tabs"><button id="cctvTab" class="active" type="button">Laporan CCTV</button><button id="serviceTab" class="secondary" type="button">Data Servis</button><button id="orderTab" class="secondary" type="button">Pesanan Khusus</button></div>
 <div class="grid">
 <section>
-<div class="panel source"><h2>1. Ambil data dari laporan</h2>
-<div class="source-tabs"><button id="cctvTab" class="active" type="button">Laporan CCTV</button><button id="orderTab" class="secondary" type="button">Pesanan Khusus</button><button id="serviceTab" class="secondary" type="button">Servisan</button></div>
+<div class="panel source">
 <div class="field"><label>Pilih laporan / pelanggan</label><select id="sourceSelect"><option value="">Memuat laporan...</option></select></div>
 <div id="sourceInfo" class="notice" hidden></div>
 </div>
