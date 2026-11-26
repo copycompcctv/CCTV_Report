@@ -789,7 +789,7 @@ function structure(r){
       var l=itemLine(it); if(!l) return;
       if(it.join&&lines.length&&i>0) lines[lines.length-1]+=' + '+l; else lines.push(l);
     });
-    var title=(s.job||s.title||'').trim();
+    var title=(s.job==='Servis Lainnya'?(s.jobCustom||'Servis Lainnya'):(s.job||s.title||'')).trim();
     if(title||lines.length) secs.push({title:title,bold:true,lines:lines});
   });
   var meta=[];
