@@ -1109,6 +1109,8 @@ function loadDb(){
 }
 var db=loadDb();
 var view='isi',armed=null,st=null,tt=null,deferred=null,pendingFiles={};
+var VIEW_KEY='cc_cctv_active_view_v1';
+function getSavedView(){try{var v=localStorage.getItem(VIEW_KEY);return ['isi','riwayat','barang'].indexOf(v)>=0?v:'isi'}catch(e){return 'isi'}}
 var mq=window.matchMedia?window.matchMedia('(min-width: 960px)'):{matches:false};
 function wide(){return !!mq.matches}
 
@@ -1421,6 +1423,7 @@ function showReportPopup(r){
 function setView(v,keepScroll){
   if(['isi','riwayat','barang'].indexOf(v)<0)v='isi';
   view=v;
+  try{localStorage.setItem(VIEW_KEY,v)}catch(e){}
   ['isi','riwayat','barang'].forEach(function(n){var el=$('v-'+n);if(el)el.hidden=n!==v});
   $('v-hasil').hidden=true;
   document.querySelectorAll('.tab').forEach(function(b){if(b.dataset.v===v)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});
@@ -1746,7 +1749,7 @@ function startRealtime(){
 }
 async function enterApp(user){
   currentUser=user;
-  try{await loadCloud();var firstDraft=blankReport();firstDraft.ownerId=currentUser.id;db.reports.push(firstDraft);db.currentId=firstDraft.id;$('appRoot').hidden=false;setStatus();render();renderCatalog();renderHistory();setView('isi',true);startRealtime()}
+  try{await loadCloud();var firstDraft=blankReport();firstDraft.ownerId=currentUser.id;db.reports.push(firstDraft);db.currentId=firstDraft.id;$('appRoot').hidden=false;setStatus();render();renderCatalog();renderHistory();setView(getSavedView(),true);startRealtime()}
   catch(e){cloudReady=false;currentUser=null;currentProfile=null;console.error('Supabase bootstrap:',e);alert('Gagal memuat database: '+(e.message||'periksa SQL, izin Data API, dan koneksi'))}
 }
 $('backBtn').addEventListener('click',function(){if(document.referrer&&new URL(document.referrer).origin===location.origin&&history.length>1)history.back();else location.href='./'});
