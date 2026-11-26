@@ -13,6 +13,14 @@ create table if not exists public.service_chat_messages (
 create index if not exists service_chat_messages_ticket_created_idx
   on public.service_chat_messages(ticket, created_at);
 
+-- Penanda baca bersama per tiket untuk seluruh perangkat teknisi.
+create table if not exists public.service_chat_read_state (
+  ticket text primary key,
+  last_read_at timestamptz not null default now()
+);
+alter table public.service_chat_read_state enable row level security;
+revoke all on public.service_chat_read_state from anon, authenticated;
+
 alter table public.service_chat_messages enable row level security;
 revoke all on public.service_chat_messages from anon, authenticated;
 -- Semua akses dilakukan melalui RPC terkontrol di bawah.
@@ -91,7 +99,7 @@ returns table(id bigint, ticket text, customer_name text, sender_role text, send
 language plpgsql
 security definer
 set search_path = public
-as $$
+as $
 begin
   if auth.uid() is null or coalesce(auth.jwt()->>'email','') <> 'cctv@copycomputer.app' then
     raise exception 'Akses ditolak';
@@ -99,11 +107,34 @@ begin
   if not exists (select 1 from public.service_records where record_type='service' and payload->>'ticket'=trim(p_ticket)) then
     return;
   end if;
+  -- Satu teknisi membaca = terbaca bersama pada semua perangkat.
+  insert into public.service_chat_read_state(ticket,last_read_at)
+  values(trim(p_ticket),clock_timestamp())
+  on conflict(ticket) do update set last_read_at=excluded.last_read_at;
   return query select m.id,m.ticket,m.customer_name,m.sender_role,m.sender_name,m.message,m.created_at
     from public.service_chat_messages m
     where m.ticket=trim(p_ticket)
-    order by m.created_at asc,m.id asc;
-end $$;
+    order by m.created_at asc, m.id asc;
+end $;
+
+create or replace function public.staff_service_chat_unread_counts()
+returns table(ticket text, unread_count bigint)
+language plpgsql
+security definer
+set search_path = public
+as $
+begin
+  if auth.uid() is null or coalesce(auth.jwt()->>'email','') <> 'cctv@copycomputer.app' then
+    raise exception 'Akses ditolak';
+  end if;
+  return query
+    select m.ticket, count(*)::bigint
+    from public.service_chat_messages m
+    join public.service_records sr on sr.record_type='service' and sr.payload->>'ticket'=m.ticket
+    left join public.service_chat_read_state rs on rs.ticket=m.ticket
+    where m.sender_role='customer' and (rs.last_read_at is null or m.created_at>rs.last_read_at)
+    group by m.ticket order by m.ticket;
+end $;
 
 create or replace function public.staff_send_service_chat(p_ticket text, p_sender_name text, p_message text)
 returns boolean
@@ -146,6 +177,7 @@ revoke all on function public.check_active_service_status(text,text) from public
 revoke all on function public.customer_read_service_chat(text,text) from public;
 revoke all on function public.customer_send_service_chat(text,text,text) from public;
 revoke all on function public.staff_read_service_chat(text) from public;
+revoke all on function public.staff_service_chat_unread_counts() from public;
 revoke all on function public.staff_send_service_chat(text,text,text) from public;
 revoke all on function public.staff_delete_service_chat(text) from public;
 
@@ -153,5 +185,6 @@ grant execute on function public.check_active_service_status(text,text) to anon,
 grant execute on function public.customer_read_service_chat(text,text) to anon, authenticated;
 grant execute on function public.customer_send_service_chat(text,text,text) to anon, authenticated;
 grant execute on function public.staff_read_service_chat(text) to authenticated;
+grant execute on function public.staff_service_chat_unread_counts() to authenticated;
 grant execute on function public.staff_send_service_chat(text,text,text) to authenticated;
 grant execute on function public.staff_delete_service_chat(text) to authenticated;
