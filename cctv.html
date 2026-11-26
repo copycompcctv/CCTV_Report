@@ -624,6 +624,30 @@ document.documentElement.classList.remove('cc-gate-pending');
 /* CCTV Report: header actions are limited to the back button */
 #logoutBtn,#installBtn,#install{display:none!important}
 </style>
+<style id="iphone-viewport-fit">
+html{width:100%;max-width:100%;overflow-x:hidden;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{width:100%;max-width:100%;min-width:0;overflow-x:hidden}
+#appRoot,.wrap,.top,.cols,.main,#form,.card{min-width:0;max-width:100%}
+@media(max-width:700px){
+  body{width:100%;padding-left:max(10px,env(safe-area-inset-left));padding-right:max(10px,env(safe-area-inset-right));padding-bottom:max(24px,env(safe-area-inset-bottom))}
+  #appRoot.wrap,.wrap{width:100%!important;max-width:100%!important}
+  .top,.brand,.tabs,.tabs-in,.card,#form{min-width:0;max-width:100%}
+  .mark{flex:0 0 auto}
+  .brand-name,.brand-section{overflow-wrap:anywhere}
+  #form .form-title-icon{width:clamp(58px,18vw,82px)!important;height:clamp(58px,18vw,82px)!important;border-radius:20px!important}
+  #form .form-title-icon svg{width:clamp(34px,10vw,48px)!important;height:clamp(34px,10vw,48px)!important}
+  #form input,#form select,#form textarea,input,select,textarea{font-size:16px!important;min-width:0}
+  .tabs-in{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .tab{min-width:0;white-space:normal;overflow-wrap:anywhere}
+  .form-actions,.item-actions{min-width:0}
+}
+@media(max-width:390px){
+  .brand-name{font-size:13px!important}
+  .mark{width:44px!important}
+  .icon-btn{width:38px!important;height:38px!important;min-height:38px!important}
+  #form .card{padding:12px!important}
+}
+</style>
 </head>
 <body>
 <div class="wrap" id="appRoot">
