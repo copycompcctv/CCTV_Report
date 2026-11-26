@@ -58,6 +58,19 @@ input,select,textarea{font-size:16px!important;border:1px solid #d7e2f7;border-r
 #attendanceCards .punch.done{border-color:#a7e7bb;background:radial-gradient(circle at 36% 27%,#72e39a 0%,#22b957 43%,#12833b 78%,#075d2b 100%);box-shadow:inset 0 5px 8px rgba(255,255,255,.5),inset 0 -7px 9px rgba(0,70,20,.25),0 5px 0 #087334,0 9px 14px rgba(12,130,57,.18)}
 #attendanceCards .punch:disabled:not(.done){filter:grayscale(.55);opacity:.58}
 @media(max-width:680px){#attendanceCards .punches{gap:22px;padding:12px 2px 16px}#attendanceCards .punch{width:108px;height:108px;min-height:108px;flex-basis:108px}}
+
+/* Compact attendance history */
+.history-date-list{display:flex;flex-direction:column;gap:6px}
+.history-date-row{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;padding:11px 13px;border:1px solid #d9e5ff;border-radius:10px;background:#f7f9ff;color:#12366f;text-align:left;font:inherit;cursor:pointer}
+.history-date-row span:first-child{font-weight:700}
+.history-date-arrow{font-size:12px;color:#2563eb;white-space:nowrap}
+.history-detail-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
+.history-compact{border:1px solid #e0e8f8;border-radius:10px;overflow:hidden}
+.history-compact-row{display:grid;grid-template-columns:105px minmax(0,1fr);gap:10px;padding:10px 12px;border-bottom:1px solid #e8edf7;font-size:13px;line-height:1.45}
+.history-compact-row:last-child{border-bottom:0}
+.history-compact-row strong{color:#102f63}
+.history-compact-row span{overflow-wrap:anywhere}
+@media(max-width:560px){.history-compact-row{grid-template-columns:82px minmax(0,1fr);gap:7px;padding:9px;font-size:12px}.history-date-row{padding:10px}}
 </style></head><body>
 <header>
 <img class="brand-logo" src="logo-copy-computer.PNG" alt="Copy Computer">
@@ -159,14 +172,26 @@ function renderPerson(name,row,selectedDate){
  '<div class="leave-box" id="leave-'+name+'" hidden><label for="reason-'+name+'">Alasan izin</label><textarea id="reason-'+name+'" placeholder="Tulis alasan izin tidak masuk..."></textarea><button class="btn" style="margin-top:8px;width:100%" onclick="saveLeave(\''+name+'\')">Simpan Izin</button></div>';
  return '<article class="person"><div class="person-head"><div class="avatar">'+userIcon+'</div><div><div class="person-name">'+name+'</div><div class="person-sub">'+status+'</div></div></div>'+action+'</article>';
 }
+let historyRows=[];
 function renderHistory(rows,selectedDate){
  const sorted=[...rows].sort((a,b)=>TECHNICIANS.indexOf(a.technician_name)-TECHNICIANS.indexOf(b.technician_name));
  if(!sorted.length){$('attendanceSummary').innerHTML='<div class="empty">Belum ada catatan absensi pada '+dateText(selectedDate)+'.</div>';return;}
- $('attendanceSummary').innerHTML=sorted.map(row=>{
+ $('attendanceSummary').innerHTML='<div class="history-detail"><div class="history-detail-head"><strong>'+esc(dateText(selectedDate))+'</strong><button type="button" class="btn light" onclick="showHistoryDates()">Kembali ke tanggal</button></div><div class="history-compact">'+sorted.map(row=>{
   const leave=row.attendance_status==='izin';
-  return '<article class="card"><div class="card-head"><strong>'+esc(row.technician_name)+'</strong><span class="pill '+(leave?'delay':'done')+'">'+(leave?'Izin':'Hadir')+'</span></div><div class="meta">'+(leave?'Alasan: '+esc(row.leave_reason||'—'):'Jam Tiba: '+timeText(row.arrival_at)+' · Jam Pulang: '+timeText(row.departure_at))+'</div></article>';
- }).join('');
+  const detail=leave?'Izin · '+(row.leave_reason||'Alasan tidak diisi'):'Masuk '+(row.arrival_at?timeText(row.arrival_at):'—')+' · Pulang '+(row.departure_at?timeText(row.departure_at):'—');
+  return '<div class="history-compact-row"><strong>'+esc(row.technician_name)+'</strong><span>'+esc(detail)+'</span></div>';
+ }).join('')+'</div></div>';
 }
+function renderHistoryDates(rows){
+ const dates=[...new Set(rows.map(row=>row.attendance_date))].sort((a,b)=>b.localeCompare(a));
+ if(!dates.length){$('attendanceSummary').innerHTML='<div class="empty">Belum ada riwayat absensi.</div>';return;}
+ $('attendanceSummary').innerHTML='<div class="history-date-list">'+dates.map(date=>'<button type="button" class="history-date-row" onclick="openHistoryDate(\''+date+'\')"><span>'+esc(dateText(date))+'</span><span class="history-date-arrow">Lihat teknisi ›</span></button>').join('')+'</div>';
+}
+window.showHistoryDates=()=>renderHistoryDates(historyRows);
+window.openHistoryDate=date=>{
+ const rows=historyRows.filter(row=>row.attendance_date===date);
+ renderHistory(rows,date);
+};
 async function loadAttendance(){
  const date=$('attendanceDate').value||jakartaDate();
  $('attendanceCards').innerHTML='<div class="empty">Memuat absensi...</div>';
@@ -177,7 +202,10 @@ async function loadAttendance(){
   const rows=result.data||[];
   const byName=new Map(rows.map(row=>[row.technician_name,row]));
   $('attendanceCards').innerHTML=TECHNICIANS.map(name=>renderPerson(name,byName.get(name),date)).join('');
-  renderHistory(rows,date);
+  const historyResult=await db.from('technician_attendance').select('*').order('attendance_date',{ascending:false}).order('technician_name',{ascending:true});
+  if(historyResult.error)throw historyResult.error;
+  historyRows=historyResult.data||[];
+  renderHistoryDates(historyRows);
  }catch(error){
   const message=error?.message||'Koneksi tidak dapat dijangkau. Periksa internet lalu coba lagi.';
   $('attendanceCards').innerHTML='<div class="empty">Data absensi gagal dimuat: '+esc(message)+'<br><button class="btn light" style="margin-top:10px" onclick="reloadAttendance()">Coba Lagi</button></div>';
