@@ -680,6 +680,15 @@ body{width:100%;max-width:100%;min-width:0;overflow-x:hidden}
 @media screen{.itemgrid{display:grid!important;grid-template-columns:minmax(0,1fr) 190px 76px!important;gap:8px!important;align-items:center!important}.itemgrid input{min-width:0!important}.itemgrid .remove{min-height:46px!important}}
 @media screen and (max-width:600px){.itemgrid{grid-template-columns:minmax(0,1fr) 112px 58px!important;gap:6px!important}.itemgrid .remove{padding:6px!important;min-height:42px!important}}
 @media print{.itemgrid{display:flex!important;gap:8px!important;align-items:flex-start!important}.itemgrid .description{flex:1!important}.itemgrid .amount{flex:0 0 90px!important;text-align:right!important}}
+
+/* Tombol akhir nota mengikuti form CCTV dan Manajemen Servis */
+.form-actions{position:sticky;bottom:0;z-index:4;display:grid;grid-template-columns:1fr 1.45fr;gap:10px;margin:18px -18px -18px;padding:10px 18px calc(10px + env(safe-area-inset-bottom,0px));background:#fff;border-top:1px solid #dce7ff;border-radius:0 0 16px 16px}
+.form-actions>*{min-height:56px;display:flex;align-items:center;justify-content:center;gap:10px;border:0!important;border-radius:9px;font-size:16px;font-weight:700}
+.form-actions svg{width:24px;height:24px;flex:none}
+.form-actions .reset-action{background:#d9eef4!important;color:#1768e8!important}
+.form-actions .save-action{background:#1768e8!important;color:#fff!important}
+@media(max-width:850px){.form-actions{margin-left:-14px;margin-right:-14px;padding-left:12px;padding-right:12px}}
+@media(max-width:480px){.form-actions{grid-template-columns:.85fr 1.35fr}.form-actions>*{min-height:52px;font-size:14px}.form-actions svg{width:21px;height:21px}}
 </style>
 </head><body>
 <header class="service-header"><div class="service-brand"><img src="logo-copy-computer.PNG" alt="Logo Copy Computer"><div><strong>COPY COMPUTER</strong><small>Buat Nota</small></div></div><button class="nav-icon" type="button" onclick="if(history.length>1)history.back();else location.href='../'" aria-label="Kembali" title="Kembali"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button></header>
@@ -702,9 +711,9 @@ body{width:100%;max-width:100%;min-width:0;overflow-x:hidden}
 </div>
 <div class="panel noprint"><h2><svg class="section-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h3"/></svg>Pembayaran</h2>
 <div class="row"><div class="field"><label>Uang muka (Rp)</label><input id="downPayment" inputmode="numeric" placeholder="Kosongkan jika tidak ada"></div><div class="field"><label>Catatan pembayaran</label><input id="paymentNote" placeholder="Tunai / transfer (opsional)"></div></div>
-<div class="notice">Isi nominal hanya untuk pekerjaan dan barang yang ditagihkan. Servis lainnya hanya berupa keterangan.</div>
+
 <div class="total payment-summary"><div class="totalrow"><span>Uang muka</span><b id="dpTotal">Rp 0</b></div><div class="totalrow grand"><span>Sisa tagihan</span><span id="balance">Rp 0</span></div></div>
-<div class="actions"><button id="saveBtn" type="button">Simpan Nota</button><button id="printBtn" class="secondary" type="button">Cetak / PDF</button></div>
+<div class="actions form-actions"><button id="resetBtn" type="button" class="reset-action"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11a9 9 0 1 1 2.6 6.4M3 4v7h7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Reset</span></button><button id="saveBtn" type="button" class="save-action"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 3h14l3 3v15H3V3h1Zm3 0v7h10V3M7 21v-8h10v8" fill="currentColor" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><path d="M9 3h6v5H9z" fill="#fff"/></svg><span>Simpan Nota</span></button></div>
 </div>
 </section>
 <section>
@@ -814,7 +823,7 @@ sources=[];(rr.data||[]).forEach(row=>{let r=row.payload||{};if(!r.customer)retu
 mergeInvoices(invoices);renderSources();renderInvoices();note('Data laporan dan riwayat nota berhasil dimuat. Pilih sumber laporan untuk mulai membuat nota.',true)}
 function setSource(kind){source=kind;['CCTV','Pesanan Khusus','Servisan'].forEach(k=>{const el=$(k==='CCTV'?'cctvTab':k==='Servisan'?'serviceTab':'orderTab');el.classList.toggle('active',k===kind);el.classList.toggle('secondary',k!==kind)});$('sourceSelect').value='';renderSources();$('sourceInfo').textContent=kind==='CCTV'?'Pilih laporan CCTV.':kind==='Servisan'?'Pilih data servisan.':'Pilih data pesanan khusus.'}
 $('cctvTab').onclick=()=>setSource('CCTV');$('orderTab').onclick=()=>setSource('Pesanan Khusus');$('serviceTab').onclick=()=>setSource('Servisan');
-$('sourceSelect').onchange=populate;$('addItem').onclick=()=>addItem('');$('downPayment').oninput=calc;$('extra').oninput=calc;['customer','address','invoiceDate','invoiceNo'].forEach(id=>$(id).addEventListener('input',calc));$('saveBtn').onclick=saveInvoice;$('printBtn').onclick=()=>window.print();
+$('sourceSelect').onchange=populate;$('addItem').onclick=()=>addItem('');$('downPayment').oninput=calc;$('extra').oninput=calc;['customer','address','invoiceDate','invoiceNo'].forEach(id=>$(id).addEventListener('input',calc));$('resetBtn').onclick=clearInvoiceForm;$('saveBtn').onclick=saveInvoice;
 loadData().catch(e=>note('Gagal memuat data: '+e.message,false));
 })();
 </script></body>
