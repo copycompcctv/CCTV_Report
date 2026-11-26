@@ -268,3 +268,74 @@ revoke all on function public.save_service_record(text,text,jsonb,timestamptz) f
 revoke all on function public.delete_service_record(text,text,timestamptz) from public, anon;
 grant execute on function public.save_service_record(text,text,jsonb,timestamptz) to authenticated;
 grant execute on function public.delete_service_record(text,text,timestamptz) to authenticated;
+
+-- Perlindungan konflik untuk Laporan CCTV: update/hapus hanya jika versi
+-- database masih sama dengan versi yang dibaca perangkat teknisi.
+create or replace function public.save_report_if_version(
+  p_id text,
+  p_owner_id uuid,
+  p_customer text,
+  p_address text,
+  p_report_date date,
+  p_payload jsonb,
+  p_expected_updated_at timestamptz default null
+) returns jsonb
+language plpgsql
+security invoker
+set search_path = public, pg_temp
+as $$
+declare v_row public.reports%rowtype;
+begin
+  if p_owner_id is distinct from auth.uid()
+     and not public.current_user_is_admin() then
+    raise exception 'Akun tidak memiliki akses untuk menyimpan laporan ini';
+  end if;
+  if p_expected_updated_at is null then
+    insert into public.reports(id,owner_id,customer,address,report_date,payload)
+    values(p_id,p_owner_id,coalesce(p_customer,''),coalesce(p_address,''),p_report_date,p_payload)
+    returning * into v_row;
+  else
+    update public.reports
+      set customer=coalesce(p_customer,''),
+          address=coalesce(p_address,''),
+          report_date=p_report_date,
+          payload=p_payload
+      where id=p_id and owner_id=p_owner_id
+        and updated_at=p_expected_updated_at
+      returning * into v_row;
+    if not found then
+      raise exception 'KONFLIK_DATA: Laporan sudah diubah atau dihapus teknisi lain. Muat ulang laporan sebelum menyimpan.';
+    end if;
+  end if;
+  return to_jsonb(v_row);
+end;
+$$;
+
+create or replace function public.delete_report_if_version(
+  p_id text,
+  p_owner_id uuid,
+  p_expected_updated_at timestamptz
+) returns boolean
+language plpgsql
+security invoker
+set search_path = public, pg_temp
+as $$
+begin
+  if p_owner_id is distinct from auth.uid()
+     and not public.current_user_is_admin() then
+    raise exception 'Akun tidak memiliki akses untuk menghapus laporan ini';
+  end if;
+  delete from public.reports
+    where id=p_id and owner_id=p_owner_id
+      and updated_at=p_expected_updated_at;
+  if not found then
+    raise exception 'KONFLIK_DATA: Laporan sudah diubah atau dihapus teknisi lain. Muat ulang riwayat sebelum menghapus.';
+  end if;
+  return true;
+end;
+$$;
+
+revoke all on function public.save_report_if_version(text,uuid,text,text,date,jsonb,timestamptz) from public, anon;
+revoke all on function public.delete_report_if_version(text,uuid,timestamptz) from public, anon;
+grant execute on function public.save_report_if_version(text,uuid,text,text,date,jsonb,timestamptz) to authenticated;
+grant execute on function public.delete_report_if_version(text,uuid,timestamptz) to authenticated;
