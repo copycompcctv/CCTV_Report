@@ -145,7 +145,7 @@ details summary{cursor:pointer;font-weight:600;min-height:40px;display:flex;alig
 @media (max-width:520px){.structured-grid{grid-template-columns:1fr}}
 @media (prefers-reduced-motion: reduce){.toast{transition:none}}
 .item-actions{display:flex;justify-content:flex-start;margin-top:12px}.out-heading{display:flex;align-items:center;gap:14px;flex-wrap:wrap}.out-heading strong{font-size:18px;font-weight:500;color:#4d145c}.structured-item{padding:12px;border-radius:9px}.structured-item .item-top{margin-bottom:10px}.structured-item .lbl{margin-bottom:6px}
-.attachment-panel{border:1px solid var(--line);border-radius:10px;padding:12px;display:grid;gap:8px}.attachment-pick{display:inline-flex;align-items:center;justify-content:center;width:max-content;max-width:100%;cursor:pointer}#attachmentInput{display:block;width:100%;max-width:100%;font:inherit;font-size:13px;color:var(--text);padding:8px;border:1px dashed var(--line);border-radius:8px;background:var(--soft)}.attachment-list{display:grid;gap:8px}.attachment-entry{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px;border:1px solid var(--line);border-radius:8px}.attachment-entry img{width:76px;height:60px;object-fit:cover;border-radius:6px}.attachment-entry video{width:120px;max-height:76px;border-radius:6px}.attachment-entry a{color:var(--accent);font-weight:600}.brand .sub{max-width:560px}.sec-head{align-items:center}.sec-head select{flex:1;min-width:160px}.structured-item .item-top strong{font-weight:600}
+.attachment-panel{border:1px solid var(--line);border-radius:10px;padding:12px;display:grid;gap:8px}.attachment-pick{display:inline-flex;align-items:center;justify-content:center;width:max-content;max-width:100%;cursor:pointer}#attachmentInput{display:block;width:100%;max-width:100%;font:inherit;font-size:13px;color:var(--text);padding:8px;border:1px dashed var(--line);border-radius:8px;background:var(--soft)}.attachment-list{display:grid;gap:8px}.attachment-entry{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px;border:1px solid var(--line);border-radius:8px}.attachment-entry img{width:76px;height:60px;object-fit:cover;border-radius:6px}.attachment-entry video{width:120px;max-height:76px;border-radius:6px}.attachment-entry a{color:var(--accent);font-weight:600}.brand .sub{max-width:560px;display:none!important}.sec-head{align-items:center}.sec-head select{flex:1;min-width:160px}.structured-item .item-top strong{font-weight:600}
 
 /* Copy Computer modern light UI */
 :root{color-scheme:light;--bg:#fff;--surface:#fff;--surface2:#f3f7ff;--ink:#10265a;--muted:#71809a;--line:#dfe8f7;--accent:#1768e8;--accent-ink:#fff;--accent-soft:#edf4ff;--wa:#168a50;--wa-ink:#fff}
@@ -1968,44 +1968,6 @@ $('logoutBtn').addEventListener('click',async function(){
 
 
 </body>
-
-<style id="compact-brand-header">
-/* Header ringkas: hilangkan status akun agar tombol kembali tidak terdorong */
-@media screen {
-  #appRoot .top{
-    min-height:72px!important;
-    height:auto!important;
-    padding:8px 12px!important;
-    margin:0 0 10px!important;
-    gap:10px!important;
-    align-items:center!important;
-    flex-wrap:nowrap!important;
-  }
-  #appRoot .brand{gap:10px!important;min-width:0!important;flex:1 1 auto!important}
-  #appRoot .brand>div{min-width:0!important}
-  #appRoot .brand .sub,#appRoot #status{display:none!important}
-  #appRoot .mark{
-    width:56px!important;max-width:56px!important;height:auto!important;
-    max-height:42px!important;padding:0!important;border:0!important;
-  }
-  #appRoot .brand-name{line-height:1.15!important}
-  #appRoot .brand-section{line-height:1.2!important;margin:2px 0 0!important}
-  #appRoot .hbtns{flex:0 0 auto!important;display:flex!important;align-items:center!important;gap:6px!important}
-  #appRoot .icon-btn{
-    width:42px!important;height:42px!important;min-width:42px!important;min-height:42px!important;
-    border-radius:12px!important;
-  }
-  #appRoot .icon-btn svg{width:21px!important;height:21px!important}
-}
-@media screen and (max-width:600px){
-  #appRoot .top{min-height:66px!important;padding:7px 9px!important;margin-bottom:9px!important;border-radius:16px!important}
-  #appRoot .mark{width:48px!important;max-width:48px!important;max-height:38px!important}
-  #appRoot .brand{gap:9px!important}
-  #appRoot .icon-btn{width:38px!important;height:38px!important;min-width:38px!important;min-height:38px!important}
-  #appRoot .icon-btn svg{width:19px!important;height:19px!important}
-}
-</style>
-
 </html>
 
 <style>
