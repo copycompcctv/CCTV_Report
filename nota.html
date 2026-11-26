@@ -137,6 +137,78 @@ button.secondary,.btn.secondary{background:#edf3ff!important;color:#1749a4!impor
 @media(max-width:430px){.itemgrid{grid-template-columns:minmax(0,1fr) 72px 100px!important}}
 @media print{header,.top,.panel.source,.panel.history{display:none!important}.wrap{margin:0!important;padding:0!important}.panel{border:0!important;border-radius:0!important;box-shadow:none!important}}
 
+
+/* Samakan skala Nota Tagihan dengan Manajemen Servis */
+@media screen{
+  body{padding:14px 20px 112px!important;background:#fff!important;color:#10265a!important}
+  header{
+    width:100%!important;max-width:1420px!important;min-height:104px!important;
+    margin:0 auto 14px!important;padding:12px 20px!important;
+    border:1px solid #dce7ff!important;border-radius:28px!important;
+    background:#fff!important;box-shadow:0 6px 20px rgba(24,78,160,.07)!important
+  }
+  header img{width:100px!important;height:auto!important;max-height:76px!important;padding-right:18px!important;border-right:2px solid #10265a!important}
+  header .brand-copy strong{font-size:clamp(20px,2.1vw,28px)!important;line-height:1.15!important;color:#10265a!important}
+  header .brand-copy small{font-size:clamp(16px,1.7vw,22px)!important;line-height:1.2!important;color:#1768e8!important;font-weight:750!important}
+  header .nav-icon{width:70px!important;height:70px!important;min-width:70px!important;border-radius:22px!important}
+  header .nav-icon svg{width:30px!important;height:30px!important}
+  .wrap{width:100%!important;max-width:1420px!important;margin:0 auto!important;padding:0!important}
+  h1{font-size:28px!important;line-height:1.2!important;color:#10265a!important;font-weight:800!important}
+  .top{gap:14px!important;margin-bottom:18px!important}
+  .top-actions{min-width:0!important}
+  .panel{width:100%!important;padding:24px!important;border:1px solid #dce7ff!important;border-radius:22px!important;box-shadow:0 4px 16px rgba(24,78,160,.05)!important;margin-bottom:0!important}
+  .panel h2{font-size:24px!important;color:#10265a!important;margin:0 0 14px!important}
+  .field{min-width:0!important;gap:7px!important;margin-bottom:12px!important}
+  .field label{font-size:16px!important;color:#18366e!important}
+  .row{min-width:0!important;gap:12px!important}
+  .row>*{flex:1 1 0!important;min-width:0!important}
+  input,select,textarea{width:100%!important;min-width:0!important;min-height:56px!important;padding:12px 15px!important;font-size:16px!important;border:1px solid #d7e2f7!important;border-radius:12px!important;background:#f7f9ff!important;color:#10265a!important}
+  textarea{min-height:94px!important}
+  button,.btn{min-height:58px!important;padding:12px 16px!important;border-radius:13px!important;font-size:16px!important;font-weight:700!important;background:#1768e8!important}
+  button.secondary,.btn.secondary{background:#edf3ff!important;color:#1749a4!important;border:1px solid #dce7ff!important}
+  .source-tabs{gap:12px!important}
+  .source-tabs button{min-height:58px!important}
+  .notice{border-radius:14px!important;background:#edf4ff!important;color:#34518a!important;font-size:14px!important;padding:12px 15px!important}
+  .item,.listcard{border:1px solid #dce7ff!important;border-radius:15px!important;background:#f8faff!important}
+  .total{background:#edf4ff!important;border-radius:15px!important;color:#234477!important}
+  .grand{color:#1768e8!important}
+}
+@media screen and (max-width:700px){
+  body{padding:10px 10px 80px!important}
+  header{min-height:76px!important;margin:0 auto 12px!important;padding:9px 12px!important;border-radius:18px!important;gap:10px!important}
+  header img{width:62px!important;max-height:48px!important;padding-right:10px!important;border-right:1.5px solid #10265a!important}
+  header .brand-copy strong{font-size:16px!important}
+  header .brand-copy small{font-size:14px!important}
+  header .nav-icon{width:46px!important;height:46px!important;min-width:46px!important;border-radius:14px!important}
+  header .nav-icon svg{width:22px!important;height:22px!important}
+  .wrap{width:100%!important;max-width:100%!important;margin:0 auto!important;padding:0!important}
+  .top{gap:10px!important;margin-bottom:12px!important}
+  h1{font-size:22px!important}
+  .top-actions{width:100%!important;min-width:0!important;gap:8px!important}
+  .panel{padding:15px!important;border-radius:15px!important}
+  .panel h2{font-size:18px!important;margin-bottom:12px!important}
+  .field{gap:6px!important;margin-bottom:10px!important}
+  .field label{font-size:13px!important}
+  .row{gap:8px!important;align-items:flex-end!important}
+  .row>*{min-width:0!important}
+  input,select,textarea{min-height:43px!important;padding:9px 11px!important;font-size:14px!important;border-radius:10px!important}
+  textarea{min-height:72px!important}
+  button,.btn{min-height:45px!important;padding:9px 12px!important;font-size:13px!important;border-radius:11px!important}
+  .source-tabs{gap:6px!important}
+  .source-tabs button{min-height:50px!important;padding:7px 5px!important;font-size:12px!important}
+  .grid{gap:12px!important}
+  .notice{font-size:13px!important;padding:10px 12px!important;border-radius:12px!important}
+  .itemgrid{grid-template-columns:minmax(0,1fr) 72px 100px!important;gap:6px!important}
+}
+@media screen and (max-width:380px){
+  header img{width:52px!important;padding-right:8px!important}
+  header .brand-copy strong{font-size:14px!important}
+  header .brand-copy small{font-size:12px!important}
+  header .nav-icon{width:42px!important;height:42px!important;min-width:42px!important}
+  .source-tabs{gap:4px!important}
+  .source-tabs button{font-size:11px!important;padding:6px 3px!important}
+}
+
 </style><style>html.cc-gate-pending body{visibility:hidden}</style><script>
 (function(){
 'use strict';
