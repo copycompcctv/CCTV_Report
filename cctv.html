@@ -613,11 +613,13 @@ body{background:#f7f9fd;color:var(--ink);padding:14px 20px 38px}
 (function(){
 'use strict';
 document.documentElement.classList.add('cc-gate-pending');
-var unlocked=sessionStorage.getItem('cc_app_unlocked')==='1';
-var last=Number(localStorage.getItem('cc_last_activity'))||0;
-if(!unlocked){location.replace('./');return}
+var IDLE_LIMIT=5*60*1000,last=Number(localStorage.getItem('cc_last_activity'))||0;
+function expire(){sessionStorage.removeItem('cc_app_unlocked');localStorage.removeItem('cc_last_activity');location.replace('./')}
+function checkIdle(){last=Number(localStorage.getItem('cc_last_activity'))||0;if(sessionStorage.getItem('cc_app_unlocked')!=='1'||!last||Date.now()-last>=IDLE_LIMIT)expire()}
+if(sessionStorage.getItem('cc_app_unlocked')!=='1'||!last||Date.now()-last>=IDLE_LIMIT){expire();return}
 function touch(){var n=Date.now();if(n-last>900){last=n;localStorage.setItem('cc_last_activity',String(n))}}
 ['pointerdown','keydown','touchstart','click','scroll'].forEach(function(e){document.addEventListener(e,touch,{passive:true})});
+setInterval(checkIdle,1000);document.addEventListener('visibilitychange',function(){if(!document.hidden)checkIdle()});
 document.documentElement.classList.remove('cc-gate-pending');
 })();
 </script><style>
