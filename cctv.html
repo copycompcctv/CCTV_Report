@@ -1208,9 +1208,8 @@ function itemHTML(it,idx){
 function sectionHTML(s,index){
   var id=esc(s.id),jobs=['Instalasi Listrik','Krimping Ulang','Pasang Kamera Baru','Pasang Ulang Kamera','Reset DVR','Servis DVR/NVR','Servis Kamera','Servis Lainnya','Setting Online ke HP'],selectedJob=(s.job||s.title||'');if(selectedJob==='Pasang Baru')selectedJob='Pasang Kamera Baru';
   return '<section class="job-section" data-sec="'+id+'">'
-   +'<div class="sec-head"><label class="lbl job-label" for="jobsec-'+id+'"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.7 6.3a6 6 0 0 1-7.9 7.9L7 21a2.1 2.1 0 0 1-3-3l6.8-6.8a6 6 0 0 1 7.9-7.9l-3.5 3.5 3.1 3.1 3.4-3.6Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="m5.1 18.9 2 2" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>Jenis Pekerjaan <em>*</em></label>'+(index>0?'<button type="button" class="mini danger del-job-btn" data-act="del-sec" aria-label="Hapus pekerjaan">Hapus pekerjaan</button>':'')+'<select id="jobsec-'+id+'" data-f="job"><option value=""'+(!selectedJob?' selected':'')+'>Pilih jenis pekerjaan...</option>'+jobs.map(function(v){return '<option value="'+esc(v)+'"'+(selectedJob===v?' selected':'')+'>'+v+'</option>'}).join('')+'</select>'
+   +'<div class="sec-head"><label class="lbl job-label" for="jobsec-'+id+'"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.7 6.3a6 6 0 0 1-7.9 7.9L7 21a2.1 2.1 0 0 1-3-3l6.8-6.8a2.1 2.1 0 0 1-3-3l6.8-6.8a6 6 0 0 1 7.9-7.9l-3.5 3.5 3.1 3.1 3.4-3.6Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Jenis Pekerjaan <em>*</em></label>'+(index>0?'<button type="button" class="mini danger del-job-btn" data-act="del-sec" aria-label="Hapus pekerjaan">Hapus pekerjaan</button>':'')+'<select id="jobsec-'+id+'" data-f="job"><option value=""'+(!selectedJob?' selected':'')+'>Pilih jenis pekerjaan...</option>'+jobs.map(function(v){return '<option value="'+esc(v)+'"'+(selectedJob===v?' selected':'')+'>'+v+'</option>'}).join('')+'</select></div>'
    +(selectedJob==='Servis Lainnya'?'<div class="job-custom-wrap"><label class="lbl" for="jobcustom-'+id+'">Nama pekerjaan</label><input id="jobcustom-'+id+'" data-f="jobCustom" value="'+esc(s.jobCustom||'')+'" placeholder="Tulis jenis pekerjaan lainnya..." autocomplete="off"></div>':'')
-   +'</div>'
    +s.items.map(itemHTML).join('')
    +'<div class="item-actions"><button type="button" class="btn small" data-act="add-structured">＋ Tambah item barang</button>'
    +(index===0?'<button type="button" class="btn small add-job-btn" data-act="add-sec"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>Tambah pekerjaan</button>':'')
@@ -1863,3 +1862,15 @@ $('logoutBtn').addEventListener('click',async function(){
 #form .mini.danger{color:#dc2626!important;border-color:#fecaca!important;background:#fff!important}
 </style>
 <style>#form .job-custom-wrap{margin-top:10px;width:100%}#form .job-custom-wrap input{width:100%;box-sizing:border-box}</style>
+<style>
+/* Samakan susunan setiap blok pekerjaan */
+#form .job-section{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:10px!important}
+#form .job-section .sec-head{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;gap:8px!important;align-items:center!important;width:100%!important}
+#form .job-section .sec-head .job-label{grid-column:1/-1!important}
+#form .job-section .sec-head select{grid-column:1/-1!important;width:100%!important;min-width:0!important}
+#form .job-section .job-custom-wrap{display:flex!important;flex-direction:column!important;gap:6px!important;width:100%!important;margin:0!important}
+#form .job-section .job-custom-wrap input{width:100%!important;max-width:none!important;box-sizing:border-box!important}
+#form .job-section .item-actions{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important;width:100%!important;margin-top:4px!important}
+#form .job-section .item-actions button{width:100%!important;min-width:0!important;justify-content:center!important}
+@media(max-width:520px){#form .job-section .item-actions{gap:8px!important}}
+</style>
