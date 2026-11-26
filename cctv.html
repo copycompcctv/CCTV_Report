@@ -659,6 +659,19 @@ body{width:100%;max-width:100%;min-width:0;overflow-x:hidden}
 #backBtn.icon-btn:active{background:#104fb9!important;border-color:#104fb9!important;color:#fff!important}
 #backBtn.icon-btn:focus-visible{outline:3px solid #9fc3ff!important;outline-offset:3px!important}
 </style>
+<style id="item-option-manager-style">
+#v-barang .item-options-list{gap:7px!important;margin-top:4px}
+#v-barang .item-option-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:4px 2px 8px;color:#10265a}
+#v-barang .item-option-head span{font-size:12px;color:#64748b}
+#v-barang .item-option-row{display:flex;align-items:center;justify-content:space-between;gap:12px;min-width:0;padding:9px 10px 9px 13px;border:1px solid #dbe6fb;border-radius:11px;background:#fff}
+#v-barang .item-option-info{display:flex;flex-direction:column;gap:2px;min-width:0}
+#v-barang .item-option-info strong{font-size:14px;font-weight:650;color:#10265a;overflow-wrap:anywhere}
+#v-barang .item-option-info small{font-size:12px;color:#64748b;overflow-wrap:anywhere}
+#v-barang .item-option-delete{flex:0 0 34px;width:34px;height:34px;border:1px solid #fecaca;border-radius:9px;background:#fff1f2;color:#dc2626;font-size:23px;line-height:1;cursor:pointer;display:grid;place-items:center}
+#v-barang .item-option-delete:hover{background:#fee2e2}
+#v-barang .item-option-delete:active{transform:scale(.94)}
+#v-barang .restore-item-options{width:100%;margin-top:8px}
+</style>
 </head>
 <body>
 <div class="wrap" id="appRoot">
@@ -712,7 +725,7 @@ body{width:100%;max-width:100%;min-width:0;overflow-x:hidden}
             </div>
             <button type="button" class="btn" data-act="cat-add">Tambah Daftar</button>
           </div>
-          <div id="cats" class="stack" hidden></div>
+          <div id="cats" class="stack item-options-list"></div>
           <details class="card">
             <summary>Kop PDF</summary>
             <div class="stack">
@@ -870,7 +883,7 @@ function normReport(r){
 }
 function normCat(c){
   if(!c||typeof c!=='object') return null;
-  return {id:str(c.id)||uid(),label:str(c.label),type:str(c.type),note:str(c.note),
+  return {id:str(c.id)||uid(),label:str(c.label),type:str(c.type),note:str(c.note),hiddenItemOption:!!c.hiddenItemOption,
     kind:['text','qty','cable'].indexOf(c.kind)>=0?c.kind:'qty',colon:c.colon!==false};
 }
 function normKop(k){
@@ -894,10 +907,21 @@ var DEFAULT_CATALOG=[
   {label:'Baterai CMOS',kind:'qty',note:'',colon:true},{label:'DVR 4 CH',kind:'qty',note:'',colon:true},{label:'DVR 8 CH',kind:'qty',note:'',colon:true},{label:'DVR 16 CH',kind:'qty',note:'',colon:true},{label:'Hardisk 500 GB',kind:'qty',note:'',colon:true},{label:'Hardisk 1 TB',kind:'qty',note:'',colon:true},{label:'Hardisk 2 TB',kind:'qty',note:'',colon:true},{label:'MMC 32 GB',kind:'qty',note:'',colon:true},{label:'MMC 64 GB',kind:'qty',note:'',colon:true},{label:'MMC 128 GB',kind:'qty',note:'',colon:true},{label:'NVR 5 CH',kind:'qty',note:'',colon:true},{label:'NVR 10 CH',kind:'qty',note:'',colon:true},{label:'NVR 20 CH',kind:'qty',note:'',colon:true},{label:'POE 4 Port',kind:'qty',note:'',colon:true},{label:'POE 8 Port',kind:'qty',note:'',colon:true},{label:'Steker Gepeng Female',kind:'qty',note:'',colon:true},{label:'Steker Gepeng Male',kind:'qty',note:'',colon:true},{label:'Stopkontak 1 lubang',kind:'qty',note:'',colon:true},{label:'Stopkontak 2 lubang',kind:'qty',note:'',colon:true}
 ];
 function mergeCatalog(cats){
- var all=(Array.isArray(cats)?cats:[]).map(normCat).filter(function(c){return c&&c.label.trim()});
- DEFAULT_CATALOG.forEach(function(c){all.push(normCat(c))});
+ var raw=(Array.isArray(cats)?cats:[]).map(normCat).filter(function(c){return c&&c.label.trim()});
+ var hidden=raw.filter(function(c){return c.hiddenItemOption}).map(function(c){return c.label.trim().toLowerCase()});
+ var all=raw.filter(function(c){return !c.hiddenItemOption});
+ DEFAULT_CATALOG.forEach(function(c){if(hidden.indexOf(c.label.trim().toLowerCase())<0)all.push(normCat(c))});
  var seen={};all=all.filter(function(c){var k=c.label.trim().toLowerCase();if(seen[k])return false;seen[k]=true;return true});
+ hidden.forEach(function(label){if(!all.some(function(c){return c.label.trim().toLowerCase()===label}))all.push({id:'hidden-'+label,label:label,type:'',note:'',kind:'qty',colon:true,hiddenItemOption:true})});
  all.sort(function(a,b){return a.label.localeCompare(b.label)});return all;
+}
+var DEFAULT_ITEM_OPTIONS=['Adaptor','Baterai CMOS','DVR','DVR 16 CH','DVR 4 CH','DVR 8 CH','Duradus','Hardisk','Hardisk 1 TB','Hardisk 2 TB','Hardisk 500 GB','Isi Sendiri','Jack BNC','Jack DC','Kabel CCTV','Kabel LAN','Kabel Listrik','Kamera Indoor','Kamera Outdoor','MMC 128 GB','MMC 32 GB','MMC 64 GB','NVR','NVR 10 CH','NVR 20 CH','NVR 5 CH','POE 4 Port','POE 8 Port','PSU','Steker Bulat Male','Steker Gepeng Female','Steker Gepeng Male','Stopkontak','Stopkontak 1 lubang','Stopkontak 2 lubang','Stopkontak 3 lubang','TC Duck'];
+function isBuiltinItemOption(label){var k=String(label||'').trim().toLowerCase();return DEFAULT_ITEM_OPTIONS.some(function(x){return x.toLowerCase()===k})||DEFAULT_CATALOG.some(function(x){return x.label.toLowerCase()===k})}
+function getStructuredItemOptions(){
+ var hidden=(db.catalog||[]).filter(function(c){return c.hiddenItemOption}).map(function(c){return c.label.toLowerCase()});
+ var all=DEFAULT_ITEM_OPTIONS.filter(function(x){return hidden.indexOf(x.toLowerCase())<0});
+ (db.catalog||[]).forEach(function(c){if(!c.hiddenItemOption&&c.label&&hidden.indexOf(c.label.toLowerCase())<0)all.push(c.label)});
+ var seen={};return all.filter(function(x){var k=x.trim().toLowerCase();if(!k||seen[k])return false;seen[k]=true;return true}).sort(function(a,b){return a.localeCompare(b,'id')});
 }
 function blankReport(){
   return {id:uid(),example:false,saved:false,customer:'',address:'',tech:'',date:todayISO(),createdAt:Date.now(),showMeta:false,updatedAt:Date.now(),
@@ -1137,6 +1161,13 @@ function saveNow(){
   catch(e){storageOk=false;setStatus();return false}
 }
 function save(){clearTimeout(st);st=setTimeout(function(){try{localStorage.setItem(KEY,JSON.stringify(savedSnapshot()));storageOk=true;setStatus()}catch(e){storageOk=false;setStatus()}},200)}
+async function persistCatalogSettings(){
+  try{localStorage.setItem(KEY,JSON.stringify(savedSnapshot()));storageOk=true;setStatus()}catch(e){storageOk=false;setStatus();throw new Error('Gagal menyimpan di perangkat ini')}
+  if(cloudReady&&currentUser){
+    var result=await sb.from('user_settings').upsert({user_id:currentUser.id,catalog:db.catalog,kop:db.kop,last_tech:db.lastTech||''},{onConflict:'user_id'});
+    if(result.error)throw result.error;
+  }
+}
 function toast(m){var t=$('toast');t.textContent=m;t.classList.add('on');clearTimeout(tt);tt=setTimeout(function(){t.classList.remove('on')},2600)}
 function copyText(t){
   var p=navigator.clipboard&&navigator.clipboard.writeText?navigator.clipboard.writeText(t).then(function(){return true},function(){return false}):Promise.resolve(false);
@@ -1215,8 +1246,7 @@ function updCalc(it){var el=$('tot-'+it.id);if(!el)return;var c=calcInfo(it);el.
 function fieldsHTML(it){
   var id=esc(it.id);
   if(it.kind==='structured'){
-    var items=['Adaptor','Baterai CMOS','DVR','DVR 4 CH','DVR 8 CH','DVR 16 CH','Duradus','Hardisk','Hardisk 500 GB','Hardisk 1 TB','Hardisk 2 TB','Isi Sendiri','Jack BNC','Jack DC','Kabel CCTV','Kabel LAN','Kabel Listrik','Kamera Indoor','Kamera Outdoor','MMC 32 GB','MMC 64 GB','MMC 128 GB','NVR','NVR 5 CH','NVR 10 CH','NVR 20 CH','POE 4 Port','POE 8 Port','PSU','Steker Bulat Male','Steker Gepeng Female','Steker Gepeng Male','Stopkontak','Stopkontak 1 lubang','Stopkontak 2 lubang','Stopkontak 3 lubang','TC Duck'];
-    items.sort(function(a,b){return a.localeCompare(b,'id')});
+    var items=getStructuredItemOptions();
     return '<div class="structured-grid">'
       +'<div class="item-choice"><label class="field-label item-field-label" for="item-'+id+'"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2 9 5-9 5-9-5 9-5Zm-9 7 8 4.5V22l-8-4.5V9Zm18 0v8.5L13 22v-8.5L21 9Z" fill="currentColor"/></svg>Item Barang</label><select id="item-'+id+'" data-f="item"><option value="">Pilih item barang...</option>'+items.map(function(v){return '<option'+(it.item===v?' selected':'')+'>'+v+'</option>'}).join('')+'</select></div>'
       +(it.item?'<div class="item-extra">'
@@ -1341,8 +1371,11 @@ function catRowHTML(c){
    +'<button type="button" class="mini danger" data-act="cat-del">Hapus</button></div></div>';
 }
 function renderCatalog(){
-  /* Data katalog tetap disimpan untuk dropdown laporan; rincian daftar tidak ditampilkan di halaman Stok Barang. */
-  $('cats').innerHTML='';
+  var options=getStructuredItemOptions(),hidden=(db.catalog||[]).filter(function(c){return c.hiddenItemOption}).length;
+  $('cats').hidden=false;
+  $('cats').innerHTML='<div class="item-option-head"><strong>Daftar pilihan Item Barang</strong><span>'+options.length+' item</span></div>'
+    +options.map(function(label){var meta=(db.catalog||[]).filter(function(c){return !c.hiddenItemOption&&c.label.toLowerCase()===label.toLowerCase()})[0];var detail=meta?[meta.type,meta.note].filter(Boolean).join(' · '):'';return '<div class="item-option-row"><div class="item-option-info"><strong>'+esc(label)+'</strong>'+(detail?'<small>'+esc(detail)+'</small>':'')+'</div><button type="button" class="item-option-delete" data-act="item-option-del" data-option="'+esc(label)+'" aria-label="Hapus '+esc(label)+'" title="Hapus item">×</button></div>'}).join('')
+    +(hidden?'<button type="button" class="btn ghost restore-item-options" data-act="restore-item-options">Pulihkan item bawaan</button>':'');
   $('kn').value=db.kop.name;$('kt').value=db.kop.tag;$('ka').value=db.kop.addr;
 }
 
@@ -1530,8 +1563,23 @@ document.addEventListener('click',function(e){
     case 'pdf':sharePdf(b);break;
     case 'cat-add':{
       var lab=$('nl').value.trim();if(!lab){toast('Isi nama barang dulu');focusEl('nl');break}
+      if(getStructuredItemOptions().some(function(x){return x.toLowerCase()===lab.toLowerCase()})){toast('Nama item sudah ada di daftar');break}
       db.catalog.push({id:uid(),label:lab,type:$('nt').value.trim(),note:$('nn').value.trim(),kind:'qty',colon:true});
-      $('nl').value='';$('nt').value='';$('nn').value='';save();renderCatalog();toast('Ditambahkan ke daftar barang');break;
+      $('nl').value='';$('nt').value='';$('nn').value='';
+      (async function(){try{await persistCatalogSettings();renderCatalog();toast('Item ditambahkan dan disinkronkan')}catch(err){toast('Item tersimpan lokal, sinkronisasi gagal: '+err.message);renderCatalog()}})();break;
+    }
+    case 'item-option-del':{
+      var optionLabel=b.dataset.option||'';if(!optionLabel)break;
+      if(!confirm('Hapus item "'+optionLabel+'" dari daftar pilihan? Laporan yang sudah tersimpan tidak berubah.'))break;
+      var isDefault=isBuiltinItemOption(optionLabel);
+      db.catalog=db.catalog.filter(function(x){return x.label.toLowerCase()!==optionLabel.toLowerCase()||x.hiddenItemOption});
+      if(isDefault)db.catalog.push({id:uid(),label:optionLabel,type:'',note:'',kind:'qty',colon:true,hiddenItemOption:true});
+      (async function(){try{await persistCatalogSettings();renderCatalog();if(view==='isi')render();toast('Item dihapus dari daftar pilihan')}catch(err){toast('Gagal sinkronisasi item: '+err.message)}})();break;
+    }
+    case 'restore-item-options':{
+      if(!confirm('Pulihkan kembali semua item bawaan yang pernah dihapus?'))break;
+      db.catalog=db.catalog.filter(function(x){return !x.hiddenItemOption});
+      (async function(){try{await persistCatalogSettings();renderCatalog();toast('Item bawaan dipulihkan')}catch(err){toast('Gagal sinkronisasi: '+err.message)}})();break;
     }
     case 'cat-del':{
       c=getCat(b);if(!c)break;
