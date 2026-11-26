@@ -625,6 +625,9 @@ document.documentElement.classList.remove('cc-gate-pending');
 #logoutBtn,#installBtn,#install{display:none!important}
 </style>
 <style id="iphone-viewport-fit">
+/* Keep native mobile pull-to-refresh and vertical scrolling available */
+html,body{overscroll-behavior-y:auto;touch-action:pan-y pinch-zoom;-webkit-overflow-scrolling:touch}
+
 html{width:100%;max-width:100%;overflow-x:hidden;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 body{width:100%;max-width:100%;min-width:0;overflow-x:hidden}
 #appRoot,.wrap,.top,.cols,.main,#form,.card{min-width:0;max-width:100%}
