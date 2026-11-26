@@ -673,6 +673,10 @@ body{width:100%;max-width:100%;min-width:0;overflow-x:hidden}
 #v-barang .item-option-delete:active{transform:scale(.94)}
 #v-barang .restore-item-options{width:100%;margin-top:8px}
 </style>
+<style id="searchable-item-select-style">
+.item-choice input[data-f="item"]{width:100%;min-width:0}
+.item-choice input[data-f="item"]:focus{outline:2px solid rgba(23,104,232,.18);border-color:#1768e8}
+</style>
 </head>
 <body>
 <div class="wrap" id="appRoot">
@@ -1249,7 +1253,7 @@ function fieldsHTML(it){
   if(it.kind==='structured'){
     var items=getStructuredItemOptions();
     return '<div class="structured-grid">'
-      +'<div class="item-choice"><label class="field-label item-field-label" for="item-'+id+'"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2 9 5-9 5-9-5 9-5Zm-9 7 8 4.5V22l-8-4.5V9Zm18 0v8.5L13 22v-8.5L21 9Z" fill="currentColor"/></svg>Item Barang</label><select id="item-'+id+'" data-f="item"><option value="">Pilih item barang...</option>'+items.map(function(v){return '<option'+(it.item===v?' selected':'')+'>'+v+'</option>'}).join('')+'</select></div>'
+      +'<div class="item-choice"><label class="field-label item-field-label" for="item-'+id+'"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2 9 5-9 5-9-5 9-5Zm-9 7 8 4.5V22l-8-4.5V9Zm18 0v8.5L13 22v-8.5L21 9Z" fill="currentColor"/></svg>Item Barang</label><input id="item-'+id+'" data-f="item" list="item-options-'+id+'" value="'+esc(it.item||'')+'" placeholder="Cari atau pilih item barang..." autocomplete="off"><datalist id="item-options-'+id+'"><option value="">Pilih item barang...</option>'+items.map(function(v){return '<option value="'+esc(v)+'"></option>'}).join('')+'</datalist></div>'
       +(it.item?'<div class="item-extra">'
         +(it.item==='Isi Sendiri'?'<div><label class="lbl" for="itemc-'+id+'">Nama barang</label><input id="itemc-'+id+'" data-f="itemCustom" value="'+esc(it.itemCustom)+'" placeholder="Ketik nama barang" autocomplete="off"></div>':'')
         +'<div><label class="lbl" for="note-'+id+'">Keterangan</label><input id="note-'+id+'" data-f="itemNote" value="'+esc(it.note)+'" placeholder="Isi keterangan" autocomplete="off"></div>'
