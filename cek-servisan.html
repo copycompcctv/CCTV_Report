@@ -44,6 +44,8 @@ function stopChat(){if(chatTimer){clearInterval(chatTimer);chatTimer=null}active
 async function loadCustomerChat(){
  if(!activeTicket||chatBusy)return;chatBusy=true;
  try{
+  const {data:check,error:checkError}=await sb.rpc('check_active_service_status',{p_ticket:activeTicket,p_pin:activePin});if(checkError)throw checkError;
+  if(!check||!check.length){stopChat();$('result').classList.add('hide');$('message').textContent='Masa pengecekan telah berakhir karena servisan sudah diambil. Tiket tidak dapat digunakan lagi.';return}
   const {data,error}=await sb.rpc('customer_read_service_chat',{p_ticket:activeTicket,p_pin:activePin});if(error)throw error;
   const box=$('chatMessages'),rows=data||[];
   box.innerHTML=rows.length?rows.map(m=>'<div style="max-width:88%;align-self:'+(m.sender_role==='customer'?'flex-end':'flex-start')+';background:'+(m.sender_role==='customer'?'#eaf2ff':'#f2f5fa')+';border:1px solid #dce7ff;border-radius:13px;padding:9px 12px"><b style="font-size:12px;color:#174a9c">'+safeText(m.sender_name)+'</b><div style="white-space:pre-wrap;overflow-wrap:anywhere;margin-top:3px">'+safeText(m.message)+'</div><small style="color:#718096;font-size:10px">'+safeText(new Date(m.created_at).toLocaleString('id-ID'))+'</small></div>').join(''):'<p class="muted" style="font-size:12px">Belum ada percakapan. Silakan kirim pesan jika membutuhkan bantuan.</p>';
