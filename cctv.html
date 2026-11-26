@@ -1128,7 +1128,7 @@ function queueCloudSave(){
   if(!cloudReady||!currentUser||cur().saved===false)return;
   cloudPending[cur().id]=true;
   clearTimeout(cloudTimer);
-  cloudTimer=setTimeout(function(){saveCloudNow().catch(function(e){console.error('Supabase sync:',e);toast('Sinkronisasi gagal: '+(e.message||'periksa koneksi'))})},650);
+  cloudTimer=setTimeout(function(){saveCloudNow().catch(async function(e){console.error('Supabase sync:',e);toast('Sinkronisasi gagal: '+(e.message||'periksa koneksi'));if(String(e.message||'').indexOf('KONFLIK_DATA')>=0){Object.keys(cloudPending).forEach(function(id){delete cloudPending[id]});await refreshCloudHistory()}})},650);
 }
 function savedSnapshot(){return {reports:db.reports.filter(function(r){return r.saved!==false}),catalog:db.catalog,currentId:db.currentId,kop:db.kop,lastTech:db.lastTech}}
 function saveNow(){
