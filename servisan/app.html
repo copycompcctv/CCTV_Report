@@ -433,7 +433,122 @@ body{padding:14px 20px 112px!important}
 #orderForm .field-label svg{width:18px;height:18px;min-width:18px;color:#1768e8;display:block}
 #orderForm .field-label span{display:inline-block}
 </style>
-<style id="service-chat-unread-style">.jobactions .chat-action{position:relative;overflow:visible;padding-right:14px!important}.chat-unread-badge{display:inline-flex;align-items:center;justify-content:center;min-width:19px;height:19px;padding:0 5px;margin-left:7px;border-radius:999px;background:#e11d48;color:#fff;font-size:11px;font-weight:800;line-height:1;box-shadow:0 0 0 2px #fff}</style></head>
+<style id="service-chat-unread-style">.jobactions .chat-action{position:relative;overflow:visible;padding-right:14px!important}.chat-unread-badge{display:inline-flex;align-items:center;justify-content:center;min-width:19px;height:19px;padding:0 5px;margin-left:7px;border-radius:999px;background:#e11d48;color:#fff;font-size:11px;font-weight:800;line-height:1;box-shadow:0 0 0 2px #fff}</style><style>
+
+/* FINAL RESPONSIVE MASTER: Manajemen Servis is the single UI standard */
+@media screen{
+ body{box-sizing:border-box!important;background:#f7f9fd!important;color:#10265a!important;font-family:system-ui,-apple-system,"Segoe UI",sans-serif!important;padding:14px 20px 38px!important}
+ #appShell.wrap,#appRoot.wrap,body>main.wrap,body>.wrap{box-sizing:border-box!important;width:100%!important;max-width:1420px!important;margin:0 auto!important}
+ #appShell.wrap,#appRoot.wrap{gap:14px!important}
+ #appShell .top,#appRoot .top,body>header{
+  box-sizing:border-box!important;display:flex!important;align-items:center!important;justify-content:space-between!important;
+  width:100%!important;min-height:104px!important;margin:0 auto 14px!important;padding:12px 20px!important;
+  gap:14px!important;border:1px solid #dce7ff!important;border-radius:28px!important;
+  background:#fff!important;box-shadow:0 6px 20px rgba(24,78,160,.07)!important
+ }
+ #appShell .brand,#appRoot .brand{display:flex!important;align-items:center!important;gap:22px!important;min-width:0!important}
+ #appShell .mark,#appRoot .mark,body>header>img{
+  display:block!important;flex:0 0 auto!important;width:100px!important;height:auto!important;max-height:76px!important;
+  padding:0 18px 0 0!important;border:0!important;border-right:2px solid #10265a!important;object-fit:contain!important
+ }
+ #appShell .brand-name,#appRoot .brand-name,body>header .brand-copy strong{
+  font-size:clamp(20px,2.1vw,28px)!important;line-height:1.15!important;font-weight:800!important;letter-spacing:.015em!important;color:#10265a!important
+ }
+ #appShell .brand-section,#appRoot .brand-section,body>header .brand-copy small{
+  display:block!important;margin:2px 0 0!important;font-size:clamp(16px,1.7vw,22px)!important;line-height:1.2!important;font-weight:750!important;color:#1768e8!important
+ }
+ #appShell .hbtns,#appRoot .hbtns{display:flex!important;align-items:center!important;justify-content:flex-end!important;gap:10px!important;margin-left:auto!important}
+ #appShell .icon-btn,#appRoot .icon-btn,body>header .nav-icon{
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;flex:0 0 auto!important;
+  width:70px!important;height:70px!important;min-width:70px!important;min-height:70px!important;padding:0!important;
+  border:1px solid #dce7ff!important;border-radius:22px!important;background:#1768e8!important;color:#fff!important
+ }
+ #appShell .icon-btn svg,#appRoot .icon-btn svg,body>header .nav-icon svg{width:30px!important;height:30px!important}
+ #appShell nav.tabs,#appRoot nav.tabs{display:block!important;width:100%!important;max-width:100%!important;margin:0!important;padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important}
+ #appShell nav.tabs .tabs-in,#appRoot nav.tabs .tabs-in{display:grid!important;width:100%!important;max-width:none!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:12px!important;margin:0!important}
+ #appShell nav.tabs .tab,#appRoot nav.tabs .tab{
+  display:flex!important;align-items:center!important;justify-content:center!important;gap:9px!important;
+  width:100%!important;min-width:0!important;min-height:72px!important;padding:12px 16px!important;
+  border:1px solid #dce7ff!important;border-radius:17px!important;background:#edf4ff!important;color:#1749a4!important;
+  font-size:17px!important;font-weight:700!important;white-space:normal!important
+ }
+ #appShell nav.tabs .tab[aria-current=page],#appRoot nav.tabs .tab.active,#appRoot nav.tabs .tab[aria-current=page]{
+  background:#1768e8!important;color:#fff!important;border-color:#1768e8!important;box-shadow:0 4px 12px rgba(23,104,232,.16)!important
+ }
+ #appShell nav.tabs .tab svg,#appRoot nav.tabs .tab svg{width:22px!important;height:22px!important;flex:0 0 22px!important}
+ #appShell .service-form-panel,#appShell #historyView>.panel,#appShell #settingsView,
+ #appRoot #form .form-shell,#appRoot #form .card,body>main.wrap .panel{
+  box-sizing:border-box!important;width:100%!important;padding:24px!important;border:1px solid #dce7ff!important;
+  border-radius:22px!important;background:#fff!important;box-shadow:0 4px 16px rgba(24,78,160,.05)!important
+ }
+ #appShell .service-form-panel h2,#appShell #historyView h2,#appShell #settingsView h2,
+ #appRoot #form .form-title h2,body>main.wrap .panel h2{
+  font-size:24px!important;line-height:1.25!important;font-weight:750!important;color:#10265a!important
+ }
+ #appShell .field label,#appRoot #form .field-label,#appRoot #form .job-label,body>main.wrap .field label{
+  font-size:16px!important;line-height:1.35!important;font-weight:650!important;color:#18366e!important
+ }
+ #appShell input,#appShell select,#appShell textarea,#appRoot #form input,#appRoot #form select,#appRoot #form textarea,
+ body>main.wrap input,body>main.wrap select,body>main.wrap textarea{
+  box-sizing:border-box!important;width:100%!important;min-width:0!important;min-height:56px!important;
+  padding:12px 15px!important;border:1px solid #d7e2f7!important;border-radius:12px!important;
+  background:#f7f9ff!important;color:#10265a!important;font-family:inherit!important;font-size:16px!important;line-height:1.4!important
+ }
+ #appShell textarea,#appRoot #form textarea,body>main.wrap textarea{min-height:94px!important}
+ #appShell button:not(.tab):not(.icon-btn),#appRoot button:not(.tab):not(.icon-btn),body>main.wrap button,body>main.wrap .btn{
+  min-height:58px!important;padding:12px 16px!important;border-radius:13px!important;font-family:inherit!important;font-size:16px!important;font-weight:700!important
+ }
+ #appShell .form-actions,#appRoot #form .form-actions{gap:12px!important}
+ body>main.wrap .top{gap:14px!important;margin:0 0 18px!important}
+ body>main.wrap h1{font-size:28px!important;line-height:1.2!important;font-weight:800!important;color:#10265a!important}
+ body>main.wrap .field{gap:7px!important;margin-bottom:12px!important}
+ body>main.wrap .row{gap:12px!important}
+}
+@media screen and (max-width:700px){
+ body{padding:10px 10px 80px!important}
+ #appShell.wrap,#appRoot.wrap,body>main.wrap,body>.wrap{width:100%!important;max-width:100%!important;margin:0 auto!important}
+ #appShell.wrap,#appRoot.wrap{gap:12px!important}
+ #appShell .top,#appRoot .top,body>header{min-height:76px!important;margin:0 auto 12px!important;padding:9px 12px!important;border-radius:18px!important;gap:10px!important}
+ #appShell .brand,#appRoot .brand{gap:12px!important}
+ #appShell .mark,#appRoot .mark,body>header>img{width:62px!important;max-height:48px!important;padding-right:10px!important}
+ #appShell .brand-name,#appRoot .brand-name,body>header .brand-copy strong{font-size:16px!important}
+ #appShell .brand-section,#appRoot .brand-section,body>header .brand-copy small{font-size:14px!important}
+ #appShell .hbtns,#appRoot .hbtns{gap:6px!important}
+ #appShell .icon-btn,#appRoot .icon-btn,body>header .nav-icon{width:46px!important;height:46px!important;min-width:46px!important;min-height:46px!important;border-radius:14px!important}
+ #appShell .icon-btn svg,#appRoot .icon-btn svg,body>header .nav-icon svg{width:22px!important;height:22px!important}
+ #appShell nav.tabs .tabs-in,#appRoot nav.tabs .tabs-in{gap:6px!important}
+ #appShell nav.tabs .tab,#appRoot nav.tabs .tab{min-height:50px!important;padding:7px 4px!important;border-radius:11px!important;font-size:12px!important;gap:5px!important}
+ #appShell nav.tabs .tab svg,#appRoot nav.tabs .tab svg{width:18px!important;height:18px!important;flex-basis:18px!important}
+ #appShell .service-form-panel,#appShell #historyView>.panel,#appShell #settingsView,
+ #appRoot #form .form-shell,#appRoot #form .card,body>main.wrap .panel{padding:15px!important;border-radius:15px!important}
+ #appShell .service-form-panel h2,#appShell #historyView h2,#appShell #settingsView h2,
+ #appRoot #form .form-title h2,body>main.wrap .panel h2{font-size:18px!important}
+ #appShell .field label,#appRoot #form .field-label,#appRoot #form .job-label,body>main.wrap .field label{font-size:13px!important}
+ #appShell input,#appShell select,#appShell textarea,#appRoot #form input,#appRoot #form select,#appRoot #form textarea,
+ body>main.wrap input,body>main.wrap select,body>main.wrap textarea{min-height:43px!important;padding:9px 11px!important;border-radius:10px!important;font-size:14px!important}
+ #appShell textarea,#appRoot #form textarea,body>main.wrap textarea{min-height:72px!important}
+ #appShell button:not(.tab):not(.icon-btn),#appRoot button:not(.tab):not(.icon-btn),body>main.wrap button,body>main.wrap .btn{min-height:45px!important;padding:9px 12px!important;border-radius:11px!important;font-size:13px!important}
+ #appShell .form-actions,#appRoot #form .form-actions{gap:8px!important}
+ body>main.wrap .top{gap:10px!important;margin-bottom:12px!important;flex-wrap:wrap}
+ body>main.wrap h1{font-size:22px!important}
+ body>main.wrap .panel{margin-bottom:12px!important}
+ body>main.wrap .field{gap:6px!important;margin-bottom:10px!important}
+ body>main.wrap .field label{font-size:13px!important}
+ body>main.wrap .row{gap:8px!important}
+ body>main.wrap .source-tabs{gap:6px!important}
+ body>main.wrap .source-tabs button{min-height:50px!important;font-size:12px!important}
+}
+@media screen and (max-width:390px){
+ #appShell .mark,#appRoot .mark,body>header>img{width:52px!important;padding-right:8px!important}
+ #appShell .brand-name,#appRoot .brand-name,body>header .brand-copy strong{font-size:14px!important}
+ #appShell .brand-section,#appRoot .brand-section,body>header .brand-copy small{font-size:12px!important}
+ #appShell .icon-btn,#appRoot .icon-btn,body>header .nav-icon{width:42px!important;height:42px!important;min-width:42px!important;min-height:42px!important}
+ #appShell nav.tabs .tab,#appRoot nav.tabs .tab{font-size:11px!important;padding:6px 3px!important}
+ #appShell .service-form-panel,#appRoot #form .form-shell,#appRoot #form .card,body>main.wrap .panel{padding:12px!important}
+}
+
+</style>
+</head>
 <body>
 
 <section id="serviceLogin" class="auth-screen" hidden></section>
