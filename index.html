@@ -82,9 +82,9 @@ header img{object-fit:contain}
 </style>
 <style>
 [hidden]{display:none!important}
-main{margin:48px auto 56px!important}
-.welcome-login{width:min(440px,100%);margin:6vh auto 0;padding:34px 32px 30px;border:1px solid #dce7ff;border-radius:28px;background:#fff;box-shadow:0 14px 42px rgba(24,78,160,.08);text-align:center}
-.welcome-logo{width:112px;height:112px;margin:0 auto 18px;display:grid;place-items:center;border-radius:28px;background:#f4f8ff}.welcome-logo img{width:92px;max-height:88px;object-fit:contain}
+main{margin:10px auto 30px!important}
+.welcome-login{width:min(400px,100%);margin:2vh auto 0;padding:26px 28px 26px;border:1px solid #dce7ff;border-radius:28px;background:#fff;box-shadow:0 14px 42px rgba(24,78,160,.08);text-align:center}
+.welcome-logo{width:104px;height:104px;margin:0 auto 14px;display:grid;place-items:center;border-radius:28px;background:#f4f8ff}.welcome-logo img{width:92px;max-height:88px;object-fit:contain}
 .eyebrow{margin:0 0 7px;color:#1768e8;font-size:11px;font-weight:800;letter-spacing:.16em}
 .welcome-login h1,.welcome-heading h1{margin:0;color:#10265a;font-size:clamp(27px,4vw,34px);letter-spacing:-.045em}.welcome-login h1 span,.welcome-heading h1 span{color:#1768e8}
 .welcome-sub{margin:8px 0 24px;color:#71809a;font-size:14px}
@@ -98,19 +98,15 @@ main{margin:48px auto 56px!important}
 .welcome-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px}
 .welcome-heading .welcome-sub{margin:5px 0 0}
 .lock-btn{border:1px solid #dce7ff;background:#fff;border-radius:12px;padding:10px 14px;color:#34517f;font-weight:650;cursor:pointer}
-@media(max-width:680px){main{margin:28px auto 24px!important}.welcome-login{margin:5vh auto 0;padding:28px 22px 24px;border-radius:23px}.welcome-logo{width:94px;height:94px}.welcome-logo img{width:78px;max-height:76px}.welcome-heading{align-items:flex-start}.welcome-heading h1{font-size:27px}}
+@media(max-width:680px){main{margin:8px auto 20px!important}.welcome-login{margin:2vh auto 0;padding:28px 22px 24px;border-radius:23px}.welcome-logo{width:94px;height:94px}.welcome-logo img{width:78px;max-height:76px}.welcome-heading{align-items:flex-start}.welcome-heading h1{font-size:27px}}
 </style>
 </head>
 <body>
-<header>
-  <img src="logo-copy-computer.PNG" alt="Logo asli Copy Computer">
-</header>
 <main>
 <section id="loginPanel" class="welcome-login">
   <div class="welcome-logo"><img src="logo-copy-computer.PNG" alt="Logo Copy Computer"></div>
-  <p class="eyebrow">SELAMAT DATANG</p>
-  <h1>Masuk</h1>
-  <p class="welcome-sub">Masuk untuk melanjutkan ke aplikasi</p>
+<div id="welcomeClock" aria-live="off" style="margin:0 auto 18px;color:#526585;font-size:13px;font-weight:600;text-align:center"><span id="welcomeTime" style="font-size:22px;font-weight:750;color:#10265a;letter-spacing:.02em">--:--:--</span><br><span id="welcomeDate">Memuat tanggal...</span></div>
+  <p class="welcome-sub" style="margin:0 0 16px">Masukkan password untuk melanjutkan</p>
   <form id="welcomeForm">
     <label for="welcomePassword">Password bersama</label>
     <div class="password-wrap"><input id="welcomePassword" type="password" autocomplete="current-password" placeholder="Masukkan password" required><button type="button" id="togglePassword" aria-label="Lihat password">◉</button></div>
@@ -150,6 +146,8 @@ main{margin:48px auto 56px!important}
 <script>
 (function(){
 'use strict';
+function updateWelcomeClock(){var d=new Date();var time=document.getElementById('welcomeTime');var date=document.getElementById('welcomeDate');if(time)time.textContent=new Intl.DateTimeFormat('id-ID',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(d);if(date)date.textContent=new Intl.DateTimeFormat('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(d)}updateWelcomeClock();setInterval(updateWelcomeClock,1000);
+
 var URL='https://ogolkyowgvypstjmxxde.supabase.co',KEY='sb_publishable_8NQAMLU4WhrHfn5nwf4gjQ_rr9egknn',EMAIL='cctv@copycomputer.app';
 var sb=window.supabase.createClient(URL,KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
 var login=$('loginPanel'),menu=$('menuPanel'),form=$('welcomeForm'),msg=$('welcomeMessage'),pass=$('welcomePassword');
