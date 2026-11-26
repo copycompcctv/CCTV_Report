@@ -1107,7 +1107,7 @@ async function saveOneCloudReport(report){
     p_address:report.address||'',p_report_date:report.date||null,
     p_payload:payload,p_expected_updated_at:report._cloudUpdatedAt||null
   });
-  if(result.error)throw result.error;
+  if(result.error){if(result.error.code==='PGRST202'||result.error.code==='42883')throw new Error('Database belum diperbarui. Jalankan supabase/servisan_concurrency.sql satu kali di Supabase SQL Editor.');throw result.error}
   report.ownerId=owner;report._cloudUpdatedAt=result.data.updated_at;
   return result.data;
 }
