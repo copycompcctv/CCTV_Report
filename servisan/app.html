@@ -123,6 +123,139 @@ button{font:inherit;cursor:pointer}
 @media(min-width:960px){body{padding-block:22px 48px}#appShell.wrap{max-width:1120px}}
 @media(max-width:700px){body{padding:10px 10px 28px}.mark{width:56px}.brand-name{font-size:16px}.tabs{padding:4px}.tab{min-height:44px;font-size:12px;gap:5px;padding:7px 3px}.tab svg{width:17px;height:17px}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.service-form-panel,.panel{padding:12px}.form-actions{margin:16px -12px -12px;padding:9px 12px calc(9px + env(safe-area-inset-bottom,0px))}}
 @media(max-width:380px){.tab{font-size:11px}.tab svg{width:16px;height:16px}.brand-name{font-size:14px}.mark{width:48px}}
+/* Professional responsive report layout */
+:root{--bg:#f7f9fd;--surface:#fff;--surface2:#f4f7ff;--ink:#10265a;--muted:#687995;--line:#dce6f5;--accent:#1768e8;--accent-ink:#fff;--accent-soft:#edf4ff;color-scheme:light}
+body{background:#f7f9fd;color:var(--ink);padding:14px 20px 38px}
+.wrap{width:100%;max-width:900px;gap:14px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:14px;min-height:74px;padding:10px 14px;background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 3px 14px rgba(20,55,110,.045)}
+.brand{gap:12px}.mark{width:58px;max-height:48px;padding:0;border:0;object-fit:contain}
+.brand-name{font-size:17px;font-weight:800;letter-spacing:.015em;color:#10265a}
+.brand-section{font-size:13px;font-weight:650;color:#1768e8;margin:2px 0 0}
+.hbtns{margin-left:auto;justify-content:flex-end;align-items:center;gap:8px}
+.icon-btn{width:40px;height:40px;min-height:40px;border:1px solid #dce6f5;border-radius:11px;background:#f3f7ff;color:#1458c8;display:inline-grid;place-items:center}
+.icon-btn svg{width:20px;height:20px}
+.page-heading{display:flex;align-items:center;justify-content:center;gap:8px;margin:1px 0 0;color:#10265a;font-size:19px;font-weight:750;letter-spacing:-.02em}
+.page-heading-icon{display:inline-grid;place-items:center;width:25px;height:25px;color:#1768e8}.page-heading-icon svg{width:21px;height:21px}
+.tabs{position:static;width:100%;max-width:100%;padding:4px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 2px 9px rgba(20,55,110,.035)}
+.tabs-in{max-width:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
+.tab{min-height:39px;border:0;border-radius:9px;background:transparent;color:#536987;font-size:13px;font-weight:650}
+.tab[aria-current=page]{background:#1768e8;color:#fff;box-shadow:0 2px 7px rgba(23,104,232,.16)}
+.cols{display:block}.main{width:100%;max-width:760px;margin:0 auto}
+#form{display:grid;gap:12px}
+#form .form-shell{padding:20px;border:1px solid var(--line);border-radius:17px;background:#fff;box-shadow:0 4px 16px rgba(20,55,110,.045);gap:17px}
+#form .form-fields{display:grid;gap:14px}
+.form-field{display:grid;gap:6px;min-width:0}
+.field-label{display:flex;align-items:center;gap:9px;margin:0;color:#18366e;font-size:14px;font-weight:650;letter-spacing:0}
+.field-label svg{width:19px;height:19px;flex:none;color:#1768e8}
+.field-label em{font-style:normal;color:#e04458}
+#form input,#form textarea,#form select{width:100%;min-height:44px;padding:10px 12px;border:1px solid #d4e0f2;border-radius:10px;background:#fbfcff;color:#10265a;font-size:14px}
+#form textarea{min-height:82px;line-height:1.45}
+#form .sec-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:9px;align-items:center}
+#form .sec-head .job-label{grid-column:1/-1;font-size:14px;font-weight:650;text-transform:none;letter-spacing:0}
+#form .sec-head .job-label svg{width:19px;height:19px}
+#form .sec-head select{grid-column:1;min-width:0}
+#form .sec-head .mini{grid-column:2;min-height:40px}
+#form [data-sec]{padding:14px;border:1px solid #e0e8f5;border-radius:13px;background:#fff;box-shadow:none;gap:12px}
+#form .structured-item{padding:0;border:0;border-radius:0;background:transparent;box-shadow:none}
+#form .structured-item .item-top{display:none}
+#form .structured-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
+#form .item-field-label{font-size:14px;text-transform:none;letter-spacing:0;margin-bottom:6px}
+#form .item-extra{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;margin-top:10px}
+#form .item-extra>div{display:grid;gap:6px}
+#form .item-extra .lbl{font-size:13px;text-transform:none;letter-spacing:0;margin:0;color:#18366e}
+#form .item-actions{margin-top:0}
+#form .item-actions .btn{min-height:39px;font-size:13px}
+#form .form-note{display:grid;gap:7px}
+#form .attachment-panel{display:grid;gap:9px;padding:14px;border:1px dashed #adc4e8;border-radius:13px;background:#f9fbff}
+#form .attach-title{display:flex;align-items:center;gap:9px;font-size:14px;font-weight:650}
+#form .attach-title svg{width:20px;height:20px;color:#1768e8}
+#form .attach-title .hint{font-size:11px;font-weight:400;margin-left:auto}
+#form .attachment-pick{width:100%;min-height:42px;border-radius:10px;font-size:13px}
+#form #attachmentInput{min-height:40px;font-size:12px}
+#form .form-actions{display:grid;grid-template-columns:1fr 1.45fr;gap:10px;margin:0}
+#form .form-actions .btn{width:100%;min-height:46px;border-radius:11px;font-size:14px;font-weight:650}
+#form .form-actions .btn.ghost{background:#edf4ff;color:#1768e8;border:1px solid #dce7f8}
+#form .mini{min-height:36px;border-radius:9px;font-size:12px}
+#form .hint{font-size:12px}
+@media(min-width:960px){
+ body{padding:18px 26px 42px}.wrap{max-width:920px}.main{max-width:760px}
+ #form .form-shell{padding:22px}
+ #form .form-fields{gap:15px}
+}
+@media(max-width:600px){
+ body{padding:9px 11px 26px}
+ .wrap{gap:11px}
+ .top{min-height:62px;padding:8px 10px;border-radius:14px}
+ .mark{width:48px;max-height:40px}
+ .brand{gap:9px}.brand-name{font-size:14px}.brand-section{font-size:12px}
+ .hbtns{gap:6px}.icon-btn{width:36px;height:36px;min-height:36px;border-radius:10px}.icon-btn svg{width:18px;height:18px}
+ .page-heading{font-size:17px;margin:0}
+ .tabs{padding:3px}.tab{min-height:37px;font-size:12px;padding:0 3px}
+ .main{max-width:100%}
+ #form{gap:10px}
+ #form .form-shell{padding:14px;border-radius:14px;gap:14px}
+ #form .form-fields{gap:12px}
+ .field-label{font-size:13px;gap:8px}.field-label svg{width:18px;height:18px}
+ #form input,#form textarea,#form select{min-height:42px;font-size:14px;padding:9px 10px;border-radius:9px}
+ #form [data-sec]{padding:11px;border-radius:12px;gap:10px}
+ #form .sec-head{gap:7px}
+ #form .sec-head .mini{font-size:11px;padding:0 8px}
+ #form .attachment-panel{padding:11px}
+ #form .form-actions{gap:8px}
+ #form .form-actions .btn{min-height:44px;font-size:13px}
+}
+@media(max-width:360px){.brand-name{font-size:13px}.mark{width:42px}.icon-btn{width:34px;height:34px;min-height:34px}}
+
+
+/* Manajemen Servis memakai CSS acuan CCTV Report secara langsung */
+#appShell.wrap{max-width:920px!important;width:100%!important;gap:14px!important}
+#appShell .cols,#appShell .main{display:block!important;width:100%!important;max-width:100%!important;min-width:0!important}
+#appShell .service-form-panel,#appShell #historyView>.panel,#appShell #settingsView{
+ display:grid;gap:14px;padding:20px;border:1px solid #dce6f5;border-radius:17px;background:#fff;box-shadow:0 4px 16px rgba(20,55,110,.045)
+}
+#appShell .service-form-panel h2,#appShell #historyView h2,#appShell #settingsView h2{font-size:19px;line-height:1.3;font-weight:750;color:#10265a;margin:0 0 4px}
+#appShell form{display:grid;gap:14px;min-width:0}
+#appShell .fieldgrid{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;min-width:0}
+#appShell .field{display:grid;gap:6px;min-width:0}
+#appShell .field.full{grid-column:1/-1}
+#appShell .field label{display:block;margin:0;color:#18366e;font-size:14px;font-weight:650;letter-spacing:0}
+#appShell input,#appShell textarea,#appShell select{width:100%;min-width:0;min-height:44px;padding:10px 12px;border:1px solid #d4e0f2;border-radius:10px;background:#fbfcff;color:#10265a;font:inherit;font-size:14px}
+#appShell textarea{min-height:82px;line-height:1.45}
+#appShell .actions{display:grid;grid-template-columns:1fr 1.45fr;gap:10px;margin:0}
+#appShell .actions button,#appShell .form-actions button{width:100%;min-height:46px;border-radius:11px;font-size:14px;font-weight:650}
+#appShell .reset-action{background:#edf4ff!important;color:#1768e8!important;border:1px solid #dce7f8!important}
+#appShell .save-action{background:#1768e8!important;color:#fff!important;border:1px solid #1768e8!important}
+#appShell .reset-action svg,#appShell .save-action svg{width:20px;height:20px}
+#appShell .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;color:#687995}
+#appShell .stat{display:grid;gap:3px;padding:12px;border:1px solid #dce6f5;border-radius:12px;background:#fff}
+#appShell .stat small{font-size:12px;color:#687995}
+#appShell .stat b{font-size:22px;color:#10265a}
+#appShell .layout{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+#appShell .job{border:1px solid #dce6f5;border-radius:13px;background:#fff;padding:14px;margin:10px 0}
+#appShell .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+#appShell .toolbar>*{flex:1 1 180px;min-width:0}
+#appShell .sub{font-size:12px;color:#687995}
+#appShell .service-form-panel .form-actions{display:grid;grid-template-columns:1fr 1.45fr;gap:10px}
+#appShell .service-form-panel .form-actions button{display:flex;align-items:center;justify-content:center;gap:8px}
+#appShell .service-form-panel .form-actions button svg{flex:none}
+@media(min-width:960px){#appShell.wrap{max-width:920px!important}#appShell .service-form-panel,#appShell #historyView>.panel,#appShell #settingsView{padding:22px}}
+@media(max-width:600px){
+ body{padding:9px 11px 26px!important}
+ #appShell.wrap{gap:11px!important}
+ #appShell .top{min-height:62px;padding:8px 10px;border-radius:14px}
+ #appShell .mark{width:48px;max-height:40px}
+ #appShell .brand{gap:9px}.brand-name{font-size:14px}.brand-section{font-size:12px}
+ #appShell .hbtns{gap:6px}.icon-btn{width:36px;height:36px;min-height:36px;border-radius:10px}.icon-btn svg{width:18px;height:18px}
+ #appShell .tabs{padding:3px}.tabs-in{gap:5px}.tab{min-height:37px;font-size:12px;padding:0 3px}
+ #appShell .service-form-panel,#appShell #historyView>.panel,#appShell #settingsView{padding:14px;border-radius:14px;gap:12px}
+ #appShell .field label{font-size:13px}
+ #appShell input,#appShell textarea,#appShell select{min-height:42px;font-size:14px;padding:9px 10px;border-radius:9px}
+ #appShell .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #appShell .actions,#appShell .service-form-panel .form-actions{gap:8px}
+ #appShell .actions button,#appShell .service-form-panel .form-actions button{min-height:44px;font-size:13px}
+}
+@media(max-width:360px){#appShell .tab{font-size:11px}}
+
 </style><style>html.cc-gate-pending body{visibility:hidden}</style><script>(function(){'use strict';document.documentElement.classList.add('cc-gate-pending');var IDLE_LIMIT=5*60*1000,last=Number(localStorage.getItem('cc_last_activity'))||0;function expire(){sessionStorage.removeItem('cc_app_unlocked');localStorage.removeItem('cc_last_activity');location.replace('../')}function checkIdle(){last=Number(localStorage.getItem('cc_last_activity'))||0;if(sessionStorage.getItem('cc_app_unlocked')!=='1'||!last||Date.now()-last>=IDLE_LIMIT)expire()}if(sessionStorage.getItem('cc_app_unlocked')!=='1'||!last||Date.now()-last>=IDLE_LIMIT){expire();return}function touch(){var n=Date.now();if(n-last>900){last=n;localStorage.setItem('cc_last_activity',String(n))}}['pointerdown','keydown','touchstart','click','scroll'].forEach(function(e){document.addEventListener(e,touch,{passive:true})});setInterval(checkIdle,1000);document.addEventListener('visibilitychange',function(){if(!document.hidden)checkIdle()});document.documentElement.classList.remove('cc-gate-pending')})();</script><style id="iphone-viewport-fit">
 /* Keep native mobile pull-to-refresh and vertical scrolling available */
 html,body{overscroll-behavior-y:auto;touch-action:pan-y pinch-zoom;-webkit-overflow-scrolling:touch}
@@ -160,14 +293,18 @@ body{width:100%;max-width:100%;min-width:0;overflow-x:hidden}
 <section id="serviceLogin" class="auth-screen" hidden></section>
 <main class="wrap" id="appShell" style="display:none">
 <header class="top">
-<div class="brand"><img class="mark" src="../logo-copy-computer.PNG" alt="Logo asli Copy Computer"><div><div class="brand-name">COPY COMPUTER</div><p class="brand-section">Manajemen Servis</p></div></div>
+<div class="brand">
+<img class="mark" src="../logo-copy-computer.PNG" alt="Logo asli Copy Computer">
+<div><div class="brand-name">COPY COMPUTER</div><p class="brand-section">Manajemen Servis</p></div>
+</div>
 <div class="hbtns"><button type="button" class="icon-btn" onclick="if(history.length>1)history.back();else location.href='../'" aria-label="Kembali" title="Kembali"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/><path d="M9 12h12"/></svg></button></div>
 </header>
-<nav class="tabs" aria-label="Menu Manajemen Servis">
-<button type="button" class="tab" id="receiveTab" aria-current="page" onclick="showServiceForm('receive')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a5 5 0 0 0-6.4 6.4L3 18l3 3 5.3-5.3a5 5 0 0 0 6.4-6.4l-3.1 3.1-3-3z"/><path d="m15 4 5 5"/></svg><span>Penerimaan Servis</span></button>
-<button type="button" class="tab" id="orderTab" onclick="showServiceForm('order')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h5M8 17h3"/><path d="M16 15v4m-2-2h4"/></svg><span>Pesanan Khusus</span></button>
-<button type="button" class="tab" id="historyTab" onclick="showHistoryView()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>History</span></button>
-</nav>
+<nav class="tabs" aria-label="Menu Manajemen Servis"><div class="tabs-in">
+<button type="button" class="tab" id="receiveTab" aria-current="page" onclick="showServiceForm('receive')"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a5 5 0 0 0-6.4 6.4L3 18l3 3 5.3-5.3a5 5 0 0 0 6.4-6.4l-3.1 3.1-3-3z"/><path d="m15 4 5 5"/></svg><span>Penerimaan Servis</span></button>
+<button type="button" class="tab" id="orderTab" onclick="showServiceForm('order')"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h5M8 17h3"/><path d="M16 15v4m-2-2h4"/></svg><span>Pesanan Khusus</span></button>
+<button type="button" class="tab" id="historyTab" onclick="showHistoryView()"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>History</span></button>
+</div></nav>
+<div class="cols"><div class="main">
 <section id="serviceView">
 
 <div id="receiveFormPanel" class="panel service-form-panel" style="display:none">
@@ -205,6 +342,7 @@ body{width:100%;max-width:100%;min-width:0;overflow-x:hidden}
 <section class="panel" id="settingsView" style="display:none;margin-top:16px"><div class="top" style="margin-bottom:10px"><div><h1 style="font-size:21px">Pengaturan Servis</h1><div class="sub">Kelola pilihan status yang digunakan teknisi saat memperbarui servis.</div></div><button class="secondary" onclick="showServiceView()">Kembali</button></div><h2>Daftar Status Servis</h2><div id="statusSettingsList"></div><div class="actions"><button class="secondary" type="button" onclick="addServiceStatus()">＋ Tambah Status</button><button type="button" onclick="saveServiceStatuses()">Simpan Pengaturan</button></div><p class="sub" id="settingsMessage">Pengaturan tersimpan online dan digunakan bersama oleh teknisi.</p></section>
 
 
+</div></div>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
