@@ -99,13 +99,46 @@ main{margin:10px auto 30px!important}
 .welcome-heading .welcome-sub{margin:5px 0 0}
 .lock-btn{border:1px solid #dce7ff;background:#fff;border-radius:12px;padding:10px 14px;color:#34517f;font-weight:650;cursor:pointer}
 @media(max-width:680px){main{margin:8px auto 20px!important}.welcome-login{margin:2vh auto 0;padding:28px 22px 24px;border-radius:23px}.welcome-logo{width:94px;height:94px}.welcome-logo img{width:78px;max-height:76px}.welcome-heading{align-items:flex-start}.welcome-heading h1{font-size:27px}}
+
+/* Welcome page weather, date and time */
+.welcome-login{width:min(420px,100%);padding:25px 26px 25px}
+.welcome-logo{width:96px;height:96px;margin:0 auto 18px;border-radius:26px}
+.welcome-logo img{width:84px;max-height:82px}
+.welcome-info{display:grid;gap:10px;margin:0 0 20px;text-align:left}
+.weather-tile{position:relative;display:flex;align-items:center;gap:13px;padding:13px 15px;border:1px solid #dce9ff;border-radius:19px;background:linear-gradient(120deg,#f1f7ff,#f8fbff)}
+.weather-symbol{width:52px;height:52px;flex:none;display:grid;place-items:center;border-radius:16px;background:#fff;font-size:30px;box-shadow:0 3px 10px rgba(24,78,160,.07)}
+.weather-copy{display:grid;gap:1px;min-width:0}
+.weather-place{font-size:9px;font-weight:800;letter-spacing:.12em;color:#71809a}
+.weather-copy strong{font-size:27px;line-height:1.15;color:#10265a;letter-spacing:-.04em}
+.weather-copy>span:last-child{font-size:12px;color:#60749a}
+.weather-live{margin-left:auto;align-self:flex-start;display:flex;align-items:center;gap:4px;color:#22966c;font-size:9px;font-weight:800;letter-spacing:.08em}
+.weather-live i{width:6px;height:6px;border-radius:50%;background:#22b879;box-shadow:0 0 0 3px #d9f7e9}
+.date-time-row{display:grid;grid-template-columns:1fr 1.35fr;gap:9px}
+.date-chip{display:flex;align-items:center;gap:9px;min-width:0;padding:10px 11px;border:1px solid #e2eaf7;border-radius:15px;background:#fff}
+.mini-icon{width:30px;height:30px;flex:none;display:grid;place-items:center;border-radius:10px;background:#edf4ff;color:#1768e8;font-size:20px;font-weight:700}
+.date-chip div{display:grid;gap:1px;min-width:0}
+.date-chip small{font-size:8px;letter-spacing:.08em;color:#8290a8;font-weight:800;white-space:nowrap}
+.date-chip strong{font-size:12px;color:#18315f;font-weight:750;white-space:nowrap}
+.date-chip-right strong{font-size:11px}
+@media(max-width:680px){.welcome-login{padding:23px 19px 22px}.welcome-logo{width:88px;height:88px}.welcome-logo img{width:76px;max-height:74px}.weather-tile{padding:12px}.weather-symbol{width:48px;height:48px}.date-chip{padding:9px 8px;gap:7px}.date-chip strong{font-size:11px}.date-chip-right strong{font-size:10px}}
+
 </style>
 </head>
 <body>
 <main>
 <section id="loginPanel" class="welcome-login">
   <div class="welcome-logo"><img src="logo-copy-computer.PNG" alt="Logo Copy Computer"></div>
-<div id="welcomeClock" aria-live="off" style="margin:0 auto 18px;color:#526585;font-size:13px;font-weight:600;text-align:center"><span id="welcomeTime" style="font-size:22px;font-weight:750;color:#10265a;letter-spacing:.02em">--:--:--</span><br><span id="welcomeDate">Memuat tanggal...</span></div>
+<div class="welcome-info">
+  <div class="weather-tile">
+    <div class="weather-symbol" id="weatherIcon" aria-hidden="true">☀️</div>
+    <div class="weather-copy"><span class="weather-place">JEPARA, JAWA TENGAH</span><strong id="weatherTemp">--°C</strong><span id="weatherDesc">Memuat cuaca...</span></div>
+    <span class="weather-live"><i></i> LIVE</span>
+  </div>
+  <div class="date-time-row">
+    <div class="date-chip"><span class="mini-icon">◷</span><div><small>WAKTU JEPARA</small><strong id="welcomeTime">--:--:--</strong></div></div>
+    <div class="date-chip date-chip-right"><span class="mini-icon">▦</span><div><small>HARI & TANGGAL</small><strong id="welcomeDate">Memuat...</strong></div></div>
+  </div>
+</div>
   <p class="welcome-sub" style="margin:0 0 16px">Masukkan password untuk melanjutkan</p>
   <form id="welcomeForm">
     <label for="welcomePassword">Password bersama</label>
@@ -146,7 +179,9 @@ main{margin:10px auto 30px!important}
 <script>
 (function(){
 'use strict';
-function updateWelcomeClock(){var d=new Date();var time=document.getElementById('welcomeTime');var date=document.getElementById('welcomeDate');if(time)time.textContent=new Intl.DateTimeFormat('id-ID',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(d);if(date)date.textContent=new Intl.DateTimeFormat('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(d)}updateWelcomeClock();setInterval(updateWelcomeClock,1000);
+function updateWelcomeClock(){var d=new Date();var opt={timeZone:'Asia/Jakarta'};var time=document.getElementById('welcomeTime');var date=document.getElementById('welcomeDate');if(time)time.textContent=new Intl.DateTimeFormat('id-ID',{...opt,hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(d);if(date)date.textContent=new Intl.DateTimeFormat('id-ID',{...opt,weekday:'short',day:'numeric',month:'short',year:'numeric'}).format(d)}updateWelcomeClock();setInterval(updateWelcomeClock,1000);
+var weatherLabels={0:['Cerah','☀️'],1:['Cerah berawan','🌤️'],2:['Berawan sebagian','⛅'],3:['Berawan','☁️'],45:['Berkabut','🌫️'],48:['Kabut tebal','🌫️'],51:['Gerimis ringan','🌦️'],53:['Gerimis','🌦️'],55:['Gerimis lebat','🌧️'],56:['Gerimis beku','🌧️'],57:['Gerimis beku lebat','🌧️'],61:['Hujan ringan','🌦️'],63:['Hujan','🌧️'],65:['Hujan lebat','🌧️'],66:['Hujan beku','🌧️'],67:['Hujan beku lebat','🌧️'],71:['Salju ringan','🌨️'],73:['Salju','🌨️'],75:['Salju lebat','❄️'],77:['Butiran salju','🌨️'],80:['Hujan lokal','🌦️'],81:['Hujan lokal','🌧️'],82:['Hujan lokal lebat','⛈️'],85:['Hujan salju','🌨️'],86:['Hujan salju lebat','🌨️'],95:['Badai petir','⛈️'],96:['Badai petir & hujan es','⛈️'],99:['Badai petir kuat','⛈️']};
+async function loadJeparaWeather(){var temp=document.getElementById('weatherTemp'),desc=document.getElementById('weatherDesc'),icon=document.getElementById('weatherIcon');try{var url='https://api.open-meteo.com/v1/forecast?latitude=-6.59&longitude=110.67&current=temperature_2m,weather_code,is_day&temperature_unit=celsius&timezone=Asia%2FJakarta';var res=await fetch(url,{cache:'no-store'});if(!res.ok)throw new Error('weather unavailable');var data=await res.json();var cur=data.current;if(!cur||typeof cur.temperature_2m!=='number')throw new Error('weather data unavailable');var info=weatherLabels[cur.weather_code]||['Kondisi cuaca terkini','🌤️'];temp.textContent=Math.round(cur.temperature_2m)+'°C';desc.textContent=info[0];icon.textContent=info[1]}catch(e){desc.textContent='Cuaca belum tersedia';icon.textContent='🌤️';temp.textContent='--°C'}}loadJeparaWeather();setInterval(loadJeparaWeather,15*60*1000);
 
 var URL='https://ogolkyowgvypstjmxxde.supabase.co',KEY='sb_publishable_8NQAMLU4WhrHfn5nwf4gjQ_rr9egknn',EMAIL='cctv@copycomputer.app';
 var sb=window.supabase.createClient(URL,KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
