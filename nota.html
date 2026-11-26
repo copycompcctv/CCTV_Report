@@ -248,6 +248,35 @@ button.secondary,.btn.secondary{background:#edf3ff!important;color:#1749a4!impor
   .service-header .nav-icon svg{width:20px!important;height:20px!important}
 }
 
+
+/* Samakan PERSIS skala logo dan teks header dengan FINAL RESPONSIVE MASTER Manajemen Servis */
+@media screen{
+ .service-brand{gap:22px!important}
+ .service-brand img{
+  display:block!important;flex:0 0 auto!important;width:100px!important;height:auto!important;max-height:76px!important;
+  padding:0 18px 0 0!important;border:0!important;border-right:2px solid #10265a!important;object-fit:contain!important
+ }
+ .service-brand strong{
+  font-size:clamp(20px,2.1vw,28px)!important;line-height:1.15!important;font-weight:800!important;
+  letter-spacing:.015em!important;color:#10265a!important
+ }
+ .service-brand small{
+  display:block!important;margin:2px 0 0!important;font-size:clamp(16px,1.7vw,22px)!important;
+  line-height:1.2!important;font-weight:750!important;color:#1768e8!important
+ }
+}
+@media screen and (max-width:700px){
+ .service-brand{gap:12px!important}
+ .service-brand img{width:62px!important;max-height:48px!important;padding-right:10px!important}
+ .service-brand strong{font-size:16px!important}
+ .service-brand small{font-size:14px!important}
+}
+@media screen and (max-width:390px){
+ .service-brand img{width:52px!important;padding-right:8px!important}
+ .service-brand strong{font-size:14px!important}
+ .service-brand small{font-size:12px!important}
+}
+
 </style><style>html.cc-gate-pending body{visibility:hidden}</style><script>
 (function(){
 'use strict';
