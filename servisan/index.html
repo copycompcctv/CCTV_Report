@@ -4,110 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#ffffff">
+<meta http-equiv="refresh" content="0;url=app.html">
 <title>Manajemen Servis | Copy Computer</title>
-<style>
-:root{--blue:#1768e8;--navy:#10265a;--muted:#718096;--line:#e5ebf4}
-*{box-sizing:border-box}body{margin:0;background:#fff;color:#17243b;font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}
-header{min-height:86px;padding:12px max(24px,calc((100% - 1480px)/2));display:flex;align-items:center;gap:18px;border:1px solid #dfe8ff;border-radius:24px;margin:18px auto;max-width:1500px;box-shadow:0 6px 20px rgba(24,78,160,.07)}
-header img{width:92px;height:auto;max-height:68px;object-fit:contain;border-right:3px solid #10265a;padding-right:18px}header strong{display:block;color:var(--navy);font-size:24px;letter-spacing:-.03em}header small{display:block;color:var(--blue);font-size:15px}
-.nav{margin-left:auto;display:flex;gap:12px}.nav a{width:76px;height:76px;border:1px solid #dfe8fb;border-radius:25px;display:grid;place-items:center;color:#174a9c;background:#f2f6ff;text-decoration:none}.nav svg{width:38px;height:38px}
-main{width:min(1420px,calc(100% - 56px));margin:68px auto}.intro{margin-bottom:30px}h1{font-size:36px;line-height:1.2;color:var(--navy);margin:0 0 7px}.intro p{margin:0;color:var(--muted);font-size:20px}
-.cards{display:grid;grid-template-columns:1fr;gap:28px}.card{min-width:0;min-height:178px;border:1px solid #dce7ff;border-radius:34px;padding:22px 34px;background:#fff;display:grid;grid-template-columns:176px 1fr 38px;grid-template-rows:auto auto;column-gap:36px;align-items:center;text-align:left;text-decoration:none;color:inherit;box-shadow:0 8px 24px rgba(21,63,132,.08);transition:transform .15s,box-shadow .15s}.card[href]:hover{border-color:#b9cef4;transform:translateY(-2px);box-shadow:0 12px 28px rgba(21,63,132,.1)}.ico{width:148px;height:148px;border-radius:34px;background:#edf4ff;color:var(--blue);display:grid;place-items:center;margin:0;grid-row:1/3}.ico svg{width:94px;height:94px}.card b{font-size:36px;line-height:1.2;color:var(--navy);align-self:end}.card span{font-size:24px;color:#6872b5;margin-top:4px;align-self:start}.card:after{content:'›';grid-column:3;grid-row:1/3;color:var(--blue);font-size:64px;font-weight:300;justify-self:center}.card.disabled{background:#fafbfd;border-style:dashed}.soon{margin-top:auto;padding-top:12px;font-size:11px!important;color:#9aa5b5!important}
-@media(max-width:650px){header{min-height:76px;margin:14px 12px;padding:8px 12px;gap:10px}header img{width:62px;max-height:48px;padding-right:10px;border-right-width:2px}header strong{font-size:17px}header small{font-size:12px}.nav{gap:7px}.nav a{width:48px;height:48px;border-radius:16px}.nav svg{width:24px;height:24px}main{width:calc(100% - 32px);margin:46px auto}.intro{margin-bottom:20px}h1{font-size:26px}.cards{grid-template-columns:1fr;gap:18px}.card{min-height:180px;padding:18px 18px;display:grid;grid-template-columns:112px minmax(0,1fr) 20px;grid-template-rows:auto auto;column-gap:20px;row-gap:4px;align-items:center;text-align:left;border-radius:30px}.ico{grid-row:1/3;width:108px;height:108px;border-radius:26px;margin:0}.ico svg{width:70px;height:70px}.card b{font-size:clamp(21px,5.2vw,28px);align-self:end}.card span{font-size:clamp(15px,3.8vw,19px);align-self:start;margin-top:2px}.card:after{font-size:42px;grid-column:3;grid-row:1/3}.soon{grid-column:2;padding-top:4px}}
-
-/* Sizing and card balance based on approved dashboard reference */
-header{min-height:82px;max-width:1120px;margin:14px auto;padding:8px 18px;border-radius:20px;gap:14px}
-header img{width:68px;max-height:52px;padding-right:12px;border-right:2px solid #10265a}
-header strong{font-size:20px}header small{font-size:13px}
-.nav{gap:8px}.nav a{width:48px;height:48px;border-radius:15px}.nav svg{width:24px;height:24px}
-main{width:min(900px,calc(100% - 40px));margin:38px auto}
-.intro{margin-bottom:20px}h1{font-size:27px}.intro p{font-size:15px}
-.cards{display:grid;grid-template-columns:1fr;gap:14px}
-.card{min-height:126px;grid-template-columns:92px minmax(0,1fr) 26px;grid-template-rows:auto auto;column-gap:20px;padding:14px 20px;border-radius:22px}
-.ico{width:84px;height:84px;border-radius:22px}.ico svg{width:54px;height:54px}
-.card b{font-size:25px}.card span{font-size:16px}.card:after{font-size:42px}
-@media(max-width:650px){
- header{min-height:72px;margin:10px 12px;padding:7px 10px;gap:8px}header img{width:58px;max-height:46px;padding-right:9px}header strong{font-size:16px}header small{font-size:11px}
- .nav{gap:6px}.nav a{width:42px;height:42px;border-radius:13px}.nav svg{width:21px;height:21px}
- main{width:calc(100% - 28px);margin:28px auto}
- .intro{margin-bottom:16px}h1{font-size:23px}
- .cards{gap:12px}
- .card{min-height:112px;grid-template-columns:76px minmax(0,1fr) 18px;column-gap:13px;padding:12px 13px;border-radius:19px}
- .ico{width:72px;height:72px;border-radius:19px}.ico svg{width:47px;height:47px}
- .card b{font-size:clamp(18px,4.8vw,22px)}.card span{font-size:14px}.card:after{font-size:36px}
-}
-
-
-/* Responsive professional proportions; preserve approved card and icon artwork */
-header{min-height:76px;max-width:1160px;margin:14px auto;padding:8px 18px;border-radius:20px;gap:14px}
-header img{width:72px;max-height:54px;padding-right:12px;border-right:2px solid #10265a}
-header strong{font-size:21px}header small{font-size:13px}
-.nav{gap:8px}.nav a{width:48px;height:48px;border-radius:15px}.nav svg{width:24px;height:24px}
-main{width:min(900px,calc(100% - 40px));margin:42px auto}
-.intro{margin-bottom:20px}h1{font-size:27px}.intro p{font-size:15px}
-.cards{grid-template-columns:1fr;gap:14px}
-.card{min-height:112px;grid-template-columns:82px minmax(0,1fr) 24px;grid-template-rows:auto auto;column-gap:17px;padding:13px 17px;border-radius:20px}
-.ico{width:76px;height:76px;border-radius:20px}.ico svg{width:50px;height:50px}
-.card b{font-size:24px}.card span{font-size:15px}.card:after{font-size:38px}
-@media(min-width:651px) and (max-width:980px){main{width:min(820px,calc(100% - 36px));margin:34px auto}.card{min-height:106px}}
-@media(max-width:650px){
- header{min-height:68px;margin:10px 12px;padding:7px 10px;gap:8px}
- header img{width:56px;max-height:42px;padding-right:9px}header strong{font-size:16px}header small{font-size:11px}
- .nav{gap:6px}.nav a{width:40px;height:40px;border-radius:12px}.nav svg{width:20px;height:20px}
- main{width:calc(100% - 28px);margin:28px auto}
- .cards{gap:11px}
- .card{min-height:96px;grid-template-columns:66px minmax(0,1fr) 18px;column-gap:12px;padding:10px 12px;border-radius:17px}
- .ico{width:62px;height:62px;border-radius:16px}.ico svg{width:42px;height:42px}
- .card b{font-size:clamp(18px,4.7vw,21px)}.card span{font-size:13px}.card:after{font-size:33px}
-}
-
-
-/* Unified Copy Computer module menu */
-:root{--blue:#1768e8;--navy:#10265a;--muted:#6872b5;--line:#dce7ff}
-body{background:#fff;color:var(--navy)}
-header{border:1px solid var(--line);background:#fff;box-shadow:0 6px 20px rgba(24,78,160,.07)}
-header strong{color:var(--navy)}header small{color:var(--blue)}
-.nav a,.ico{background:#edf3ff;border-color:var(--line);color:var(--blue)}
-.card{background:#fff;border:1px solid var(--line);box-shadow:0 7px 22px rgba(24,78,160,.07);border-radius:28px}
-.card b{color:var(--navy)}.card span{color:var(--muted)}
-
-</style>
-<style>html.cc-gate-pending body{visibility:hidden}</style><script>
-(function(){
-'use strict';
-document.documentElement.classList.add('cc-gate-pending');
-var IDLE_LIMIT=5*60*1000,last=Number(localStorage.getItem('cc_last_activity'))||0;
-function expire(){sessionStorage.removeItem('cc_app_unlocked');localStorage.removeItem('cc_last_activity');location.replace('../')}
-function checkIdle(){last=Number(localStorage.getItem('cc_last_activity'))||0;if(sessionStorage.getItem('cc_app_unlocked')!=='1'||!last||Date.now()-last>=IDLE_LIMIT)expire()}
-if(sessionStorage.getItem('cc_app_unlocked')!=='1'||!last||Date.now()-last>=IDLE_LIMIT){expire();return}
-function touch(){var n=Date.now();if(n-last>900){last=n;localStorage.setItem('cc_last_activity',String(n))}}
-['pointerdown','keydown','touchstart','click','scroll'].forEach(function(e){document.addEventListener(e,touch,{passive:true})});
-setInterval(checkIdle,1000);document.addEventListener('visibilitychange',function(){if(!document.hidden)checkIdle()});
-document.documentElement.classList.remove('cc-gate-pending');
-})();
-</script><style id="iphone-viewport-fit">
-/* Keep native mobile pull-to-refresh and vertical scrolling available */
-html,body{overscroll-behavior-y:auto;touch-action:pan-y pinch-zoom;-webkit-overflow-scrolling:touch}
-
-html{width:100%;max-width:100%;overflow-x:hidden;-webkit-text-size-adjust:100%;text-size-adjust:100%}
-body{width:100%;max-width:100%;min-width:0;overflow-x:hidden}
-main,.cards,.card{min-width:0;max-width:100%}
-@media(max-width:650px){
-  header{width:calc(100% - 20px);margin:10px auto;padding-left:10px;padding-right:10px}
-  main{width:calc(100% - 24px);max-width:100%;margin:24px auto;padding:0}
-  .cards{grid-template-columns:minmax(0,1fr);gap:12px}
-  .card{width:100%;min-width:0;grid-template-columns:clamp(58px,17vw,76px) minmax(0,1fr) 20px;column-gap:12px;padding:14px 12px;border-radius:20px}
-  .card .ico{width:clamp(54px,16vw,70px);height:clamp(54px,16vw,70px)}
-  .card b,.card span{min-width:0;overflow-wrap:anywhere}
-}
-</style>
+<script>location.replace('app.html'+location.hash);</script>
 </head>
 <body>
-<header><img src="../logo-copy-computer.PNG" alt="Logo Copy Computer"><div><strong>COPY COMPUTER</strong><small>Manajemen Servis</small></div><nav class="nav"><a href="javascript:history.back()" aria-label="Kembali" title="Kembali"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m7-7-7 7 7 7"/></svg></a></nav></header>
-<main><div class="intro"><h1>Manajemen Servis</h1><p>Pilih menu yang ingin dibuka.</p></div>
-<section class="cards">
-<a class="card" href="app.html"><div class="ico"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"><path fill="currentColor" stroke="none" d="M43 5a18 18 0 0 0-19 22L7.8 43.2a9 9 0 1 0 12.7 12.7L36.5 39.9A18 18 0 0 0 59 17.5L46.8 29.7l-12.5-12.5L46.5 5A18 18 0 0 0 43 5Z"/></svg></div><b>Data Servis</b><span>Tambah dan kelola penerimaan servis</span></a>
-<a class="card" href="app.html#jobs"><div class="ico"><svg viewBox="0 0 64 64" fill="none"><rect x="9" y="8" width="37" height="47" rx="5" fill="currentColor"/><path d="M18 21h19M18 30h19M18 39h12" stroke="white" stroke-width="4" stroke-linecap="round"/><circle cx="46" cy="45" r="12" fill="#1685f8" stroke="white" stroke-width="3"/><path d="m40 45 4 4 8-9" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><b>Riwayat Servis</b><span>Lihat antrean dan riwayat perbaikan</span></a>
-<a class="card" href="app.html#settings"><div class="ico"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path d="M26 6h12l2 7a21 21 0 0 1 6 3l7-2 6 10-5 5a21 21 0 0 1 0 7l5 5-6 10-7-2a21 21 0 0 1-6 3l-2 7H26l-2-7a21 21 0 0 1-6-3l-7 2-6-10 5-5a21 21 0 0 1 0-7l-5-5 6-10 7 2a21 21 0 0 1 6-3z"/><circle cx="32" cy="32" r="9"/></svg></div><b>Pengaturan</b><span>Tambah, ubah, atau kelola status servis</span></a>
-</section></main>
-</body></html>
+<p>Membuka Manajemen Servis… <a href="app.html">Lanjutkan</a></p>
+</body>
+</html>
