@@ -239,6 +239,71 @@ body{width:100%;max-width:100%;min-width:0;overflow-x:hidden}
   input,select,textarea{font-size:16px!important;min-width:0}
   .itemgrid{grid-template-columns:minmax(0,1fr) 72px 100px}
 }
+/* /* MASTER UI SCALE — Nota follows Manajemen Servis */
+@media screen{
+ body{padding:14px 20px 38px!important;background:#f7f9fd!important;color:#10265a!important;font-family:system-ui,-apple-system,"Segoe UI",sans-serif!important}
+ body>header{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:14px!important;width:100%!important;max-width:920px!important;min-height:74px!important;margin:22px auto 14px!important;padding:10px 14px!important;border:1px solid #dce6f5!important;border-radius:16px!important;background:#fff!important;box-shadow:0 3px 14px rgba(20,55,110,.045)!important}
+ body>header img{width:58px!important;height:auto!important;max-height:48px!important;padding:0!important;border:0!important;object-fit:contain!important}
+ body>header .brand-copy{display:flex!important;flex-direction:column!important;gap:2px!important;margin-right:auto!important}
+ body>header .brand-copy strong{font-size:17px!important;line-height:1.2!important;font-weight:800!important;letter-spacing:.015em!important;color:#10265a!important}
+ body>header .brand-copy small{font-size:13px!important;line-height:1.3!important;font-weight:650!important;color:#1768e8!important}
+ body>header .header-spacer{display:none!important}
+ body>header .nav-icon{display:inline-flex!important;align-items:center!important;justify-content:center!important;flex:none!important;width:40px!important;height:40px!important;min-width:40px!important;padding:0!important;border:1px solid #dce6f5!important;border-radius:11px!important;background:#f3f7ff!important;color:#1458c8!important}
+ body>header .nav-icon svg{width:20px!important;height:20px!important}
+ .wrap{width:100%!important;max-width:920px!important;margin:0 auto!important;padding:0!important}
+ h1{font-size:19px!important;line-height:1.3!important;font-weight:750!important;color:#10265a!important}
+ .top{gap:14px!important;margin:0 0 14px!important}
+ .top-actions{min-width:0!important}
+ .panel{width:100%!important;padding:20px!important;margin:0 0 14px!important;border:1px solid #dce6f5!important;border-radius:17px!important;background:#fff!important;box-shadow:0 4px 16px rgba(20,55,110,.045)!important}
+ .panel h2{font-size:19px!important;line-height:1.3!important;font-weight:750!important;color:#10265a!important;margin:0 0 12px!important}
+ .field{display:grid!important;gap:6px!important;min-width:0!important;margin:0 0 12px!important}
+ .field label{font-size:14px!important;line-height:1.35!important;font-weight:650!important;color:#18366e!important}
+ .row{min-width:0!important;gap:10px!important}
+ .row>*{flex:1 1 0!important;min-width:0!important}
+ input,select,textarea{width:100%!important;min-width:0!important;min-height:44px!important;padding:10px 12px!important;border:1px solid #d4e0f2!important;border-radius:10px!important;background:#fbfcff!important;color:#10265a!important;font:inherit!important;font-size:14px!important}
+ textarea{min-height:82px!important}
+ button,.btn{min-height:46px!important;padding:10px 14px!important;border:0!important;border-radius:11px!important;background:#1768e8!important;color:#fff!important;font:inherit!important;font-size:14px!important;font-weight:650!important}
+ button.secondary,.btn.secondary{background:#edf4ff!important;color:#1768e8!important;border:1px solid #dce7f8!important}
+ .source-tabs{gap:5px!important}
+ .source-tabs button{min-height:39px!important;border-radius:9px!important;font-size:13px!important}
+ .notice{border-radius:12px!important;background:#edf4ff!important;color:#34518a!important;font-size:12px!important;padding:10px 12px!important}
+ .item,.listcard{border:1px solid #dce7ff!important;border-radius:13px!important;background:#f8faff!important}
+ .total{background:#edf4ff!important;border-radius:13px!important;color:#234477!important}
+ .grand{color:#1768e8!important}
+}
+@media screen and (min-width:960px){
+ body{padding:18px 26px 42px!important}
+ body>header{max-width:920px!important;margin-top:22px!important;padding:10px 14px!important}
+ .wrap{max-width:920px!important}
+ .panel{padding:22px!important}
+}
+@media screen and (max-width:700px){
+ body{padding:9px 11px 26px!important}
+ body>header{min-height:62px!important;margin:0 auto 12px!important;padding:8px 10px!important;border-radius:14px!important;gap:9px!important}
+ body>header img{width:48px!important;max-height:40px!important}
+ body>header .brand-copy strong{font-size:14px!important}
+ body>header .brand-copy small{font-size:12px!important}
+ body>header .nav-icon{width:36px!important;height:36px!important;min-width:36px!important;border-radius:10px!important}
+ body>header .nav-icon svg{width:18px!important;height:18px!important}
+ .wrap{width:100%!important;max-width:100%!important;margin:0 auto!important;padding:0!important}
+ .top{gap:10px!important;margin-bottom:12px!important}
+ h1{font-size:17px!important}
+ .top-actions{width:100%!important;min-width:0!important;gap:8px!important}
+ .panel{padding:14px!important;border-radius:14px!important;margin-bottom:12px!important}
+ .panel h2{font-size:16px!important;margin-bottom:10px!important}
+ .field{gap:6px!important;margin-bottom:10px!important}
+ .field label{font-size:13px!important}
+ .row{gap:8px!important;align-items:flex-end!important}
+ input,select,textarea{min-height:42px!important;padding:9px 10px!important;font-size:14px!important;border-radius:9px!important}
+ textarea{min-height:72px!important}
+ button,.btn{min-height:44px!important;padding:9px 12px!important;font-size:13px!important;border-radius:11px!important}
+ .source-tabs{gap:5px!important}
+ .source-tabs button{min-height:44px!important;padding:7px 5px!important;font-size:12px!important}
+ .grid{gap:12px!important}
+ .notice{font-size:12px!important;padding:9px 10px!important;border-radius:11px!important}
+ .itemgrid{grid-template-columns:minmax(0,1fr) 72px 100px!important;gap:6px!important}
+}
+
 </style>
 </head><body>
 <header><img src="logo-copy-computer.PNG" alt="Logo Copy Computer"><div class="brand-copy"><strong>COPY COMPUTER</strong><small>Buat Nota</small></div><span class="header-spacer"></span><a class="nav-icon" href="../" aria-label="Menu utama" title="Menu utama"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg></a><button class="nav-icon" type="button" onclick="if(history.length>1)history.back();else location.href='../'" aria-label="Kembali" title="Kembali"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6M9 12h12"/></svg></button></header>
@@ -377,69 +442,4 @@ $('cctvTab').onclick=()=>setSource('CCTV');$('orderTab').onclick=()=>setSource('
 $('sourceSelect').onchange=populate;$('clearInvoiceBtn').onclick=clearInvoiceForm;$('addItem').onclick=()=>addItem('');$('downPayment').oninput=calc;$('extra').oninput=calc;['customer','address','invoiceDate','invoiceNo'].forEach(id=>$(id).addEventListener('input',calc));$('saveBtn').onclick=saveInvoice;$('printBtn').onclick=()=>window.print();
 loadData().catch(e=>note('Gagal memuat data: '+e.message,false));
 })();
-</script></body></html>
-
-/* MASTER UI SCALE — Nota follows Manajemen Servis */
-@media screen{
- body{padding:14px 20px 38px!important;background:#f7f9fd!important;color:#10265a!important;font-family:system-ui,-apple-system,"Segoe UI",sans-serif!important}
- body>header{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:14px!important;width:100%!important;max-width:920px!important;min-height:74px!important;margin:22px auto 14px!important;padding:10px 14px!important;border:1px solid #dce6f5!important;border-radius:16px!important;background:#fff!important;box-shadow:0 3px 14px rgba(20,55,110,.045)!important}
- body>header img{width:58px!important;height:auto!important;max-height:48px!important;padding:0!important;border:0!important;object-fit:contain!important}
- body>header .brand-copy{display:flex!important;flex-direction:column!important;gap:2px!important;margin-right:auto!important}
- body>header .brand-copy strong{font-size:17px!important;line-height:1.2!important;font-weight:800!important;letter-spacing:.015em!important;color:#10265a!important}
- body>header .brand-copy small{font-size:13px!important;line-height:1.3!important;font-weight:650!important;color:#1768e8!important}
- body>header .header-spacer{display:none!important}
- body>header .nav-icon{display:inline-flex!important;align-items:center!important;justify-content:center!important;flex:none!important;width:40px!important;height:40px!important;min-width:40px!important;padding:0!important;border:1px solid #dce6f5!important;border-radius:11px!important;background:#f3f7ff!important;color:#1458c8!important}
- body>header .nav-icon svg{width:20px!important;height:20px!important}
- .wrap{width:100%!important;max-width:920px!important;margin:0 auto!important;padding:0!important}
- h1{font-size:19px!important;line-height:1.3!important;font-weight:750!important;color:#10265a!important}
- .top{gap:14px!important;margin:0 0 14px!important}
- .top-actions{min-width:0!important}
- .panel{width:100%!important;padding:20px!important;margin:0 0 14px!important;border:1px solid #dce6f5!important;border-radius:17px!important;background:#fff!important;box-shadow:0 4px 16px rgba(20,55,110,.045)!important}
- .panel h2{font-size:19px!important;line-height:1.3!important;font-weight:750!important;color:#10265a!important;margin:0 0 12px!important}
- .field{display:grid!important;gap:6px!important;min-width:0!important;margin:0 0 12px!important}
- .field label{font-size:14px!important;line-height:1.35!important;font-weight:650!important;color:#18366e!important}
- .row{min-width:0!important;gap:10px!important}
- .row>*{flex:1 1 0!important;min-width:0!important}
- input,select,textarea{width:100%!important;min-width:0!important;min-height:44px!important;padding:10px 12px!important;border:1px solid #d4e0f2!important;border-radius:10px!important;background:#fbfcff!important;color:#10265a!important;font:inherit!important;font-size:14px!important}
- textarea{min-height:82px!important}
- button,.btn{min-height:46px!important;padding:10px 14px!important;border:0!important;border-radius:11px!important;background:#1768e8!important;color:#fff!important;font:inherit!important;font-size:14px!important;font-weight:650!important}
- button.secondary,.btn.secondary{background:#edf4ff!important;color:#1768e8!important;border:1px solid #dce7f8!important}
- .source-tabs{gap:5px!important}
- .source-tabs button{min-height:39px!important;border-radius:9px!important;font-size:13px!important}
- .notice{border-radius:12px!important;background:#edf4ff!important;color:#34518a!important;font-size:12px!important;padding:10px 12px!important}
- .item,.listcard{border:1px solid #dce7ff!important;border-radius:13px!important;background:#f8faff!important}
- .total{background:#edf4ff!important;border-radius:13px!important;color:#234477!important}
- .grand{color:#1768e8!important}
-}
-@media screen and (min-width:960px){
- body{padding:18px 26px 42px!important}
- body>header{max-width:920px!important;margin-top:22px!important;padding:10px 14px!important}
- .wrap{max-width:920px!important}
- .panel{padding:22px!important}
-}
-@media screen and (max-width:700px){
- body{padding:9px 11px 26px!important}
- body>header{min-height:62px!important;margin:0 auto 12px!important;padding:8px 10px!important;border-radius:14px!important;gap:9px!important}
- body>header img{width:48px!important;max-height:40px!important}
- body>header .brand-copy strong{font-size:14px!important}
- body>header .brand-copy small{font-size:12px!important}
- body>header .nav-icon{width:36px!important;height:36px!important;min-width:36px!important;border-radius:10px!important}
- body>header .nav-icon svg{width:18px!important;height:18px!important}
- .wrap{width:100%!important;max-width:100%!important;margin:0 auto!important;padding:0!important}
- .top{gap:10px!important;margin-bottom:12px!important}
- h1{font-size:17px!important}
- .top-actions{width:100%!important;min-width:0!important;gap:8px!important}
- .panel{padding:14px!important;border-radius:14px!important;margin-bottom:12px!important}
- .panel h2{font-size:16px!important;margin-bottom:10px!important}
- .field{gap:6px!important;margin-bottom:10px!important}
- .field label{font-size:13px!important}
- .row{gap:8px!important;align-items:flex-end!important}
- input,select,textarea{min-height:42px!important;padding:9px 10px!important;font-size:14px!important;border-radius:9px!important}
- textarea{min-height:72px!important}
- button,.btn{min-height:44px!important;padding:9px 12px!important;font-size:13px!important;border-radius:11px!important}
- .source-tabs{gap:5px!important}
- .source-tabs button{min-height:44px!important;padding:7px 5px!important;font-size:12px!important}
- .grid{gap:12px!important}
- .notice{font-size:12px!important;padding:9px 10px!important;border-radius:11px!important}
- .itemgrid{grid-template-columns:minmax(0,1fr) 72px 100px!important;gap:6px!important}
-}
+</script></body>
