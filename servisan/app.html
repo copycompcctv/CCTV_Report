@@ -530,7 +530,7 @@ async function restoreServiceSession(){
 }
 const KEY='cc_servisan_demo_v1';let jobs=JSON.parse(localStorage.getItem(KEY)||'[]'),editing=null;
 const ORDER_KEY='cc_servisan_orders_v1';let orders=JSON.parse(localStorage.getItem(ORDER_KEY)||'[]');
-function openRequestedSection(){if(location.hash==='#jobs')showHistoryView();else if(location.hash==='#settings')showSettingsView();else showServiceView()}
+function openRequestedSection(){if(location.hash==='#jobs')showHistoryView();else if(location.hash==='#settings')showSettingsView();else if(location.hash==='#order')showServiceForm('order');else showServiceView()}
 function setServiceTab(active){['receiveTab','orderTab','historyTab'].forEach(id=>{const b=$(id);b.classList.toggle('active',id===active);if(id===active)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')})}
 function showServiceView(){$('historyView').style.display='none';$('settingsView').style.display='none';$('serviceView').style.display='block';showServiceForm('receive');window.scrollTo({top:0,behavior:'smooth'});}
 function showServiceForm(type){$('serviceView').style.display='block';$('historyView').style.display='none';$('settingsView').style.display='none';$('receiveFormPanel').style.display=type==='receive'?'block':'none';$('orderPanel').style.display=type==='order'?'block':'none';setServiceTab(type==='receive'?'receiveTab':'orderTab');history.replaceState(null,'',location.pathname+(type==='order'?'#order':'#receive'));window.scrollTo({top:0,behavior:'smooth'});}
