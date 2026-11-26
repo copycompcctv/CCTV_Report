@@ -1,6 +1,6 @@
 /* Service worker: membuat aplikasi bisa dibuka tanpa sinyal.
    Naikkan angka versi di bawah setiap kali index.html diubah, supaya HP mengambil versi baru. */
-var CACHE = 'laporan-cctv-v76';
+var CACHE = 'laporan-cctv-v77';
 var SHELL = ['./', 'index.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png', 'logo-copy-computer.PNG', 'cctv.html', 'servisan/index.html', 'servisan/app.html', 'nota.html', 'cek-servisan.html'];
 
 self.addEventListener('install', function (e) {
@@ -36,4 +36,49 @@ self.addEventListener('fetch', function (e) {
       });
     })
   );
+});
+
+
+/* Web Push chat pelanggan servis */
+self.addEventListener('push', function (event) {
+  var data = {};
+  try { data = event.data ? event.data.json() : {}; } catch (_) {}
+  var title = data.title || 'COPY COMPUTER · Pesan pelanggan baru';
+  var body = data.body || 'Ada pesan chat pelanggan baru.';
+  var target = data.url || new URL('servisan/app.html#jobs', self.registration.scope).href;
+  event.waitUntil((async function () {
+    var clientsList = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
+    var visibleClient = clientsList.find(function (client) {
+      return client.visibilityState === 'visible' && client.focused;
+    });
+    if (visibleClient) {
+      visibleClient.postMessage({ type: 'SERVICE_CHAT_PUSH', title: title, body: body, ticket: data.ticket || '' });
+      return;
+    }
+    await self.registration.showNotification(title, {
+      body: body,
+      icon: new URL('icon-192.png', self.registration.scope).href,
+      badge: new URL('icon-192.png', self.registration.scope).href,
+      tag: 'service-chat-' + (data.ticket || 'new'),
+      renotify: true,
+      data: { url: target }
+    });
+  })());
+});
+
+self.addEventListener('notificationclick', function (event) {
+  event.notification.close();
+  var target = (event.notification.data && event.notification.data.url) ||
+    new URL('servisan/app.html#jobs', self.registration.scope).href;
+  event.waitUntil((async function () {
+    var windows = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
+    for (var i = 0; i < windows.length; i++) {
+      if ('focus' in windows[i]) {
+        await windows[i].focus();
+        windows[i].navigate(target);
+        return;
+      }
+    }
+    if (self.clients.openWindow) await self.clients.openWindow(target);
+  })());
 });
