@@ -134,6 +134,13 @@ main{margin:10px auto 30px!important}
 .menu{width:min(960px,100%);margin:0 auto;justify-content:center}
 @media(max-width:680px){.welcome-brand{width:min(390px,100%);margin:8px auto 16px;padding:0 12px}.welcome-brand .welcome-logo{margin-bottom:12px}.welcome-login{margin:0 auto 22px;padding:20px 19px}.menu-toolbar{width:100%;margin-bottom:8px;padding:0 2px}.menu{width:100%}}
 
+
+.home-install-wrap{display:grid;justify-items:center;gap:6px;margin:13px auto 0}
+.home-install-btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:42px;padding:0 17px;border:1px solid #d7e5ff;border-radius:13px;background:#f5f8ff;color:#1768e8;font:700 13px system-ui;cursor:pointer;box-shadow:0 3px 10px rgba(23,104,232,.06)}
+.home-install-btn svg{width:19px;height:19px}
+.home-install-btn[hidden],.home-install-hint[hidden]{display:none!important}
+.home-install-hint{max-width:340px;margin:0;color:#71809a;text-align:center;font-size:11px;line-height:1.45}
+
 </style>
 </head>
 <body>
@@ -150,6 +157,14 @@ main{margin:10px auto 30px!important}
     <div class="date-chip"><span class="mini-icon">◷</span><div><small>WAKTU JEPARA</small><strong id="welcomeTime">--:--:--</strong></div></div>
     <div class="date-chip date-chip-right"><span class="mini-icon">▦</span><div><small>HARI & TANGGAL</small><strong id="welcomeDate">Memuat...</strong></div></div>
   </div>
+</div>
+
+<div class="home-install-wrap">
+  <button type="button" id="homeInstallBtn" class="home-install-btn" hidden>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v11m-5-5 5 5 5-5M5 17v3h14v-3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span>Unduh Aplikasi</span>
+  </button>
+  <p id="homeInstallHint" class="home-install-hint" hidden></p>
 </div>
 </section>
 <section id="loginPanel" class="welcome-login">
@@ -209,6 +224,20 @@ var lastTouch=0;function activity(){if(sessionStorage.getItem('cc_app_unlocked')
 $('togglePassword').addEventListener('click',function(){pass.type=pass.type==='password'?'text':'password'});
 form.addEventListener('submit',async function(e){e.preventDefault();var btn=form.querySelector('button[type=submit]');btn.disabled=true;btn.textContent='Memeriksa...';msg.textContent='Menghubungkan ke akun Copy Computer...';try{var result=await sb.auth.signInWithPassword({email:EMAIL,password:pass.value});if(result.error)throw result.error;showMenu()}catch(err){msg.textContent='Password salah atau koneksi bermasalah. Coba kembali.';pass.focus()}finally{btn.disabled=false;btn.innerHTML='Masuk <span>→</span>'}});
 $('lockButton').addEventListener('click',function(){lock('Aplikasi dikunci. Masukkan password untuk melanjutkan.')});
+
+var installPrompt=null,homeInstallBtn=document.getElementById('homeInstallBtn'),homeInstallHint=document.getElementById('homeInstallHint');
+var isIosDevice=/iphone|ipad|ipod/i.test(navigator.userAgent),isStandalone=window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
+if(homeInstallBtn&&!isStandalone){
+  if(isIosDevice){homeInstallBtn.hidden=false}
+  window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();installPrompt=e;homeInstallBtn.hidden=false});
+  homeInstallBtn.addEventListener('click',async function(){
+    if(installPrompt){var promptEvent=installPrompt;installPrompt=null;homeInstallBtn.hidden=true;try{await promptEvent.prompt();await promptEvent.userChoice}catch(e){}}
+    else if(isIosDevice){homeInstallHint.textContent='Untuk memasang: tekan tombol Bagikan di browser, lalu pilih “Tambahkan ke Layar Utama”.';homeInstallHint.hidden=false}
+    else{homeInstallHint.textContent='Buka menu browser, lalu pilih “Instal aplikasi” atau “Tambahkan ke layar utama”.';homeInstallHint.hidden=false}
+  });
+  window.addEventListener('appinstalled',function(){homeInstallBtn.hidden=true;homeInstallHint.hidden=true});
+}
+
 (async function init(){try{var x=await sb.auth.getSession();if(x.data.session&&(x.data.session.user.email||'').toLowerCase()===EMAIL)showMenu();else showLogin()}catch(e){showLogin('Tidak dapat memeriksa sesi. Periksa koneksi internet.')}})();
 })();
 if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('./sw.js').catch(function(){})})}
