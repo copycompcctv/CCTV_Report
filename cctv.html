@@ -803,13 +803,16 @@ function structure(r){
   return {name:(r.customer||'').trim(),meta:meta,secs:secs,catatan:(r.catatan||'').trim(),note:(r.note||'').trim()};
 }
 function buildText(r){
-  var st=structure(r), out=[];
-  if(st.name) out.push(st.name);
-  st.meta.forEach(function(m){out.push(m)});
+  var st=structure(r),out=[],meta=[['Tanggal',fmtDate(r.date)],['Nama Teknisi',(r.tech||'').trim()],['Nama Pelanggan',st.name],['Alamat Pelanggan',(r.address||'').trim()]].filter(function(x){return x[1]});
+  var width=meta.reduce(function(n,x){return Math.max(n,x[0].length)},0);
+  function aligned(label,value){return label.padEnd(width,' ')+' : '+value}
+  if(meta.length){out.push(aligned(meta[0][0],meta[0][1]));if(meta.length>1)out.push(aligned(meta[1][0],meta[1][1]));if(meta.length>2){out.push('');meta.slice(2).forEach(function(x){out.push(aligned(x[0],x[1]))})}}
+  var allLines=[];st.secs.forEach(function(sec){sec.lines.forEach(function(line){allLines.push(line)})});
+  var detailWidth=allLines.reduce(function(n,line){var p=line.indexOf(' : ');return p>=0?Math.max(n,p):n},0);
   st.secs.forEach(function(s,i){
-    if(i>0) out.push('');
+    if(i===0&&s.title)out.push('');else if(i>0)out.push('');
     if(s.title) out.push(s.bold?'*'+s.title+'*':s.title);
-    s.lines.forEach(function(l){out.push('- '+l)});
+    s.lines.forEach(function(l){var p=l.indexOf(' : ');if(p>=0)l=l.slice(0,p).padEnd(detailWidth,' ')+l.slice(p);out.push('- '+l)});
   });
   if(st.catatan){out.push('');out.push('Keterangan Tambahan: '+st.catatan)}
   if(st.note){out.push('');out.push('Catatan: '+st.note)}
@@ -877,7 +880,7 @@ function mergeCatalog(cats){
  all.sort(function(a,b){return a.label.localeCompare(b.label)});return all;
 }
 function blankReport(){
-  return {id:uid(),example:false,saved:false,customer:'',address:'',tech:'',date:'',createdAt:Date.now(),showMeta:false,updatedAt:Date.now(),
+  return {id:uid(),example:false,saved:false,customer:'',address:'',tech:'',date:todayISO(),createdAt:Date.now(),showMeta:false,updatedAt:Date.now(),
     catatan:'',note:'',sections:[{id:uid(),title:'',job:'',bold:true,items:[mk('structured',{item:''})]}]};
 }
 function sampleReports(){
@@ -968,13 +971,14 @@ function buildPdf(r,kop,logoJpeg){
   if(ktag){y-=12;T(ktag,M,y,10,'F3',MUTE)}
   y-=10;L(M,y,PW-M,y,1.5,ACC);y-=30;
   T('LAPORAN PEKERJAAN',M,y,13,'F2',INK);y-=24;
-  var rows=[['Pelanggan',cleanName(r.customer)],['Tanggal',fmtDate(r.date)],['Alamat',(r.address||'').trim()],['Teknisi',(r.tech||'').trim()]]
-    .filter(function(v){return v[1]});
-  rows.forEach(function(rw){
-    var lines=wrapText(rw[1],11,CW-80,rw[0]==='Pelanggan');
+  var rows=[['Tanggal',fmtDate(r.date)],['Nama Teknisi',(r.tech||'').trim()],['Nama Pelanggan',cleanName(r.customer)],['Alamat Pelanggan',(r.address||'').trim()]].filter(function(v){return v[1]});
+  var labelW=rows.reduce(function(w,v){return Math.max(w,tw(v[0],9.5,false))},0),colonX=M+labelW+7,valueX=colonX+10;
+  rows.forEach(function(rw,i){
+    if(i===2)y-=12;
+    var lines=wrapText(rw[1],11,CW-(valueX-M),rw[0]==='Nama Pelanggan');
     need(16*lines.length);
-    T(rw[0],M,y,9.5,'F1',MUTE);
-    lines.forEach(function(ln){T(ln,M+80,y,11,rw[0]==='Pelanggan'?'F2':'F1',INK);y-=15});
+    T(rw[0],M,y,9.5,'F1',MUTE);T(':',colonX,y,9.5,'F1',MUTE);
+    lines.forEach(function(ln,j){T(ln,valueX,y,11,rw[0]==='Nama Pelanggan'?'F2':'F1',INK);y-=15});
   });
   y-=2;L(M,y,PW-M,y,0.75,RULE);y-=24;
   var s=structure(r);
@@ -1216,6 +1220,7 @@ function render(){
    ''
    +'<div class="card stack form-shell"><div class="stack form-fields">'
    +'<div class="form-field"><label class="field-label" for="date"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M7 3v4M17 3v4M3 10h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Tanggal Laporan <em>*</em></label><input id="date" type="date" data-f="date" value="'+esc(r.date)+'" autocomplete="off"></div>'
+   +'<div class="form-field"><label class="field-label" for="tech"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a4.2 4.2 0 1 0 0-8.4A4.2 4.2 0 0 0 12 12Zm-8 8.2c.4-4 3.5-6.2 8-6.2s7.6 2.2 8 6.2v.6H4z" fill="currentColor"/></svg>Nama Teknisi</label><input id="tech" data-f="tech" value="'+esc(r.tech)+'" placeholder="Masukkan nama teknisi..." autocomplete="off"></div>'
    +'<div class="form-field"><label class="field-label" for="customer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a4.2 4.2 0 1 0 0-8.4A4.2 4.2 0 0 0 12 12Zm-8 8.2c.4-4 3.5-6.2 8-6.2s7.6 2.2 8 6.2v.6H4z" fill="currentColor"/></svg>Nama Pelanggan <em>*</em></label><input id="customer" data-f="customer" value="'+esc(r.customer)+'" placeholder="Masukkan nama pelanggan..." autocomplete="off"></div>'
    +'<div class="form-field"><label class="field-label" for="address"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-7.2 8-13a8 8 0 1 0-16 0c0 5.8 8 13 8 13Z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="9" r="2.5" fill="currentColor"/></svg>Alamat</label><input id="address" data-f="address" value="'+esc(r.address)+'" placeholder="Masukkan alamat pelanggan..." autocomplete="off"></div></div>'
    +r.sections.map(function(sec,index){if(!sec.items.length)sec.items.push(mk('structured',{item:''}));return sectionHTML(sec,index)}).join('')
@@ -1335,7 +1340,7 @@ function setView(v,keepScroll){
   document.querySelectorAll('.tab').forEach(function(b){if(b.dataset.v===v)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});
   if(v==='isi')render();
   if(v==='riwayat')renderHistory();
-  if(v==='barang')renderCatalog();
+  if(v==='barang'){ $('nl').value='';$('nn').value='';$('nk').value='qty';renderCatalog();}
   renderNote();
   if(!keepScroll)window.scrollTo(0,0);
 }
@@ -1356,7 +1361,7 @@ document.addEventListener('input',function(e){
     save();return;
   }
   var r=cur();
-  if(f==='customer'||f==='address'||f==='date'||f==='showMeta'||f==='tech'||f==='catatan'||f==='note'){r[f]=v;if(f==='tech')db.lastTech=v}
+  if(f==='customer'||f==='address'||f==='date'||f==='showMeta'||f==='tech'||f==='catatan'||f==='note'){r[f]=v}
   else{
     var sec=getSec(t);if(!sec)return;
     if(f==='title')sec.title=v;
@@ -1386,12 +1391,19 @@ document.addEventListener('click',function(e){
   var b=e.target.closest('[data-act]');if(!b)return;
   var act=b.dataset.act,r=cur(),sec,it,c,id;
   switch(act){
-    case 'view':setView(b.dataset.v);break;
-    case 'new':{isReadOnly=false;var n=blankReport();n.tech=db.lastTech||'';db.reports.push(n);db.currentId=n.id;save();setView('isi');focusEl('customer');break}
+    case 'view':{
+      if(b.dataset.v==='isi'){
+        isReadOnly=false;var freshDraft=blankReport();freshDraft.ownerId=currentUser?currentUser.id:'';
+        db.reports=db.reports.filter(function(x){return x.saved!==false});db.reports.push(freshDraft);db.currentId=freshDraft.id;
+      }
+      setView(b.dataset.v);break;
+    }
+    case 'new':{isReadOnly=false;var n=blankReport();n.ownerId=currentUser?currentUser.id:'';db.reports=db.reports.filter(function(x){return x.saved!==false});db.reports.push(n);db.currentId=n.id;setView('isi');focusEl('customer');break}
     case 'reset-form':{
-      if(!confirm('Kosongkan semua isian laporan ini?'))break;
-      var old=cur(),fresh=blankReport();fresh.id=old.id;fresh.ownerId=old.ownerId||'';fresh.saved=old.saved!==false;fresh.createdAt=old.createdAt||Date.now();fresh.tech=db.lastTech||old.tech||'';
-      db.reports=db.reports.map(function(x){return x.id===old.id?fresh:x});db.currentId=fresh.id;delete pendingFiles[old.id];isReadOnly=false;saveNow();render();renderAttachments();toast('Form laporan dikosongkan.');break;
+      if(!confirm('Kosongkan formulir ini? Laporan yang sudah tersimpan di History tidak akan dihapus.'))break;
+      var old=cur(),fresh=blankReport();fresh.ownerId=currentUser?currentUser.id:'';
+      db.reports=db.reports.filter(function(x){return x.saved!==false&&x.id!==old.id?true:x.saved!==false});
+      db.reports.push(fresh);db.currentId=fresh.id;delete pendingFiles[old.id];isReadOnly=false;render();renderAttachments();renderHistory();toast('Form baru dikosongkan. History tetap aman.');break;
     }
     case 'dismiss-note':r.example=false;renderNote();save();break;
     case 'dismiss-install':try{localStorage.setItem('laporan-cctv-install','1')}catch(x){}$('install').hidden=true;break;
@@ -1472,7 +1484,7 @@ document.addEventListener('click',function(e){
     case 'h-wa':{id=b.closest('[data-rid]').dataset.rid;var wr=db.reports.find(function(x){return String(x.id)===String(id)});if(wr){var wt=buildText(wr);if(wt)window.open('https://wa.me/?text='+encodeURIComponent(wt),'_blank','noopener,noreferrer');else toast('Laporan masih kosong')}break;}
     case 'h-pdf':{id=b.closest('[data-rid]').dataset.rid;var pr=db.reports.find(function(x){return String(x.id)===String(id)});if(pr)sharePdf(null,pr);break;}
     case 'h-edit':id=b.closest('[data-rid]').dataset.rid;db.currentId=id;isReadOnly=false;setView('isi');toast('Mode edit aktif. Perubahan tersimpan setelah menekan Simpan laporan.');break;
-    case 'h-open':{id=b.closest('[data-rid]').dataset.rid;var viewed=db.reports.find(function(x){return String(x.id)===String(id)});if(viewed){var header=[];if(viewed.date)header.push('Tanggal: '+fmtDate(viewed.date));if(viewed.tech)header.push('Teknisi: '+viewed.tech);var customerBlock=[];if(viewed.customer)customerBlock.push(viewed.customer);if(viewed.address)customerBlock.push(viewed.address);var popupReport=Object.assign({},viewed,{customer:'',address:'',showMeta:false});var reportBody=buildText(popupReport);var popupText=header.join('\n')+(header.length&&customerBlock.length?'\n\n':'')+customerBlock.join('\n')+(customerBlock.length&&reportBody?'\n\n':'')+reportBody;showReportPopup(viewed.customer||'Laporan',popupText);}break;}
+    case 'h-open':{id=b.closest('[data-rid]').dataset.rid;var viewed=db.reports.find(function(x){return String(x.id)===String(id)});if(viewed)showReportPopup(viewed.customer||'Laporan',buildText(viewed));break;}
     case 'h-dup':{
       id=b.closest('[data-rid]').dataset.rid;
       var src=db.reports.filter(function(x){return x.id===id})[0];if(!src)break;
