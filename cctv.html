@@ -1667,7 +1667,7 @@ async function enterApp(user){
 $('backBtn').addEventListener('click',function(){if(document.referrer&&new URL(document.referrer).origin===location.origin&&history.length>1)history.back();else location.href='./'});
 $('logoutBtn').addEventListener('click',async function(){
   cloudReady=false;if(realtimeChannel){await sb.removeChannel(realtimeChannel);realtimeChannel=null}
-  await sb.auth.signOut();currentUser=null;currentProfile=null;sessionStorage.removeItem('cc_app_unlocked');localStorage.removeItem('cc_last_activity');location.href='./';
+  await sb.auth.signOut({scope:'local'});currentUser=null;currentProfile=null;sessionStorage.removeItem('cc_app_unlocked');localStorage.removeItem('cc_last_activity');location.href='./';
 });
 (async function start(){
   $('appRoot').hidden=true;
