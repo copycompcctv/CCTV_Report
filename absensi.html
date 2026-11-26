@@ -116,154 +116,132 @@ input,select,textarea{font-size:16px!important;border:1px solid #d7e2f7;border-r
 <script>
 (function(){
 'use strict';
-const URL='https://ogolkyowgvypstjmxxde.supabase.co',KEY='sb_publishable_8NQAMLU4WhrHfn5nwf4gjQ_rr9egknn',EMAIL='cctv@copycomputer.app';
-const sb=window.supabase.createClient(URL,KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
-const TECHS=['Huda','Arif','Hermanto','Yazid'];
+const SUPABASE_URL='https://ogolkyowgvypstjmxxde.supabase.co';
+const SUPABASE_KEY='sb_publishable_8NQAMLU4WhrHfn5nwf4gjQ_rr9egknn';
+const SERVICE_EMAIL='cctv@copycomputer.app';
+const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+const TECHNICIANS=['Huda','Arif','Hermanto','Yazid'];
 const $=id=>document.getElementById(id);
-const today=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Jakarta',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
-const fmtTime=v=>v?new Intl.DateTimeFormat('id-ID',{timeZone:'Asia/Jakarta',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date(v)):'—';
-const fmtDate=v=>v?new Intl.DateTimeFormat('id-ID',{timeZone:'Asia/Jakarta',day:'2-digit',month:'long',year:'numeric'}).format(new Date(v+'T12:00:00+07:00')):'';
-const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const svgUser='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>';
-let sourceRows=[],selectedSource={source_type:'manual',source_id:null};
-async function guard(){
+const esc=value=>String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+const jakartaDate=()=>{
+ const p=Object.fromEntries(new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Jakarta',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date()).map(x=>[x.type,x.value]));
+ return p.year+'-'+p.month+'-'+p.day;
+};
+const timeText=value=>value?new Intl.DateTimeFormat('id-ID',{timeZone:'Asia/Jakarta',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date(value))+' WIB':'—';
+const dateText=value=>value?new Intl.DateTimeFormat('id-ID',{timeZone:'Asia/Jakarta',day:'2-digit',month:'long',year:'numeric'}).format(new Date(value+'T12:00:00+07:00')):'';
+const userIcon='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>';
+let busy=false;
+
+async function authorize(){
  const last=Number(localStorage.getItem('cc_last_activity'))||0;
- if(sessionStorage.getItem('cc_app_unlocked')!=='1'||!last||Date.now()-last>=5*60*1000){location.replace('./');return false}
- const {data,error}=await sb.auth.getSession();
- if(error||!data.session||(data.session.user.email||'').toLowerCase()!==EMAIL){location.replace('./');return false}
- function touch(){if(sessionStorage.getItem('cc_app_unlocked')==='1')localStorage.setItem('cc_last_activity',String(Date.now()))}
- ['pointerdown','keydown','touchstart','click','scroll'].forEach(e=>document.addEventListener(e,touch,{passive:true}));
- setInterval(()=>{const t=Number(localStorage.getItem('cc_last_activity'))||0;if(Date.now()-t>=5*60*1000){sessionStorage.removeItem('cc_app_unlocked');location.replace('./')}},10000);
+ if(sessionStorage.getItem('cc_app_unlocked')!=='1'||!last||Date.now()-last>=5*60*1000){location.replace('./');return false;}
+ const {data,error}=await db.auth.getSession();
+ if(error||!data?.session||(data.session.user.email||'').toLowerCase()!==SERVICE_EMAIL){location.replace('./');return false;}
+ const touch=()=>{if(sessionStorage.getItem('cc_app_unlocked')==='1')localStorage.setItem('cc_last_activity',String(Date.now()));};
+ ['pointerdown','keydown','touchstart','click','scroll'].forEach(event=>document.addEventListener(event,touch,{passive:true}));
+ setInterval(()=>{const t=Number(localStorage.getItem('cc_last_activity'))||0;if(Date.now()-t>=5*60*1000){sessionStorage.removeItem('cc_app_unlocked');location.replace('./');}},10000);
  return true;
 }
-window.showTab=function(tab){
- const schedule=tab==='schedule';$('scheduleView').hidden=!schedule;$('attendanceView').hidden=schedule;
- $('tabSchedule').classList.toggle('active',schedule);$('tabAttendance').classList.toggle('active',!schedule);
- location.hash=schedule?'jadwal':'absensi';
- if(schedule)loadSchedules();else loadAttendance();
-};
-function resetSchedule(){
- $('scheduleForm').reset();$('editId').value='';selectedSource={source_type:'manual',source_id:null};$('visitDate').value=today();$('visitTime').value='09:00';
- $('saveSchedule').innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>Simpan Jadwal>';
- $('technicianChecks').querySelectorAll('input').forEach(x=>x.checked=false);
+function renderPerson(name,row,selectedDate){
+ const isToday=selectedDate===jakartaDate();
+ const onLeave=row?.attendance_status==='izin';
+ const arrived=!!row?.arrival_at;
+ const departed=!!row?.departure_at;
+ const arrivalIcon='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3h5a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-5"/><path d="M3 12h12m-5-5 5 5-5 5"/></svg>';
+ const departureIcon='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3h5a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-5"/><path d="M15 12H3m5-5-5 5 5 5"/></svg>';
+ const status=onLeave?'Izin tidak masuk':departed?'Sudah pulang':arrived?'Sudah tiba':'Belum absen';
+ const action=onLeave
+ ?'<div class="notice" style="margin:0">Izin tercatat · '+esc(row.leave_reason||'Tanpa alasan')+'</div>'
+ :'<div class="punches">'+
+ '<button class="punch '+(arrived?'done':'')+'" '+(!isToday||arrived||busy?'disabled':'')+' onclick="recordAttendance(\''+name+'\',\'arrival\')">'+arrivalIcon+'Jam Tiba<small>'+(arrived?timeText(row.arrival_at):'Tekan saat tiba')+'</small></button>'+
+ '<button class="punch '+(departed?'done':'')+'" '+(!isToday||!arrived||departed||busy?'disabled':'')+' onclick="recordAttendance(\''+name+'\',\'departure\')">'+departureIcon+'Jam Pulang<small>'+(departed?timeText(row.departure_at):'Tekan saat pulang')+'</small></button></div>'+
+ '<button class="btn light leave-toggle" type="button" '+(!isToday||arrived||busy?'disabled':'')+' onclick="toggleLeave(\''+name+'\')">▤ Izin Tidak Masuk</button>'+
+ '<div class="leave-box" id="leave-'+name+'" hidden><label for="reason-'+name+'">Alasan izin</label><textarea id="reason-'+name+'" placeholder="Tulis alasan izin tidak masuk..."></textarea><button class="btn" style="margin-top:8px;width:100%" onclick="saveLeave(\''+name+'\')">Simpan Izin</button></div>';
+ return '<article class="person"><div class="person-head"><div class="avatar">'+userIcon+'</div><div><div class="person-name">'+name+'</div><div class="person-sub">'+status+'</div></div></div>'+action+'</article>';
 }
-function selectedTechs(){return [...$('technicianChecks').querySelectorAll('input:checked')].map(x=>x.value)}
-function setTechs(names){$('technicianChecks').querySelectorAll('input').forEach(x=>x.checked=(names||[]).includes(x.value))}
-async function loadSources(){
- const sel=$('sourceRecord');sel.innerHTML='<option value="">Memuat data...</option>';
- try{const {data,error}=await sb.from('service_records').select('id,record_type,payload').in('record_type',['service','order']).order('updated_at',{ascending:false});if(error)throw error;sourceRows=data||[];renderSourceOptions()}
- catch(e){sel.innerHTML='<option value="">Data belum dapat dimuat</option>'}
-}
-function renderSourceOptions(){
- const kind=$('sourceType').value,rows=sourceRows.filter(r=>r.record_type===kind);
- $('sourceRecord').innerHTML='<option value="">Pilih data tersimpan...</option>'+rows.map(r=>{const p=r.payload||{},name=p.nama||p.customer||p.pelanggan||'Pelanggan',ticket=p.ticket||p.no||r.id,detail=p.jenis||p.detail||p.keluhan||p.perangkat||'Pekerjaan';return '<option value="'+esc(r.id)+'">'+esc(ticket+' · '+name+' · '+detail)+'</option>'}).join('');
- if(!rows.length)$('sourceRecord').innerHTML='<option value="">Belum ada data pada menu ini</option>';
-}
-$('sourceType').addEventListener('change',renderSourceOptions);
-$('useSource').addEventListener('click',()=>{
- const row=sourceRows.find(r=>r.id===$('sourceRecord').value);if(!row){alert('Pilih data terlebih dahulu.');return}
- const p=row.payload||{};selectedSource={source_type:row.record_type,source_id:row.id};$('customerName').value=p.nama||p.customer||p.pelanggan||'';
- $('customerAddress').value=p.alamat||p.address||'';
- $('jobType').value=p.jenis||p.detail||p.keluhan||p.perangkat||'';
- $('scheduleNotes').value=p.catatan||p.keluhan||'';
- $('customerName').focus();
-});
-$('scheduleForm').addEventListener('submit',async e=>{
- e.preventDefault();const technicians=selectedTechs();if(!technicians.length){alert('Pilih minimal satu teknisi.');return}
- const payload={visit_date:$('visitDate').value,visit_time:$('visitTime').value,customer_name:$('customerName').value.trim(),customer_address:$('customerAddress').value.trim(),job_type:$('jobType').value.trim(),technicians,notes:$('scheduleNotes').value.trim(),source_type:selectedSource.source_type,source_id:selectedSource.source_id};
- if(!payload.visit_date||!payload.visit_time||!payload.customer_name||!payload.job_type){alert('Lengkapi tanggal, jam, pelanggan, dan pekerjaan.');return}
- const btn=$('saveSchedule');btn.disabled=true;
- try{
-  const id=$('editId').value;
-  const query=id?sb.from('work_schedules').update(payload).eq('id',id):sb.from('work_schedules').insert(payload);
-  const {error}=await query;if(error)throw error;
-  resetSchedule();await loadSchedules();alert(id?'Jadwal berhasil diperbarui.':'Jadwal berhasil disimpan.');
- }catch(err){alert('Jadwal belum tersimpan: '+err.message)}finally{btn.disabled=false}
-});
-window.editSchedule=async id=>{
- const {data,error}=await sb.from('work_schedules').select('*').eq('id',id).single();if(error){alert(error.message);return}
- $('editId').value=data.id;$('visitDate').value=data.visit_date;$('visitTime').value=String(data.visit_time).slice(0,5);
- $('customerName').value=data.customer_name;$('customerAddress').value=data.customer_address||'';$('jobType').value=data.job_type;$('scheduleNotes').value=data.notes||'';setTechs(data.technicians);
- $('saveSchedule').textContent='Simpan Perubahan';window.scrollTo({top:0,behavior:'smooth'});
-};
-window.deleteSchedule=async id=>{if(!confirm('Hapus jadwal pekerjaan ini?'))return;const {error}=await sb.from('work_schedules').delete().eq('id',id);if(error)alert('Gagal menghapus: '+error.message);else loadSchedules()};
-window.changeScheduleStatus=async(id,status)=>{const {error}=await sb.from('work_schedules').update({status}).eq('id',id);if(error)alert('Status gagal diperbarui: '+error.message);else loadSchedules()};
-async function loadSchedules(){
- const filter=$('scheduleFilterDate').value;let q=sb.from('work_schedules').select('*').order('visit_date',{ascending:true}).order('visit_time',{ascending:true});
- if(filter)q=q.eq('visit_date',filter);const {data,error}=await q;
- if(error){$('scheduleList').innerHTML='<div class="empty">Jadwal belum dapat dimuat: '+esc(error.message)+'</div>';return}
- const rows=data||[];if(!rows.length){$('scheduleList').innerHTML='<div class="empty">Belum ada jadwal untuk tanggal ini. Tambahkan jadwal kunjungan di atas.</div>';return}
- $('scheduleList').innerHTML=rows.map(r=>'<article class="card"><div class="card-head"><div><div class="card-title">'+esc(r.customer_name)+'</div><div class="meta">'+esc(fmtDate(r.visit_date))+' · '+esc(String(r.visit_time).slice(0,5))+' WIB</div></div><span class="pill '+(r.status==='Selesai'?'done':r.status==='Ditunda'?'delay':'')+'">'+esc(r.status)+'</span></div><div class="meta" style="margin-top:8px"><strong>▣ Pekerjaan:</strong> '+esc(r.job_type)+'</div><div class="meta"><strong>⌖ Alamat:</strong> '+esc(r.customer_address||'Belum diisi')+'</div><div class="meta"><strong>♙ Teknisi:</strong> '+esc((r.technicians||[]).join(', ')||'Belum ditentukan')+'</div>'+(r.notes?'<div class="meta"><strong>Catatan:</strong> '+esc(r.notes)+'</div>':'')+'<div class="card-actions"><select class="status-select" aria-label="Status jadwal" onchange="changeScheduleStatus(\''+r.id+'\',this.value)">'+['Terjadwal','Dikerjakan','Selesai','Ditunda'].map(s=>'<option '+(s===r.status?'selected':'')+'>'+s+'</option>').join('')+'</select><button class="btn light" type="button" onclick="editSchedule(\''+r.id+'\')">✎ Edit</button><button class="btn danger" type="button" onclick="deleteSchedule(\''+r.id+'\')">Hapus</button></div></article>').join('');
-}
-$('scheduleFilterDate').addEventListener('change',loadSchedules);$('allSchedules').addEventListener('click',()=>{$('scheduleFilterDate').value='';loadSchedules()});
-function attendanceCard(name,row,date){
- const isToday=date===today(),leave=row?.attendance_status==='izin',arrived=!!row?.arrival_at,departed=!!row?.departure_at;
- const arrivalText=arrived?fmtTime(row.arrival_at)+' WIB':'Tekan saat tiba';
- const departureText=departed?fmtTime(row.departure_at)+' WIB':'Tekan saat pulang';
- return '<article class="person"><div class="person-head"><div class="avatar">'+svgUser+'</div><div><div class="person-name">'+name+'</div><div class="person-sub">'+(leave?'Izin tidak masuk':arrived?'Sudah tiba':'Belum absen')+'</div></div></div>'+
- (leave?'<div class="notice" style="margin:0">Izin tercatat · '+esc(row.leave_reason||'Tanpa alasan')+'</div>':
- '<div class="punches"><button class="punch '+(arrived?'done':'')+'" '+(!isToday||arrived?'disabled':'')+' onclick="punch(\''+name+'\',\'arrival\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3h5a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-5"/><path d="M3 12h12m-5-5 5 5-5 5"/></svg>Jam Tiba<small>'+arrivalText+'</small></button><button class="punch '+(departed?'done':'')+'" '+(!isToday||!arrived||departed?'disabled':'')+' onclick="punch(\''+name+'\',\'departure\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3h5a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-5"/><path d="M15 12H3m5-5-5 5 5 5"/></svg>Jam Pulang<small>'+departureText+'</small></button></div>'+
- '<button class="btn light leave-toggle" type="button" '+(!isToday||arrived?'disabled':'')+' onclick="toggleLeave(\''+name+'\')">▤ Izin Tidak Masuk</button><div class="leave-box" id="leave-'+name+'" hidden><label for="reason-'+name+'">Alasan izin</label><textarea id="reason-'+name+'" placeholder="Tulis alasan izin tidak masuk..."></textarea><button class="btn" style="margin-top:8px;width:100%" onclick="submitLeave(\''+name+'\')">Simpan Izin</button></div>')+'</article>';
+function renderHistory(rows,selectedDate){
+ const sorted=[...rows].sort((a,b)=>TECHNICIANS.indexOf(a.technician_name)-TECHNICIANS.indexOf(b.technician_name));
+ if(!sorted.length){$('attendanceSummary').innerHTML='<div class="empty">Belum ada catatan absensi pada '+dateText(selectedDate)+'.</div>';return;}
+ $('attendanceSummary').innerHTML=sorted.map(row=>{
+  const leave=row.attendance_status==='izin';
+  return '<article class="card"><div class="card-head"><strong>'+esc(row.technician_name)+'</strong><span class="pill '+(leave?'delay':'done')+'">'+(leave?'Izin':'Hadir')+'</span></div><div class="meta">'+(leave?'Alasan: '+esc(row.leave_reason||'—'):'Jam Tiba: '+timeText(row.arrival_at)+' · Jam Pulang: '+timeText(row.departure_at))+'</div></article>';
+ }).join('');
 }
 async function loadAttendance(){
- const date=$('attendanceDate').value||today();const {data,error}=await sb.from('technician_attendance').select('*').eq('attendance_date',date);
- if(error){$('attendanceCards').innerHTML='<div class="empty">Absensi belum dapat dimuat: '+esc(error.message)+'</div>';return}
- const map=new Map((data||[]).map(x=>[x.technician_name,x]));
- $('attendanceCards').innerHTML=TECHS.map(n=>attendanceCard(n,map.get(n),date)).join('');
- $('attendanceSummary').innerHTML=(data||[]).length?(data||[]).sort((a,b)=>TECHS.indexOf(a.technician_name)-TECHS.indexOf(b.technician_name)).map(r=>'<div class="card"><div class="card-head"><strong>'+esc(r.technician_name)+'</strong><span class="pill '+(r.attendance_status==='hadir'?'done':'delay')+'">'+(r.attendance_status==='hadir'?'Hadir':'Izin')+'</span></div><div class="meta">'+(r.attendance_status==='izin'?'Alasan: '+esc(r.leave_reason||'—'):'Tiba: '+esc(fmtTime(r.arrival_at))+' WIB · Pulang: '+esc(fmtTime(r.departure_at))+' WIB')+'</div></div>').join(''):'<div class="empty">Belum ada catatan absensi pada tanggal ini.</div>';
-}
-window.punch=async(name,type)=>{
- if($('attendanceDate').value!==today()){alert('Pencatatan hanya bisa dilakukan untuk tanggal hari ini.');return}
- const field=type==='arrival'?'arrival_at':'departure_at';const {data:existing,error:readErr}=await sb.from('technician_attendance').select('*').eq('attendance_date',today()).eq('technician_name',name).maybeSingle();
- if(readErr){alert(readErr.message);return}
- if(type==='departure'&&!existing?.arrival_at){alert('Catat Jam Tiba terlebih dahulu.');return}
- if(existing?.[field])return;
- const payload={attendance_date:today(),technician_name:name,attendance_status:'hadir',[field]:new Date().toISOString()};
- const {error}=await sb.from('technician_attendance').upsert(payload,{onConflict:'attendance_date,technician_name'});
- if(error)alert('Absensi gagal disimpan: '+error.message);else loadAttendance();
-};
-window.toggleLeave=name=>{$('leave-'+name).hidden=!$('leave-'+name).hidden};
-window.submitLeave=async name=>{
- const reason=$('reason-'+name).value.trim();if(!reason){alert('Isi alasan izin terlebih dahulu.');return}
- const {error}=await sb.from('technician_attendance').upsert({attendance_date:today(),technician_name:name,attendance_status:'izin',arrival_at:null,departure_at:null,leave_reason:reason},{onConflict:'attendance_date,technician_name'});
- if(error)alert('Izin gagal disimpan: '+error.message);else loadAttendance();
-};
-$('attendanceDate').addEventListener('change',loadAttendance);
-
-const PAGE=location.pathname.endsWith('/absensi.html')?'attendance':'schedule';
-function setupSeparatePage(){
- const isSchedule=PAGE==='schedule';
- $('scheduleView').hidden=!isSchedule;$('attendanceView').hidden=isSchedule;
- const formPanel=isSchedule?$('scheduleView').children[0]:$('attendanceView').children[0];
- const historyPanel=isSchedule?$('scheduleView').children[1]:$('attendanceView').children[1];
- const sourceNotice=$('scheduleView').querySelector('.notice');
- const sourceGrid=$('scheduleView').querySelector('.notice').nextElementSibling;
- const useSource=$('useSource');
- if(isSchedule){
-   const form=$('scheduleForm');
-   if(sourceNotice&&sourceGrid){form.insertBefore(sourceNotice,$('scheduleForm').querySelector('.form-actions'));form.insertBefore(sourceGrid,$('scheduleForm').querySelector('.form-actions'));}
-   if(useSource)useSource.remove();
+ const date=$('attendanceDate').value||jakartaDate();
+ $('attendanceCards').innerHTML='<div class="empty">Memuat absensi...</div>';
+ $('attendanceSummary').innerHTML='<div class="empty">Memuat rekap...</div>';
+ try{
+  const result=await db.from('technician_attendance').select('*').eq('attendance_date',date);
+  if(result.error)throw result.error;
+  const rows=result.data||[];
+  const byName=new Map(rows.map(row=>[row.technician_name,row]));
+  $('attendanceCards').innerHTML=TECHNICIANS.map(name=>renderPerson(name,byName.get(name),date)).join('');
+  renderHistory(rows,date);
+ }catch(error){
+  const message=error?.message||'Koneksi tidak dapat dijangkau. Periksa internet lalu coba lagi.';
+  $('attendanceCards').innerHTML='<div class="empty">Data absensi gagal dimuat: '+esc(message)+'<br><button class="btn light" style="margin-top:10px" onclick="reloadAttendance()">Coba Lagi</button></div>';
+  $('attendanceSummary').innerHTML='<div class="empty">Rekap belum dapat dimuat.</div>';
  }
- const show=mode=>{
-  formPanel.hidden=mode!=='form';historyPanel.hidden=mode!=='history';
-  $('tabForm').classList.toggle('active',mode==='form');$('tabHistory').classList.toggle('active',mode==='history');
-  location.hash=mode==='form'?(isSchedule?'jadwal':'absensi'):'history';
-  if(mode==='history'){if(isSchedule)loadSchedules();else loadAttendance();}
- };
- $('tabForm').onclick=e=>{e.preventDefault();show('form')};
- $('tabHistory').onclick=e=>{e.preventDefault();show('history')};
- show(location.hash==='#history'?'history':'form');
 }
-
+window.reloadAttendance=loadAttendance;
+window.recordAttendance=async(name,kind)=>{
+ if(busy)return;
+ if($('attendanceDate').value!==jakartaDate()){alert('Pencatatan hanya bisa dilakukan untuk tanggal hari ini.');return;}
+ busy=true;loadAttendanceButtons(true);
+ try{
+  const {data:existing,error:readError}=await db.from('technician_attendance').select('*').eq('attendance_date',jakartaDate()).eq('technician_name',name).maybeSingle();
+  if(readError)throw readError;
+  if(kind==='departure'&&!existing?.arrival_at)throw new Error('Catat Jam Tiba terlebih dahulu.');
+  const field=kind==='arrival'?'arrival_at':'departure_at';
+  if(existing?.[field])return;
+  const payload={attendance_date:jakartaDate(),technician_name:name,attendance_status:'hadir',[field]:new Date().toISOString()};
+  const {error}=await db.from('technician_attendance').upsert(payload,{onConflict:'attendance_date,technician_name'});
+  if(error)throw error;
+  await loadAttendance();
+ }catch(error){alert('Absensi gagal disimpan: '+(error?.message||'Kesalahan tidak diketahui.'));}
+ finally{busy=false;await loadAttendance();}
+};
+function loadAttendanceButtons(disabled){
+ document.querySelectorAll('#attendanceCards button').forEach(button=>{if(disabled)button.disabled=true;});
+}
+window.toggleLeave=name=>{const box=$('leave-'+name);if(box)box.hidden=!box.hidden;};
+window.saveLeave=async name=>{
+ if(busy)return;
+ if($('attendanceDate').value!==jakartaDate()){alert('Izin hanya bisa dicatat untuk tanggal hari ini.');return;}
+ const reason=$('reason-'+name).value.trim();if(!reason){alert('Isi alasan izin terlebih dahulu.');return;}
+ busy=true;
+ try{
+  const {error}=await db.from('technician_attendance').upsert({attendance_date:jakartaDate(),technician_name:name,attendance_status:'izin',arrival_at:null,departure_at:null,leave_reason:reason},{onConflict:'attendance_date,technician_name'});
+  if(error)throw error;
+  await loadAttendance();
+ }catch(error){alert('Izin gagal disimpan: '+(error?.message||'Kesalahan tidak diketahui.'));}
+ finally{busy=false;await loadAttendance();}
+};
+function setPage(mode){
+ const history=mode==='history';
+ $('attendanceView').children[0].hidden=history;
+ $('attendanceView').children[1].hidden=!history;
+ $('tabForm').classList.toggle('active',!history);
+ $('tabHistory').classList.toggle('active',history);
+ if(history)renderCurrentHistoryTitle();
+}
+function renderCurrentHistoryTitle(){
+ const h=$('attendanceView').children[1].querySelector('h2');
+ if(h)h.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>History Absensi · '+esc(dateText($('attendanceDate').value));
+}
+$('tabForm').addEventListener('click',event=>{event.preventDefault();setPage('form');location.hash='absensi';});
+$('tabHistory').addEventListener('click',event=>{event.preventDefault();setPage('history');location.hash='history';});
+$('attendanceDate').addEventListener('change',async()=>{await loadAttendance();if(location.hash==='#history')renderCurrentHistoryTitle();});
 async function init(){
- if(!await guard())return;
- const now=new Date(),parts=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Jakarta',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(now);
- const p=Object.fromEntries(parts.map(x=>[x.type,x.value]));
- const dateValue=p.year+'-'+p.month+'-'+p.day;
- $('visitDate').value=dateValue;$('visitTime').value='09:00';$('scheduleFilterDate').value=dateValue;$('attendanceDate').value=dateValue;
- setupSeparatePage();
- if(PAGE==='schedule'){await loadSources();loadSchedules();}
- else{loadAttendance();}
+ try{
+  if(!await authorize())return;
+  $('attendanceDate').value=jakartaDate();
+  setPage(location.hash==='#history'?'history':'form');
+  await loadAttendance();
+ }catch(error){
+  $('attendanceCards').innerHTML='<div class="empty">Aplikasi gagal dijalankan: '+esc(error?.message||'Kesalahan tidak diketahui.')+'</div>';
+ }
 }
 init();
 })();
