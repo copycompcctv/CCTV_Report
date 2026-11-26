@@ -109,6 +109,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .hrow.cur{border-color:var(--accent)}
 .hmeta{color:var(--muted);font-size:13px;font-variant-numeric:tabular-nums}
 .tag{display:inline-block;margin-left:6px;padding:1px 8px;border-radius:10px;background:var(--accent-soft);color:var(--accent);font-size:12px;font-weight:600}
+.hact .h-wa-icon{width:38px;min-width:38px;padding:7px;display:inline-grid;place-items:center}.hact .h-wa-icon svg{width:20px;height:20px;display:block}
 .hact{display:flex;gap:8px;flex-wrap:wrap}
 details summary{cursor:pointer;font-weight:600;min-height:40px;display:flex;align-items:center}
 .empty{color:var(--muted);margin:0}
@@ -1396,7 +1397,7 @@ function renderHistory(){
     return '<article class="card hrow'+(r.id===db.currentId?' cur':'')+'" data-rid="'+id+'">'
      +'<div><strong>'+esc((r.customer||'').trim()||'Tanpa nama')+'</strong>'+(r.example?'<span class="tag">Contoh</span>':'')
      +'<div class="hmeta">'+esc([d,n+' baris',tc>0?'kabel '+fmt(tc)+' M':''].filter(Boolean).join(' · '))+'</div></div>'
-     +'<div class="hact"><button type="button" class="mini" data-act="h-open">Buka</button><button type="button" class="mini" data-act="h-edit">Edit</button><button type="button" class="mini" data-act="h-copy">Salin</button><button type="button" class="mini" data-act="h-wa">WhatsApp</button><button type="button" class="mini" data-act="h-pdf">Cetak / PDF</button><button type="button" class="mini danger" data-act="h-del">Hapus</button></div></article>';
+     +'<div class="hact"><button type="button" class="mini" data-act="h-open">Lihat Laporan</button><button type="button" class="mini" data-act="h-edit">Edit</button><button type="button" class="mini" data-act="h-copy">Salin</button><button type="button" class="mini h-wa-icon" data-act="h-wa" aria-label="WhatsApp" title="WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 11.8a8.5 8.5 0 0 1-12.6 7.4L3 20.5l1.3-4.7a8.5 8.5 0 1 1 16.2-4Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.2 7.8c.2-.5.5-.5.8-.5h.5c.2 0 .4.1.5.4l.8 1.8c.1.2.1.4-.1.6l-.6.7c-.2.2-.2.4-.1.6.5.9 1.2 1.6 2.1 2.1.2.1.4.1.6-.1l.8-.9c.2-.2.4-.2.6-.1l1.7.8c.3.1.4.3.4.5 0 .4-.2 1.1-.7 1.5-.5.4-1.1.6-1.8.5-1-.1-2.3-.7-3.7-1.9-1.1-1-2-2.3-2.2-3.3-.2-1 .1-1.8.5-2.2Z" fill="currentColor"/></svg></button><button type="button" class="mini" data-act="h-pdf">PDF/Print</button><button type="button" class="mini danger" data-act="h-del">Hapus</button></div></article>';
   }).join(''):'<p class="empty">Tidak ada laporan yang cocok.</p>';
 }
 
