@@ -243,7 +243,7 @@ function $(id){return document.getElementById(id)}
 function showLogin(message){login.hidden=false;menu.hidden=true;msg.textContent=message||'';pass.value=''}
 var IDLE_LIMIT=5*60*1000,lastTouch=0,locking=false;
 function showMenu(){login.hidden=true;menu.hidden=false;sessionStorage.setItem('cc_app_unlocked','1');localStorage.setItem('cc_last_activity',String(Date.now()))}
-async function lock(message){if(locking)return;locking=true;sessionStorage.removeItem('cc_app_unlocked');localStorage.removeItem('cc_last_activity');try{await sb.auth.signOut()}catch(e){}showLogin(message||'Sesi berakhir setelah 5 menit tidak aktif. Masukkan password kembali.');locking=false}
+async function lock(message){if(locking)return;locking=true;sessionStorage.removeItem('cc_app_unlocked');localStorage.removeItem('cc_last_activity');try{await sb.auth.signOut({scope:'local'})}catch(e){}showLogin(message||'Sesi berakhir setelah 5 menit tidak aktif. Masukkan password kembali.');locking=false}
 function activity(){if(sessionStorage.getItem('cc_app_unlocked')==='1'){var now=Date.now();if(now-lastTouch>900){localStorage.setItem('cc_last_activity',String(now));lastTouch=now}}}
 function checkIdle(){if(sessionStorage.getItem('cc_app_unlocked')==='1'){var last=Number(localStorage.getItem('cc_last_activity'))||0;if(!last||Date.now()-last>=IDLE_LIMIT)lock()}}
 ['pointerdown','keydown','touchstart','click','scroll'].forEach(function(ev){document.addEventListener(ev,activity,{passive:true})});
