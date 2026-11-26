@@ -789,8 +789,10 @@ function structure(r){
       var l=itemLine(it); if(!l) return;
       if(it.join&&lines.length&&i>0) lines[lines.length-1]+=' + '+l; else lines.push(l);
     });
-    var title=(s.job==='Servis Lainnya'?(s.jobCustom||'Servis Lainnya'):(s.job||s.title||'')).trim();
+    var title=(s.job||s.title||'').trim();
     if(title||lines.length) secs.push({title:title,bold:true,lines:lines});
+    var customTitle=s.job==='Servis Lainnya'?(s.jobCustom||'').trim():'';
+    if(customTitle) secs.push({title:customTitle,bold:true,lines:[]});
   });
   var meta=[];
   if(r.showMeta){ if((r.address||'').trim()) meta.push(r.address.trim()); var d=fmtDate(r.date); if(d) meta.push(d); }
@@ -1873,4 +1875,8 @@ $('logoutBtn').addEventListener('click',async function(){
 #form .job-section .item-actions{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important;width:100%!important;margin-top:4px!important}
 #form .job-section .item-actions button{width:100%!important;min-width:0!important;justify-content:center!important}
 @media(max-width:520px){#form .job-section .item-actions{gap:8px!important}}
+</style>
+<style>
+/* Pratinjau laporan memakai kolom monospace agar semua tanda titik dua sejajar */
+.bubble{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace!important;white-space:pre!important;font-variant-ligatures:none}
 </style>
