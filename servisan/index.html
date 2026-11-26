@@ -84,6 +84,9 @@ function touch(){var n=Date.now();if(n-last>900){last=n;localStorage.setItem('cc
 document.documentElement.classList.remove('cc-gate-pending');
 })();
 </script><style id="iphone-viewport-fit">
+/* Keep native mobile pull-to-refresh and vertical scrolling available */
+html,body{overscroll-behavior-y:auto;touch-action:pan-y pinch-zoom;-webkit-overflow-scrolling:touch}
+
 html{width:100%;max-width:100%;overflow-x:hidden;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 body{width:100%;max-width:100%;min-width:0;overflow-x:hidden}
 main,.cards,.card{min-width:0;max-width:100%}
