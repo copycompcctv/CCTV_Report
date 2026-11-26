@@ -56,6 +56,36 @@ button,.btn{font:600 14px 'IBM Plex Sans',system-ui,sans-serif;border-radius:9px
 .form-actions>*{min-height:56px;display:flex;align-items:center;justify-content:center;gap:10px;border:0!important;border-radius:9px;font-size:16px;font-weight:700}.form-actions svg{width:24px;height:24px;flex:none}.form-actions .reset-action{background:#d9eef4!important;color:var(--blue)!important}.form-actions .save-action{background:var(--blue)!important;color:#fff!important}
 @media(max-width:850px){.wrap{margin:16px auto;padding:0 12px}.service-header{margin:10px 12px}.form-actions{margin-left:-13px;margin-right:-13px;padding-left:12px;padding-right:12px}}
 @media(max-width:480px){.form-actions{grid-template-columns:.85fr 1.35fr}.form-actions>*{min-height:52px;font-size:14px}.form-actions svg{width:21px;height:21px}.service-form-panel{padding:13px}}
+
+/* Tampilan terpadu mengikuti CCTV Report */
+:root{--navy:#10265a;--blue:#1768e8;--bg:#fff;--line:#dce7ff;--muted:#6872b5;--accent:#1768e8;--accent-soft:#edf4ff}
+body{background:#fff;color:var(--navy);font-family:system-ui,-apple-system,'Segoe UI',sans-serif;font-size:14px;line-height:1.5;padding:16px 22px 34px}
+.service-header{width:100%;max-width:1120px;min-height:110px;margin:0 auto 14px;padding:14px 20px!important;display:flex;align-items:center;justify-content:space-between;position:relative;background:#fff;border:1px solid var(--line);border-radius:30px;box-shadow:0 6px 20px rgba(24,78,160,.07)}
+.service-brand{display:flex;align-items:center;gap:12px;min-width:0}.service-brand img{width:64px!important;height:64px!important;max-height:64px!important;object-fit:contain}
+.service-brand strong{display:block;color:#10265a;font-size:17px;font-weight:800;letter-spacing:.01em}.service-brand small{display:block;color:#1768e8;font-size:13px;font-weight:650;margin-top:1px}
+.service-header .nav-icon{width:44px;height:44px;min-width:44px;padding:0;border:1px solid #dfe8fb;border-radius:13px;background:#f4f7ff;color:#123b91;display:inline-grid;place-items:center}
+.service-header .nav-icon svg{width:22px;height:22px}
+.wrap{max-width:1120px;width:100%;margin:0 auto;padding:0;display:grid;gap:14px}
+.service-tabs{position:static;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:5px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 4px 14px rgba(24,78,160,.04)}
+.service-tab{display:flex;align-items:center;justify-content:center;gap:8px;min-width:0;min-height:46px;padding:8px 10px;border:0;border-radius:10px;background:#f4f7ff;color:#1749a4;font:600 14px system-ui,sans-serif;white-space:normal}
+.service-tab svg{width:19px;height:19px;flex:none}.service-tab.active{background:#1768e8;color:#fff}
+.service-form-panel{max-width:none!important;margin:0!important;padding:16px!important;border:1px solid var(--line);border-radius:16px;background:#fff;box-shadow:0 4px 16px rgba(24,78,160,.045)}
+.panel h2{font-size:16px;color:#10265a;margin:0 0 14px}
+label{font-size:13px;font-weight:600;color:#1c3975}
+input,select,textarea{font:inherit;font-size:16px!important;color:#10265a;background:#fff;border:1px solid #d7e2f7;border-radius:10px;padding:10px 12px;width:100%;min-height:44px}
+textarea{line-height:1.4;resize:vertical}
+button{font-family:system-ui,-apple-system,'Segoe UI',sans-serif}
+.job,.stat{border:1px solid var(--line);border-radius:12px;box-shadow:0 3px 12px rgba(24,78,160,.035)}
+.ticket{color:#1768e8}.pill{background:#edf4ff;color:#1749a4}
+.form-actions{position:sticky;bottom:0;z-index:4;display:grid;grid-template-columns:1fr 1.45fr;gap:10px;margin:18px -16px -16px;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));background:#fff;border-top:1px solid var(--line);border-radius:0 0 16px 16px}
+.form-actions>*{min-height:52px;display:flex;align-items:center;justify-content:center;gap:9px;border:0!important;border-radius:10px;font-size:15px;font-weight:700}
+.form-actions svg{width:22px;height:22px;flex:none}
+.form-actions .reset-action{background:#dce9ff!important;color:#1768e8!important}
+.form-actions .save-action{background:#1768e8!important;color:#fff!important}
+#historyView .panel{border:1px solid var(--line);border-radius:16px;box-shadow:0 4px 16px rgba(24,78,160,.045)}
+#settingsView{border:1px solid var(--line);border-radius:16px}
+@media(max-width:850px){body{padding:10px 12px 28px}.service-header{min-height:82px;margin-bottom:12px;padding:10px 14px!important;border-radius:20px}.service-brand img{width:56px!important;height:50px!important}.wrap{gap:12px}}
+@media(max-width:520px){body{padding:10px 12px 24px}.service-header{min-height:70px;padding:8px 10px!important;border-radius:17px}.service-brand{gap:9px}.service-brand img{width:48px!important;height:44px!important}.service-brand strong{font-size:15px}.service-brand small{font-size:12px}.service-header .nav-icon{width:40px;height:40px;min-width:40px}.service-tabs{gap:5px;padding:4px;border-radius:12px}.service-tab{gap:5px;min-height:44px;padding:7px 3px;font-size:11px}.service-tab svg{width:17px;height:17px}.service-form-panel{padding:12px!important}.form-actions{margin:16px -12px -12px;padding:9px 12px calc(9px + env(safe-area-inset-bottom,0px));grid-template-columns:.85fr 1.35fr}.form-actions>*{min-height:48px;font-size:14px}.form-actions svg{width:20px;height:20px}.fieldgrid,.checks{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style><style>html.cc-gate-pending body{visibility:hidden}</style><script>(function(){'use strict';document.documentElement.classList.add('cc-gate-pending');var IDLE_LIMIT=5*60*1000,last=Number(localStorage.getItem('cc_last_activity'))||0;function expire(){sessionStorage.removeItem('cc_app_unlocked');localStorage.removeItem('cc_last_activity');location.replace('../')}function checkIdle(){last=Number(localStorage.getItem('cc_last_activity'))||0;if(sessionStorage.getItem('cc_app_unlocked')!=='1'||!last||Date.now()-last>=IDLE_LIMIT)expire()}if(sessionStorage.getItem('cc_app_unlocked')!=='1'||!last||Date.now()-last>=IDLE_LIMIT){expire();return}function touch(){var n=Date.now();if(n-last>900){last=n;localStorage.setItem('cc_last_activity',String(n))}}['pointerdown','keydown','touchstart','click','scroll'].forEach(function(e){document.addEventListener(e,touch,{passive:true})});setInterval(checkIdle,1000);document.addEventListener('visibilitychange',function(){if(!document.hidden)checkIdle()});document.documentElement.classList.remove('cc-gate-pending')})();</script><style id="iphone-viewport-fit">
 /* Keep native mobile pull-to-refresh and vertical scrolling available */
 html,body{overscroll-behavior-y:auto;touch-action:pan-y pinch-zoom;-webkit-overflow-scrolling:touch}
@@ -89,20 +119,17 @@ body{width:100%;max-width:100%;min-width:0;overflow-x:hidden}
 </style>
 </head>
 <body>
-<header class="service-header"><img src="../logo-copy-computer.PNG" alt="Logo Copy Computer"><div class="brand-copy"><small>Manajemen Servis</small></div><button class="nav-icon" type="button" onclick="if(history.length>1)history.back();else location.href='../'" aria-label="Kembali" title="Kembali"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6M9 12h12"/></svg></button></header>
+<header class="service-header"><div class="service-brand"><img src="../logo-copy-computer.PNG" alt="Logo Copy Computer"><div><strong>COPY COMPUTER</strong><small>Manajemen Servis</small></div></div><button class="nav-icon" type="button" onclick="if(history.length>1)history.back();else location.href='../'" aria-label="Kembali" title="Kembali"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/><path d="M9 12h12"/></svg></button></header>
 <section id="serviceLogin" class="auth-screen" hidden></section>
 <main class="wrap" id="appShell" style="display:none">
 <section id="serviceView">
-<div id="serviceFormChoices" class="service-choices" role="tablist" aria-label="Pilihan form servis">
-  <button type="button" class="service-choice active" id="receiveTab" role="tab" aria-selected="true" onclick="showServiceForm('receive')">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a5 5 0 0 0-6.4 6.4L3 18l3 3 5.3-5.3a5 5 0 0 0 6.4-6.4l-3.1 3.1-3-3z"/><path d="m15 4 5 5"/></svg><span>Penerimaan Servis</span>
-  </button>
-  <button type="button" class="service-choice" id="orderTab" role="tab" aria-selected="false" onclick="showServiceForm('order')">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h5M8 17h3"/><path d="M16 15v4m-2-2h4"/></svg><span>Pesanan Khusus</span>
-  </button>
-</div>
+<nav class="service-tabs" aria-label="Menu Manajemen Servis">
+<button type="button" class="service-tab active" id="receiveTab" aria-current="page" onclick="showServiceForm('receive')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a5 5 0 0 0-6.4 6.4L3 18l3 3 5.3-5.3a5 5 0 0 0 6.4-6.4l-3.1 3.1-3-3z"/><path d="m15 4 5 5"/></svg><span>Penerimaan Servis</span></button>
+<button type="button" class="service-tab" id="orderTab" onclick="showServiceForm('order')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h5M8 17h3"/><path d="M16 15v4m-2-2h4"/></svg><span>Pesanan Khusus</span></button>
+<button type="button" class="service-tab" id="historyTab" onclick="showHistoryView()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>History</span></button>
+</nav>
 <div id="receiveFormPanel" class="panel service-form-panel" style="display:none">
-  <button type="button" class="secondary form-back" onclick="hideServiceForms()"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg> Kembali ke pilihan form</button>
+  
   <h2 id="formTitle">Form Penerimaan Servisan</h2><form id="jobForm">
 <div class="fieldgrid">
 <div class="field"><label>Nama pelanggan *</label><input id="nama" required placeholder="Nama lengkap"></div>
@@ -127,7 +154,7 @@ body{width:100%;max-width:100%;min-width:0;overflow-x:hidden}
 <div class="stats"><div class="stat"><small>Total masuk</small><b id="total">0</b></div><div class="stat"><small>Menunggu</small><b id="wait">0</b></div><div class="stat"><small>Dikerjakan</small><b id="work">0</b></div><div class="stat"><small>Siap diambil</small><b id="done">0</b></div></div>
 
 <div class="layout history-layout">
-<section class="panel"><h2>Antrean & Riwayat Servis</h2><div class="toolbar"><input id="search" placeholder="Cari tiket / nama / perangkat..." oninput="render()"><select id="filter" onchange="render()" style="max-width:145px"><option value="">Semua status</option><option>Menunggu pemeriksaan</option><option>Sedang dikerjakan</option><option>Menunggu sparepart</option><option>Menunggu persetujuan</option><option>Selesai - siap diambil</option><option>Sudah diambil</option></select></div><div id="jobs"></div></section>
+<section class="panel"><h2>History Servis</h2><div class="toolbar"><input id="search" placeholder="Cari tiket / nama / perangkat..." oninput="render()"><select id="filter" onchange="render()" style="max-width:145px"><option value="">Semua status</option><option>Menunggu pemeriksaan</option><option>Sedang dikerjakan</option><option>Menunggu sparepart</option><option>Menunggu persetujuan</option><option>Selesai - siap diambil</option><option>Sudah diambil</option></select></div><div id="jobs"></div></section>
 
 <section class="panel"><h2>Riwayat Pesanan Khusus</h2><div id="orderList" class="empty">Belum ada pesanan khusus.</div></section>
 </div>
@@ -178,10 +205,11 @@ async function restoreServiceSession(){
 const KEY='cc_servisan_demo_v1';let jobs=JSON.parse(localStorage.getItem(KEY)||'[]'),editing=null;
 const ORDER_KEY='cc_servisan_orders_v1';let orders=JSON.parse(localStorage.getItem(ORDER_KEY)||'[]');
 function openRequestedSection(){if(location.hash==='#jobs')showHistoryView();else if(location.hash==='#settings')showSettingsView();else showServiceView()}
-function showServiceView(){$('historyView').style.display='none';$('settingsView').style.display='none';$('serviceView').style.display='block';hideServiceForms();window.scrollTo({top:0,behavior:'smooth'});}
-function showServiceForm(type){$('serviceFormChoices').style.display='grid';$('receiveFormPanel').style.display=type==='receive'?'block':'none';$('orderPanel').style.display=type==='order'?'block':'none';$('receiveTab').classList.toggle('active',type==='receive');$('orderTab').classList.toggle('active',type==='order');$('receiveTab').setAttribute('aria-selected',type==='receive'?'true':'false');$('orderTab').setAttribute('aria-selected',type==='order'?'true':'false');window.scrollTo({top:0,behavior:'smooth'});}
-function hideServiceForms(){$('receiveFormPanel').style.display='none';$('orderPanel').style.display='none';$('receiveTab').classList.remove('active');$('orderTab').classList.remove('active');$('receiveTab').setAttribute('aria-selected','false');$('orderTab').setAttribute('aria-selected','false');$('serviceFormChoices').style.display='grid';window.scrollTo({top:0,behavior:'smooth'});}
-function showHistoryView(){$('serviceView').style.display='none';$('settingsView').style.display='none';$('historyView').style.display='block';render();renderOrders();window.scrollTo({top:0,behavior:'smooth'});}
+function setServiceTab(active){['receiveTab','orderTab','historyTab'].forEach(id=>{const b=$(id);b.classList.toggle('active',id===active);if(id===active)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')})}
+function showServiceView(){$('historyView').style.display='none';$('settingsView').style.display='none';$('serviceView').style.display='block';showServiceForm('receive');window.scrollTo({top:0,behavior:'smooth'});}
+function showServiceForm(type){$('serviceView').style.display='block';$('historyView').style.display='none';$('settingsView').style.display='none';$('receiveFormPanel').style.display=type==='receive'?'block':'none';$('orderPanel').style.display=type==='order'?'block':'none';setServiceTab(type==='receive'?'receiveTab':'orderTab');window.scrollTo({top:0,behavior:'smooth'});}
+function hideServiceForms(){showServiceForm('receive')}
+function showHistoryView(){$('serviceView').style.display='none';$('settingsView').style.display='none';$('historyView').style.display='block';setServiceTab('historyTab');render();renderOrders();window.scrollTo({top:0,behavior:'smooth'});}
 function showSettingsView(){$('serviceView').style.display='none';$('historyView').style.display='none';$('settingsView').style.display='block';serviceStatusDraft=serviceStatuses.slice();renderStatusSettings();window.scrollTo({top:0,behavior:'smooth'});}
 function renderStatusFilter(){const f=$('filter'),current=f.value;f.innerHTML='<option value="">Semua status</option>'+serviceStatuses.map(x=>'<option>'+esc(x)+'</option>').join('');if(serviceStatuses.includes(current))f.value=current;}
 function toggleOrderForm(force){if(force===false){resetOrderForm();return}showServiceView();showServiceForm('order');$('orderPanel').scrollIntoView({behavior:'smooth',block:'start'});$('orderNama').value=$('nama').value||$('orderNama').value||'';$('orderWa').value=$('wa').value||$('orderWa').value||'';}
