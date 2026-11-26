@@ -804,11 +804,11 @@ function structure(r){
 }
 function buildText(r){
   var st=structure(r),out=[],meta=[['Tanggal',fmtDate(r.date)],['Nama Teknisi',(r.tech||'').trim()],['Nama Pelanggan',st.name],['Alamat Pelanggan',(r.address||'').trim()]].filter(function(x){return x[1]});
-  var width=meta.reduce(function(n,x){return Math.max(n,x[0].length)},0);
-  function aligned(label,value){return label.padEnd(width,' ')+' : '+value}
-  if(meta.length){out.push(aligned(meta[0][0],meta[0][1]));if(meta.length>1)out.push(aligned(meta[1][0],meta[1][1]));if(meta.length>2){out.push('');meta.slice(2).forEach(function(x){out.push(aligned(x[0],x[1]))})}}
   var allLines=[];st.secs.forEach(function(sec){sec.lines.forEach(function(line){allLines.push(line)})});
   var detailWidth=allLines.reduce(function(n,line){var p=line.indexOf(' : ');return p>=0?Math.max(n,p):n},0);
+  var width=meta.reduce(function(n,x){return Math.max(n,x[0].length)},detailWidth);
+  function aligned(label,value){return label.padEnd(width,' ')+' : '+value}
+  if(meta.length){out.push(aligned(meta[0][0],meta[0][1]));if(meta.length>1)out.push(aligned(meta[1][0],meta[1][1]));if(meta.length>2){out.push('');meta.slice(2).forEach(function(x){out.push(aligned(x[0],x[1]))})}}
   st.secs.forEach(function(s,i){
     if(i===0&&meta.length)out.push('');else if(i>0)out.push('');
     if(s.title) out.push(s.bold?'*'+s.title+'*':s.title);
@@ -985,7 +985,7 @@ function buildPdf(r,kop,logoJpeg){
   if(!s.secs.length){T('Belum ada isi laporan.',M,y,11,'F3',MUTE);y-=16}
   s.secs.forEach(function(sec){
     if(sec.title){need(44);T(sec.title,M,y,11.5,'F2',ACC);y-=7;L(M,y,PW-M,y,0.5,RULE);y-=17}
-    var detailLabelW=sec.lines.reduce(function(w,line){var p=line.indexOf(' : ');return p>=0?Math.max(w,tw(line.slice(0,p),10.5,false)):w},0);
+    var detailLabelW=Math.max(labelW,sec.lines.reduce(function(w,line){var p=line.indexOf(' : ');return p>=0?Math.max(w,tw(line.slice(0,p),10.5,false)):w},0));
     sec.lines.forEach(function(item){
       var first=true;
       item.split('\n').forEach(function(p){
