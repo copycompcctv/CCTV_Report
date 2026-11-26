@@ -1097,7 +1097,7 @@ function setStatus(){
     el.hidden=false;el.className='sub'+(storageOk?'':' bad');$('logoutBtn').hidden=false;
   }else{el.textContent='';el.hidden=true;$('logoutBtn').hidden=true}
 }
-function cloudRow(r){return {id:r.id,owner_id:r.ownerId||currentUser.id,customer:r.customer||'',address:r.address||'',report_date:r.date||null,payload:r}}
+function cloudRow(r){var payload=JSON.parse(JSON.stringify(r));delete payload._cloudUpdatedAt;return {id:r.id,owner_id:r.ownerId||currentUser.id,customer:r.customer||'',address:r.address||'',report_date:r.date||null,payload:payload}}
 async function saveOneCloudReport(report){
   if(!cloudReady||!currentUser)throw new Error('Belum login ke database online');
   var payload=JSON.parse(JSON.stringify(report));delete payload._cloudUpdatedAt;
@@ -1627,14 +1627,38 @@ async function loadCloud(){
   if(rr.error)throw rr.error;
   if(ss.error)throw ss.error;
   var local=db;
+  function mapReportRow(row){
+    var x=normReport(row.payload)||blankReport();
+    x.id=row.id;x.ownerId=row.owner_id;
+    x.createdAt=+x.createdAt||Date.parse(row.created_at)||(x.date?new Date(x.date+'T00:00:00').getTime():0)||Date.now();
+    x.updatedAt=+x.updatedAt||Date.parse(row.updated_at)||Date.now();
+    x._cloudUpdatedAt=row.updated_at;
+    return x;
+  }
   if(rr.data&&rr.data.length){
-    db.reports=rr.data.map(function(row){var x=normReport(row.payload)||blankReport();x.id=row.id;x.ownerId=row.owner_id;x.createdAt=+x.createdAt||Date.parse(row.created_at)||(x.date?new Date(x.date+'T00:00:00').getTime():0)||Date.now();x.updatedAt=+x.updatedAt||Date.parse(row.updated_at)||Date.now();x._cloudUpdatedAt=row.updated_at;return x});
+    var remoteIds=new Set(rr.data.map(function(row){return row.id}));
+    var missingLocal=local.reports.filter(function(x){return x.saved!==false&&!remoteIds.has(x.id)});
+    if(missingLocal.length){
+      var imported=await sb.from('reports').upsert(missingLocal.map(cloudRow),{onConflict:'id',ignoreDuplicates:true});
+      if(imported.error)throw imported.error;
+      var refreshed=await sb.from('reports').select('id,owner_id,payload,created_at,updated_at').order('created_at',{ascending:false});
+      if(refreshed.error)throw refreshed.error;
+      rr.data=refreshed.data||[];
+    }
+    db.reports=rr.data.map(mapReportRow);
     db.currentId=db.reports.some(function(x){return x.id===local.currentId})?local.currentId:db.reports[0].id;
   }else{
     db.reports=(currentProfile.role==='admin'&&hadLocalDb?local.reports.filter(function(x){return x.saved!==false}):[]).map(function(x){x.ownerId=currentUser.id;return x});
     if(!db.reports.length)db.reports=[blankReport()];
     db.currentId=db.reports.some(function(x){return x.id===local.currentId})?local.currentId:db.reports[0].id;
-    if(db.reports.some(function(x){return x.saved!==false})){var initial=await sb.from('reports').upsert(db.reports.filter(function(x){return x.saved!==false}).map(cloudRow),{onConflict:'id'});if(initial.error)throw initial.error;}
+    if(db.reports.some(function(x){return x.saved!==false})){
+      var initial=await sb.from('reports').upsert(db.reports.filter(function(x){return x.saved!==false}).map(cloudRow),{onConflict:'id',ignoreDuplicates:true});
+      if(initial.error)throw initial.error;
+      var firstFetch=await sb.from('reports').select('id,owner_id,payload,created_at,updated_at').order('created_at',{ascending:false});
+      if(firstFetch.error)throw firstFetch.error;
+      db.reports=(firstFetch.data||[]).map(mapReportRow);
+      if(!db.reports.length)db.reports=[blankReport()];
+    }
   }
   if(ss.data){db.catalog=mergeCatalog(Array.isArray(ss.data.catalog)?ss.data.catalog:db.catalog);db.kop=normKop(ss.data.kop);db.lastTech=str(ss.data.last_tech)}
   else{var initSettings=await sb.from('user_settings').upsert({user_id:currentUser.id,catalog:db.catalog,kop:db.kop,last_tech:db.lastTech||''},{onConflict:'user_id'});if(initSettings.error)throw initSettings.error}
