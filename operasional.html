@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="id"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Jadwal & Absensi | Copy Computer</title><meta name="theme-color" content="#ffffff">
+<link rel="icon" type="image/png" href="icon-192.png">
+<style>
+:root{--navy:#10265a;--blue:#1768e8;--line:#dce7ff;--soft:#edf4ff;--muted:#6879a0;--green:#15945f;--red:#dc3545}
+*{box-sizing:border-box}body{margin:0;padding:14px 18px 38px;background:#f5f8ff;color:var(--navy);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+header,.wrap{width:min(1120px,100%);margin-left:auto;margin-right:auto}
+header{min-height:100px;padding:14px 20px;display:flex;align-items:center;gap:14px;background:#fff;border:1px solid var(--line);border-radius:26px;box-shadow:0 6px 20px rgba(24,78,160,.07)}
+.brand-logo{width:64px;height:58px;object-fit:contain;flex:none;border-right:2px solid var(--navy);padding-right:12px}
+.brand-copy{min-width:0;flex:1}.brand-copy strong{display:block;font-size:23px;font-weight:850;line-height:1.15;letter-spacing:-.025em}.brand-copy small{display:block;color:var(--blue);font-size:17px;font-weight:750;margin-top:4px}
+.nav-icon{width:48px;height:48px;border:0;border-radius:14px;background:var(--blue);color:#fff;display:grid;place-items:center;text-decoration:none;flex:none}.nav-icon svg{width:23px;height:23px}
+.wrap{margin-top:14px}.tabs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}.tab{min-height:58px;border:1px solid var(--line);border-radius:15px;background:#edf4ff;color:#174a9c;display:flex;align-items:center;justify-content:center;gap:9px;font:750 15px system-ui;cursor:pointer}.tab svg{width:21px;height:21px}.tab.active{background:var(--blue);border-color:var(--blue);color:#fff;box-shadow:0 4px 12px #1768e82b}
+.panel{background:#fff;border:1px solid var(--line);border-radius:22px;padding:20px;margin-bottom:14px;box-shadow:0 5px 16px rgba(24,78,160,.045)}
+h1{font-size:24px;margin:0 0 16px;display:flex;align-items:center;gap:10px;letter-spacing:-.02em}h1 svg{width:27px;height:27px;color:var(--blue)}
+h2{font-size:18px;margin:0 0 12px;display:flex;align-items:center;gap:9px}h2 svg{width:21px;height:21px;color:var(--blue)}
+label{display:block;font-weight:700;font-size:13px;margin:0 0 6px}input,select,textarea{width:100%;min-height:46px;border:1px solid #d5e1fb;border-radius:12px;padding:11px 13px;background:#f8faff;color:var(--navy);font:inherit;outline:none}textarea{min-height:76px;resize:vertical}input:focus,select:focus,textarea:focus{border-color:#7aa8f7;box-shadow:0 0 0 3px #1768e815}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{min-width:0;margin-bottom:12px}.field.full{grid-column:1/-1}
+.checks{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.check{display:flex;align-items:center;gap:8px;padding:10px;border:1px solid var(--line);border-radius:12px;background:#f8faff;font-weight:650}.check input{width:17px;min-height:17px;accent-color:var(--blue)}
+.btn{min-height:44px;padding:10px 15px;border:0;border-radius:12px;background:var(--blue);color:white;font:750 14px system-ui;display:inline-flex;align-items:center;justify-content:center;gap:8px;cursor:pointer}.btn svg{width:19px;height:19px}.btn.light{background:#edf4ff;color:#174a9c;border:1px solid var(--line)}.btn.danger{background:#fff0f1;color:#b42332;border:1px solid #ffd5d9}.btn:disabled{opacity:.55;cursor:not-allowed}
+.form-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:8px}.notice{padding:11px 13px;background:#edf4ff;border-radius:12px;color:#45618c;font-size:13px;margin:10px 0}
+.list{display:grid;gap:10px}.card{border:1px solid var(--line);border-radius:16px;padding:15px;background:#fff}.card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.card-title{font-size:16px;font-weight:800}.meta{color:var(--muted);font-size:13px;margin-top:3px}.pill{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:30px;background:#edf4ff;color:#174a9c;font-size:11px;font-weight:800;white-space:nowrap}.pill.done{background:#e6f7ef;color:#087548}.pill.delay{background:#fff4df;color:#946200}
+.card-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.empty{text-align:center;color:var(--muted);padding:26px 12px;border:1px dashed #cbd9f3;border-radius:14px}
+.attendance-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.person{border:1px solid var(--line);border-radius:17px;padding:15px;background:#fff;min-width:0}.person-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}.avatar{width:42px;height:42px;border-radius:13px;background:#edf4ff;color:var(--blue);display:grid;place-items:center}.avatar svg{width:23px;height:23px}.person-name{font-weight:850;font-size:17px}.person-sub{font-size:12px;color:var(--muted)}.punches{display:grid;grid-template-columns:1fr 1fr;gap:8px}.punch{min-height:72px;border:0;border-radius:13px;background:var(--red);color:#fff;padding:9px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font:750 13px system-ui;cursor:pointer}.punch svg{width:20px;height:20px}.punch small{font-size:10px;font-weight:650;opacity:.95}.punch.done{background:var(--green)}.punch:disabled{opacity:.55;cursor:not-allowed}
+.leave-toggle{margin-top:9px;width:100%}.leave-box{margin-top:10px;padding:11px;background:#fff8f0;border:1px solid #ffe0bd;border-radius:12px}.leave-box[hidden]{display:none!important}.leave-box label{color:#88521b}
+.history-toolbar{display:flex;align-items:end;gap:10px;flex-wrap:wrap;margin-bottom:12px}.history-toolbar .field{margin:0;min-width:180px}.status-select{width:auto;min-height:36px;padding:6px 9px;font-size:12px}
+@media(max-width:680px){body{padding:10px 11px 28px}header{min-height:78px;padding:10px 12px;border-radius:20px;gap:10px}.brand-logo{width:53px;height:48px;padding-right:9px}.brand-copy strong{font-size:18px}.brand-copy small{font-size:13px}.nav-icon{width:42px;height:42px;border-radius:12px}.tabs{gap:7px}.tab{min-height:52px;font-size:13px;gap:6px}.panel{padding:14px;border-radius:17px}h1{font-size:21px}.grid2{grid-template-columns:1fr;gap:0}.field.full{grid-column:auto}.checks{grid-template-columns:repeat(2,minmax(0,1fr))}.attendance-grid{grid-template-columns:1fr}.card{padding:13px}.card-head{gap:7px}.punch{min-height:68px}}
+</style></head><body>
+<header>
+<img class="brand-logo" src="logo-copy-computer.PNG" alt="Copy Computer">
+<div class="brand-copy"><strong>COPY COMPUTER</strong><small>Operasional Teknisi</small></div>
+<a class="nav-icon" href="./" aria-label="Kembali ke menu utama" title="Kembali"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></a>
+</header>
+<main class="wrap">
+<nav class="tabs" aria-label="Menu operasional">
+<button class="tab active" id="tabSchedule" type="button" onclick="showTab('schedule')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18M8 14h3"/></svg>Jadwal Pekerjaan</button>
+<button class="tab" id="tabAttendance" type="button" onclick="showTab('attendance')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h3m-3 4h8m-2-5 1.5 1.5L18 11"/></svg>Absensi</button>
+</nav>
+
+<section id="scheduleView">
+<div class="panel">
+<h1><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18M8 14h3"/></svg>Jadwal Kunjungan & Pekerjaan</h1>
+<form id="scheduleForm">
+<input type="hidden" id="editId">
+<div class="grid2">
+<div class="field"><label for="visitDate">Tanggal janji temu</label><input id="visitDate" type="date" required></div>
+<div class="field"><label for="visitTime">Jam kunjungan</label><input id="visitTime" type="time" required></div>
+<div class="field"><label for="customerName">Nama pelanggan</label><input id="customerName" required placeholder="Nama pelanggan"></div>
+<div class="field"><label for="jobType">Jenis pekerjaan</label><input id="jobType" required placeholder="Contoh: Pasang CCTV, servis laptop"></div>
+<div class="field full"><label for="customerAddress">Alamat kunjungan</label><textarea id="customerAddress" placeholder="Alamat lengkap pelanggan"></textarea></div>
+<div class="field full"><label>Teknisi yang ditugaskan (bisa lebih dari satu)</label><div class="checks" id="technicianChecks">
+<label class="check"><input type="checkbox" value="Huda"> Huda</label><label class="check"><input type="checkbox" value="Arif"> Arif</label><label class="check"><input type="checkbox" value="Hermanto"> Hermanto</label><label class="check"><input type="checkbox" value="Yazid"> Yazid</label>
+</div></div>
+<div class="field full"><label for="scheduleNotes">Catatan pekerjaan (opsional)</label><textarea id="scheduleNotes" placeholder="Catatan janji temu, perlengkapan, atau informasi tambahan"></textarea></div>
+</div>
+<div class="form-actions"><button class="btn" type="submit" id="saveSchedule"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>Simpan Jadwal</button><button class="btn light" type="button" onclick="resetSchedule()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>Reset</button></div>
+</form>
+<div class="notice"><strong>Integrasi data:</strong> pilih data servis atau pesanan yang sudah tersimpan untuk mengisi nama pelanggan dan jenis pekerjaan secara otomatis.</div>
+<div class="grid2">
+<div class="field"><label for="sourceType">Ambil dari menu</label><select id="sourceType"><option value="service">Data Servis</option><option value="order">Pesanan Khusus</option></select></div>
+<div class="field"><label for="sourceRecord">Pilih pelanggan / pesanan</label><select id="sourceRecord"><option value="">Memuat data...</option></select></div>
+</div>
+<div class="form-actions"><button class="btn light" type="button" id="useSource"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14m-7-7h14"/></svg>Gunakan Data Terpilih</button></div>
+</div>
+<div class="panel">
+<h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3h8l4 4v14H4V3h4Z"/><path d="M8 3v5h8V3M8 13h8M8 17h6"/></svg>Daftar Jadwal</h2>
+<div class="history-toolbar"><div class="field"><label for="scheduleFilterDate">Tampilkan tanggal</label><input type="date" id="scheduleFilterDate"></div><button class="btn light" type="button" id="allSchedules">Semua Jadwal</button></div>
+<div id="scheduleList" class="list"><div class="empty">Memuat jadwal...</div></div>
+</div>
+</section>
+
+<section id="attendanceView" hidden>
+<div class="panel">
+<h1><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h3m-3 4h8m-2-5 1.5 1.5L18 11"/></svg>Absensi Teknisi</h1>
+<div class="field"><label for="attendanceDate">Tanggal absensi</label><input type="date" id="attendanceDate"></div>
+<div class="notice">Tekan <strong>Jam Tiba</strong> saat sampai di lokasi kerja dan <strong>Jam Pulang</strong> saat selesai. Tombol merah berubah hijau setelah waktu berhasil dicatat.</div>
+<div id="attendanceCards" class="attendance-grid"><div class="empty">Memuat absensi...</div></div>
+</div>
+<div class="panel">
+<h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4zM8 8h8M8 12h8M8 16h5"/></svg>Rekap Kehadiran</h2>
+<div id="attendanceSummary" class="list"><div class="empty">Memuat rekap...</div></div>
+</div>
+</section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function(){
+'use strict';
+const URL='https://ogolkyowgvypstjmxxde.supabase.co',KEY='sb_publishable_8NQAMLU4WhrHfn5nwf4gjQ_rr9egknn',EMAIL='cctv@copycomputer.app';
+const sb=window.supabase.createClient(URL,KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+const TECHS=['Huda','Arif','Hermanto','Yazid'];
+const $=id=>document.getElementById(id);
+const today=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Jakarta',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+const fmtTime=v=>v?new Intl.DateTimeFormat('id-ID',{timeZone:'Asia/Jakarta',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date(v)):'—';
+const fmtDate=v=>v?new Intl.DateTimeFormat('id-ID',{timeZone:'Asia/Jakarta',day:'2-digit',month:'long',year:'numeric'}).format(new Date(v+'T12:00:00+07:00')):'';
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const svgUser='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>';
+let sourceRows=[];
+async function guard(){
+ const last=Number(localStorage.getItem('cc_last_activity'))||0;
+ if(sessionStorage.getItem('cc_app_unlocked')!=='1'||!last||Date.now()-last>=5*60*1000){location.replace('./');return false}
+ const {data,error}=await sb.auth.getSession();
+ if(error||!data.session||(data.session.user.email||'').toLowerCase()!==EMAIL){location.replace('./');return false}
+ function touch(){if(sessionStorage.getItem('cc_app_unlocked')==='1')localStorage.setItem('cc_last_activity',String(Date.now()))}
+ ['pointerdown','keydown','touchstart','click','scroll'].forEach(e=>document.addEventListener(e,touch,{passive:true}));
+ setInterval(()=>{const t=Number(localStorage.getItem('cc_last_activity'))||0;if(Date.now()-t>=5*60*1000){sessionStorage.removeItem('cc_app_unlocked');location.replace('./')}},10000);
+ return true;
+}
+window.showTab=function(tab){
+ const schedule=tab==='schedule';$('scheduleView').hidden=!schedule;$('attendanceView').hidden=schedule;
+ $('tabSchedule').classList.toggle('active',schedule);$('tabAttendance').classList.toggle('active',!schedule);
+ location.hash=schedule?'jadwal':'absensi';
+ if(schedule)loadSchedules();else loadAttendance();
+};
+function resetSchedule(){
+ $('scheduleForm').reset();$('editId').value='';$('visitDate').value=today();$('visitTime').value='09:00';
+ $('saveSchedule').innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>Simpan Jadwal>';
+ $('technicianChecks').querySelectorAll('input').forEach(x=>x.checked=false);
+}
+function selectedTechs(){return [...$('technicianChecks').querySelectorAll('input:checked')].map(x=>x.value)}
+function setTechs(names){$('technicianChecks').querySelectorAll('input').forEach(x=>x.checked=(names||[]).includes(x.value))}
+async function loadSources(){
+ const sel=$('sourceRecord');sel.innerHTML='<option value="">Memuat data...</option>';
+ try{const {data,error}=await sb.from('service_records').select('id,record_type,payload').in('record_type',['service','order']).order('updated_at',{ascending:false});if(error)throw error;sourceRows=data||[];renderSourceOptions()}
+ catch(e){sel.innerHTML='<option value="">Data belum dapat dimuat</option>'}
+}
+function renderSourceOptions(){
+ const kind=$('sourceType').value,rows=sourceRows.filter(r=>r.record_type===kind);
+ $('sourceRecord').innerHTML='<option value="">Pilih data tersimpan...</option>'+rows.map(r=>{const p=r.payload||{},name=p.nama||p.customer||p.pelanggan||'Pelanggan',ticket=p.ticket||p.no||r.id,detail=p.jenis||p.detail||p.keluhan||p.perangkat||'Pekerjaan';return '<option value="'+esc(r.id)+'">'+esc(ticket+' · '+name+' · '+detail)+'</option>'}).join('');
+ if(!rows.length)$('sourceRecord').innerHTML='<option value="">Belum ada data pada menu ini</option>';
+}
+$('sourceType').addEventListener('change',renderSourceOptions);
+$('useSource').addEventListener('click',()=>{
+ const row=sourceRows.find(r=>r.id===$('sourceRecord').value);if(!row){alert('Pilih data terlebih dahulu.');return}
+ const p=row.payload||{};$('customerName').value=p.nama||p.customer||p.pelanggan||'';
+ $('customerAddress').value=p.alamat||p.address||'';
+ $('jobType').value=p.jenis||p.detail||p.keluhan||p.perangkat||'';
+ $('scheduleNotes').value=p.catatan||p.keluhan||'';
+ $('customerName').focus();
+});
+$('scheduleForm').addEventListener('submit',async e=>{
+ e.preventDefault();const technicians=selectedTechs();if(!technicians.length){alert('Pilih minimal satu teknisi.');return}
+ const payload={visit_date:$('visitDate').value,visit_time:$('visitTime').value,customer_name:$('customerName').value.trim(),customer_address:$('customerAddress').value.trim(),job_type:$('jobType').value.trim(),technicians,notes:$('scheduleNotes').value.trim()};
+ if(!payload.visit_date||!payload.visit_time||!payload.customer_name||!payload.job_type){alert('Lengkapi tanggal, jam, pelanggan, dan pekerjaan.');return}
+ const btn=$('saveSchedule');btn.disabled=true;
+ try{
+  const id=$('editId').value;
+  const query=id?sb.from('work_schedules').update(payload).eq('id',id):sb.from('work_schedules').insert(payload);
+  const {error}=await query;if(error)throw error;
+  resetSchedule();await loadSchedules();alert(id?'Jadwal berhasil diperbarui.':'Jadwal berhasil disimpan.');
+ }catch(err){alert('Jadwal belum tersimpan: '+err.message)}finally{btn.disabled=false}
+});
+window.editSchedule=async id=>{
+ const {data,error}=await sb.from('work_schedules').select('*').eq('id',id).single();if(error){alert(error.message);return}
+ $('editId').value=data.id;$('visitDate').value=data.visit_date;$('visitTime').value=String(data.visit_time).slice(0,5);
+ $('customerName').value=data.customer_name;$('customerAddress').value=data.customer_address||'';$('jobType').value=data.job_type;$('scheduleNotes').value=data.notes||'';setTechs(data.technicians);
+ $('saveSchedule').textContent='Simpan Perubahan';window.scrollTo({top:0,behavior:'smooth'});
+};
+window.deleteSchedule=async id=>{if(!confirm('Hapus jadwal pekerjaan ini?'))return;const {error}=await sb.from('work_schedules').delete().eq('id',id);if(error)alert('Gagal menghapus: '+error.message);else loadSchedules()};
+window.changeScheduleStatus=async(id,status)=>{const {error}=await sb.from('work_schedules').update({status}).eq('id',id);if(error)alert('Status gagal diperbarui: '+error.message);else loadSchedules()};
+async function loadSchedules(){
+ const filter=$('scheduleFilterDate').value;let q=sb.from('work_schedules').select('*').order('visit_date',{ascending:true}).order('visit_time',{ascending:true});
+ if(filter)q=q.eq('visit_date',filter);const {data,error}=await q;
+ if(error){$('scheduleList').innerHTML='<div class="empty">Jadwal belum dapat dimuat: '+esc(error.message)+'</div>';return}
+ const rows=data||[];if(!rows.length){$('scheduleList').innerHTML='<div class="empty">Belum ada jadwal untuk tanggal ini. Tambahkan jadwal kunjungan di atas.</div>';return}
+ $('scheduleList').innerHTML=rows.map(r=>'<article class="card"><div class="card-head"><div><div class="card-title">'+esc(r.customer_name)+'</div><div class="meta">'+esc(fmtDate(r.visit_date))+' · '+esc(String(r.visit_time).slice(0,5))+' WIB</div></div><span class="pill '+(r.status==='Selesai'?'done':r.status==='Ditunda'?'delay':'')+'">'+esc(r.status)+'</span></div><div class="meta" style="margin-top:8px"><strong>▣ Pekerjaan:</strong> '+esc(r.job_type)+'</div><div class="meta"><strong>⌖ Alamat:</strong> '+esc(r.customer_address||'Belum diisi')+'</div><div class="meta"><strong>♙ Teknisi:</strong> '+esc((r.technicians||[]).join(', ')||'Belum ditentukan')+'</div>'+(r.notes?'<div class="meta"><strong>Catatan:</strong> '+esc(r.notes)+'</div>':'')+'<div class="card-actions"><select class="status-select" aria-label="Status jadwal" onchange="changeScheduleStatus(\''+r.id+'\',this.value)">'+['Terjadwal','Dikerjakan','Selesai','Ditunda'].map(s=>'<option '+(s===r.status?'selected':'')+'>'+s+'</option>').join('')+'</select><button class="btn light" type="button" onclick="editSchedule(\''+r.id+'\')">✎ Edit</button><button class="btn danger" type="button" onclick="deleteSchedule(\''+r.id+'\')">Hapus</button></div></article>').join('');
+}
+$('scheduleFilterDate').addEventListener('change',loadSchedules);$('allSchedules').addEventListener('click',()=>{$('scheduleFilterDate').value='';loadSchedules()});
+function attendanceCard(name,row,date){
+ const isToday=date===today(),leave=row?.attendance_status==='izin',arrived=!!row?.arrival_at,departed=!!row?.departure_at;
+ const arrivalText=arrived?fmtTime(row.arrival_at)+' WIB':'Tekan saat tiba';
+ const departureText=departed?fmtTime(row.departure_at)+' WIB':'Tekan saat pulang';
+ return '<article class="person"><div class="person-head"><div class="avatar">'+svgUser+'</div><div><div class="person-name">'+name+'</div><div class="person-sub">'+(leave?'Izin tidak masuk':arrived?'Sudah tiba':'Belum absen')+'</div></div></div>'+
+ (leave?'<div class="notice" style="margin:0">Izin tercatat · '+esc(row.leave_reason||'Tanpa alasan')+'</div>':
+ '<div class="punches"><button class="punch '+(arrived?'done':'')+'" '+(!isToday||arrived?'disabled':'')+' onclick="punch(\''+name+'\',\'arrival\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v9l6 3M4 5l2 2m12-2-2 2"/><circle cx="12" cy="13" r="9"/></svg>Jam Tiba<small>'+arrivalText+'</small></button><button class="punch '+(departed?'done':'')+'" '+(!isToday||!arrived||departed?'disabled':'')+' onclick="punch(\''+name+'\',\'departure\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v9l6 3"/><circle cx="12" cy="13" r="9"/></svg>Jam Pulang<small>'+departureText+'</small></button></div>'+
+ '<button class="btn light leave-toggle" type="button" '+(!isToday||arrived?'disabled':'')+' onclick="toggleLeave(\''+name+'\')">▤ Izin Tidak Masuk</button><div class="leave-box" id="leave-'+name+'" hidden><label for="reason-'+name+'">Alasan izin</label><textarea id="reason-'+name+'" placeholder="Tulis alasan izin tidak masuk..."></textarea><button class="btn" style="margin-top:8px;width:100%" onclick="submitLeave(\''+name+'\')">Simpan Izin</button></div>')+'</article>';
+}
+async function loadAttendance(){
+ const date=$('attendanceDate').value||today();const {data,error}=await sb.from('technician_attendance').select('*').eq('attendance_date',date);
+ if(error){$('attendanceCards').innerHTML='<div class="empty">Absensi belum dapat dimuat: '+esc(error.message)+'</div>';return}
+ const map=new Map((data||[]).map(x=>[x.technician_name,x]));
+ $('attendanceCards').innerHTML=TECHS.map(n=>attendanceCard(n,map.get(n),date)).join('');
+ $('attendanceSummary').innerHTML=(data||[]).length?(data||[]).sort((a,b)=>TECHS.indexOf(a.technician_name)-TECHS.indexOf(b.technician_name)).map(r=>'<div class="card"><div class="card-head"><strong>'+esc(r.technician_name)+'</strong><span class="pill '+(r.attendance_status==='hadir'?'done':'delay')+'">'+(r.attendance_status==='hadir'?'Hadir':'Izin')+'</span></div><div class="meta">'+(r.attendance_status==='izin'?'Alasan: '+esc(r.leave_reason||'—'):'Tiba: '+esc(fmtTime(r.arrival_at))+' WIB · Pulang: '+esc(fmtTime(r.departure_at))+' WIB')+'</div></div>').join(''):'<div class="empty">Belum ada catatan absensi pada tanggal ini.</div>';
+}
+window.punch=async(name,type)=>{
+ if($('attendanceDate').value!==today()){alert('Pencatatan hanya bisa dilakukan untuk tanggal hari ini.');return}
+ const field=type==='arrival'?'arrival_at':'departure_at';const {data:existing,error:readErr}=await sb.from('technician_attendance').select('*').eq('attendance_date',today()).eq('technician_name',name).maybeSingle();
+ if(readErr){alert(readErr.message);return}
+ if(type==='departure'&&!existing?.arrival_at){alert('Catat Jam Tiba terlebih dahulu.');return}
+ if(existing?.[field])return;
+ const payload={attendance_date:today(),technician_name:name,attendance_status:'hadir',[field]:new Date().toISOString()};
+ const {error}=await sb.from('technician_attendance').upsert(payload,{onConflict:'attendance_date,technician_name'});
+ if(error)alert('Absensi gagal disimpan: '+error.message);else loadAttendance();
+};
+window.toggleLeave=name=>{$('leave-'+name).hidden=!$('leave-'+name).hidden};
+window.submitLeave=async name=>{
+ const reason=$('reason-'+name).value.trim();if(!reason){alert('Isi alasan izin terlebih dahulu.');return}
+ const {error}=await sb.from('technician_attendance').upsert({attendance_date:today(),technician_name:name,attendance_status:'izin',arrival_at:null,departure_at:null,leave_reason:reason},{onConflict:'attendance_date,technician_name'});
+ if(error)alert('Izin gagal disimpan: '+error.message);else loadAttendance();
+};
+$('attendanceDate').addEventListener('change',loadAttendance);
+async function init(){
+ if(!await guard())return;
+ $('visitDate').value=today();$('visitTime').value='09:00';$('scheduleFilterDate').value=today();$('attendanceDate').value=today();
+ await loadSources();if(location.hash==='#absensi')showTab('attendance');else showTab('schedule');
+}
+init();
+})();
+</script></body></html>
