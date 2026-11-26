@@ -286,6 +286,55 @@ body{width:100%;max-width:100%;min-width:0;overflow-x:hidden}
   .stats{gap:8px}
   .stat,.panel{padding:12px}
 }
+
+/* Compact screenshot layout: keep the complete service form visible without browser zoom */
+@media (min-width:601px){
+  body{padding-top:10px!important;padding-bottom:20px!important}
+  #appShell.wrap{gap:10px!important;max-width:860px!important}
+  #appShell .top{min-height:66px;padding:8px 12px;border-radius:16px}
+  #appShell .mark{width:66px;max-height:46px}
+  #appShell .brand{gap:11px}
+  #appShell .brand-name{font-size:19px}
+  #appShell .brand-section{font-size:14px}
+  #appShell .icon-btn{width:40px;height:40px;min-height:40px;border-radius:11px}
+  #appShell .icon-btn svg{width:20px;height:20px}
+  #appShell .tabs{padding:3px}
+  #appShell .tabs-in{gap:4px}
+  #appShell .tab{min-height:35px;border-radius:8px;font-size:12px}
+  #appShell .service-form-panel,#appShell #historyView>.panel,#appShell #settingsView{
+    gap:10px;padding:15px;border-radius:14px
+  }
+  #appShell .service-form-panel h2,#appShell #historyView h2,#appShell #settingsView h2{
+    font-size:17px;margin-bottom:2px
+  }
+  #appShell form{gap:10px}
+  #appShell .fieldgrid{gap:10px}
+  #appShell .field{gap:4px}
+  #appShell .field label{font-size:13px}
+  #appShell input,#appShell textarea,#appShell select{
+    min-height:40px;padding:8px 10px;border-radius:9px;font-size:13px
+  }
+  #appShell textarea{min-height:68px}
+  #appShell .actions{gap:8px}
+  #appShell .actions button,#appShell .form-actions button{
+    min-height:41px;border-radius:9px;font-size:13px
+  }
+  #appShell .stats{gap:8px}
+  #appShell .stat{padding:9px}
+  #appShell .stat b{font-size:19px}
+  #appShell .toolbar{margin:7px 0;gap:6px}
+  #appShell .job{padding:11px;margin:8px 0}
+}
+@media (max-width:600px){
+  #appShell .service-form-panel{gap:10px}
+  #appShell form{gap:11px}
+  #appShell .fieldgrid{gap:10px}
+  #appShell .field{gap:5px}
+  #appShell .field label{font-size:12px}
+  #appShell input,#appShell textarea,#appShell select{min-height:40px;padding:8px 10px}
+  #appShell textarea{min-height:72px}
+}
+
 </style>
 </head>
 <body>
