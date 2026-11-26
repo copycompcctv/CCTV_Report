@@ -981,6 +981,7 @@ function buildPdf(r,kop,logoJpeg){
   if(!s.secs.length){T('Belum ada isi laporan.',M,y,11,'F3',MUTE);y-=16}
   s.secs.forEach(function(sec){
     if(sec.title){need(44);T(sec.title,M,y,11.5,'F2',ACC);y-=7;L(M,y,PW-M,y,0.5,RULE);y-=17}
+    if(sec.subTitle){need(20);T(sec.subTitle,M+8,y,10.5,'F1',INK);y-=17}
     var detailLabelW=Math.max(labelW,sec.lines.reduce(function(w,line){var p=line.indexOf(' : ');return p>=0?Math.max(w,tw(line.slice(0,p),10.5,false)):w},0));
     sec.lines.forEach(function(item){
       var first=true;
