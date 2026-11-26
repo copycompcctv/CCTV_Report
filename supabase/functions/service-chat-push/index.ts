@@ -46,7 +46,7 @@ Deno.serve(async (req: Request) => {
       title,
       body,
       ticket,
-      url: new URL("servisan/app.html#jobs", supabaseUrl.replace(/\/rest\/v1\/?$/, "/")).toString(),
+      url: "https://copycompcctv.github.io/CCTV_Report/servisan/app.html#jobs",
     });
 
     let sent = 0;
