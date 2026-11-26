@@ -75,15 +75,9 @@ input,select,textarea{font-size:16px!important;border:1px solid #d7e2f7;border-r
 </div>
 <div class="form-actions"><button class="btn light" type="button" onclick="resetSchedule()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>Reset</button><button class="btn" type="submit" id="saveSchedule"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 3h14l3 3v15H3V3h1Zm3 0v7h10V3M7 21v-8h10v8"/></svg>Simpan</button></div>
 </form>
-<div class="notice"><strong>Ambil data pelanggan (opsional)</strong> dari Data Servis atau Pesanan Khusus.</div>
-<div class="grid2">
-<div class="field"><label for="sourceType">Ambil dari menu</label><select id="sourceType"><option value="service">Data Servis</option><option value="order">Pesanan Khusus</option></select></div>
-<div class="field"><label for="sourceRecord">Pilih pelanggan / pesanan</label><select id="sourceRecord"><option value="">Memuat data...</option></select></div>
-</div>
-
 </div>
 <div class="panel">
-<h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3h8l4 4v14H4V3h4Z"/><path d="M8 3v5h8V3M8 13h8M8 17h6"/></svg>Daftar Jadwal</h2>
+<h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>History Jadwal</h2>
 <div class="history-toolbar"><div class="field"><label for="scheduleFilterDate">Tampilkan tanggal</label><input type="date" id="scheduleFilterDate"></div><button class="btn light" type="button" id="allSchedules">Semua Jadwal</button></div>
 <div id="scheduleList" class="list"><div class="empty">Memuat jadwal...</div></div>
 </div>
@@ -115,7 +109,7 @@ const fmtTime=v=>v?new Intl.DateTimeFormat('id-ID',{timeZone:'Asia/Jakarta',hour
 const fmtDate=v=>v?new Intl.DateTimeFormat('id-ID',{timeZone:'Asia/Jakarta',day:'2-digit',month:'long',year:'numeric'}).format(new Date(v+'T12:00:00+07:00')):'';
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const svgUser='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>';
-let sourceRows=[],selectedSource={source_type:'manual',source_id:null};
+
 async function guard(){
  const last=Number(localStorage.getItem('cc_last_activity'))||0;
  if(sessionStorage.getItem('cc_app_unlocked')!=='1'||!last||Date.now()-last>=5*60*1000){location.replace('./');return false}
@@ -133,34 +127,15 @@ window.showTab=function(tab){
  if(schedule)loadSchedules();else loadAttendance();
 };
 function resetSchedule(){
- $('scheduleForm').reset();$('editId').value='';selectedSource={source_type:'manual',source_id:null};$('visitDate').value=today();$('visitTime').value='09:00';
+ $('scheduleForm').reset();$('editId').value='';$('visitDate').value=today();$('visitTime').value='09:00';
  $('saveSchedule').innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>Simpan Jadwal>';
  $('technicianChecks').querySelectorAll('input').forEach(x=>x.checked=false);
 }
 function selectedTechs(){return [...$('technicianChecks').querySelectorAll('input:checked')].map(x=>x.value)}
 function setTechs(names){$('technicianChecks').querySelectorAll('input').forEach(x=>x.checked=(names||[]).includes(x.value))}
-async function loadSources(){
- const sel=$('sourceRecord');sel.innerHTML='<option value="">Memuat data...</option>';
- try{const {data,error}=await sb.from('service_records').select('id,record_type,payload').in('record_type',['service','order']).order('updated_at',{ascending:false});if(error)throw error;sourceRows=data||[];renderSourceOptions()}
- catch(e){sel.innerHTML='<option value="">Data belum dapat dimuat</option>'}
-}
-function renderSourceOptions(){
- const kind=$('sourceType').value,rows=sourceRows.filter(r=>r.record_type===kind);
- $('sourceRecord').innerHTML='<option value="">Pilih data tersimpan...</option>'+rows.map(r=>{const p=r.payload||{},name=p.nama||p.customer||p.pelanggan||'Pelanggan',ticket=p.ticket||p.no||r.id,detail=p.jenis||p.detail||p.keluhan||p.perangkat||'Pekerjaan';return '<option value="'+esc(r.id)+'">'+esc(ticket+' · '+name+' · '+detail)+'</option>'}).join('');
- if(!rows.length)$('sourceRecord').innerHTML='<option value="">Belum ada data pada menu ini</option>';
-}
-$('sourceType').addEventListener('change',renderSourceOptions);
-$('useSource').addEventListener('click',()=>{
- const row=sourceRows.find(r=>r.id===$('sourceRecord').value);if(!row){alert('Pilih data terlebih dahulu.');return}
- const p=row.payload||{};selectedSource={source_type:row.record_type,source_id:row.id};$('customerName').value=p.nama||p.customer||p.pelanggan||'';
- $('customerAddress').value=p.alamat||p.address||'';
- $('jobType').value=p.jenis||p.detail||p.keluhan||p.perangkat||'';
- $('scheduleNotes').value=p.catatan||p.keluhan||'';
- $('customerName').focus();
-});
 $('scheduleForm').addEventListener('submit',async e=>{
  e.preventDefault();const technicians=selectedTechs();if(!technicians.length){alert('Pilih minimal satu teknisi.');return}
- const payload={visit_date:$('visitDate').value,visit_time:$('visitTime').value,customer_name:$('customerName').value.trim(),customer_address:$('customerAddress').value.trim(),job_type:$('jobType').value.trim(),technicians,notes:$('scheduleNotes').value.trim(),source_type:selectedSource.source_type,source_id:selectedSource.source_id};
+ const payload={visit_date:$('visitDate').value,visit_time:$('visitTime').value,customer_name:$('customerName').value.trim(),customer_address:$('customerAddress').value.trim(),job_type:$('jobType').value.trim(),technicians,notes:$('scheduleNotes').value.trim()};
  if(!payload.visit_date||!payload.visit_time||!payload.customer_name||!payload.job_type){alert('Lengkapi tanggal, jam, pelanggan, dan pekerjaan.');return}
  const btn=$('saveSchedule');btn.disabled=true;
  try{
@@ -226,14 +201,6 @@ function setupSeparatePage(){
  $('scheduleView').hidden=!isSchedule;$('attendanceView').hidden=isSchedule;
  const formPanel=isSchedule?$('scheduleView').children[0]:$('attendanceView').children[0];
  const historyPanel=isSchedule?$('scheduleView').children[1]:$('attendanceView').children[1];
- const sourceNotice=$('scheduleView').querySelector('.notice');
- const sourceGrid=$('scheduleView').querySelector('.notice').nextElementSibling;
- const useSource=$('useSource');
- if(isSchedule){
-   const form=$('scheduleForm');
-   if(sourceNotice&&sourceGrid){form.insertBefore(sourceNotice,$('scheduleForm').querySelector('.form-actions'));form.insertBefore(sourceGrid,$('scheduleForm').querySelector('.form-actions'));}
-   if(useSource)useSource.remove();
- }
  const show=mode=>{
   formPanel.hidden=mode!=='form';historyPanel.hidden=mode!=='history';
   $('tabForm').classList.toggle('active',mode==='form');$('tabHistory').classList.toggle('active',mode==='history');
@@ -248,7 +215,7 @@ function setupSeparatePage(){
 async function init(){
  if(!await guard())return;
  $('visitDate').value=today();$('visitTime').value='09:00';$('scheduleFilterDate').value=today();$('attendanceDate').value=today();
- await loadSources();setupSeparatePage();if(PAGE==='schedule')loadSchedules();else loadAttendance();
+ setupSeparatePage();if(PAGE==='schedule')loadSchedules();else loadAttendance();
 }
 init();
 })();
