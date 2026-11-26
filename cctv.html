@@ -1349,14 +1349,21 @@ function renderHistory(){
 }
 
 
-function showReportPopup(title,body){
+function showReportPopup(r){
+ if(!r)return;
  var old=document.getElementById('reportDetailPopup');if(old)old.remove();
  var box=document.createElement('div');box.id='reportDetailPopup';
  box.style.cssText='position:fixed;inset:0;z-index:99999;background:rgba(15,23,42,.65);display:flex;align-items:center;justify-content:center;padding:16px';
- box.innerHTML='<section style="background:#fff;color:#182335;width:min(760px,100%);max-height:88vh;overflow:auto;border-radius:14px;padding:20px;box-shadow:0 12px 40px #0004"><div style="display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:2px solid #14243b;padding-bottom:12px"><div style="display:flex;align-items:center;gap:12px"><img src="logo-copy-computer.PNG" style="width:54px;height:54px;object-fit:contain"><div><b style="font-size:18px">COPY COMPUTER</b></div></div><button type="button" data-close-detail style="padding:8px 14px;border:0;border-radius:8px;background:#eaf0fb;cursor:pointer">Tutup</button></div><pre style="white-space:pre-wrap;overflow-wrap:anywhere;font:14px/1.6 Arial,sans-serif;margin:16px 0 0"></pre></section>';
- box.querySelector('pre').textContent=body||'Detail laporan tidak tersedia.';
- box.querySelector('[data-close-detail]').onclick=function(){box.remove()};
- box.addEventListener('click',function(e){if(e.target===box)box.remove()});
+ var st=structure(r),escv=esc;
+ function row(label,value){if(value==null||String(value)==='')return '';return '<div class="detail-row"><b>'+escv(label)+'</b><div class="detail-value">'+escv(value)+'</div></div>'}
+ var body=row('Tanggal',fmtDate(r.date))+row('Nama Teknisi',r.tech)+row('Nama Pelanggan',st.name)+row('Alamat Pelanggan',r.address);
+ st.secs.forEach(function(sec){body+='<div class="detail-section">'+escv(sec.title||'Rincian pekerjaan')+'</div>';if(sec.subTitle)body+='<div class="detail-subtitle">'+escv(sec.subTitle)+'</div>';sec.lines.forEach(function(line){var p=line.indexOf(' : ');if(p>=0)body+=row(line.slice(0,p),line.slice(p+3));else body+='<div class="detail-free">'+escv(line)+'</div>'})});
+ body+=row('Keterangan Tambahan',st.catatan)+row('Catatan',st.note);
+ box.innerHTML='<section class="detail-sheet"><div class="detail-head"><div class="detail-brand"><img src="logo-copy-computer.PNG" alt="Logo Copy Computer"><div><b>COPY COMPUTER</b><div>Detail Laporan CCTV</div></div></div></div><div class="detail-body">'+(body||'<div class="detail-free">Detail laporan tidak tersedia.</div>')+'</div><div class="detail-foot"><button type="button" data-close-detail>Tutup</button></div></section>';
+ var style=document.createElement('style');style.id='reportDetailPopupStyle';style.textContent='#reportDetailPopup .detail-sheet{background:#fff;color:#182335;width:min(760px,100%);max-height:88vh;overflow:auto;border-radius:16px;padding:20px;box-shadow:0 12px 40px #0004}#reportDetailPopup .detail-head{border-bottom:2px solid #14243b;padding-bottom:12px}#reportDetailPopup .detail-brand{display:flex;align-items:center;gap:12px}#reportDetailPopup .detail-brand img{width:54px;height:54px;object-fit:contain}#reportDetailPopup .detail-brand b{font-size:18px}#reportDetailPopup .detail-brand div div{font-size:12px;margin-top:2px}#reportDetailPopup .detail-body{display:grid;grid-template-columns:minmax(145px,1fr) minmax(0,2fr);gap:9px 16px;margin:16px 0;font-size:14px;line-height:1.5}#reportDetailPopup .detail-row{display:contents}#reportDetailPopup .detail-row b{font-weight:700}#reportDetailPopup .detail-value{overflow-wrap:anywhere;white-space:pre-wrap}#reportDetailPopup .detail-section{grid-column:1/-1;font-weight:700;padding-top:10px;border-top:1px solid #dbe3ef}#reportDetailPopup .detail-subtitle{grid-column:1/-1;font-weight:600}#reportDetailPopup .detail-free{grid-column:1/-1;white-space:pre-wrap;overflow-wrap:anywhere;padding-left:10px}#reportDetailPopup .detail-foot{text-align:right}#reportDetailPopup button{padding:9px 16px;border:0;border-radius:8px;background:#eaf0fb;color:#1768e8;font-weight:700;cursor:pointer}@media(max-width:520px){#reportDetailPopup{padding:10px!important}#reportDetailPopup .detail-sheet{padding:15px}#reportDetailPopup .detail-body{grid-template-columns:minmax(110px,.9fr) minmax(0,1.4fr);gap:8px 10px;font-size:13px}}';
+ var prior=document.getElementById('reportDetailPopupStyle');if(prior)prior.remove();document.head.appendChild(style);
+ box.querySelector('[data-close-detail]').onclick=function(){box.remove();style.remove()};
+ box.addEventListener('click',function(e){if(e.target===box){box.remove();style.remove()}});
  document.body.appendChild(box);
 }
 
@@ -1518,12 +1525,12 @@ document.addEventListener('click',function(e){
       if(!arm(b,'c:'+c.id,'Yakin hapus?'))break;
       db.catalog=db.catalog.filter(function(x){return x!==c});save();renderCatalog();break;
     }
-    case 'h-detail':{id=b.closest('[data-rid]').dataset.rid;var rr=db.reports.find(function(x){return String(x.id)===String(id)});if(rr)showReportPopup('Laporan CCTV',buildText(rr));break;}
+    case 'h-detail':{id=b.closest('[data-rid]').dataset.rid;var rr=db.reports.find(function(x){return String(x.id)===String(id)});if(rr)showReportPopup(rr);break;}
     case 'h-copy':{id=b.closest('[data-rid]').dataset.rid;var cr=db.reports.find(function(x){return String(x.id)===String(id)});if(cr){copyText(buildText(cr)).then(function(ok){toast(ok?'Teks laporan disalin':'Gagal menyalin teks')})}break;}
     case 'h-wa':{id=b.closest('[data-rid]').dataset.rid;var wr=db.reports.find(function(x){return String(x.id)===String(id)});if(wr){var wt=buildText(wr);if(wt)window.open('https://wa.me/?text='+encodeURIComponent(wt),'_blank','noopener,noreferrer');else toast('Laporan masih kosong')}break;}
     case 'h-pdf':{id=b.closest('[data-rid]').dataset.rid;var pr=db.reports.find(function(x){return String(x.id)===String(id)});if(pr)sharePdf(null,pr);break;}
     case 'h-edit':id=b.closest('[data-rid]').dataset.rid;db.currentId=id;isReadOnly=false;setView('isi');toast('Mode edit aktif. Perubahan tersimpan setelah menekan Simpan laporan.');break;
-    case 'h-open':{id=b.closest('[data-rid]').dataset.rid;var viewed=db.reports.find(function(x){return String(x.id)===String(id)});if(viewed)showReportPopup(viewed.customer||'Laporan',buildText(viewed));break;}
+    case 'h-open':{id=b.closest('[data-rid]').dataset.rid;var viewed=db.reports.find(function(x){return String(x.id)===String(id)});if(viewed)showReportPopup(viewed);break;}
     case 'h-dup':{
       id=b.closest('[data-rid]').dataset.rid;
       var src=db.reports.filter(function(x){return x.id===id})[0];if(!src)break;
