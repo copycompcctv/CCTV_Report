@@ -10,47 +10,45 @@ const corsHeaders = {
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   if (req.method !== "POST") return new Response("Method not allowed", { status: 405 });
-  const expectedSecret = Deno.env.get("PUSH_WEBHOOK_SECRET") || "";
-  if (!expectedSecret || req.headers.get("x-push-secret") !== expectedSecret) {
-    return new Response("Unauthorized", { status: 401, headers: corsHeaders });
-  }
 
   const supabaseUrl = Deno.env.get("SUPABASE_URL") || "";
-  const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || (() => {
-    try {
-      const keys = JSON.parse(Deno.env.get("SUPABASE_SECRET_KEYS") || "{}");
-      return keys.default || Object.values(keys)[0] || "";
-    } catch (_) { return ""; }
-  })();
-  const vapidPublicKey = Deno.env.get("VAPID_PUBLIC_KEY") || "";
-  const vapidPrivateKey = Deno.env.get("VAPID_PRIVATE_KEY") || "";
-  const vapidSubject = Deno.env.get("VAPID_SUBJECT") || "mailto:admin@copycomputer.app";
-  if (!supabaseUrl || !serviceRoleKey || !vapidPublicKey || !vapidPrivateKey) {
-    return new Response("Push secrets are not configured", { status: 500, headers: corsHeaders });
+  const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || "";
+  if (!supabaseUrl || !serviceRoleKey) {
+    return new Response("Supabase service credentials are not available", { status: 500, headers: corsHeaders });
   }
 
   try {
+    const admin = createClient(supabaseUrl, serviceRoleKey, {
+      auth: { persistSession: false, autoRefreshToken: false },
+    });
+    const { data: runtimeSecrets, error: secretError } = await admin.rpc("service_chat_push_runtime_secrets");
+    if (secretError) throw secretError;
+    const expectedSecret = String(runtimeSecrets?.service_chat_push_secret || "");
+    const vapidPublicKey = String(runtimeSecrets?.service_chat_vapid_public || "");
+    const vapidPrivateKey = String(runtimeSecrets?.service_chat_vapid_private || "");
+    if (!expectedSecret || req.headers.get("x-push-secret") !== expectedSecret) {
+      return new Response("Unauthorized", { status: 401, headers: corsHeaders });
+    }
+    if (!vapidPublicKey || !vapidPrivateKey) {
+      return new Response("VAPID keys are not configured", { status: 500, headers: corsHeaders });
+    }
+
     const payload = await req.json();
     const ticket = String(payload.ticket || "");
     if (!ticket) return new Response("Missing ticket", { status: 400, headers: corsHeaders });
 
-    const admin = createClient(supabaseUrl, serviceRoleKey, {
-      auth: { persistSession: false, autoRefreshToken: false },
-    });
     const { data: rows, error } = await admin
       .from("service_chat_push_subscriptions")
       .select("id, subscription");
     if (error) throw error;
     if (!rows?.length) return new Response(JSON.stringify({ sent: 0 }), { headers: corsHeaders });
 
-    webpush.setVapidDetails(vapidSubject, vapidPublicKey, vapidPrivateKey);
+    webpush.setVapidDetails("mailto:admin@copycomputer.app", vapidPublicKey, vapidPrivateKey);
     const title = "COPY COMPUTER · Pesan pelanggan baru";
     const body = String(payload.customer_name || "Pelanggan") + " · " + ticket + ": " +
       String(payload.message || "Ada pesan baru").slice(0, 110);
     const notification = JSON.stringify({
-      title,
-      body,
-      ticket,
+      title, body, ticket,
       url: "https://copycompcctv.github.io/CCTV_Report/servisan/app.html#jobs",
     });
 
@@ -58,7 +56,7 @@ Deno.serve(async (req: Request) => {
     const expired: number[] = [];
     const results = await Promise.allSettled(rows.map(async (row: { id: number; subscription: any }) => {
       try {
-        await webpush.sendNotification(row.subscription, notification, { TTL: 60 * 60 * 24 });
+        await webpush.sendNotification(row.subscription, notification, { TTL: 86400 });
         sent++;
       } catch (err) {
         const status = Number((err as any)?.statusCode || 0);
@@ -66,9 +64,7 @@ Deno.serve(async (req: Request) => {
         else console.error("Push delivery failed:", status);
       }
     }));
-    if (expired.length) {
-      await admin.from("service_chat_push_subscriptions").delete().in("id", expired);
-    }
+    if (expired.length) await admin.from("service_chat_push_subscriptions").delete().in("id", expired);
     return new Response(JSON.stringify({ sent, expired: expired.length, attempts: results.length }), { headers: corsHeaders });
   } catch (err) {
     console.error("service-chat-push:", err);
