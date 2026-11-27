@@ -49,12 +49,12 @@ input,select,textarea{font-size:16px!important;border:1px solid #d7e2f7;border-r
 @media(max-width:850px){body{padding:10px 12px 28px}.wrap{margin:12px auto;gap:12px}}
 @media(max-width:520px){header{min-height:70px;padding:8px 10px;border-radius:17px}.brand-logo{width:48px!important;height:44px!important}.brand-copy strong{font-size:15px!important}.brand-copy small{font-size:12px!important}.wrap{margin:10px auto}.panel{padding:12px}.form-actions{margin:16px -12px -12px;padding:9px 12px calc(9px + env(safe-area-inset-bottom,0px));grid-template-columns:.85fr 1.35fr}.form-actions>*{min-height:48px;font-size:14px}}
 
-/* Ukuran filter tanggal dan tombol Semua Jadwal seragam */
-.history-toolbar{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:end;gap:10px}
-.history-toolbar .field{min-width:0;width:100%}
-.history-toolbar input,.history-toolbar button{width:100%;min-width:0;height:46px;min-height:46px}
-.history-toolbar button{white-space:nowrap}
-@media(max-width:520px){.history-toolbar{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}}
+/* Filter tanggal dan tombol Semua Jadwal: dua kolom rapi tanpa saling menimpa */
+.history-toolbar{display:flex!important;align-items:flex-end;gap:10px;width:100%;min-width:0}
+.history-toolbar .field{flex:1 1 0;min-width:0!important;width:0;margin:0}
+.history-toolbar input[type="date"]{display:block;width:100%!important;max-width:100%;min-width:0!important;height:46px;min-height:46px;padding:8px 10px;box-sizing:border-box;font-size:15px!important}
+.history-toolbar button{flex:1 1 0;width:0!important;max-width:100%;min-width:0!important;height:46px;min-height:46px;padding:8px 6px;box-sizing:border-box;white-space:nowrap}
+@media(max-width:520px){.history-toolbar{gap:8px}.history-toolbar input[type="date"]{font-size:14px!important;padding-left:8px;padding-right:4px}.history-toolbar button{font-size:14px;padding-left:4px;padding-right:4px}}
 /* Popup lihat jadwal */
 .schedule-modal{position:fixed;inset:0;z-index:9999;background:#10265a66;display:none;align-items:center;justify-content:center;padding:18px}
 .schedule-modal.show{display:flex}
