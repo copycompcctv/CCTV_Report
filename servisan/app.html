@@ -697,18 +697,7 @@ function receipt(j){
  '.thanks{text-align:center;margin-top:30px;font-weight:600;line-height:1.5}.sign{display:flex;justify-content:space-between;margin:42px 20px 0}'+
  '@media print{body{padding:12mm}}
 /* Standar tombol kembali: biru default, putih saat disentuh */
-.hbtns button[aria-label="Kembali"]{
-  width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important;
-  flex:0 0 44px!important;box-sizing:border-box!important;padding:0!important;
-  display:inline-grid!important;place-items:center!important;
-  border:1px solid #1768d8!important;border-radius:14px!important;
-  background:#1768d8!important;color:#fff!important;
-  transition:background-color .15s ease,border-color .15s ease,color .15s ease!important;
-}
-.hbtns button[aria-label="Kembali"] svg{width:22px!important;height:22px!important;display:block!important;flex:none!important}
-.hbtns button[aria-label="Kembali"]:active{
-  background:#fff!important;border-color:#1768d8!important;color:#1768d8!important;
-}
+
 
 </style></head><body><div class="brand"><img src="'+logo+'" alt="Logo Copy Computer"><div><h2>COPY COMPUTER</h2><div class="muted">Jl. Sicengkir No. 3 Troso, Kec. Pecangaan Kab. Jepara 59462</div></div></div><hr><h3>'+esc(j.ticket)+'</h3>'+
  row('Tanggal & waktu masuk',j.date)+row('Pelanggan',j.nama)+row('WhatsApp',j.wa)+row('Perangkat',device)+row('Serial Number',j.serial)+
