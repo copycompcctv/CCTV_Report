@@ -48,14 +48,249 @@ input,select,textarea{font-size:16px!important;border:1px solid #d7e2f7;border-r
 .form-actions .btn:not(.light){background:#1768e8;color:#fff}
 @media(max-width:850px){body{padding:10px 12px 28px}.wrap{margin:12px auto;gap:12px}}
 @media(max-width:520px){header{min-height:70px;padding:8px 10px;border-radius:17px}.brand-logo{width:48px!important;height:44px!important}.brand-copy strong{font-size:15px!important}.brand-copy small{font-size:12px!important}.wrap{margin:10px auto}.panel{padding:12px}.form-actions{margin:16px -12px -12px;padding:9px 12px calc(9px + env(safe-area-inset-bottom,0px));grid-template-columns:.85fr 1.35fr}.form-actions>*{min-height:48px;font-size:14px}}
-</style></head><body>
+
+/* Filter tanggal dan tombol Semua Jadwal: dua kolom rapi tanpa saling menimpa */
+.history-toolbar{display:flex!important;align-items:flex-end;gap:10px;width:100%;min-width:0}
+.history-toolbar .field{flex:1 1 0;min-width:0!important;width:0;margin:0}
+.history-toolbar input[type="date"]{display:block;width:100%!important;max-width:100%;min-width:0!important;height:46px;min-height:46px;padding:8px 10px;box-sizing:border-box;font-size:15px!important}
+.history-toolbar button{flex:1 1 0;width:0!important;max-width:100%;min-width:0!important;height:46px;min-height:46px;padding:8px 6px;box-sizing:border-box;white-space:nowrap}
+@media(max-width:520px){.history-toolbar{gap:8px}.history-toolbar input[type="date"]{font-size:14px!important;padding-left:8px;padding-right:4px}.history-toolbar button{font-size:14px;padding-left:4px;padding-right:4px}}
+
+/* Tampilan browser PC/laptop: dua kolom sejajar dan proporsional */
+@media(min-width:521px){
+ .history-toolbar{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:end;gap:12px}
+ .history-toolbar .field{width:100%;min-width:0!important}
+ .history-toolbar input[type="date"]{width:100%!important;height:46px;box-sizing:border-box}
+ .history-toolbar button{width:100%!important;height:46px;box-sizing:border-box;justify-self:stretch}
+}
+/* Popup lihat jadwal */
+.schedule-modal{position:fixed;inset:0;z-index:9999;background:#10265a66;display:none;align-items:center;justify-content:center;padding:18px}
+.schedule-modal.show{display:flex}
+.schedule-modal-box{width:min(520px,100%);max-height:85vh;overflow:auto;background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:0 18px 55px #10265a30}
+.schedule-modal-box h2{font-size:20px;margin:0 0 16px}
+.schedule-detail{padding:11px 0;border-bottom:1px solid #edf1fa;font-size:15px;overflow-wrap:anywhere}
+.schedule-detail strong{display:block;color:#6879a0;font-size:12px;margin-bottom:3px}
+.schedule-modal-actions{display:flex;justify-content:flex-end;margin-top:16px}
+.btn.view{background:#edf4ff;color:#174a9c;border:1px solid var(--line)}
+.btn svg{width:18px;height:18px;flex:none}
+
+/* FINAL FIX: pisahkan kolom tanggal dan Semua Jadwal dengan jarak nyata */
+.history-toolbar{
+ display:grid!important;
+ grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+ column-gap:14px!important;
+ row-gap:10px!important;
+ align-items:end!important;
+ width:100%!important;
+ box-sizing:border-box!important;
+}
+.history-toolbar>.field{
+ display:block!important;
+ width:100%!important;
+ min-width:0!important;
+ max-width:100%!important;
+ margin:0!important;
+ box-sizing:border-box!important;
+}
+.history-toolbar>#allSchedules{
+ display:flex!important;
+ position:relative!important;
+ inset:auto!important;
+ justify-self:stretch!important;
+ align-self:end!important;
+ width:100%!important;
+ min-width:0!important;
+ max-width:100%!important;
+ margin:0!important;
+ box-sizing:border-box!important;
+ height:46px!important;
+ min-height:46px!important;
+ white-space:nowrap!important;
+}
+.history-toolbar> .field > input#scheduleFilterDate{
+ display:block!important;
+ position:relative!important;
+ width:100%!important;
+ min-width:0!important;
+ max-width:100%!important;
+ height:46px!important;
+ min-height:46px!important;
+ margin:0!important;
+ box-sizing:border-box!important;
+}
+@media(max-width:520px){
+ .history-toolbar{column-gap:10px!important}
+ .history-toolbar>#allSchedules{padding-left:4px!important;padding-right:4px!important;font-size:14px!important}
+ .history-toolbar> .field > input#scheduleFilterDate{padding-left:8px!important;padding-right:4px!important;font-size:14px!important}
+}
+
+/* Definitive layout fix for date filter and All Schedules */
+.history-toolbar{
+ display:grid!important;
+ grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+ gap:12px!important;
+ align-items:end!important;
+ width:100%!important;
+ min-width:0!important;
+}
+.history-toolbar>.field{
+ display:flex!important;
+ flex-direction:column!important;
+ flex:initial!important;
+ width:100%!important;
+ min-width:0!important;
+ max-width:100%!important;
+ margin:0!important;
+}
+.history-toolbar>#allSchedules,
+.history-toolbar>.field>#scheduleFilterDate{
+ justify-self:center!important;
+ width:calc(100% - 20px)!important;
+ min-width:0!important;
+ max-width:calc(100% - 20px)!important;
+ height:46px!important;
+ min-height:46px!important;
+ margin:0!important;
+ padding-top:8px!important;
+ padding-bottom:8px!important;
+ box-sizing:border-box!important;
+ position:static!important;
+}
+.history-toolbar>#allSchedules{
+ display:flex!important;
+ flex:initial!important;
+ white-space:nowrap!important;
+}
+.history-toolbar>.field>#scheduleFilterDate{
+ display:block!important;
+ flex:initial!important;
+}
+@media(max-width:520px){
+ .history-toolbar{gap:8px!important}
+ .history-toolbar>#allSchedules,
+ .history-toolbar>.field>#scheduleFilterDate{
+  width:calc(100% - 16px)!important;
+  max-width:calc(100% - 16px)!important;
+ }
+ .history-toolbar>#allSchedules{font-size:14px!important;padding-left:4px!important;padding-right:4px!important}
+ .history-toolbar>.field>#scheduleFilterDate{font-size:14px!important;padding-left:8px!important;padding-right:4px!important}
+}
+
+/* History toolbar - final spacing, centered date, blue active state */
+.history-toolbar{
+ display:grid!important;
+ grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+ gap:12px!important;
+ align-items:end!important;
+ width:100%!important;
+}
+.history-toolbar>.field{
+ display:flex!important;
+ flex-direction:column!important;
+ width:100%!important;
+ min-width:0!important;
+ margin:0!important;
+}
+.history-toolbar>#scheduleFilterDate,
+.history-toolbar>.field>#scheduleFilterDate{
+ width:100%!important;
+ max-width:100%!important;
+ min-width:0!important;
+ height:48px!important;
+ min-height:48px!important;
+ margin:0!important;
+ padding:8px!important;
+ box-sizing:border-box!important;
+ text-align:center!important;
+}
+.history-toolbar>#allSchedules{
+ display:flex!important;
+ align-items:center!important;
+ justify-content:center!important;
+ width:100%!important;
+ min-width:0!important;
+ max-width:100%!important;
+ height:48px!important;
+ min-height:48px!important;
+ margin:0!important;
+ padding:8px!important;
+ box-sizing:border-box!important;
+ white-space:nowrap!important;
+ transition:background-color .15s ease,color .15s ease,border-color .15s ease;
+}
+.history-toolbar>#allSchedules.is-active{
+ background:#1767e8!important;
+ color:#fff!important;
+ border-color:#1767e8!important;
+}
+@media(max-width:520px){
+ .history-toolbar{gap:12px!important}
+ .history-toolbar>#scheduleFilterDate,
+ .history-toolbar>.field>#scheduleFilterDate{font-size:14px!important}
+ .history-toolbar>#allSchedules{font-size:14px!important}
+}
+
+/* FINAL OVERRIDE: visible gap and true center alignment on iOS Safari */
+.history-toolbar{display:flex!important;flex-flow:row nowrap!important;align-items:flex-end!important;gap:14px!important;width:100%!important;min-width:0!important;box-sizing:border-box!important}
+.history-toolbar>.field{flex:1 1 0!important;width:0!important;min-width:0!important;max-width:none!important;margin:0!important;padding:0!important;box-sizing:border-box!important}
+.history-toolbar>.field>input#scheduleFilterDate{display:block!important;width:100%!important;min-width:0!important;max-width:100%!important;height:48px!important;margin:0!important;padding:8px 4px!important;box-sizing:border-box!important;text-align:center!important;text-align-last:center!important}
+.history-toolbar>.field>input#scheduleFilterDate::-webkit-date-and-time-value{text-align:center!important;margin:0 auto!important;width:100%!important}
+.history-toolbar>.field>input#scheduleFilterDate::-webkit-datetime-edit{text-align:center!important;width:100%!important}
+.history-toolbar>button#allSchedules{flex:1 1 0!important;width:0!important;min-width:0!important;max-width:none!important;height:48px!important;min-height:48px!important;margin:0!important;padding:8px 4px!important;box-sizing:border-box!important;display:flex!important;align-items:center!important;justify-content:center!important;white-space:nowrap!important}
+@media(max-width:520px){.history-toolbar{gap:14px!important}.history-toolbar>.field>input#scheduleFilterDate,.history-toolbar>button#allSchedules{font-size:14px!important}}
+
+.time-picker-wrap{position:relative;display:flex;align-items:center;width:100%}
+.time-picker-wrap input{width:100%;padding-right:92px!important;cursor:pointer}
+.time-picker-trigger{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:38px;height:36px;border:0;border-radius:9px;background:transparent;color:var(--navy);display:grid;place-items:center;cursor:pointer}
+.time-picker-trigger svg{width:19px;height:19px}
+.time-picker-popup{position:absolute;z-index:50;top:calc(100% + 6px);left:0;min-width:260px;padding:12px;background:#fff;border:1px solid var(--line);border-radius:13px;box-shadow:0 10px 28px rgba(16,38,90,.16);display:flex;align-items:center;gap:8px}
+.time-picker-popup select{min-width:65px;height:42px;border:1px solid var(--line);border-radius:8px;background:#f7faff;color:var(--navy);font:600 16px system-ui;padding:0 8px}
+.time-picker-popup .time-wib{font-weight:700;color:var(--blue);padding:0 5px}
+.time-picker-popup button{height:40px;padding:0 12px;border:0;border-radius:8px;background:var(--blue);color:#fff;font-weight:700;cursor:pointer}
+
+.schedule-day-group{border:1px solid #d9e5ff;border-radius:15px;background:#fff;margin:0 0 10px;overflow:hidden}
+.schedule-day-toggle{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px;background:#f7faff;border:0;color:#102b59;text-align:left;cursor:pointer}
+.schedule-day-toggle span:first-child{display:flex;flex-direction:column;gap:4px}
+.schedule-day-toggle strong{font-size:15px}
+.schedule-day-toggle small{font-size:12px;color:#52709f}
+.schedule-day-chevron{font-size:22px;color:#1768e8;transition:transform .18s}
+.schedule-day-toggle[aria-expanded="true"] .schedule-day-chevron{transform:rotate(180deg)}
+.schedule-day-items{padding:10px;display:grid;gap:10px}
+.schedule-day-items[hidden]{display:none}
+.schedule-day-items .schedule-history-item{margin:0}
+
+/* Standarisasi judul halaman: samakan dengan ukuran judul menu lain */
+h1{font-size:20px!important;line-height:1.25;gap:8px}h1 svg{width:23px;height:23px}
+@media(max-width:520px){h1{font-size:18px!important;line-height:1.3;gap:7px}h1 svg{width:21px;height:21px}}
+
+/* Standar tombol panah kembali: ukuran seragam di semua menu */
+header .nav-icon{width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important;padding:0!important;flex:0 0 44px!important;border-radius:12px!important;display:inline-grid!important;place-items:center!important;box-sizing:border-box!important;transition:background-color .15s ease,color .15s ease,border-color .15s ease!important}
+header .nav-icon svg{width:22px!important;height:22px!important;flex:none!important}
+header .nav-icon:active{background:#1768e8!important;border-color:#1768e8!important;color:#fff!important}
+
+
+/* Standar tombol kembali: biru default, putih saat disentuh */
+
+
+
+/* Tombol kembali saja — mengikuti gambar acuan */
+header .nav-icon{
+  width:80px!important;height:80px!important;min-width:80px!important;min-height:80px!important;
+  flex:0 0 80px!important;box-sizing:border-box!important;padding:0!important;
+  display:inline-grid!important;place-items:center!important;
+  border:0!important;border-radius:25px!important;
+  background:#1768e8!important;color:#fff!important;
+  transition:background-color .15s ease,color .15s ease!important;
+}
+header .nav-icon svg{width:28px!important;height:28px!important;display:block!important;flex:none!important}
+header .nav-icon:active{background:#fff!important;color:#1768e8!important}
+</style>
+</head><body>
 <header>
 <img class="brand-logo" src="logo-copy-computer.PNG" alt="Copy Computer">
 <div class="brand-copy"><strong>COPY COMPUTER</strong><small>Operasional Teknisi</small></div>
 <a class="nav-icon" href="./" aria-label="Kembali ke menu utama" title="Kembali"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></a>
 </header>
-
-
 <main class="wrap">
 <nav class="tabs" aria-label="Menu halaman"><a class="tab active" id="tabForm" href="#jadwal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4zM8 8h8M8 12h8M8 16h5"/></svg>Jadwal Pekerjaan</a><a class="tab" id="tabHistory" href="#history"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>History</a></nav>
 
@@ -341,55 +576,4 @@ async function init(){
 }
 init();
 })();
-</script><style>
-/* Tombol kembali - mengikuti gambar acuan */
-header #backBtn,header > .nav-icon,header.service-header > .nav-icon,
-header .hbtns > button.icon-btn[aria-label="Kembali"],
-#appRoot header .hbtns > button.icon-btn[aria-label="Kembali"]{
- width:80px!important;height:80px!important;min-width:80px!important;min-height:80px!important;
- flex:0 0 80px!important;padding:0!important;border:0!important;border-radius:25px!important;
- background:#1768e8!important;color:#fff!important;display:grid!important;place-items:center!important;
- box-shadow:none!important;box-sizing:border-box!important;
-}
-header #backBtn svg,header > .nav-icon svg,header.service-header > .nav-icon svg,
-header .hbtns > button.icon-btn[aria-label="Kembali"] svg,
-#appRoot header .hbtns > button.icon-btn[aria-label="Kembali"] svg{
- width:28px!important;height:28px!important;display:block!important;flex:none!important;
-}
-header #backBtn:hover,header #backBtn:active,header > .nav-icon:hover,header > .nav-icon:active,
-header.service-header > .nav-icon:hover,header.service-header > .nav-icon:active,
-header .hbtns > button.icon-btn[aria-label="Kembali"]:hover,
-header .hbtns > button.icon-btn[aria-label="Kembali"]:active,
-#appRoot header .hbtns > button.icon-btn[aria-label="Kembali"]:hover,
-#appRoot header .hbtns > button.icon-btn[aria-label="Kembali"]:active{
- background:#1768e8!important;color:#fff!important;border:0!important;
-}
-
-/* Tombol kembali: sesuai acuan biru dengan panah putih */
-header #backBtn,
-header button.nav-icon[aria-label="Kembali"],
-header a.nav-icon[aria-label*="Kembali"],
-header .hbtns > button.icon-btn[aria-label="Kembali"]{
- width:80px!important;height:80px!important;min-width:80px!important;min-height:80px!important;
- flex:0 0 80px!important;padding:0!important;margin:0!important;
- border:0!important;border-radius:25px!important;
- background:#1768e8!important;color:#fff!important;
- display:grid!important;place-items:center!important;
- box-shadow:none!important;box-sizing:border-box!important;
-}
-header #backBtn svg,
-header button.nav-icon[aria-label="Kembali"] svg,
-header a.nav-icon[aria-label*="Kembali"] svg,
-header .hbtns > button.icon-btn[aria-label="Kembali"] svg{
- width:28px!important;height:28px!important;min-width:28px!important;min-height:28px!important;
- display:block!important;flex:none!important;color:inherit!important;
- stroke:currentColor!important;
-}
-header #backBtn:active,
-header button.nav-icon[aria-label="Kembali"]:active,
-header a.nav-icon[aria-label*="Kembali"]:active,
-header .hbtns > button.icon-btn[aria-label="Kembali"]:active{
- background:#fff!important;color:#1768e8!important;
-}
-</style>
-</body></html>
+</script></body></html>
