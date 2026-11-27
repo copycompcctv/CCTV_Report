@@ -295,6 +295,49 @@ const URL='https://ogolkyowgvypstjmxxde.supabase.co',KEY='sb_publishable_8NQAMLU
 const sb=window.supabase.createClient(URL,KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
 const TECHS=['Huda','Arif','Hermanto','Yazid'];
 const $=id=>document.getElementById(id);
+// Satu tanggal untuk seluruh jadwal; setiap kartu berikutnya mengulang form tanpa tanggal.
+let scheduleEntryCount=1;
+function prepareMultiScheduleForm(){
+ const form=$('scheduleForm'),dateField=$('visitDate').closest('.field'),grid=form.querySelector('.grid2');
+ form.insertBefore(dateField,grid);
+ grid.classList.add('schedule-entry');
+ grid.dataset.entry='1';
+ const add=document.createElement('button');
+ add.type='button';add.id='addScheduleEntry';add.className='btn light';
+ add.style.cssText='width:100%;margin:4px 0 12px;min-height:46px';
+ add.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M7 12h10"/></svg>Tambah Jadwal';
+ form.insertBefore(add,form.querySelector('.form-actions'));
+ add.addEventListener('click',addScheduleEntry);
+}
+function addScheduleEntry(){
+ const form=$('scheduleForm'),first=form.querySelector('.schedule-entry'),copy=first.cloneNode(true);
+ scheduleEntryCount++;
+ copy.dataset.entry=String(scheduleEntryCount);
+ copy.querySelectorAll('[id]').forEach(el=>{const old=el.id;el.id=old+'_'+scheduleEntryCount;});
+ copy.querySelectorAll('label[for]').forEach(el=>{const old=el.htmlFor;el.htmlFor=old+'_'+scheduleEntryCount;});
+ copy.querySelectorAll('input[type="text"],input[type="time"],textarea').forEach(el=>el.value='');
+ copy.querySelectorAll('input[type="checkbox"]').forEach(el=>el.checked=false);
+ const heading=document.createElement('h2');
+ heading.style.cssText='margin:8px 0 12px;color:#1768e8';
+ heading.textContent='Jadwal '+scheduleEntryCount;
+ copy.insertBefore(heading,copy.firstChild);
+ const remove=document.createElement('button');
+ remove.type='button';remove.className='btn danger';remove.style.cssText='margin:0 0 12px;min-height:36px';
+ remove.innerHTML='✕ Hapus Jadwal Ini';
+ remove.addEventListener('click',()=>{copy.remove();renumberScheduleEntries();});
+ copy.appendChild(remove);
+ $('scheduleForm').insertBefore(copy,$('addScheduleEntry'));
+}
+function renumberScheduleEntries(){
+ const entries=[...$('scheduleForm').querySelectorAll('.schedule-entry')];
+ scheduleEntryCount=entries.length;
+ entries.slice(1).forEach((entry,i)=>{const h=entry.querySelector('h2');if(h)h.textContent='Jadwal '+(i+2);});
+}
+function collectSchedulePayload(entry){
+ const get=id=>entry.querySelector('[id^="'+id+'"]')?.value||'';
+ const technicians=[...entry.querySelectorAll('#technicianChecks input:checked, [id^="technicianChecks_"] input:checked')].map(x=>x.value);
+ return {visit_date:$('visitDate').value,visit_time:get('visitTime'),customer_name:get('customerName').trim(),customer_address:get('customerAddress').trim(),job_type:get('jobType').trim(),technicians,notes:get('scheduleNotes').trim()};
+}
 const today=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Jakarta',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
 const fmtTime=v=>v?new Intl.DateTimeFormat('id-ID',{timeZone:'Asia/Jakarta',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date(v)):'—';
 const fmtDate=v=>v?new Intl.DateTimeFormat('id-ID',{timeZone:'Asia/Jakarta',day:'2-digit',month:'long',year:'numeric'}).format(new Date(v+'T12:00:00+07:00')):'';
@@ -318,22 +361,32 @@ window.showTab=function(tab){
  if(schedule)loadSchedules();else loadAttendance();
 };
 window.resetSchedule=()=>{
- $('scheduleForm').reset();$('editId').value='';$('visitDate').value=today();$('visitTime').value='09:00';
- $('saveSchedule').innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>Simpan Jadwal>';
- $('technicianChecks').querySelectorAll('input').forEach(x=>x.checked=false);
+ $('scheduleForm').reset();$('editId').value='';$('visitDate').value=today();
+ [...$('scheduleForm').querySelectorAll('.schedule-entry')].slice(1).forEach(x=>x.remove());
+ scheduleEntryCount=1;
+ const first=$('scheduleForm').querySelector('.schedule-entry');
+ first.querySelectorAll('input[type="checkbox"]').forEach(x=>x.checked=false);
+ $('saveSchedule').innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 3h14l3 3v15H3V3h1Zm3 0v7h10V3M7 21v-8h10v8"/></svg>Simpan';
 };
 function selectedTechs(){return [...$('technicianChecks').querySelectorAll('input:checked')].map(x=>x.value)}
 function setTechs(names){$('technicianChecks').querySelectorAll('input').forEach(x=>x.checked=(names||[]).includes(x.value))}
 $('scheduleForm').addEventListener('submit',async e=>{
- e.preventDefault();const technicians=selectedTechs();if(!technicians.length){alert('Pilih minimal satu teknisi.');return}
- const payload={visit_date:$('visitDate').value,visit_time:$('visitTime').value,customer_name:$('customerName').value.trim(),customer_address:$('customerAddress').value.trim(),job_type:$('jobType').value.trim(),technicians,notes:$('scheduleNotes').value.trim()};
- if(!payload.visit_date||!payload.visit_time||!payload.customer_name||!payload.job_type){alert('Lengkapi tanggal, jam, pelanggan, dan pekerjaan.');return}
+ e.preventDefault();
+ const entries=[...$('scheduleForm').querySelectorAll('.schedule-entry')];
+ const payloads=entries.map(collectSchedulePayload);
+ for(let i=0;i<payloads.length;i++){
+  const p=payloads[i];
+  if(!p.visit_date||!p.visit_time||!p.customer_name||!p.job_type){alert('Lengkapi jam, nama pelanggan, dan jenis pekerjaan pada Jadwal '+(i+1)+'.');return}
+  if(!p.technicians.length){alert('Pilih minimal satu teknisi pada Jadwal '+(i+1)+'.');return}
+ }
  const btn=$('saveSchedule');btn.disabled=true;
  try{
   const id=$('editId').value;
-  const query=id?sb.from('work_schedules').update(payload).eq('id',id):sb.from('work_schedules').insert(payload);
-  const {error}=await query;if(error)throw error;
-  resetSchedule();await loadSchedules();alert(id?'Jadwal berhasil diperbarui.':'Jadwal berhasil disimpan.');
+  let error;
+  if(id){({error}=await sb.from('work_schedules').update(payloads[0]).eq('id',id));}
+  else{({error}=await sb.from('work_schedules').insert(payloads));}
+  if(error)throw error;
+  resetSchedule();await loadSchedules();alert(id?'Jadwal berhasil diperbarui.':payloads.length+' jadwal berhasil disimpan.');
  }catch(err){alert('Jadwal belum tersimpan: '+err.message)}finally{btn.disabled=false}
 });
 
@@ -347,8 +400,8 @@ window.viewSchedule=async id=>{
 };
 window.editSchedule=async id=>{
  const {data,error}=await sb.from('work_schedules').select('*').eq('id',id).single();if(error){alert(error.message);return}
- $('editId').value=data.id;$('visitDate').value=data.visit_date;$('visitTime').value=String(data.visit_time).slice(0,5);
- $('customerName').value=data.customer_name;$('customerAddress').value=data.customer_address||'';$('jobType').value=data.job_type;$('scheduleNotes').value=data.notes||'';setTechs(data.technicians);
+ resetSchedule();$('editId').value=data.id;$('visitDate').value=data.visit_date;const entry=$('scheduleForm').querySelector('.schedule-entry');entry.querySelector('[id^="visitTime"]').value=String(data.visit_time).slice(0,5);
+ entry.querySelector('[id^="customerName"]').value=data.customer_name;entry.querySelector('[id^="customerAddress"]').value=data.customer_address||'';entry.querySelector('[id^="jobType"]').value=data.job_type;entry.querySelector('[id^="scheduleNotes"]').value=data.notes||'';setTechs(data.technicians);
  $('saveSchedule').textContent='Simpan Perubahan';
  $('tabForm').click();
  window.scrollTo({top:0,behavior:'smooth'});
@@ -416,7 +469,7 @@ function setupSeparatePage(){
 
 async function init(){
  if(!await guard())return;
- $('visitDate').value=today();$('visitTime').value='09:00';$('scheduleFilterDate').value=today();$('attendanceDate').value=today();
+ $('visitDate').value=today();$('visitTime').value='09:00';$('scheduleFilterDate').value=today();$('attendanceDate').value=today();prepareMultiScheduleForm();
  setupSeparatePage();if(PAGE==='schedule')loadSchedules();else loadAttendance();
 }
 init();
