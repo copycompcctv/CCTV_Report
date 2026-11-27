@@ -166,8 +166,74 @@ main{width:100%;max-width:100%;padding-left:max(14px,env(safe-area-inset-left));
   main{padding-bottom:max(16px,env(safe-area-inset-bottom))}
 }
 </style>
+
+<style id="copy-computer-premium-welcome-theme">
+html{background:#eaf4ff}
+body{background:transparent!important;position:relative;isolation:isolate}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background-image:url("./copycomputer-tech-bg.webp");background-position:center;background-size:cover;background-repeat:no-repeat;opacity:1;transition:opacity .25s ease}
+body.app-menu-view::before{opacity:.22}
+main{margin:0 auto!important;padding-top:clamp(14px,3vh,34px);padding-bottom:max(22px,env(safe-area-inset-bottom))}
+.welcome-brand{width:min(440px,100%);margin:0 auto 16px;padding:0 10px}
+.welcome-brand .welcome-logo{width:210px;height:112px;margin:0 auto 10px;padding:0;border-radius:0;background:transparent;box-shadow:none}
+.welcome-brand .welcome-logo img{width:100%;height:100%;max-height:none;object-fit:contain}
+.welcome-info{gap:8px;margin:0}
+.weather-tile{padding:10px 14px;border-color:rgba(150,196,247,.48);background:rgba(235,245,255,.74);backdrop-filter:blur(10px)}
+.weather-symbol{width:42px;height:42px;background:rgba(255,255,255,.8);font-size:25px}
+.weather-copy strong{font-size:23px}
+.date-time-row{gap:8px}
+.date-chip{padding:8px 10px;background:rgba(255,255,255,.72);border-color:rgba(150,196,247,.42);backdrop-filter:blur(8px)}
+.welcome-login{width:min(440px,calc(100% - 4px));margin:0 auto 18px;padding:24px 28px 20px;border:1px solid rgba(255,255,255,.9);border-radius:28px;background:rgba(255,255,255,.86);box-shadow:0 18px 48px rgba(20,86,177,.17);backdrop-filter:blur(16px);text-align:center}
+.welcome-card-heading{margin:0 0 18px;text-align:center}
+.welcome-shield{width:68px;height:68px;margin:-7px auto 8px;display:grid;place-items:center;border-radius:50%;background:rgba(220,239,255,.82);box-shadow:0 5px 18px rgba(23,104,232,.12)}
+.welcome-shield svg{width:54px;height:54px}
+.welcome-card-heading h1{margin:0;color:#103b91;font-size:clamp(26px,4vw,31px);font-weight:800;letter-spacing:-.04em}
+.welcome-card-heading p{margin:4px 0 0;color:#58729d;font-size:14px}
+#welcomeForm{text-align:left}
+#welcomeForm label{margin-bottom:7px;color:#244779;font-size:12px}
+.password-wrap{border:1px solid #cfe0f8;border-radius:15px;background:rgba(247,251,255,.9)}
+.password-wrap input{padding:13px 15px}
+.password-wrap button{color:#1455c5}
+#welcomeMessage{min-height:18px;margin:7px 0;color:#c0394a}
+.enter-btn{height:48px;border-radius:14px;background:linear-gradient(105deg,#0879f8 0%,#0750c9 58%,#10399e 100%);box-shadow:0 8px 18px rgba(12,91,205,.2)}
+.home-install-wrap{margin:10px auto 0;gap:5px}
+.home-install-btn{min-height:42px;border:1px solid #a9d0ff;border-radius:14px;background:rgba(242,248,255,.86);color:#0755d4;box-shadow:none}
+.home-install-hint{color:#5e7597}
+.welcome-footer{display:grid;justify-items:center;gap:2px;margin:18px auto 0;color:#0753c9;text-align:center}
+.welcome-footer strong{font-size:12px;letter-spacing:.28em;font-weight:850}
+.welcome-footer span{font-size:9px;letter-spacing:.16em;color:#5c78a5}
+.app-menu-view main{padding-top:clamp(12px,2vh,24px)}
+.app-menu-view .welcome-brand{margin-bottom:18px}
+.app-menu-view .welcome-brand .welcome-logo{width:150px;height:80px;margin-bottom:8px}
+.app-menu-view .weather-tile,.app-menu-view .date-chip{background:rgba(255,255,255,.84)}
+.app-menu-view .module{background:rgba(255,255,255,.94);border-color:rgba(203,222,250,.96);box-shadow:0 7px 22px rgba(20,68,145,.10)}
+.app-menu-view .symbol{background:#edf4ff}
+.app-menu-view .menu-toolbar .lock-btn{background:rgba(255,255,255,.94)}
+@media(max-width:680px){
+ main{padding-top:clamp(10px,2vh,20px)}
+ .welcome-brand{width:min(390px,100%);margin:0 auto 13px;padding:0 10px}
+ .welcome-brand .welcome-logo{width:174px;height:94px;margin-bottom:7px}
+ .welcome-info{gap:7px}
+ .weather-tile{padding:9px 11px}
+ .weather-symbol{width:38px;height:38px}
+ .weather-copy strong{font-size:21px}
+ .date-chip{padding:7px 7px}
+ .welcome-login{width:min(420px,100%);padding:21px 18px 18px;border-radius:23px}
+ .welcome-shield{width:60px;height:60px}
+ .welcome-shield svg{width:48px;height:48px}
+ .welcome-card-heading{margin-bottom:15px}
+ .welcome-card-heading h1{font-size:27px}
+ .welcome-card-heading p{font-size:12px}
+ .welcome-footer{margin-top:14px}
+ .app-menu-view .welcome-brand .welcome-logo{width:130px;height:70px}
+}
+@media(min-width:681px){
+ .login-view main{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding-top:16px}
+ .login-view .welcome-brand{margin-bottom:15px}
+ .login-view .welcome-login{margin-bottom:0}
+}
+</style>
 </head>
-<body>
+<body class="login-view">
 <main>
 <section class="welcome-brand" aria-label="Informasi dan cuaca">
   <div class="welcome-logo"><img src="logo-copy-computer.PNG" alt="Logo Copy Computer"></div>
@@ -185,20 +251,25 @@ main{width:100%;max-width:100%;padding-left:max(14px,env(safe-area-inset-left));
 
 </section>
 <section id="loginPanel" class="welcome-login">
-<div class="home-install-wrap">
-  <button type="button" id="homeInstallBtn" class="home-install-btn" hidden>
-    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v11m-5-5 5 5 5-5M5 17v3h14v-3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    <span>Unduh Aplikasi</span>
-  </button>
-  <p id="homeInstallHint" class="home-install-hint" hidden></p>
+<div class="welcome-card-heading">
+  <div class="welcome-shield" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M24 3 40 9v12c0 11-6.8 19-16 24C14.8 40 8 32 8 21V9L24 3Z" fill="url(#welcomeShield)"/><defs><linearGradient id="welcomeShield" x1="8" y1="3" x2="40" y2="45"><stop stop-color="#08bfd4"/><stop offset="1" stop-color="#123caa"/></linearGradient></defs><rect x="17" y="21" width="14" height="13" rx="2.5" fill="white"/><path d="M20 21v-3a4 4 0 0 1 8 0v3" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"/><circle cx="24" cy="27" r="1.7" fill="#1768e8"/></svg></div>
+  <h1>Selamat Datang</h1>
+  <p>Masukkan password untuk mengakses aplikasi</p>
 </div>
-  <p class="welcome-sub" style="margin:0 0 16px">Masukkan password untuk melanjutkan</p>
   <form id="welcomeForm">
     <label for="welcomePassword">Password bersama</label>
     <div class="password-wrap"><input id="welcomePassword" type="password" autocomplete="current-password" placeholder="Masukkan password" required><button type="button" id="togglePassword" aria-label="Lihat password">◉</button></div>
     <p id="welcomeMessage" role="status"></p>
     <button class="enter-btn" type="submit">Masuk <span>→</span></button>
   </form>
+  <div class="home-install-wrap">
+    <button type="button" id="homeInstallBtn" class="home-install-btn" hidden>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v11m-5-5 5 5 5-5M5 17v3h14v-3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>Unduh Aplikasi</span>
+    </button>
+    <p id="homeInstallHint" class="home-install-hint" hidden></p>
+  </div>
+  <div class="welcome-footer"><strong>COPY COMPUTER</strong><span>IT SOLUTIONS &amp; MANAGEMENT</span></div>
 </section>
 <section id="menuPanel" hidden>
   <div class="menu-toolbar"><button id="lockButton" class="lock-btn" type="button" title="Keluar" aria-label="Keluar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v9M6.2 5.8a9 9 0 1 0 11.6 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span>Keluar</span></button></div>
@@ -238,9 +309,9 @@ var URL='https://ogolkyowgvypstjmxxde.supabase.co',KEY='sb_publishable_8NQAMLU4W
 var sb=window.supabase.createClient(URL,KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
 var login=$('loginPanel'),menu=$('menuPanel'),form=$('welcomeForm'),msg=$('welcomeMessage'),pass=$('welcomePassword');
 function $(id){return document.getElementById(id)}
-function showLogin(message){login.hidden=false;menu.hidden=true;msg.textContent=message||'';pass.value=''}
+function showLogin(message){document.body.classList.remove('app-menu-view');document.body.classList.add('login-view');login.hidden=false;menu.hidden=true;msg.textContent=message||'';pass.value=''}
 var IDLE_LIMIT=5*60*1000,lastTouch=0,locking=false;
-function showMenu(){login.hidden=true;menu.hidden=false;sessionStorage.setItem('cc_app_unlocked','1');localStorage.setItem('cc_last_activity',String(Date.now()))}
+function showMenu(){document.body.classList.remove('login-view');document.body.classList.add('app-menu-view');login.hidden=true;menu.hidden=false;sessionStorage.setItem('cc_app_unlocked','1');localStorage.setItem('cc_last_activity',String(Date.now()))}
 async function lock(message){if(locking)return;locking=true;sessionStorage.removeItem('cc_app_unlocked');localStorage.removeItem('cc_last_activity');try{await sb.auth.signOut({scope:'local'})}catch(e){}showLogin(message||'Sesi berakhir setelah 5 menit tidak aktif. Masukkan password kembali.');locking=false}
 function activity(){if(sessionStorage.getItem('cc_app_unlocked')==='1'){var now=Date.now();if(now-lastTouch>900){localStorage.setItem('cc_last_activity',String(now));lastTouch=now}}}
 function checkIdle(){if(sessionStorage.getItem('cc_app_unlocked')==='1'){var last=Number(localStorage.getItem('cc_last_activity'))||0;if(!last||Date.now()-last>=IDLE_LIMIT)lock()}}
