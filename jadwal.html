@@ -297,6 +297,31 @@ header .nav-icon:active{background:#1768e8!important;border-color:#1768e8!import
  header .nav-icon svg{width:30px!important;height:30px!important}
  .wrap{width:100%!important;max-width:1420px!important;margin:0 auto!important;padding:0!important;gap:14px!important}
 }
+
+/* Ukuran tab disamakan dengan navigasi Manajemen Servis */
+.tabs{
+ display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
+ gap:5px!important;position:static!important;width:100%!important;max-width:100%!important;
+ margin:0 0 14px!important;padding:4px!important;background:#fff!important;
+ border:1px solid #dce6f5!important;border-radius:12px!important;
+ box-shadow:0 2px 9px rgba(20,55,110,.035)!important;box-sizing:border-box!important
+}
+.tabs .tab{
+ min-width:0!important;min-height:39px!important;border:0!important;border-radius:9px!important;
+ background:transparent!important;color:#536987!important;font-size:13px!important;
+ font-weight:650!important;padding:8px 10px!important;gap:8px!important;box-sizing:border-box!important
+}
+.tabs .tab svg{width:19px!important;height:19px!important;flex:none!important}
+.tabs .tab.active{
+ background:#1768e8!important;color:#fff!important;border-color:transparent!important;
+ box-shadow:0 2px 7px rgba(23,104,232,.16)!important
+}
+@media(max-width:700px){
+ .tabs{padding:3px!important}
+ .tabs .tab{min-height:37px!important;font-size:12px!important;gap:5px!important;padding:7px 3px!important}
+ .tabs .tab svg{width:17px!important;height:17px!important}
+}
+
 </style>
 </head><body>
 <header>
