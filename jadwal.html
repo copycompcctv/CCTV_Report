@@ -55,6 +55,14 @@ input,select,textarea{font-size:16px!important;border:1px solid #d7e2f7;border-r
 .history-toolbar input[type="date"]{display:block;width:100%!important;max-width:100%;min-width:0!important;height:46px;min-height:46px;padding:8px 10px;box-sizing:border-box;font-size:15px!important}
 .history-toolbar button{flex:1 1 0;width:0!important;max-width:100%;min-width:0!important;height:46px;min-height:46px;padding:8px 6px;box-sizing:border-box;white-space:nowrap}
 @media(max-width:520px){.history-toolbar{gap:8px}.history-toolbar input[type="date"]{font-size:14px!important;padding-left:8px;padding-right:4px}.history-toolbar button{font-size:14px;padding-left:4px;padding-right:4px}}
+
+/* Tampilan browser PC/laptop: dua kolom sejajar dan proporsional */
+@media(min-width:521px){
+ .history-toolbar{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:end;gap:12px}
+ .history-toolbar .field{width:100%;min-width:0!important}
+ .history-toolbar input[type="date"]{width:100%!important;height:46px;box-sizing:border-box}
+ .history-toolbar button{width:100%!important;height:46px;box-sizing:border-box;justify-self:stretch}
+}
 /* Popup lihat jadwal */
 .schedule-modal{position:fixed;inset:0;z-index:9999;background:#10265a66;display:none;align-items:center;justify-content:center;padding:18px}
 .schedule-modal.show{display:flex}
