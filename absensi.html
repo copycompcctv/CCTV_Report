@@ -101,7 +101,27 @@ header .nav-icon:active{
   background:#fff!important;border-color:#1768d8!important;color:#1768d8!important;
 }
 
-</style></head><body>
+</style>
+<style id="back-button-final-standard">
+/* Final override: semua tombol kembali biru penuh, panah putih */
+body>header .nav-icon{
+ width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important;
+ flex:0 0 44px!important;box-sizing:border-box!important;padding:0!important;
+ display:inline-grid!important;place-items:center!important;
+ border:1px solid #1768d8!important;border-radius:14px!important;
+ background:#1768d8!important;color:#fff!important;
+ box-shadow:none!important;opacity:1!important;
+}
+body>header .nav-icon svg{width:22px!important;height:22px!important;display:block!important;flex:none!important}
+body>header .nav-icon:hover,body>header .nav-icon:focus-visible{
+ background:#1768d8!important;border-color:#1768d8!important;color:#fff!important;
+}
+body>header .nav-icon:active{
+ background:#fff!important;border-color:#1768d8!important;color:#1768d8!important;
+}
+</style>
+
+</head><body>
 <header>
 <img class="brand-logo" src="logo-copy-computer.PNG" alt="Copy Computer">
 <div class="brand-copy"><strong>COPY COMPUTER</strong><small>Operasional Teknisi</small></div>
