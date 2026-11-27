@@ -256,6 +256,37 @@ body.app-menu-view::before{opacity:.22!important}
  .login-view .date-chip{padding:8px 7px;gap:6px}
 }
 </style>
+
+<style id="copy-computer-background-logo-final-fix">
+html{background:transparent!important}
+body{background:transparent!important;isolation:isolate!important}
+body::before{
+ content:""!important;position:fixed!important;inset:0!important;display:block!important;
+ z-index:-1!important;pointer-events:none!important;
+ background-image:url("https://copycompcctv.github.io/CCTV_Report/copycomputer-tech-bg.webp?design=approved")!important;
+ background-position:center center!important;background-size:cover!important;background-repeat:no-repeat!important;
+ opacity:1!important
+}
+body.app-menu-view::before{opacity:.20!important}
+.login-view main{padding-top:12px!important;padding-bottom:20px!important}
+.login-view .welcome-brand{width:min(440px,100%)!important;margin:0 auto 12px!important;padding:0 8px!important}
+.login-view .welcome-brand .welcome-logo{
+ width:170px!important;height:94px!important;max-width:65vw!important;
+ margin:0 auto 12px!important;padding:0!important;overflow:visible!important;
+ border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important
+}
+.login-view .welcome-brand .welcome-logo img{
+ display:block!important;width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important;
+ object-fit:contain!important;object-position:center!important
+}
+.login-view .welcome-info{width:min(410px,100%)!important;margin:0 auto!important;display:block!important}
+.login-view .date-time-row{margin-top:0!important}
+.login-view .welcome-login{margin:14px auto 0!important}
+@media(max-width:680px){
+ .login-view .welcome-brand .welcome-logo{width:150px!important;height:84px!important;margin-bottom:10px!important}
+ .login-view .welcome-info{width:min(390px,100%)!important}
+}
+</style>
 </head>
 <body class="login-view">
 <main>
