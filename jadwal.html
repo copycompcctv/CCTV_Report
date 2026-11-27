@@ -272,6 +272,31 @@ header .nav-icon:active{background:#1768e8!important;border-color:#1768e8!import
 /* Standar tombol kembali: biru default, putih saat disentuh */
 
 
+
+/* Ukuran halaman desktop disamakan dengan Nota; aturan mobile tetap */
+@media screen and (min-width:701px){
+ body{padding:16px 22px 34px!important}
+ header{
+  box-sizing:border-box!important;width:100%!important;max-width:1420px!important;
+  min-height:104px!important;margin:0 auto 14px!important;padding:12px 20px!important;
+  border-radius:28px!important;gap:14px!important
+ }
+ header .brand-logo{
+  display:block!important;flex:0 0 auto!important;width:90px!important;height:auto!important;
+  max-height:68px!important;object-fit:contain!important;padding:0 18px 0 0!important;
+  border:0!important;border-right:2px solid #10265a!important
+ }
+ header .brand-copy{display:flex!important;flex-direction:column!important;gap:3px!important}
+ header .brand-copy strong{font-size:clamp(20px,2.1vw,28px)!important;line-height:1.15!important;font-weight:800!important;letter-spacing:-.03em!important}
+ header .brand-copy small{font-size:clamp(16px,1.7vw,22px)!important;line-height:1.2!important;font-weight:750!important}
+ header .nav-icon{
+  width:70px!important;height:70px!important;min-width:70px!important;min-height:70px!important;
+  flex:0 0 70px!important;border-radius:22px!important;background:#1768e8!important;
+  border:1px solid #1768e8!important;color:#fff!important
+ }
+ header .nav-icon svg{width:30px!important;height:30px!important}
+ .wrap{width:100%!important;max-width:1420px!important;margin:0 auto!important;padding:0!important;gap:14px!important}
+}
 </style>
 </head><body>
 <header>
