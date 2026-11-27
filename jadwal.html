@@ -73,6 +73,56 @@ input,select,textarea{font-size:16px!important;border:1px solid #d7e2f7;border-r
 .schedule-modal-actions{display:flex;justify-content:flex-end;margin-top:16px}
 .btn.view{background:#edf4ff;color:#174a9c;border:1px solid var(--line)}
 .btn svg{width:18px;height:18px;flex:none}
+
+/* FINAL FIX: pisahkan kolom tanggal dan Semua Jadwal dengan jarak nyata */
+.history-toolbar{
+ display:grid!important;
+ grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+ column-gap:14px!important;
+ row-gap:10px!important;
+ align-items:end!important;
+ width:100%!important;
+ box-sizing:border-box!important;
+}
+.history-toolbar>.field{
+ display:block!important;
+ width:100%!important;
+ min-width:0!important;
+ max-width:100%!important;
+ margin:0!important;
+ box-sizing:border-box!important;
+}
+.history-toolbar>#allSchedules{
+ display:flex!important;
+ position:relative!important;
+ inset:auto!important;
+ justify-self:stretch!important;
+ align-self:end!important;
+ width:100%!important;
+ min-width:0!important;
+ max-width:100%!important;
+ margin:0!important;
+ box-sizing:border-box!important;
+ height:46px!important;
+ min-height:46px!important;
+ white-space:nowrap!important;
+}
+.history-toolbar> .field > input#scheduleFilterDate{
+ display:block!important;
+ position:relative!important;
+ width:100%!important;
+ min-width:0!important;
+ max-width:100%!important;
+ height:46px!important;
+ min-height:46px!important;
+ margin:0!important;
+ box-sizing:border-box!important;
+}
+@media(max-width:520px){
+ .history-toolbar{column-gap:10px!important}
+ .history-toolbar>#allSchedules{padding-left:4px!important;padding-right:4px!important;font-size:14px!important}
+ .history-toolbar> .field > input#scheduleFilterDate{padding-left:8px!important;padding-right:4px!important;font-size:14px!important}
+}
 </style></head><body>
 <header>
 <img class="brand-logo" src="logo-copy-computer.PNG" alt="Copy Computer">
