@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="3840" height="2160" viewBox="0 0 3840 2160">
+<defs>
+ <linearGradient id="base" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f7fbff"/><stop offset=".48" stop-color="#e8f4ff"/><stop offset="1" stop-color="#b9dcff"/></linearGradient>
+ <radialGradient id="glow"><stop stop-color="#fff" stop-opacity="1"/><stop offset="1" stop-color="#d7edff" stop-opacity="0"/></radialGradient>
+ <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#05c8e7"/><stop offset=".48" stop-color="#087cf0"/><stop offset="1" stop-color="#0636b9"/></linearGradient>
+ <linearGradient id="deep" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#087cf0"/><stop offset="1" stop-color="#052b9d"/></linearGradient>
+ <linearGradient id="metal" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#f9fdff"/><stop offset=".55" stop-color="#a9d8ff"/><stop offset="1" stop-color="#368fe0"/></linearGradient>
+ <filter id="soft"><feGaussianBlur stdDeviation="45"/></filter>
+ <filter id="shadow"><feGaussianBlur stdDeviation="18"/></filter>
+ <pattern id="dots" width="42" height="42" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="2.4" fill="#1c9fff" opacity=".14"/></pattern>
+</defs>
+<rect width="3840" height="2160" fill="url(#base)"/>
+<ellipse cx="1900" cy="1040" rx="1450" ry="1040" fill="url(#glow)"/>
+<path d="M0 0H820L420 420H0Z" fill="url(#deep)"/>
+<path d="M0 0H560L280 280H0Z" fill="#0879e8" opacity=".9"/>
+<path d="M0 0H300L0 300Z" fill="#05bde6" opacity=".82"/>
+<path d="M3840 2160H3020L3420 1740H3840Z" fill="url(#deep)"/>
+<path d="M3840 2160H3280L3560 1880H3840Z" fill="#05bde6" opacity=".88"/>
+<path d="M3840 0H3420L3840 420Z" fill="#0b8df4" opacity=".1"/>
+<rect width="3840" height="2160" fill="url(#dots)" opacity=".55"/>
+<!-- left laptop / workstation illustration -->
+<g opacity=".78" transform="translate(-60 760)">
+ <ellipse cx="480" cy="1090" rx="690" ry="95" fill="#3188d2" opacity=".2" filter="url(#soft)"/>
+ <path d="M110 220Q120 180 172 180H850Q890 180 900 230V810H110Z" fill="#0b4d99" opacity=".26"/>
+ <path d="M145 210Q145 175 180 175H840Q875 175 875 210V760H145Z" fill="url(#metal)" stroke="#4d9fe5" stroke-width="14"/>
+ <path d="M185 245H835V710H185Z" fill="#0b4b86"/>
+ <path d="M185 245H835V710H185Z" fill="#0a78ca" opacity=".42"/>
+ <path d="M185 640L835 290M185 510L700 245M320 710L835 440" stroke="#41c8f5" stroke-width="10" opacity=".34"/>
+ <path d="M80 770H940L1160 930Q1180 955 1130 970H-20Q-65 950 -25 920Z" fill="url(#metal)" stroke="#5aa9e8" stroke-width="12"/>
+ <path d="M300 800H690L760 900H230Z" fill="#e9f7ff" opacity=".8" stroke="#4a9be0" stroke-width="8"/>
+ <g stroke="#4b9fe1" stroke-width="5" opacity=".6"><path d="M-5 930H1120M250 820H730M280 845H710M310 870H680"/></g>
+ <path d="M0 980H1120" stroke="#fff" stroke-width="18" opacity=".7"/>
+</g>
+<!-- subtle city skyline behind laptop -->
+<g fill="#4ba4e6" opacity=".15">
+ <path d="M0 1160h180v-260h120v260h85V800h140v360h110V960h100v200h120v-330h160v330h120v-210h110v210H0Z"/>
+ <path d="M0 1250H1300V1310H0Z"/>
+</g>
+<!-- right CCTV camera -->
+<g transform="translate(2920 190) rotate(-8 420 360)" opacity=".94">
+ <ellipse cx="480" cy="470" rx="470" ry="330" fill="#2e8bd1" opacity=".17" filter="url(#soft)"/>
+ <path d="M180 140Q200 30 390 20H690Q900 30 940 170L980 500Q980 650 840 700L370 770Q220 770 190 620Z" fill="url(#metal)" stroke="#5ba9e7" stroke-width="22"/>
+ <path d="M200 190Q240 90 390 80H680Q840 90 890 205L915 390H220Z" fill="#f8fdff" opacity=".72"/>
+ <path d="M260 500Q300 420 470 400L820 380Q920 390 940 500L900 650Q850 740 690 750L400 760Q260 730 250 620Z" fill="url(#deep)"/>
+ <ellipse cx="600" cy="565" rx="190" ry="180" fill="#071f62" stroke="#d7f1ff" stroke-width="26"/>
+ <ellipse cx="600" cy="565" rx="142" ry="136" fill="#0c4a9d" stroke="#55c7ff" stroke-width="18"/>
+ <ellipse cx="600" cy="565" rx="88" ry="88" fill="#061b50" stroke="#168fe9" stroke-width="16"/>
+ <ellipse cx="570" cy="530" rx="32" ry="32" fill="#9beaff" opacity=".85"/>
+ <path d="M330 90Q500 15 760 100" fill="none" stroke="#fff" stroke-width="20" opacity=".7"/>
+</g>
+<!-- right side circuit traces -->
+<g fill="none" stroke="#21a9f4" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity=".34">
+ <path d="M2100 270H2560L2740 90H3320L3480 -70"/>
+ <path d="M2210 390H2690L2870 210H3520"/>
+ <path d="M2350 510H2760L2940 330H3750"/>
+ <path d="M2570 650H3000L3160 490H3840"/>
+ <path d="M2660 850H3060L3240 670H3840"/>
+ <path d="M2600 1070H3000L3180 890H3840"/>
+ <path d="M2780 1290H3210L3400 1100H3840"/>
+ <path d="M2700 1510H3090L3260 1340H3840"/>
+ <path d="M180 360H660L820 200H1280"/>
+ <path d="M0 520H480L650 350H1100"/>
+ <path d="M0 690H330L470 550H920"/>
+</g>
+<g fill="#7deaff" opacity=".78">
+ <g><circle cx="2560" cy="270" r="19"/><circle cx="2740" cy="90" r="19"/><circle cx="3320" cy="90" r="19"/><circle cx="2690" cy="390" r="19"/><circle cx="2870" cy="210" r="19"/><circle cx="3520" cy="210" r="19"/><circle cx="2760" cy="510" r="19"/><circle cx="2940" cy="330" r="19"/><circle cx="3750" cy="330" r="19"/><circle cx="3060" cy="850" r="19"/><circle cx="3240" cy="670" r="19"/><circle cx="3000" cy="1070" r="19"/><circle cx="3180" cy="890" r="19"/><circle cx="3210" cy="1290" r="19"/><circle cx="3400" cy="1100" r="19"/></g>
+ <g><circle cx="660" cy="360" r="17"/><circle cx="820" cy="200" r="17"/><circle cx="1280" cy="200" r="17"/><circle cx="480" cy="520" r="17"/><circle cx="650" cy="350" r="17"/><circle cx="1100" cy="350" r="17"/></g>
+</g>
+<!-- center clear soft zone for login UI -->
+<ellipse cx="1920" cy="1080" rx="1030" ry="980" fill="#fff" opacity=".34" filter="url(#soft)"/>
+<path d="M1260 0H2580V2160H1260Z" fill="#fff" opacity=".08"/>
+<path d="M0 2020H3840" stroke="#fff" stroke-width="12" opacity=".35"/>
+</svg>
