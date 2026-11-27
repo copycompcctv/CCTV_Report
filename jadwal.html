@@ -315,8 +315,14 @@ function addScheduleEntry(){
  copy.dataset.entry=String(scheduleEntryCount);
  copy.querySelectorAll('[id]').forEach(el=>{const old=el.id;el.id=old+'_'+scheduleEntryCount;});
  copy.querySelectorAll('label[for]').forEach(el=>{const old=el.htmlFor;el.htmlFor=old+'_'+scheduleEntryCount;});
- copy.querySelectorAll('input[type="text"],input[type="time"],textarea').forEach(el=>el.value='');
- copy.querySelectorAll('input[type="checkbox"]').forEach(el=>el.checked=false);
+ // Form baru harus benar-benar kosong, tidak mewarisi isian dari jadwal sebelumnya.
+ copy.querySelectorAll('input').forEach(el=>{
+  if(el.type==='checkbox'||el.type==='radio'){el.checked=false;el.defaultChecked=false;}
+  else{el.value='';el.defaultValue='';}
+ });
+ copy.querySelectorAll('textarea').forEach(el=>{el.value='';el.defaultValue='';});
+ copy.querySelectorAll('select').forEach(el=>{el.selectedIndex=0;});
+ copy.querySelectorAll('input,textarea,select').forEach(el=>el.removeAttribute('value'));
  const heading=document.createElement('h2');
  heading.style.cssText='margin:8px 0 12px;color:#1768e8';
  heading.textContent='Jadwal '+scheduleEntryCount;
