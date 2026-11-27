@@ -1,10 +1,47 @@
+<!doctype html>
+<html lang="id"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Jadwal & Absensi | Copy Computer</title><meta name="theme-color" content="#ffffff">
+<link rel="icon" type="image/png" href="icon-192.png">
+<style>
+:root{--navy:#10265a;--blue:#1768e8;--line:#dce7ff;--soft:#edf4ff;--muted:#6879a0;--green:#15945f;--red:#dc3545}
+*{box-sizing:border-box}body{margin:0;padding:14px 18px 38px;background:#f5f8ff;color:var(--navy);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+header,.wrap{width:min(1120px,100%);margin-left:auto;margin-right:auto}
+header{min-height:100px;padding:14px 20px;display:flex;align-items:center;gap:14px;background:#fff;border:1px solid var(--line);border-radius:26px;box-shadow:0 6px 20px rgba(24,78,160,.07)}
+.brand-logo{width:64px;height:58px;object-fit:contain;flex:none;border-right:2px solid var(--navy);padding-right:12px}
+.brand-copy{min-width:0;flex:1}.brand-copy strong{display:block;font-size:23px;font-weight:850;line-height:1.15;letter-spacing:-.025em}.brand-copy small{display:block;color:var(--blue);font-size:17px;font-weight:750;margin-top:4px}
+.nav-icon{width:48px;height:48px;border:0;border-radius:14px;background:var(--blue);color:#fff;display:grid;place-items:center;text-decoration:none;flex:none}.nav-icon svg{width:23px;height:23px}
+.wrap{margin-top:14px}.tabs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}.tab{min-height:58px;border:1px solid var(--line);border-radius:15px;background:#edf4ff;color:#174a9c;display:flex;align-items:center;justify-content:center;gap:9px;font:750 15px system-ui;cursor:pointer}.tab svg{width:21px;height:21px}.tab.active{background:var(--blue);border-color:var(--blue);color:#fff;box-shadow:0 4px 12px #1768e82b}
+.panel{background:#fff;border:1px solid var(--line);border-radius:22px;padding:20px;margin-bottom:14px;box-shadow:0 5px 16px rgba(24,78,160,.045)}
+h1{font-size:24px;margin:0 0 16px;display:flex;align-items:center;gap:10px;letter-spacing:-.02em}h1 svg{width:27px;height:27px;color:var(--blue)}
+h2{font-size:18px;margin:0 0 12px;display:flex;align-items:center;gap:9px}h2 svg{width:21px;height:21px;color:var(--blue)}
+label{display:block;font-weight:700;font-size:13px;margin:0 0 6px}input,select,textarea{width:100%;min-height:46px;border:1px solid #d5e1fb;border-radius:12px;padding:11px 13px;background:#f8faff;color:var(--navy);font:inherit;outline:none}textarea{min-height:76px;resize:vertical}input:focus,select:focus,textarea:focus{border-color:#7aa8f7;box-shadow:0 0 0 3px #1768e815}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{min-width:0;margin-bottom:12px}.field.full{grid-column:1/-1}
+.checks{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.check{display:flex;align-items:center;gap:8px;padding:10px;border:1px solid var(--line);border-radius:12px;background:#f8faff;font-weight:650}.check input{width:17px;min-height:17px;accent-color:var(--blue)}
+.btn{min-height:44px;padding:10px 15px;border:0;border-radius:12px;background:var(--blue);color:white;font:750 14px system-ui;display:inline-flex;align-items:center;justify-content:center;gap:8px;cursor:pointer}.btn svg{width:19px;height:19px}.btn.light{background:#edf4ff;color:#174a9c;border:1px solid var(--line)}.btn.danger{background:#fff0f1;color:#b42332;border:1px solid #ffd5d9}.btn:disabled{opacity:.55;cursor:not-allowed}
+.form-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:8px}.notice{padding:11px 13px;background:#edf4ff;border-radius:12px;color:#45618c;font-size:13px;margin:10px 0}
+.list{display:grid;gap:10px}.card{border:1px solid var(--line);border-radius:16px;padding:15px;background:#fff}.card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.card-title{font-size:16px;font-weight:800}.meta{color:var(--muted);font-size:13px;margin-top:3px}.pill{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:30px;background:#edf4ff;color:#174a9c;font-size:11px;font-weight:800;white-space:nowrap}.pill.done{background:#e6f7ef;color:#087548}.pill.delay{background:#fff4df;color:#946200}
+.card-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.empty{text-align:center;color:var(--muted);padding:26px 12px;border:1px dashed #cbd9f3;border-radius:14px}
+.attendance-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.person{border:1px solid var(--line);border-radius:17px;padding:15px;background:#fff;min-width:0}.person-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}.avatar{width:42px;height:42px;border-radius:13px;background:#edf4ff;color:var(--blue);display:grid;place-items:center}.avatar svg{width:23px;height:23px}.person-name{font-weight:850;font-size:17px}.person-sub{font-size:12px;color:var(--muted)}.punches{display:grid;grid-template-columns:1fr 1fr;gap:8px}.punch{min-height:72px;border:0;border-radius:13px;background:var(--red);color:#fff;padding:9px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font:750 13px system-ui;cursor:pointer}.punch svg{width:20px;height:20px}.punch small{font-size:10px;font-weight:650;opacity:.95}.punch.done{background:var(--green)}.punch:disabled{opacity:.55;cursor:not-allowed}
+.leave-toggle{margin-top:9px;width:100%}.leave-box{margin-top:10px;padding:11px;background:#fff8f0;border:1px solid #ffe0bd;border-radius:12px}.leave-box[hidden]{display:none!important}.leave-box label{color:#88521b}
+.history-toolbar{display:flex;align-items:end;gap:10px;flex-wrap:wrap;margin-bottom:12px}.history-toolbar .field{margin:0;min-width:180px}.status-select{width:auto;min-height:36px;padding:6px 9px;font-size:12px}
+@media(max-width:680px){body{padding:10px 11px 28px}header{min-height:78px;padding:10px 12px;border-radius:20px;gap:10px}.brand-logo{width:53px;height:48px;padding-right:9px}.brand-copy strong{font-size:18px}.brand-copy small{font-size:13px}.nav-icon{width:42px;height:42px;border-radius:12px}.tabs{gap:7px}.tab{min-height:52px;font-size:13px;gap:6px}.panel{padding:14px;border-radius:17px}h1{font-size:21px}.grid2{grid-template-columns:1fr;gap:0}.field.full{grid-column:auto}.checks{grid-template-columns:repeat(2,minmax(0,1fr))}.attendance-grid{grid-template-columns:1fr}.card{padding:13px}.card-head{gap:7px}.punch{min-height:68px}}
+
+/* Standar tombol panah kembali: ukuran seragam di semua menu */
+header .nav-icon{width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important;padding:0!important;flex:0 0 44px!important;border-radius:12px!important;display:inline-grid!important;place-items:center!important;box-sizing:border-box!important;transition:background-color .15s ease,color .15s ease,border-color .15s ease!important}
+header .nav-icon svg{width:22px!important;height:22px!important;flex:none!important}
+header .nav-icon:active{background:#1768e8!important;border-color:#1768e8!important;color:#fff!important}
+
+
+/* Standar tombol kembali: biru default, putih saat disentuh */
+
+
+</style></head><body>
 <header>
 <img class="brand-logo" src="logo-copy-computer.PNG" alt="Copy Computer">
 <div class="brand-copy"><strong>COPY COMPUTER</strong><small>Operasional Teknisi</small></div>
 <a class="nav-icon" href="./" aria-label="Kembali ke menu utama" title="Kembali"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></a>
 </header>
-
-
 <main class="wrap">
 <nav class="tabs" aria-label="Menu operasional">
 <button class="tab active" id="tabSchedule" type="button" onclick="showTab('schedule')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18M8 14h3"/></svg>Jadwal Pekerjaan</button>
@@ -180,6 +217,4 @@ async function init(){
 }
 init();
 })();
-</script><style>
-</style>
-</body></html>
+</script></body></html>
