@@ -1050,54 +1050,33 @@ loadData().catch(e=>note('Gagal memuat data: '+e.message,false));
  }
 }
 
-/* Samakan ukuran dan warna tab navigasi Nota dengan Manajemen Servis */
+/* Samakan tab Nota persis dengan ukuran tab Manajemen Servis */
 @media screen{
  body>main.wrap>.source-tabs{
-  display:grid!important;
-  grid-template-columns:repeat(3,minmax(0,1fr))!important;
-  gap:5px!important;
-  width:100%!important;
-  margin:0 0 14px!important;
-  padding:0!important;
-  border:1px solid #dce7ff!important;
-  border-radius:14px!important;
-  background:#fff!important;
-  box-shadow:0 4px 14px rgba(24,78,160,.04)!important;
-  box-sizing:border-box!important;
+  display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:12px!important;width:100%!important;max-width:100%!important;
+  margin:0 0 14px!important;padding:0!important;border:0!important;
+  border-radius:0!important;background:transparent!important;box-shadow:none!important;
+  box-sizing:border-box!important
  }
  body>main.wrap>.source-tabs>button{
-  box-sizing:border-box!important;
-  width:100%!important;
-  min-width:0!important;
-  min-height:46px!important;
-  padding:8px 10px!important;
-  border:1px solid transparent!important;
-  border-radius:10px!important;
-  font:600 13px/1.25 system-ui,-apple-system,'Segoe UI',sans-serif!important;
-  white-space:normal!important;
-  background:#edf4ff!important;
-  color:#174a9c!important;
-  transition:background-color .16s ease,color .16s ease,border-color .16s ease!important;
+  box-sizing:border-box!important;display:flex!important;align-items:center!important;justify-content:center!important;
+  width:100%!important;min-width:0!important;min-height:72px!important;padding:12px 16px!important;
+  border:1px solid #dce7ff!important;border-radius:17px!important;
+  font:700 17px/1.25 system-ui,-apple-system,'Segoe UI',sans-serif!important;
+  white-space:normal!important;background:#edf4ff!important;color:#1749a4!important;
+  transition:background-color .16s ease,color .16s ease,border-color .16s ease!important
  }
  body>main.wrap>.source-tabs>button.active{
-  background:#1768e8!important;
-  border-color:#1768e8!important;
-  color:#fff!important;
-  box-shadow:0 2px 7px rgba(23,104,232,.18)!important;
+  background:#1768e8!important;border-color:#1768e8!important;color:#fff!important;
+  box-shadow:0 4px 12px rgba(23,104,232,.16)!important
  }
- body>main.wrap>.source-tabs>button:not(.active):hover{
-  background:#dceaff!important;
-  color:#1458c8!important;
- }
- body>main.wrap>.source-tabs>button.active:hover,
- body>main.wrap>.source-tabs>button:active{
-  background:#145ed4!important;
-  color:#fff!important;
- }
+ body>main.wrap>.source-tabs>button:not(.active):hover{background:#dceaff!important;color:#1458c8!important}
+ body>main.wrap>.source-tabs>button.active:hover,body>main.wrap>.source-tabs>button:active{background:#145ed4!important;color:#fff!important}
 }
 @media screen and (max-width:700px){
- body>main.wrap>.source-tabs{gap:4px!important;padding:0!important}
- body>main.wrap>.source-tabs>button{min-height:44px!important;padding:7px 4px!important;font-size:12px!important}
+ body>main.wrap>.source-tabs{gap:5px!important;padding:0!important}
+ body>main.wrap>.source-tabs>button{min-height:44px!important;padding:7px 3px!important;font-size:11px!important;border-radius:10px!important}
 }
 </style>
 </body>
