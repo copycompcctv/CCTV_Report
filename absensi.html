@@ -71,6 +71,7 @@ input,select,textarea{font-size:16px!important;border:1px solid #d7e2f7;border-r
 .history-compact-row strong{color:#102f63}
 .history-compact-row span{overflow-wrap:anywhere}
 @media(max-width:560px){.history-compact-row{grid-template-columns:82px minmax(0,1fr);gap:7px;padding:9px;font-size:12px}.history-date-row{padding:10px}}
+.test-reset{width:38px;min-width:38px;height:38px;min-height:38px;padding:0;margin-left:auto;border-radius:11px}.test-reset svg{width:19px;height:19px}
 </style></head><body>
 <header>
 <img class="brand-logo" src="logo-copy-computer.PNG" alt="Copy Computer">
@@ -133,7 +134,7 @@ const SUPABASE_URL='https://ogolkyowgvypstjmxxde.supabase.co';
 const SUPABASE_KEY='sb_publishable_8NQAMLU4WhrHfn5nwf4gjQ_rr9egknn';
 const SERVICE_EMAIL='cctv@copycomputer.app';
 const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
-const TECHNICIANS=['Huda','Arif','Hermanto','Yazid'];
+const TECHNICIANS=['Huda','Arif','Hermanto'];
 const $=id=>document.getElementById(id);
 const esc=value=>String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 const jakartaDate=()=>{
@@ -144,6 +145,20 @@ const timeText=value=>value?new Intl.DateTimeFormat('id-ID',{timeZone:'Asia/Jaka
 const dateText=value=>value?new Intl.DateTimeFormat('id-ID',{timeZone:'Asia/Jakarta',day:'2-digit',month:'long',year:'numeric'}).format(new Date(value+'T12:00:00+07:00')):'';
 const userIcon='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>';
 let busy=false;
+let testAttendance={arrivalAt:null,departureAt:null,leave:false,leaveReason:''};
+function renderTestPerson(){
+ const arrived=!!testAttendance.arrivalAt,departed=!!testAttendance.departureAt,onLeave=testAttendance.leave;
+ const status=onLeave?'Uji izin tidak masuk':departed?'Uji selesai pulang':arrived?'Uji sudah tiba':'Siap diuji';
+ const arrivalIcon='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3h5a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-5"/><path d="M3 12h12m-5-5 5 5-5 5"/></svg>';
+ const departureIcon='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3h5a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-5"/><path d="M15 12H3m5-5-5 5 5 5"/></svg>';
+ const resetIcon='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>';
+ const action=onLeave?'<div class="notice" style="margin:0">Simulasi izin aktif · '+esc(testAttendance.leaveReason)+'</div>':'<div class="punches"><button class="punch '+(arrived?'done':'')+'" '+(arrived?'disabled':'')+' onclick="testAttendanceAction(\'arrival\')">'+arrivalIcon+'Jam Tiba<small>'+(arrived?timeText(testAttendance.arrivalAt):'Tekan untuk tes')+'</small></button><button class="punch '+(departed?'done':'')+'" '+(!arrived||departed?'disabled':'')+' onclick="testAttendanceAction(\'departure\')">'+departureIcon+'Jam Pulang<small>'+(departed?timeText(testAttendance.departureAt):'Tekan untuk tes')+'</small></button></div><button class="btn light leave-toggle" type="button" '+(arrived?'disabled':'')+' onclick="toggleTestLeave()">▤ Izin Tidak Masuk</button><div class="leave-box" id="testLeaveBox" hidden><label for="testLeaveReason">Alasan izin (simulasi)</label><textarea id="testLeaveReason" placeholder="Tulis alasan untuk menguji tombol izin..."></textarea><button class="btn" style="margin-top:8px;width:100%" onclick="saveTestLeave()">Uji Simpan Izin</button></div>';
+ return '<article class="person"><div class="person-head"><div class="avatar">'+userIcon+'</div><div><div class="person-name">TEST</div><div class="person-sub">'+status+' · hanya simulasi</div></div><button class="btn light test-reset" type="button" title="Reset TEST" aria-label="Reset TEST" onclick="resetTestAttendance()">'+resetIcon+'</button></div>'+action+'</article>';
+}
+window.testAttendanceAction=kind=>{if(kind==='arrival'&&!testAttendance.arrivalAt)testAttendance.arrivalAt=new Date().toISOString();if(kind==='departure'&&testAttendance.arrivalAt&&!testAttendance.departureAt)testAttendance.departureAt=new Date().toISOString();$('attendanceCards').innerHTML=TECHNICIANS.map(name=>renderPerson(name,null,$('attendanceDate').value||jakartaDate())).join('')+renderTestPerson();};
+window.toggleTestLeave=()=>{const box=$('testLeaveBox');if(box)box.hidden=!box.hidden;};
+window.saveTestLeave=()=>{const reason=$('testLeaveReason')?.value.trim()||'';if(!reason){alert('Isi alasan simulasi terlebih dahulu.');return;}testAttendance.leave=true;testAttendance.leaveReason=reason;$('attendanceCards').innerHTML=TECHNICIANS.map(name=>renderPerson(name,null,$('attendanceDate').value||jakartaDate())).join('')+renderTestPerson();};
+window.resetTestAttendance=()=>{testAttendance={arrivalAt:null,departureAt:null,leave:false,leaveReason:''};$('attendanceCards').innerHTML=TECHNICIANS.map(name=>renderPerson(name,null,$('attendanceDate').value||jakartaDate())).join('')+renderTestPerson();};
 
 async function authorize(){
  const last=Number(localStorage.getItem('cc_last_activity'))||0;
@@ -201,10 +216,10 @@ async function loadAttendance(){
   if(result.error)throw result.error;
   const rows=result.data||[];
   const byName=new Map(rows.map(row=>[row.technician_name,row]));
-  $('attendanceCards').innerHTML=TECHNICIANS.map(name=>renderPerson(name,byName.get(name),date)).join('');
+  $('attendanceCards').innerHTML=TECHNICIANS.map(name=>renderPerson(name,byName.get(name),date)).join('')+renderTestPerson();
   const historyResult=await db.from('technician_attendance').select('*').order('attendance_date',{ascending:false}).order('technician_name',{ascending:true});
   if(historyResult.error)throw historyResult.error;
-  historyRows=historyResult.data||[];
+  historyRows=(historyResult.data||[]).filter(row=>row.technician_name!=='TEST');
   renderHistoryDates(historyRows);
  }catch(error){
   const message=error?.message||'Koneksi tidak dapat dijangkau. Periksa internet lalu coba lagi.';
