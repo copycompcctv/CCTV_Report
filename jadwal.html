@@ -366,7 +366,7 @@ function renumberScheduleEntries(){
 function collectSchedulePayload(entry){
  const get=id=>entry.querySelector('[id^="'+id+'"]')?.value||'';
  const technicians=[...entry.querySelectorAll('#technicianChecks input:checked, [id^="technicianChecks_"] input:checked')].map(x=>x.value);
- return {visit_date:$('visitDate').value,visit_time:get('visitTime').replace(/\\s*WIB$/i,''),customer_name:get('customerName').trim(),customer_address:get('customerAddress').trim(),job_type:get('jobType').trim(),technicians,notes:get('scheduleNotes').trim()};
+ return {visit_date:$('visitDate').value,visit_time:get('visitTime').replace(/\s*WIB$/i,''),customer_name:get('customerName').trim(),customer_address:get('customerAddress').trim(),job_type:get('jobType').trim(),technicians,notes:get('scheduleNotes').trim()};
 }
 const today=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Jakarta',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
 const fmtTime=v=>v?new Intl.DateTimeFormat('id-ID',{timeZone:'Asia/Jakarta',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date(v)):'—';
