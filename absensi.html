@@ -136,6 +136,68 @@ header .nav-icon:active{background:#1768e8!important;border-color:#1768e8!import
  .tabs .tab svg{width:17px!important;height:17px!important}
 }
 
+
+/* Standar ukuran kolom dan tipografi mengikuti Manajemen Servis.
+   Hanya mengatur dimensi dan ukuran huruf; warna, ikon, fungsi, dan komponen khusus tetap. */
+@media screen{
+ body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif!important}
+ .wrap,#appRoot.wrap,body>main.wrap{
+  box-sizing:border-box!important;width:100%!important;max-width:1420px!important;
+  margin-left:auto!important;margin-right:auto!important
+ }
+ .main{box-sizing:border-box!important;width:100%!important;max-width:none!important}
+ .tabs,.tabs-in,.source-tabs{gap:12px!important}
+ .tabs .tab,.tabs-in .tab,.source-tabs button{
+  box-sizing:border-box!important;width:100%!important;min-height:72px!important;
+  padding:12px 16px!important;font-size:17px!important;line-height:1.25!important
+ }
+ .panel,#form .form-shell,#form .card{
+  box-sizing:border-box!important;width:100%!important;padding:24px!important
+ }
+ h1,h2,.panel h2,#form .form-title h2{
+  font-size:24px!important;line-height:1.25!important
+ }
+ label,.field-label,.job-label,.item-heading{
+  font-size:16px!important;line-height:1.35!important
+ }
+ input:not([type=checkbox]):not([type=radio]):not([type=hidden]),
+ select:not(.status-select),textarea{
+  box-sizing:border-box!important;width:100%!important;min-width:0!important;
+  min-height:56px!important;padding:12px 15px!important;font-size:16px!important;line-height:1.4!important
+ }
+ textarea{min-height:94px!important}
+ button:not(.tab):not(.icon-btn):not(.nav-icon):not(.punch):not(.test-reset):not(.item-option-delete):not(.mini):not(.remove),
+ .btn:not(.mini):not(.punch){
+  min-height:58px!important;padding:12px 16px!important;font-size:16px!important;line-height:1.25!important
+ }
+ .field{gap:7px!important;margin-bottom:12px!important}
+ .grid2,.fieldgrid,.form-fields{gap:16px!important}
+ .form-actions{gap:12px!important}
+}
+@media screen and (max-width:700px){
+ body{padding:10px 10px 80px!important}
+ .wrap,#appRoot.wrap,body>main.wrap{width:100%!important;max-width:100%!important}
+ .tabs,.tabs-in,.source-tabs{gap:6px!important}
+ .tabs .tab,.tabs-in .tab,.source-tabs button{
+  min-height:50px!important;padding:7px 4px!important;font-size:12px!important
+ }
+ .panel,#form .form-shell,#form .card{padding:15px!important}
+ h1,h2,.panel h2,#form .form-title h2{font-size:18px!important}
+ label,.field-label,.job-label,.item-heading{font-size:13px!important}
+ input:not([type=checkbox]):not([type=radio]):not([type=hidden]),
+ select:not(.status-select),textarea{
+  min-height:43px!important;padding:9px 11px!important;font-size:14px!important
+ }
+ textarea{min-height:72px!important}
+ button:not(.tab):not(.icon-btn):not(.nav-icon):not(.punch):not(.test-reset):not(.item-option-delete):not(.mini):not(.remove),
+ .btn:not(.mini):not(.punch){
+  min-height:45px!important;padding:9px 12px!important;font-size:13px!important
+ }
+ .field{gap:6px!important;margin-bottom:10px!important}
+ .grid2,.fieldgrid,.form-fields{gap:11px!important}
+ .form-actions{gap:8px!important}
+}
+
 </style>
 </head><body>
 <header>
