@@ -309,14 +309,14 @@ let scheduleEntryCount=1;
 function closeTimePickers(){document.querySelectorAll('.time-picker-popup').forEach(x=>x.remove());}
 function openTimePicker(input){
  closeTimePickers();const wrap=input.closest('.time-picker-wrap');if(!wrap)return;
- const current=/^\d{2}:\d{2}$/.test(input.value)?input.value:'09:00';const parts=current.split(':');
+ const current=/^\d{2}:\d{2}/.test(input.value)?input.value.slice(0,5):'09:00';const parts=current.split(':');
  const popup=document.createElement('div');popup.className='time-picker-popup';
  const hours=document.createElement('select'),minutes=document.createElement('select');
  for(let i=0;i<24;i++){const v=String(i).padStart(2,'0'),o=document.createElement('option');o.value=v;o.textContent=v;if(v===parts[0])o.selected=true;hours.appendChild(o);}
  for(let i=0;i<60;i++){const v=String(i).padStart(2,'0'),o=document.createElement('option');o.value=v;o.textContent=v;if(v===parts[1])o.selected=true;minutes.appendChild(o);}
  const zone=document.createElement('span');zone.className='time-wib';zone.textContent='WIB';
  const ok=document.createElement('button');ok.type='button';ok.textContent='Pilih';
- ok.addEventListener('click',()=>{input.value=hours.value+':'+minutes.value;popup.remove();input.dispatchEvent(new Event('change',{bubbles:true}));});
+ ok.addEventListener('click',()=>{input.value=hours.value+':'+minutes.value+' WIB';popup.remove();input.dispatchEvent(new Event('change',{bubbles:true}));});
  popup.append(hours,minutes,zone,ok);wrap.appendChild(popup);
 }
 $('scheduleForm').addEventListener('click',e=>{const trigger=e.target.closest('.time-picker-trigger');if(trigger){const input=trigger.parentElement.querySelector('input[id^="visitTime"]');if(input)openTimePicker(input);return;}if(!e.target.closest('.time-picker-popup'))closeTimePickers();});
@@ -366,7 +366,7 @@ function renumberScheduleEntries(){
 function collectSchedulePayload(entry){
  const get=id=>entry.querySelector('[id^="'+id+'"]')?.value||'';
  const technicians=[...entry.querySelectorAll('#technicianChecks input:checked, [id^="technicianChecks_"] input:checked')].map(x=>x.value);
- return {visit_date:$('visitDate').value,visit_time:get('visitTime'),customer_name:get('customerName').trim(),customer_address:get('customerAddress').trim(),job_type:get('jobType').trim(),technicians,notes:get('scheduleNotes').trim()};
+ return {visit_date:$('visitDate').value,visit_time:get('visitTime').replace(/\\s*WIB$/i,''),customer_name:get('customerName').trim(),customer_address:get('customerAddress').trim(),job_type:get('jobType').trim(),technicians,notes:get('scheduleNotes').trim()};
 }
 const today=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Jakarta',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
 const fmtTime=v=>v?new Intl.DateTimeFormat('id-ID',{timeZone:'Asia/Jakarta',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date(v)):'—';
@@ -430,7 +430,7 @@ window.viewSchedule=async id=>{
 };
 window.editSchedule=async id=>{
  const {data,error}=await sb.from('work_schedules').select('*').eq('id',id).single();if(error){alert(error.message);return}
- resetSchedule();$('editId').value=data.id;$('visitDate').value=data.visit_date;const entry=$('scheduleForm').querySelector('.schedule-entry');entry.querySelector('[id^="visitTime"]').value=String(data.visit_time).slice(0,5);
+ resetSchedule();$('editId').value=data.id;$('visitDate').value=data.visit_date;const entry=$('scheduleForm').querySelector('.schedule-entry');entry.querySelector('[id^="visitTime"]').value=String(data.visit_time).slice(0,5)+' WIB';
  entry.querySelector('[id^="customerName"]').value=data.customer_name;entry.querySelector('[id^="customerAddress"]').value=data.customer_address||'';entry.querySelector('[id^="jobType"]').value=data.job_type;entry.querySelector('[id^="scheduleNotes"]').value=data.notes||'';setTechs(data.technicians);
  $('saveSchedule').textContent='Simpan Perubahan';
  $('tabForm').click();
@@ -499,7 +499,7 @@ function setupSeparatePage(){
 
 async function init(){
  if(!await guard())return;
- $('visitDate').value=today();$('visitTime').value='09:00';$('scheduleFilterDate').value=today();$('attendanceDate').value=today();prepareMultiScheduleForm();
+ $('visitDate').value=today();$('visitTime').value='09:00 WIB';$('scheduleFilterDate').value=today();$('attendanceDate').value=today();prepareMultiScheduleForm();
  setupSeparatePage();if(PAGE==='schedule')loadSchedules();else loadAttendance();
 }
 init();
