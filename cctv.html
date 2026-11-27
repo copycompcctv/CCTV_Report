@@ -615,10 +615,6 @@ body{background:#f7f9fd;color:var(--ink);padding:14px 20px 38px}
 #backBtn svg{width:22px!important;height:22px!important;flex:none!important}
 #backBtn:active{background:#1768e8!important;border-color:#1768e8!important;color:#fff!important}
 
-/* Standar visual tombol kembali seluruh menu */
-#backBtn{width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important;padding:0!important;flex:0 0 44px!important;box-sizing:border-box!important;border:1px solid #dce6f5!important;border-radius:12px!important;background:#f3f7ff!important;color:#1768d8!important;display:inline-grid!important;place-items:center!important;text-decoration:none!important;transition:background-color .15s ease,border-color .15s ease,color .15s ease!important}
-#backBtn svg{width:22px!important;height:22px!important;flex:none!important;display:block!important}
-#backBtn:active{background:#1768d8!important;border-color:#1768d8!important;color:#fff!important}
 </style>
 <style>html.cc-gate-pending body{visibility:hidden}</style><script>
 (function(){
@@ -836,25 +832,6 @@ body{width:100%;max-width:100%;min-width:0;overflow-x:hidden}
 
 </style>
 
-<style id="back-button-final-standard">
-/* Final override: semua tombol kembali biru penuh, panah putih */
-#appRoot #backBtn.icon-btn, #appShell #backBtn.icon-btn, #backBtn.icon-btn{
- width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important;
- flex:0 0 44px!important;box-sizing:border-box!important;padding:0!important;
- display:inline-grid!important;place-items:center!important;
- border:1px solid #1768d8!important;border-radius:14px!important;
- background:#1768d8!important;color:#fff!important;
- box-shadow:none!important;opacity:1!important;
-}
-#appRoot #backBtn.icon-btn, #appShell #backBtn.icon-btn, #backBtn.icon-btn svg{width:22px!important;height:22px!important;display:block!important;flex:none!important}
-#appRoot #backBtn.icon-btn, #appShell #backBtn.icon-btn, #backBtn.icon-btn:hover,#appRoot #backBtn.icon-btn, #appShell #backBtn.icon-btn, #backBtn.icon-btn:focus-visible{
- background:#1768d8!important;border-color:#1768d8!important;color:#fff!important;
-}
-#appRoot #backBtn.icon-btn, #appShell #backBtn.icon-btn, #backBtn.icon-btn:active{
- background:#fff!important;border-color:#1768d8!important;color:#1768d8!important;
-}
-</style>
-
 </head>
 <body>
 <div class="wrap" id="appRoot" hidden>
@@ -869,7 +846,7 @@ body{width:100%;max-width:100%;min-width:0;overflow-x:hidden}
       </div>
     </div>
     <div class="hbtns">
-      <button type="button" id="backBtn" class="icon-btn" aria-label="Kembali" title="Kembali"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>
+      <button type="button" id="backBtn" class="icon-btn" aria-label="Kembali" title="Kembali"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/><path d="M9 12h12"/></svg></button>
       <button type="button" id="logoutBtn" class="icon-btn" aria-label="Keluar dari akun" title="Keluar" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/><path d="M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6"/></svg></button>
       <button type="button" id="installBtn" class="icon-btn" aria-label="Instal aplikasi" title="Instal aplikasi" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v11"/><path d="m7 9 5 5 5-5"/><path d="M5 17v3h14v-3"/></svg></button>
     </div>
