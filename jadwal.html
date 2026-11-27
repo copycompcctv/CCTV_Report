@@ -123,6 +123,58 @@ input,select,textarea{font-size:16px!important;border:1px solid #d7e2f7;border-r
  .history-toolbar>#allSchedules{padding-left:4px!important;padding-right:4px!important;font-size:14px!important}
  .history-toolbar> .field > input#scheduleFilterDate{padding-left:8px!important;padding-right:4px!important;font-size:14px!important}
 }
+
+/* Definitive layout fix for date filter and All Schedules */
+.history-toolbar{
+ display:grid!important;
+ grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+ gap:12px!important;
+ align-items:end!important;
+ width:100%!important;
+ min-width:0!important;
+}
+.history-toolbar>.field{
+ display:flex!important;
+ flex-direction:column!important;
+ flex:initial!important;
+ width:100%!important;
+ min-width:0!important;
+ max-width:100%!important;
+ margin:0!important;
+}
+.history-toolbar>#allSchedules,
+.history-toolbar>.field>#scheduleFilterDate{
+ justify-self:center!important;
+ width:calc(100% - 20px)!important;
+ min-width:0!important;
+ max-width:calc(100% - 20px)!important;
+ height:46px!important;
+ min-height:46px!important;
+ margin:0!important;
+ padding-top:8px!important;
+ padding-bottom:8px!important;
+ box-sizing:border-box!important;
+ position:static!important;
+}
+.history-toolbar>#allSchedules{
+ display:flex!important;
+ flex:initial!important;
+ white-space:nowrap!important;
+}
+.history-toolbar>.field>#scheduleFilterDate{
+ display:block!important;
+ flex:initial!important;
+}
+@media(max-width:520px){
+ .history-toolbar{gap:8px!important}
+ .history-toolbar>#allSchedules,
+ .history-toolbar>.field>#scheduleFilterDate{
+  width:calc(100% - 16px)!important;
+  max-width:calc(100% - 16px)!important;
+ }
+ .history-toolbar>#allSchedules{font-size:14px!important;padding-left:4px!important;padding-right:4px!important}
+ .history-toolbar>.field>#scheduleFilterDate{font-size:14px!important;padding-left:8px!important;padding-right:4px!important}
+}
 </style></head><body>
 <header>
 <img class="brand-logo" src="logo-copy-computer.PNG" alt="Copy Computer">
