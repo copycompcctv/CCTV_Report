@@ -14,26 +14,7 @@
       <button type="button" id="installBtn" class="icon-btn" aria-label="Instal aplikasi" title="Instal aplikasi" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v11"/><path d="m7 9 5 5 5-5"/><path d="M5 17v3h14v-3"/></svg></button>
     </div>
   </header>
-<style>
-/* Tombol kembali - mengikuti gambar acuan */
-header #backBtn,header > .nav-icon,header.service-header > .nav-icon,
-header .hbtns > button.icon-btn[aria-label="Kembali"]{
- width:80px!important;height:80px!important;min-width:80px!important;min-height:80px!important;
- flex:0 0 80px!important;padding:0!important;border:0!important;border-radius:25px!important;
- background:#1768e8!important;color:#fff!important;display:grid!important;place-items:center!important;
- box-shadow:none!important;box-sizing:border-box!important;
-}
-header #backBtn svg,header > .nav-icon svg,header.service-header > .nav-icon svg,
-header .hbtns > button.icon-btn[aria-label="Kembali"] svg{
- width:28px!important;height:28px!important;display:block!important;flex:none!important;
-}
-header #backBtn:hover,header #backBtn:active,header > .nav-icon:hover,header > .nav-icon:active,
-header.service-header > .nav-icon:hover,header.service-header > .nav-icon:active,
-header .hbtns > button.icon-btn[aria-label="Kembali"]:hover,
-header .hbtns > button.icon-btn[aria-label="Kembali"]:active{
- background:#1768e8!important;color:#fff!important;border:0!important;
-}
-</style>
+
 
 
   <nav class="tabs" aria-label="Menu CCTV Report">
@@ -1156,6 +1137,30 @@ $('logoutBtn').addEventListener('click',async function(){
 
 
 
+<style>
+/* Tombol kembali - mengikuti gambar acuan */
+header #backBtn,header > .nav-icon,header.service-header > .nav-icon,
+header .hbtns > button.icon-btn[aria-label="Kembali"],
+#appRoot header .hbtns > button.icon-btn[aria-label="Kembali"]{
+ width:80px!important;height:80px!important;min-width:80px!important;min-height:80px!important;
+ flex:0 0 80px!important;padding:0!important;border:0!important;border-radius:25px!important;
+ background:#1768e8!important;color:#fff!important;display:grid!important;place-items:center!important;
+ box-shadow:none!important;box-sizing:border-box!important;
+}
+header #backBtn svg,header > .nav-icon svg,header.service-header > .nav-icon svg,
+header .hbtns > button.icon-btn[aria-label="Kembali"] svg,
+#appRoot header .hbtns > button.icon-btn[aria-label="Kembali"] svg{
+ width:28px!important;height:28px!important;display:block!important;flex:none!important;
+}
+header #backBtn:hover,header #backBtn:active,header > .nav-icon:hover,header > .nav-icon:active,
+header.service-header > .nav-icon:hover,header.service-header > .nav-icon:active,
+header .hbtns > button.icon-btn[aria-label="Kembali"]:hover,
+header .hbtns > button.icon-btn[aria-label="Kembali"]:active,
+#appRoot header .hbtns > button.icon-btn[aria-label="Kembali"]:hover,
+#appRoot header .hbtns > button.icon-btn[aria-label="Kembali"]:active{
+ background:#1768e8!important;color:#fff!important;border:0!important;
+}
+</style>
 </body>
 </html>
 
