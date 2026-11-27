@@ -3,6 +3,27 @@
 <div class="brand-copy"><strong>COPY COMPUTER</strong><small>Operasional Teknisi</small></div>
 <a class="nav-icon" href="./" aria-label="Kembali ke menu utama" title="Kembali"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></a>
 </header>
+<style>
+/* Tombol kembali - mengikuti gambar acuan */
+header #backBtn,header > .nav-icon,header.service-header > .nav-icon,
+header .hbtns > button.icon-btn[aria-label="Kembali"]{
+ width:80px!important;height:80px!important;min-width:80px!important;min-height:80px!important;
+ flex:0 0 80px!important;padding:0!important;border:0!important;border-radius:25px!important;
+ background:#1768e8!important;color:#fff!important;display:grid!important;place-items:center!important;
+ box-shadow:none!important;box-sizing:border-box!important;
+}
+header #backBtn svg,header > .nav-icon svg,header.service-header > .nav-icon svg,
+header .hbtns > button.icon-btn[aria-label="Kembali"] svg{
+ width:28px!important;height:28px!important;display:block!important;flex:none!important;
+}
+header #backBtn:hover,header #backBtn:active,header > .nav-icon:hover,header > .nav-icon:active,
+header.service-header > .nav-icon:hover,header.service-header > .nav-icon:active,
+header .hbtns > button.icon-btn[aria-label="Kembali"]:hover,
+header .hbtns > button.icon-btn[aria-label="Kembali"]:active{
+ background:#1768e8!important;color:#fff!important;border:0!important;
+}
+</style>
+
 <main class="wrap">
 <nav class="tabs" aria-label="Menu operasional">
 <button class="tab active" id="tabSchedule" type="button" onclick="showTab('schedule')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18M8 14h3"/></svg>Jadwal Pekerjaan</button>
