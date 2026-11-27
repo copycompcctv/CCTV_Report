@@ -1025,13 +1025,27 @@ loadData().catch(e=>note('Gagal memuat data: '+e.message,false));
 })();
 </script>
 <style id="nota-tabs-width-nudge">
-/* Lebarkan sedikit hanya tiga kolom navigasi Nota */
-@media screen and (min-width:701px){
+/* Samakan tinggi tab Nota tanpa memperlebar melewati batas halaman */
+@media screen{
  body>main.wrap>.source-tabs{
-  width:calc(100% + 24px)!important;
-  max-width:calc(100% + 24px)!important;
-  margin-left:-12px!important;
-  margin-right:-12px!important;
+  width:100%!important;
+  max-width:100%!important;
+  margin-left:0!important;
+  margin-right:0!important;
+  align-items:stretch!important;
+ }
+ body>main.wrap>.source-tabs button{
+  min-width:0!important;
+  min-height:72px!important;
+  padding:12px 10px!important;
+  font-size:17px!important;
+ }
+}
+@media screen and (max-width:700px){
+ body>main.wrap>.source-tabs button{
+  min-height:50px!important;
+  padding:7px 4px!important;
+  font-size:12px!important;
  }
 }
 </style>
