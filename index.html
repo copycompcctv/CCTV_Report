@@ -275,6 +275,52 @@ body.app-menu-view::before{opacity:.18!important}
 .welcome-footer span::before{content:"|";margin-right:7px;color:#1688ed}
 @media(max-width:680px){.login-view .welcome-brand .welcome-logo{width:82px!important;height:46px!important;margin-bottom:18px!important}.login-view .welcome-info{width:min(390px,100%)!important}.welcome-footer{margin-top:16px!important;gap:5px!important;padding:9px 10px!important}.welcome-footer strong{font-size:10px!important}.welcome-footer span{font-size:9px!important}}
 </style>
+
+<style id="copy-computer-selected-login-theme">
+/* Tema login biru teknologi; elemen login tetap HTML asli dan tetap berfungsi. */
+html,body{background:#061d56!important}
+body{position:relative!important;isolation:isolate!important;background:transparent!important}
+body::before{background-image:url("./copycomputer-tech-bg.svg?v=120")!important;background-position:center!important;background-size:cover!important;background-repeat:no-repeat!important;opacity:1!important}
+body.app-menu-view::before{opacity:.16!important}
+.login-view main{padding-top:clamp(18px,3vh,34px)!important;padding-bottom:24px!important}
+.login-view .welcome-brand{width:min(420px,100%)!important;margin:0 auto 22px!important;padding:0 10px!important}
+.login-view .welcome-brand .welcome-logo{width:88px!important;height:48px!important;margin:0 auto 22px!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;overflow:visible!important}
+.login-view .welcome-brand .welcome-logo img{display:block!important;width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important;object-fit:contain!important;object-position:center!important}
+.login-view .welcome-info{width:min(410px,100%)!important;margin:0 auto!important}
+.login-view .date-time-row{display:grid!important;grid-template-columns:1fr 1.35fr!important;gap:9px!important}
+.login-view .date-chip{min-width:0!important;padding:10px 12px!important;border:1px solid rgba(133,205,255,.32)!important;border-radius:15px!important;background:rgba(3,35,99,.72)!important;color:#fff!important;backdrop-filter:blur(8px)!important}
+.login-view .date-chip small{color:#a9d9ff!important}
+.login-view .date-chip strong{color:#fff!important}
+.login-view .mini-icon{background:rgba(17,119,239,.35)!important;color:#8eeaff!important}
+.login-view .welcome-login{width:min(440px,calc(100% - 4px))!important;margin:0 auto!important;padding:24px 27px 20px!important;border:1px solid rgba(132,210,255,.45)!important;border-radius:25px!important;background:rgba(3,28,82,.84)!important;box-shadow:0 18px 48px rgba(0,12,48,.38)!important;backdrop-filter:blur(12px)!important;color:#fff!important}
+.login-view .welcome-card-heading{margin:0 0 18px!important;text-align:center!important}
+.login-view .welcome-shield{width:60px!important;height:60px!important;margin:0 auto 12px!important;background:rgba(5,174,205,.20)!important;box-shadow:0 0 22px rgba(0,214,240,.18)!important}
+.login-view .welcome-shield svg{width:49px!important;height:49px!important}
+.login-view .welcome-card-heading h1{color:#fff!important}
+.login-view .welcome-card-heading p{color:#b8d9ff!important}
+#loginPanel #welcomeForm label{color:#d5eaff!important}
+#loginPanel .password-wrap{border:1px solid rgba(174,216,255,.95)!important;border-radius:14px!important;background:#fff!important;box-shadow:0 0 0 3px rgba(36,155,255,.12)!important}
+#loginPanel .password-wrap input{color:#12366f!important;background:#fff!important}
+#loginPanel .password-wrap input::placeholder{color:#8294ad!important}
+#loginPanel .password-wrap button{color:#0875ed!important}
+#loginPanel #welcomeMessage{color:#ffb9c2!important}
+#loginPanel .enter-btn{background:linear-gradient(105deg,#087cf5,#0648c5 60%,#07318f)!important;box-shadow:0 8px 20px rgba(0,94,255,.28)!important}
+#loginPanel .home-install-btn{border:1px solid rgba(142,211,255,.7)!important;background:rgba(8,75,164,.52)!important;color:#eaf7ff!important}
+#loginPanel .home-install-hint{color:#d6eaff!important}
+#loginPanel .welcome-footer{display:flex!important;justify-content:center!important;gap:7px!important;margin:17px auto 0!important;padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important;color:#fff!important}
+#loginPanel .welcome-footer strong{color:#fff!important}
+#loginPanel .welcome-footer span{color:#b9ddff!important}
+#loginPanel .welcome-footer span::before{content:"|";margin-right:7px;color:#53dfff}
+@media(max-width:680px){
+ .login-view main{padding-top:14px!important}
+ .login-view .welcome-brand{margin-bottom:17px!important}
+ .login-view .welcome-brand .welcome-logo{width:80px!important;height:44px!important;margin-bottom:18px!important}
+ .login-view .date-time-row{gap:7px!important}
+ .login-view .date-chip{padding:8px 7px!important}
+ .login-view .welcome-login{padding:21px 18px 18px!important;border-radius:22px!important}
+}
+</style>
+
 </head>
 <body class="login-view">
 <main>
