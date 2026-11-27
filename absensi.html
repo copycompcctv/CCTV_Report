@@ -198,6 +198,13 @@ header .nav-icon:active{background:#1768e8!important;border-color:#1768e8!import
  .form-actions{gap:8px!important}
 }
 
+
+<style id="test-card-alignment-fix">
+/* Tombol Reset TEST tidak boleh menambah tinggi header kartu */
+#attendanceCards .person:has(.test-reset){position:relative}
+#attendanceCards .person:has(.test-reset) .person-head{min-height:42px;padding-right:92px}
+#attendanceCards .person .test-reset{position:absolute!important;top:17px!important;right:17px!important;margin:0!important;align-self:auto!important}
+</style>
 </style>
 </head><body>
 <header>
