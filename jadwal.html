@@ -448,8 +448,32 @@ window.editSchedule=async id=>{
  window.scrollTo({top:0,behavior:'smooth'});
 };
 window.deleteSchedule=async id=>{if(!confirm('Hapus jadwal pekerjaan ini?'))return;const {error}=await sb.from('work_schedules').delete().eq('id',id);if(error)alert('Gagal menghapus: '+error.message);else loadSchedules()};
-window.changeScheduleStatus=async(id,status)=>{const {error}=await sb.from('work_schedules').update({status}).eq('id',id);if(error)alert('Status gagal diperbarui: '+error.message);else loadSchedules()};
+window.changeScheduleStatus=async(id,status)=>{
+ const select=Array.from(document.querySelectorAll('#scheduleList .status-select')).find(el=>el.getAttribute('onchange')?.includes(String(id)));
+ const card=select?.closest('.schedule-history-item');
+ const previous=select?.dataset.previousStatus||'Terjadwal';
+ if(select){select.disabled=true;}
+ const {error}=await sb.from('work_schedules').update({status}).eq('id',id);
+ if(error){
+  if(select){select.value=previous;select.disabled=previous==='Selesai';}
+  alert('Status gagal diperbarui: '+error.message);return;
+ }
+ if(card){
+  const pill=card.querySelector('.card-head .pill');
+  if(pill){pill.textContent=status;pill.className='pill '+(status==='Selesai'?'done':status==='Ditunda'?'delay':'');}
+  const edit=card.querySelector('.btn.light');
+  if(status==='Selesai'){
+   if(select)select.disabled=true;
+   if(edit){edit.disabled=true;edit.title='Jadwal sudah selesai';}
+  }else{
+   if(select)select.disabled=false;
+   if(edit){edit.disabled=false;edit.removeAttribute('title');}
+  }
+  if(select)select.dataset.previousStatus=status;
+ }else if(select){select.disabled=status==='Selesai';select.dataset.previousStatus=status;}
+};
 function scheduleCardHtml(r){
+ const currentStatus=r.status||'Terjadwal';
  return '<article class="card schedule-history-item"><div class="card-head"><div><div class="card-title">'+esc(r.customer_name)+'</div><div class="meta">'+esc(String(r.visit_time).slice(0,5))+' WIB</div></div><span class="pill '+(r.status==='Selesai'?'done':r.status==='Ditunda'?'delay':'')+'">'+esc(r.status||'Terjadwal')+'</span></div><div class="meta" style="margin-top:8px"><strong>▣ Pekerjaan:</strong> '+esc(r.job_type)+'</div><div class="meta"><strong>⌖ Alamat:</strong> '+esc(r.customer_address||'Belum diisi')+'</div><div class="meta"><strong>♙ Teknisi:</strong> '+esc((r.technicians||[]).join(', ')||'Belum ditentukan')+'</div>'+(r.notes?'<div class="meta"><strong>Catatan:</strong> '+esc(r.notes)+'</div>':'')+'<div class="card-actions"><button class="btn view" type="button" data-id="'+r.id+'" onclick="viewSchedule(this.dataset.id)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>Lihat Jadwal</button><select class="status-select" aria-label="Status jadwal" '+(r.status==='Selesai'?'disabled ':'')+' onchange="changeScheduleStatus(\''+r.id+'\',this.value)">'+['Terjadwal','Dikerjakan','Selesai','Ditunda'].map(st=>'<option '+(st===(r.status||'Terjadwal')?'selected':'')+'>'+st+'</option>').join('')+'</select><button class="btn light" type="button" '+(r.status==='Selesai'?'disabled title="Jadwal sudah selesai" ':'')+' onclick="editSchedule(\''+r.id+'\')">✎ Edit</button><button class="btn danger" type="button" onclick="deleteSchedule(\''+r.id+'\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2m3 0-1 14H6L5 6m4 4v7m6-7v7"/></svg>Hapus</button></div></article>';
 }
 async function loadSchedules(){
