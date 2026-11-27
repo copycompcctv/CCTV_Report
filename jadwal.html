@@ -175,6 +175,60 @@ input,select,textarea{font-size:16px!important;border:1px solid #d7e2f7;border-r
  .history-toolbar>#allSchedules{font-size:14px!important;padding-left:4px!important;padding-right:4px!important}
  .history-toolbar>.field>#scheduleFilterDate{font-size:14px!important;padding-left:8px!important;padding-right:4px!important}
 }
+
+/* History toolbar - final spacing, centered date, blue active state */
+.history-toolbar{
+ display:grid!important;
+ grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+ gap:12px!important;
+ align-items:end!important;
+ width:100%!important;
+}
+.history-toolbar>.field{
+ display:flex!important;
+ flex-direction:column!important;
+ width:100%!important;
+ min-width:0!important;
+ margin:0!important;
+}
+.history-toolbar>#scheduleFilterDate,
+.history-toolbar>.field>#scheduleFilterDate{
+ width:100%!important;
+ max-width:100%!important;
+ min-width:0!important;
+ height:48px!important;
+ min-height:48px!important;
+ margin:0!important;
+ padding:8px!important;
+ box-sizing:border-box!important;
+ text-align:center!important;
+}
+.history-toolbar>#allSchedules{
+ display:flex!important;
+ align-items:center!important;
+ justify-content:center!important;
+ width:100%!important;
+ min-width:0!important;
+ max-width:100%!important;
+ height:48px!important;
+ min-height:48px!important;
+ margin:0!important;
+ padding:8px!important;
+ box-sizing:border-box!important;
+ white-space:nowrap!important;
+ transition:background-color .15s ease,color .15s ease,border-color .15s ease;
+}
+.history-toolbar>#allSchedules.is-active{
+ background:#1767e8!important;
+ color:#fff!important;
+ border-color:#1767e8!important;
+}
+@media(max-width:520px){
+ .history-toolbar{gap:12px!important}
+ .history-toolbar>#scheduleFilterDate,
+ .history-toolbar>.field>#scheduleFilterDate{font-size:14px!important}
+ .history-toolbar>#allSchedules{font-size:14px!important}
+}
 </style></head><body>
 <header>
 <img class="brand-logo" src="logo-copy-computer.PNG" alt="Copy Computer">
@@ -297,7 +351,7 @@ async function loadSchedules(){
  const rows=data||[];if(!rows.length){$('scheduleList').innerHTML='<div class="empty">Belum ada jadwal untuk tanggal ini. Tambahkan jadwal kunjungan di atas.</div>';return}
  $('scheduleList').innerHTML=rows.map(r=>'<article class="card"><div class="card-head"><div><div class="card-title">'+esc(r.customer_name)+'</div><div class="meta">'+esc(fmtDate(r.visit_date))+' · '+esc(String(r.visit_time).slice(0,5))+' WIB</div></div><span class="pill '+(r.status==='Selesai'?'done':r.status==='Ditunda'?'delay':'')+'">'+esc(r.status)+'</span></div><div class="meta" style="margin-top:8px"><strong>▣ Pekerjaan:</strong> '+esc(r.job_type)+'</div><div class="meta"><strong>⌖ Alamat:</strong> '+esc(r.customer_address||'Belum diisi')+'</div><div class="meta"><strong>♙ Teknisi:</strong> '+esc((r.technicians||[]).join(', ')||'Belum ditentukan')+'</div>'+(r.notes?'<div class="meta"><strong>Catatan:</strong> '+esc(r.notes)+'</div>':'')+'<div class="card-actions"><button class="btn view" type="button" data-id="'+r.id+'" onclick="viewSchedule(this.dataset.id)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>Lihat Jadwal</button><select class="status-select" aria-label="Status jadwal" onchange="changeScheduleStatus(\''+r.id+'\',this.value)">'+['Terjadwal','Dikerjakan','Selesai','Ditunda'].map(s=>'<option '+(s===r.status?'selected':'')+'>'+s+'</option>').join('')+'</select><button class="btn light" type="button" onclick="editSchedule(\''+r.id+'\')">✎ Edit</button><button class="btn danger" type="button" onclick="deleteSchedule(\''+r.id+'\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2m3 0-1 14H6L5 6m4 4v7m6-7v7"/></svg>Hapus</button></div></article>').join('');
 }
-$('scheduleFilterDate').addEventListener('change',loadSchedules);$('allSchedules').addEventListener('click',()=>{$('scheduleFilterDate').value='';loadSchedules()});
+$('scheduleFilterDate').addEventListener('change',()=>{$('allSchedules').classList.remove('is-active');loadSchedules()});$('allSchedules').addEventListener('click',()=>{$('allSchedules').classList.add('is-active');$('scheduleFilterDate').value='';loadSchedules()});
 function attendanceCard(name,row,date){
  const isToday=date===today(),leave=row?.attendance_status==='izin',arrived=!!row?.arrival_at,departed=!!row?.departure_at;
  const arrivalText=arrived?fmtTime(row.arrival_at)+' WIB':'Tekan saat tiba';
