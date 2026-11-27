@@ -1050,7 +1050,7 @@ loadData().catch(e=>note('Gagal memuat data: '+e.message,false));
  }
 }
 
-/* Samakan hanya ukuran tab navigasi Nota dengan Manajemen Servis */
+/* Samakan ukuran dan warna tab navigasi Nota dengan Manajemen Servis */
 @media screen{
  body>main.wrap>.source-tabs{
   display:grid!important;
@@ -1075,14 +1075,24 @@ loadData().catch(e=>note('Gagal memuat data: '+e.message,false));
   border-radius:10px!important;
   font:600 13px/1.25 system-ui,-apple-system,'Segoe UI',sans-serif!important;
   white-space:normal!important;
+  background:#edf4ff!important;
+  color:#174a9c!important;
+  transition:background-color .16s ease,color .16s ease,border-color .16s ease!important;
  }
  body>main.wrap>.source-tabs>button.active{
   background:#1768e8!important;
+  border-color:#1768e8!important;
   color:#fff!important;
+  box-shadow:0 2px 7px rgba(23,104,232,.18)!important;
  }
- body>main.wrap>.source-tabs>button:not(.active){
-  background:#edf4ff!important;
-  color:#1749a4!important;
+ body>main.wrap>.source-tabs>button:not(.active):hover{
+  background:#dceaff!important;
+  color:#1458c8!important;
+ }
+ body>main.wrap>.source-tabs>button.active:hover,
+ body>main.wrap>.source-tabs>button:active{
+  background:#145ed4!important;
+  color:#fff!important;
  }
 }
 @media screen and (max-width:700px){
