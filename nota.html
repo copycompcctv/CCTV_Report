@@ -1023,5 +1023,17 @@ $('cctvTab').onclick=()=>setSource('CCTV');$('orderTab').onclick=()=>setSource('
 $('sourceSelect').onchange=populate;$('addItem').onclick=()=>addItem('');$('downPayment').oninput=calc;$('extra').oninput=calc;['customer','address','invoiceDate','invoiceNo'].forEach(id=>$(id).addEventListener('input',calc));$('resetBtn').onclick=clearInvoiceForm;$('saveBtn').onclick=saveInvoice;
 loadData().catch(e=>note('Gagal memuat data: '+e.message,false));
 })();
-</script></body>
+</script>
+<style id="nota-tabs-width-nudge">
+/* Lebarkan sedikit hanya tiga kolom navigasi Nota */
+@media screen and (min-width:701px){
+ body>main.wrap>.source-tabs{
+  width:calc(100% + 24px)!important;
+  max-width:calc(100% + 24px)!important;
+  margin-left:-12px!important;
+  margin-right:-12px!important;
+ }
+}
+</style>
+</body>
 </html>
