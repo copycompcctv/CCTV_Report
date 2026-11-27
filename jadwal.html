@@ -247,6 +247,17 @@ input,select,textarea{font-size:16px!important;border:1px solid #d7e2f7;border-r
 .time-picker-popup select{min-width:65px;height:42px;border:1px solid var(--line);border-radius:8px;background:#f7faff;color:var(--navy);font:600 16px system-ui;padding:0 8px}
 .time-picker-popup .time-wib{font-weight:700;color:var(--blue);padding:0 5px}
 .time-picker-popup button{height:40px;padding:0 12px;border:0;border-radius:8px;background:var(--blue);color:#fff;font-weight:700;cursor:pointer}
+
+.schedule-day-group{border:1px solid #d9e5ff;border-radius:15px;background:#fff;margin:0 0 10px;overflow:hidden}
+.schedule-day-toggle{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px;background:#f7faff;border:0;color:#102b59;text-align:left;cursor:pointer}
+.schedule-day-toggle span:first-child{display:flex;flex-direction:column;gap:4px}
+.schedule-day-toggle strong{font-size:15px}
+.schedule-day-toggle small{font-size:12px;color:#52709f}
+.schedule-day-chevron{font-size:22px;color:#1768e8;transition:transform .18s}
+.schedule-day-toggle[aria-expanded="true"] .schedule-day-chevron{transform:rotate(180deg)}
+.schedule-day-items{padding:10px;display:grid;gap:10px}
+.schedule-day-items[hidden]{display:none}
+.schedule-day-items .schedule-history-item{margin:0}
 </style></head><body>
 <header>
 <img class="brand-logo" src="logo-copy-computer.PNG" alt="Copy Computer">
@@ -438,14 +449,24 @@ window.editSchedule=async id=>{
 };
 window.deleteSchedule=async id=>{if(!confirm('Hapus jadwal pekerjaan ini?'))return;const {error}=await sb.from('work_schedules').delete().eq('id',id);if(error)alert('Gagal menghapus: '+error.message);else loadSchedules()};
 window.changeScheduleStatus=async(id,status)=>{const {error}=await sb.from('work_schedules').update({status}).eq('id',id);if(error)alert('Status gagal diperbarui: '+error.message);else loadSchedules()};
+function scheduleCardHtml(r){
+ return '<article class="card schedule-history-item"><div class="card-head"><div><div class="card-title">'+esc(r.customer_name)+'</div><div class="meta">'+esc(String(r.visit_time).slice(0,5))+' WIB</div></div><span class="pill '+(r.status==='Selesai'?'done':r.status==='Ditunda'?'delay':'')+'">'+esc(r.status||'Terjadwal')+'</span></div><div class="meta" style="margin-top:8px"><strong>▣ Pekerjaan:</strong> '+esc(r.job_type)+'</div><div class="meta"><strong>⌖ Alamat:</strong> '+esc(r.customer_address||'Belum diisi')+'</div><div class="meta"><strong>♙ Teknisi:</strong> '+esc((r.technicians||[]).join(', ')||'Belum ditentukan')+'</div>'+(r.notes?'<div class="meta"><strong>Catatan:</strong> '+esc(r.notes)+'</div>':'')+'<div class="card-actions"><button class="btn view" type="button" data-id="'+r.id+'" onclick="viewSchedule(this.dataset.id)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>Lihat Jadwal</button><select class="status-select" aria-label="Status jadwal" onchange="changeScheduleStatus(\''+r.id+'\',this.value)">'+['Terjadwal','Dikerjakan','Selesai','Ditunda'].map(st=>'<option '+(st===(r.status||'Terjadwal')?'selected':'')+'>'+st+'</option>').join('')+'</select><button class="btn light" type="button" onclick="editSchedule(\''+r.id+'\')">✎ Edit</button><button class="btn danger" type="button" onclick="deleteSchedule(\''+r.id+'\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2m3 0-1 14H6L5 6m4 4v7m6-7v7"/></svg>Hapus</button></div></article>';
+}
 async function loadSchedules(){
- const filter=$('scheduleFilterDate').value;let q=sb.from('work_schedules').select('*').order('visit_date',{ascending:true}).order('visit_time',{ascending:true});
+ const filter=$('scheduleFilterDate').value;let q=sb.from('work_schedules').select('*').order('visit_date',{ascending:false}).order('visit_time',{ascending:true});
  if(filter)q=q.eq('visit_date',filter);const {data,error}=await q;
  if(error){$('scheduleList').innerHTML='<div class="empty">Jadwal belum dapat dimuat: '+esc(error.message)+'</div>';return}
  const rows=data||[];if(!rows.length){$('scheduleList').innerHTML='<div class="empty">Belum ada jadwal untuk tanggal ini. Tambahkan jadwal kunjungan di atas.</div>';return}
- $('scheduleList').innerHTML=rows.map(r=>'<article class="card"><div class="card-head"><div><div class="card-title">'+esc(r.customer_name)+'</div><div class="meta">'+esc(fmtDate(r.visit_date))+' · '+esc(String(r.visit_time).slice(0,5))+' WIB</div></div><span class="pill '+(r.status==='Selesai'?'done':r.status==='Ditunda'?'delay':'')+'">'+esc(r.status)+'</span></div><div class="meta" style="margin-top:8px"><strong>▣ Pekerjaan:</strong> '+esc(r.job_type)+'</div><div class="meta"><strong>⌖ Alamat:</strong> '+esc(r.customer_address||'Belum diisi')+'</div><div class="meta"><strong>♙ Teknisi:</strong> '+esc((r.technicians||[]).join(', ')||'Belum ditentukan')+'</div>'+(r.notes?'<div class="meta"><strong>Catatan:</strong> '+esc(r.notes)+'</div>':'')+'<div class="card-actions"><button class="btn view" type="button" data-id="'+r.id+'" onclick="viewSchedule(this.dataset.id)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>Lihat Jadwal</button><select class="status-select" aria-label="Status jadwal" onchange="changeScheduleStatus(\''+r.id+'\',this.value)">'+['Terjadwal','Dikerjakan','Selesai','Ditunda'].map(s=>'<option '+(s===r.status?'selected':'')+'>'+s+'</option>').join('')+'</select><button class="btn light" type="button" onclick="editSchedule(\''+r.id+'\')">✎ Edit</button><button class="btn danger" type="button" onclick="deleteSchedule(\''+r.id+'\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2m3 0-1 14H6L5 6m4 4v7m6-7v7"/></svg>Hapus</button></div></article>').join('');
+ const grouped={};rows.forEach(r=>{(grouped[r.visit_date]||(grouped[r.visit_date]=[])).push(r);});
+ $('scheduleList').innerHTML=Object.entries(grouped).map(([date,items],index)=>{
+  const groupId='schedule-day-'+date.replace(/[^0-9]/g,'');
+  return '<section class="schedule-day-group"><button type="button" class="schedule-day-toggle" aria-expanded="false" aria-controls="'+groupId+'"><span><strong>'+esc(fmtDate(date))+'</strong><small>'+items.length+' jadwal / janji temu</small></span><span class="schedule-day-chevron">⌄</span></button><div class="schedule-day-items" id="'+groupId+'" hidden>'+items.map(scheduleCardHtml).join('')+'</div></section>';
+ }).join('');
+ $('scheduleList').querySelectorAll('.schedule-day-toggle').forEach(btn=>btn.addEventListener('click',()=>{
+  const panel=$(btn.getAttribute('aria-controls'))||document.getElementById(btn.getAttribute('aria-controls'));
+  const opening=btn.getAttribute('aria-expanded')!=='true';btn.setAttribute('aria-expanded',String(opening));panel.hidden=!opening;
+ }));
 }
-$('scheduleFilterDate').addEventListener('change',()=>{$('allSchedules').classList.remove('is-active');loadSchedules()});$('allSchedules').addEventListener('click',()=>{$('allSchedules').classList.add('is-active');$('scheduleFilterDate').value='';loadSchedules()});
 function attendanceCard(name,row,date){
  const isToday=date===today(),leave=row?.attendance_status==='izin',arrived=!!row?.arrival_at,departed=!!row?.departure_at;
  const arrivalText=arrived?fmtTime(row.arrival_at)+' WIB':'Tekan saat tiba';
