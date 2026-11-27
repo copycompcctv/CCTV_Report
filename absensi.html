@@ -206,6 +206,21 @@ header .nav-icon:active{background:#1768e8!important;border-color:#1768e8!import
 #attendanceCards .person .test-reset{position:absolute!important;top:17px!important;right:17px!important;margin:0!important;align-self:auto!important}
 </style>
 </style>
+
+<style id="test-reset-button-visibility">
+/* Khusus kartu TEST: tombol Reset terlihat utuh dan sejajar di sisi kanan nama */
+#testAttendanceCard{position:relative!important}
+#testAttendanceCard .person-head{position:relative!important;min-height:42px!important;padding-right:104px!important;display:flex!important;align-items:center!important}
+#testAttendanceCard .person-head .test-reset{
+ position:absolute!important;top:2px!important;right:0!important;
+ display:inline-flex!important;align-items:center!important;justify-content:center!important;
+ gap:6px!important;width:auto!important;min-width:84px!important;max-width:none!important;
+ height:38px!important;min-height:38px!important;padding:7px 11px!important;
+ margin:0!important;overflow:visible!important;white-space:nowrap!important;
+ font-size:12px!important;line-height:1.2!important;z-index:2!important
+}
+#testAttendanceCard .person-head .test-reset svg{display:block!important;width:16px!important;height:16px!important;flex:0 0 16px!important}
+</style>
 </head><body>
 <header>
 <img class="brand-logo" src="logo-copy-computer.PNG" alt="Copy Computer">
