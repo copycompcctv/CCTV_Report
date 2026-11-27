@@ -835,6 +835,26 @@ body{width:100%;max-width:100%;min-width:0;overflow-x:hidden}
 }
 
 </style>
+
+<style id="back-button-final-standard">
+/* Final override: semua tombol kembali biru penuh, panah putih */
+#appRoot #backBtn.icon-btn, #appShell #backBtn.icon-btn, #backBtn.icon-btn{
+ width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important;
+ flex:0 0 44px!important;box-sizing:border-box!important;padding:0!important;
+ display:inline-grid!important;place-items:center!important;
+ border:1px solid #1768d8!important;border-radius:14px!important;
+ background:#1768d8!important;color:#fff!important;
+ box-shadow:none!important;opacity:1!important;
+}
+#appRoot #backBtn.icon-btn, #appShell #backBtn.icon-btn, #backBtn.icon-btn svg{width:22px!important;height:22px!important;display:block!important;flex:none!important}
+#appRoot #backBtn.icon-btn, #appShell #backBtn.icon-btn, #backBtn.icon-btn:hover,#appRoot #backBtn.icon-btn, #appShell #backBtn.icon-btn, #backBtn.icon-btn:focus-visible{
+ background:#1768d8!important;border-color:#1768d8!important;color:#fff!important;
+}
+#appRoot #backBtn.icon-btn, #appShell #backBtn.icon-btn, #backBtn.icon-btn:active{
+ background:#fff!important;border-color:#1768d8!important;color:#1768d8!important;
+}
+</style>
+
 </head>
 <body>
 <div class="wrap" id="appRoot" hidden>
