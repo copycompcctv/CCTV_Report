@@ -695,11 +695,8 @@ function receipt(j){
  '.row{display:grid;grid-template-columns:190px 12px minmax(0,1fr);gap:0;margin:0 0 9px;line-height:1.45}'+
  '.row span{text-align:center}.row div{overflow-wrap:anywhere}.section{font-weight:bold;margin:16px 0 10px}'+
  '.thanks{text-align:center;margin-top:30px;font-weight:600;line-height:1.5}.sign{display:flex;justify-content:space-between;margin:42px 20px 0}'+
- '@media print{body{padding:12mm}}
-/* Standar tombol kembali: biru default, putih saat disentuh */
-
-
-</style></head><body><div class="brand"><img src="'+logo+'" alt="Logo Copy Computer"><div><h2>COPY COMPUTER</h2><div class="muted">Jl. Sicengkir No. 3 Troso, Kec. Pecangaan Kab. Jepara 59462</div></div></div><hr><h3>'+esc(j.ticket)+'</h3>'+
+ '@media print{body{padding:12mm}}';
+  </style></head><body><div class="brand"><img src="'+logo+'" alt="Logo Copy Computer"><div><h2>COPY COMPUTER</h2><div class="muted">Jl. Sicengkir No. 3 Troso, Kec. Pecangaan Kab. Jepara 59462</div></div></div><hr><h3>'+esc(j.ticket)+'</h3>'+
  row('Tanggal & waktu masuk',j.date)+row('Pelanggan',j.nama)+row('WhatsApp',j.wa)+row('Perangkat',device)+row('Serial Number',j.serial)+
  '<div class="section">KETERANGAN SERVIS</div>'+row('Keluhan pelanggan',j.keluhan)+row('Pemeriksaan awal teknisi',j.pemeriksaan)+row('Teknisi',j.teknisi||'Belum ditentukan')+row('Status',j.status)+row('PIN cek online',j.pin||'-')+row('Link cek online','https://copycompcctv.github.io/CCTV_Report/cek-servisan.html')+row('Kelengkapan utama',j.lain)+row('Catatan',j.catatan)+
  '<hr><p class="thanks">Terima kasih telah mempercayakan perbaikan perangkat Anda kepada Copy Computer. Kepuasan Anda adalah prioritas kami.</p><div class="sign"><span>Pelanggan __________________</span><span>Petugas __________________</span></div></body></html>';
