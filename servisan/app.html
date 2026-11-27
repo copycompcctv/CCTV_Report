@@ -1,9 +1,570 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Servisan | Copy Computer</title>
+<meta name="theme-color" content="#ffffff"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Copy Computer"><link rel="manifest" href="./manifest.webmanifest"><link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<style>
+:root{--navy:#14243b;--blue:#2563eb;--bg:#f3f6fb;--line:#e4e9f1;--muted:#718096;--green:#16845b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font:14px/1.5 system-ui,-apple-system,Segoe UI,sans-serif;color:#182335}
+header{background:#fff;border-bottom:1px solid var(--line);padding:12px max(18px,calc((100% - 1180px)/2));display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:5}
+header img{width:58px;height:58px;object-fit:contain}header strong{font-size:17px;color:var(--navy)}header small{display:block;color:var(--muted)}
+.wrap{max-width:1180px;margin:26px auto;padding:0 18px}.top{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:20px}h1{font-size:25px;margin:0;color:var(--navy)}.sub{color:var(--muted);margin-top:4px}
+button,.btn{border:0;border-radius:10px;padding:10px 15px;background:var(--blue);color:white;font-weight:650;cursor:pointer}.btn.secondary,button.secondary{background:#eaf0fb;color:#24436e}.btn.dark{background:var(--navy)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}.stat,.panel{background:white;border:1px solid var(--line);border-radius:15px;padding:16px}.stat small{color:var(--muted)}.stat b{display:block;font-size:25px;color:var(--navy);margin-top:4px}
+.layout{display:grid;grid-template-columns:1.05fr .95fr;gap:16px}.forms-layout{grid-template-columns:1fr 1fr;align-items:start}.history-layout{grid-template-columns:1.2fr .8fr;align-items:start}.panel h2{font-size:16px;margin:0 0 14px;color:var(--navy)}.fieldgrid{display:grid;grid-template-columns:1fr 1fr;gap:11px}.field{display:flex;flex-direction:column;gap:5px}.field.full{grid-column:1/-1}.fieldgrid.field{grid-template-columns:1fr}.fieldgrid.field .field{width:100%}label{font-size:12px;font-weight:700;color:#536176}input,select,textarea{width:100%;border:1px solid #dbe2ec;border-radius:9px;padding:10px;font:inherit;background:#fff;color:#182335}textarea{min-height:74px;resize:vertical}.checks{display:grid;grid-template-columns:1fr 1fr;gap:8px}.checks label{font-weight:500;display:flex;gap:8px;align-items:center;background:#f7f9fc;padding:8px;border-radius:8px}.checks input{width:auto}.section{font-size:12px;color:#66758a;font-weight:800;margin:16px 0 8px;text-transform:uppercase;letter-spacing:.05em}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}.toolbar{display:flex;gap:8px;margin-bottom:12px}.toolbar input{flex:1}.job{border:1px solid var(--line);border-radius:12px;padding:13px;margin:10px 0}.jobhead{display:flex;justify-content:space-between;gap:10px}.ticket{font-weight:800;color:var(--blue)}.job p{margin:5px 0;color:#566477}.pill{display:inline-block;padding:3px 8px;border-radius:30px;background:#fff4d8;color:#8a5c00;font-size:11px;font-weight:700}.jobactions{display:flex!important;gap:7px;margin-top:10px;flex-wrap:wrap;visibility:visible!important}.jobactions button{display:inline-flex!important;visibility:visible!important;opacity:1!important;font-size:12px;padding:7px 10px;align-items:center;justify-content:center}.empty{text-align:center;color:var(--muted);padding:32px 10px}
+@media(max-width:850px){.layout,.forms-layout,.history-layout{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}@media(max-width:480px){.fieldgrid,.checks{grid-template-columns:1fr}.wrap{margin:18px auto;padding:0 12px}.stat{padding:12px}h1{font-size:22px}}
+.auth-screen{min-height:calc(100vh - 84px);display:flex;align-items:flex-start;justify-content:center;padding:9vh 18px 40px}
+.auth-card{width:min(420px,100%);background:#fff;border:1px solid var(--line);border-radius:18px;padding:28px;box-shadow:0 12px 34px rgba(20,36,59,.07);display:flex;flex-direction:column;gap:12px}
+.auth-card h1{margin:0}.auth-card label{font-weight:650;color:var(--navy)}.auth-card input{width:100%;padding:13px;border:1px solid #d6deea;border-radius:10px;font:inherit}
+.auth-error{color:#b42318;min-height:20px;margin:0}.auth-back{color:var(--blue);text-decoration:none;font-weight:650;margin-top:6px}
+@media print{header,.top button,.stats,.layout .panel:first-child,.toolbar,.jobactions{display:none!important}body{background:white}.wrap{margin:0;max-width:none}.layout{display:block}.panel{border:0;padding:0}.job{break-inside:avoid}}
+
+/* Header bersama Copy Computer */
+header{min-height:70px;background:#fff;border-bottom:1px solid #e3ebf7;padding:10px max(16px,calc((100% - 1120px)/2));gap:12px;box-shadow:0 3px 14px rgba(20,60,120,.04)}
+header img{width:62px;height:auto;max-height:48px;object-fit:contain;flex:none}
+header .brand-copy{min-width:0;line-height:1.25}header .brand-copy strong{display:block;font-size:16px;font-weight:800;color:#10265a;letter-spacing:.02em}header .brand-copy small{display:block;color:#1768e8;font-size:12px;margin-top:3px}
+header .header-spacer{flex:1}header .nav-icon{width:42px;height:42px;min-width:42px;padding:0;border:1px solid #dfe8f7;border-radius:12px;background:#f4f8ff;color:#174a9c;display:inline-grid;place-items:center;text-decoration:none}header .nav-icon svg{width:20px;height:20px;display:block}
+@media(max-width:520px){header{padding:9px 12px;gap:9px}header img{width:52px;max-height:42px}header .brand-copy strong{font-size:14px}header .brand-copy small{font-size:11px}header .nav-icon{width:39px;height:39px;min-width:39px}}
+
+.service-choices{display:grid;grid-template-columns:1fr;gap:12px;width:100%;max-width:760px;margin:18px 0}.service-choice{width:100%;display:flex;align-items:center;gap:14px;text-align:left;padding:18px;background:#fff;color:var(--navy);border:1px solid var(--line);border-radius:14px;box-shadow:0 3px 12px rgba(20,36,59,.035)}.service-choice:hover{border-color:#9bb8ed;background:#fbfdff}.service-choice>span:nth-child(2){display:flex;flex-direction:column;gap:3px;flex:1}.service-choice strong{font-size:15px}.service-choice small{font-size:12px;color:var(--muted);font-weight:400}.choice-icon{width:46px;height:46px;flex:none;border-radius:12px;background:#edf4ff;color:#2457a6;display:grid;place-items:center}.choice-icon svg{width:27px;height:27px}.choice-arrow{width:19px;height:19px;color:#7890b4;flex:none}.service-form-panel{max-width:850px;margin:18px auto!important}
+/* Header dan tab pilihan form */
+.service-header{position:relative;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:12px 64px 14px!important;text-align:center}
+.service-header img{width:76px!important;height:54px;max-height:54px!important;object-fit:contain}
+.service-header .brand-copy{line-height:1.2}.service-header .brand-copy small{font-size:19px;font-weight:800;color:var(--navy);margin:3px 0 0}
+.service-header .nav-icon{position:absolute;right:max(16px,calc((100% - 1120px)/2));top:14px}
+.service-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;width:100%;max-width:850px;margin:18px 0 14px}
+.service-choice{min-height:58px;justify-content:center;gap:9px;padding:12px 14px;border:1px solid #dce5f2;background:#fff;color:#34506f;border-radius:11px;box-shadow:none;font-size:14px}
+.service-choice svg{width:21px;height:21px;flex:none}.service-choice.active{background:#edf4ff;border:1.5px solid #3976d7;color:#174a9c;box-shadow:0 2px 8px rgba(37,99,235,.08)}
+.service-choice:hover{border-color:#9bb8ed;background:#f7faff}.service-form-panel{max-width:850px;margin:14px 0!important}
+@media(max-width:520px){.service-header{padding:10px 54px 12px!important}.service-header img{width:66px!important;height:48px}.service-header .brand-copy small{font-size:17px}.service-header .nav-icon{right:12px;top:12px}.service-choices{gap:8px}.service-choice{font-size:12px;padding:10px 6px;gap:6px;min-height:54px}.service-choice svg{width:19px;height:19px}}
+
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Sans+Condensed:wght@600;700&display=swap');
+:root{--navy:#13202b;--blue:#0a6c8b;--bg:#f1f4f6;--line:#d0d9e0;--muted:#56677a;--surface:#fff;--surface2:#e8edf1}
+body{background:var(--bg);color:var(--navy);font:15px/1.45 'IBM Plex Sans',system-ui,sans-serif;padding-bottom:34px}
+header{background:#fff;border:1px solid var(--line);box-shadow:none}header .brand-copy small{color:var(--blue)}
+.wrap{max-width:1120px;margin:22px auto;padding:0 18px}h1,.panel h2{font-family:'IBM Plex Sans Condensed','IBM Plex Sans',sans-serif;color:var(--navy)}h1{font-size:25px}.sub{color:var(--muted)}
+.panel,.stat{background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:none}.stat b{color:var(--navy)}label{color:var(--muted);font-weight:600}
+input,select,textarea{font:inherit;font-size:16px;color:var(--navy);background:#fff;border:1px solid var(--line);border-radius:8px;padding:10px 12px;min-height:44px}textarea{resize:vertical;line-height:1.45}
+button,.btn{font:600 14px 'IBM Plex Sans',system-ui,sans-serif;border-radius:9px}button:not(.secondary),.btn:not(.secondary){background:var(--blue);color:#fff}button.secondary,.btn.secondary{background:var(--surface2);color:var(--blue)}
+.job{border-color:var(--line);border-radius:9px}.pill{background:var(--surface2);color:var(--blue)}
+.service-header{background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:none;max-width:1120px;margin:14px auto 0}.service-header .brand-copy small{color:var(--navy)}
+.service-choices{max-width:none;margin:14px 0;gap:10px}.service-choice{background:#fff;border:1px solid var(--line);color:var(--navy);border-radius:9px;box-shadow:none}.service-choice.active{background:#d9eef4;border-color:var(--blue);color:var(--blue)}.service-choice:hover{background:var(--surface2);border-color:var(--blue)}
+.service-form-panel{max-width:none;margin:0!important;padding:18px}.form-actions{position:sticky;bottom:0;z-index:4;display:grid;grid-template-columns:1fr 1.45fr;gap:10px;margin:18px -18px -18px;padding:10px 18px calc(10px + env(safe-area-inset-bottom,0px));background:#fff;border-top:1px solid var(--line);border-radius:0 0 10px 10px}
+.form-actions>*{min-height:56px;display:flex;align-items:center;justify-content:center;gap:10px;border:0!important;border-radius:9px;font-size:16px;font-weight:700}.form-actions svg{width:24px;height:24px;flex:none}.form-actions .reset-action{background:#d9eef4!important;color:var(--blue)!important}.form-actions .save-action{background:var(--blue)!important;color:#fff!important}
+@media(max-width:850px){.wrap{margin:16px auto;padding:0 12px}.service-header{margin:10px 12px}.form-actions{margin-left:-13px;margin-right:-13px;padding-left:12px;padding-right:12px}}
+@media(max-width:480px){.form-actions{grid-template-columns:.85fr 1.35fr}.form-actions>*{min-height:52px;font-size:14px}.form-actions svg{width:21px;height:21px}.service-form-panel{padding:13px}}
+
+/* Tampilan terpadu mengikuti CCTV Report */
+:root{--navy:#10265a;--blue:#1768e8;--bg:#fff;--line:#dce7ff;--muted:#6872b5;--accent:#1768e8;--accent-soft:#edf4ff}
+body{background:#fff;color:var(--navy);font-family:system-ui,-apple-system,'Segoe UI',sans-serif;font-size:14px;line-height:1.5;padding:16px 22px 34px}
+.service-header{width:100%;max-width:1120px;min-height:110px;margin:0 auto 14px;padding:14px 20px!important;display:flex;align-items:center;justify-content:space-between;position:relative;background:#fff;border:1px solid var(--line);border-radius:30px;box-shadow:0 6px 20px rgba(24,78,160,.07)}
+.service-brand{display:flex;align-items:center;gap:12px;min-width:0}.service-brand img{width:64px!important;height:64px!important;max-height:64px!important;object-fit:contain}
+.service-brand strong{display:block;color:#10265a;font-size:17px;font-weight:800;letter-spacing:.01em}.service-brand small{display:block;color:#1768e8;font-size:13px;font-weight:650;margin-top:1px}
+.service-header .nav-icon{width:44px;height:44px;min-width:44px;padding:0;border:1px solid #dfe8fb;border-radius:13px;background:#f4f7ff;color:#123b91;display:inline-grid;place-items:center}
+.service-header .nav-icon svg{width:22px;height:22px}
+.wrap{max-width:1120px;width:100%;margin:0 auto;padding:0;display:grid;gap:14px}
+.service-tabs{position:static;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:5px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 4px 14px rgba(24,78,160,.04)}
+.service-tab{display:flex;align-items:center;justify-content:center;gap:8px;min-width:0;min-height:46px;padding:8px 10px;border:0;border-radius:10px;background:#f4f7ff;color:#1749a4;font:600 14px system-ui,sans-serif;white-space:normal}
+.service-tab svg{width:19px;height:19px;flex:none}.service-tab.active{background:#1768e8;color:#fff}
+.service-form-panel{max-width:none!important;margin:0!important;padding:16px!important;border:1px solid var(--line);border-radius:16px;background:#fff;box-shadow:0 4px 16px rgba(24,78,160,.045)}
+.panel h2{font-size:16px;color:#10265a;margin:0 0 14px}
+label{font-size:13px;font-weight:600;color:#1c3975}
+input,select,textarea{font:inherit;font-size:16px!important;color:#10265a;background:#fff;border:1px solid #d7e2f7;border-radius:10px;padding:10px 12px;width:100%;min-height:44px}
+textarea{line-height:1.4;resize:vertical}
+button{font-family:system-ui,-apple-system,'Segoe UI',sans-serif}
+.job,.stat{border:1px solid var(--line);border-radius:12px;box-shadow:0 3px 12px rgba(24,78,160,.035)}
+.ticket{color:#1768e8}.pill{background:#edf4ff;color:#1749a4}
+.form-actions{position:sticky;bottom:0;z-index:4;display:grid;grid-template-columns:1fr 1.45fr;gap:10px;margin:18px -16px -16px;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));background:#fff;border-top:1px solid var(--line);border-radius:0 0 16px 16px}
+.form-actions>*{min-height:52px;display:flex;align-items:center;justify-content:center;gap:9px;border:0!important;border-radius:10px;font-size:15px;font-weight:700}
+.form-actions svg{width:22px;height:22px;flex:none}
+.form-actions .reset-action{background:#dce9ff!important;color:#1768e8!important}
+.form-actions .save-action{background:#1768e8!important;color:#fff!important}
+#historyView .panel{border:1px solid var(--line);border-radius:16px;box-shadow:0 4px 16px rgba(24,78,160,.045)}
+#settingsView{border:1px solid var(--line);border-radius:16px}
+@media(max-width:850px){body{padding:10px 12px 28px}.service-header{min-height:82px;margin-bottom:12px;padding:10px 14px!important;border-radius:20px}.service-brand img{width:56px!important;height:50px!important}.wrap{gap:12px}}
+@media(max-width:520px){body{padding:10px 12px 24px}.service-header{min-height:70px;padding:8px 10px!important;border-radius:17px}.service-brand{gap:9px}.service-brand img{width:48px!important;height:44px!important}.service-brand strong{font-size:15px}.service-brand small{font-size:12px}.service-header .nav-icon{width:40px;height:40px;min-width:40px}.service-tabs{gap:5px;padding:4px;border-radius:12px}.service-tab{gap:5px;min-height:44px;padding:7px 3px;font-size:11px}.service-tab svg{width:17px;height:17px}.service-form-panel{padding:12px!important}.form-actions{margin:16px -12px -12px;padding:9px 12px calc(9px + env(safe-area-inset-bottom,0px));grid-template-columns:.85fr 1.35fr}.form-actions>*{min-height:48px;font-size:14px}.form-actions svg{width:20px;height:20px}.fieldgrid,.checks{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* Match CCTV Report UI: same header, navigation, spacing and form scale */
+body{background:#fff;color:#10265a;font-family:var(--f-body,system-ui,-apple-system,'Segoe UI',sans-serif);font-size:14px;line-height:1.45;padding:0 16px 34px}
+#appShell.wrap{max-width:1120px;margin:0 auto;display:grid;gap:14px;min-width:0}
+.top{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin:0}
+.brand{display:flex;gap:12px;align-items:center;min-width:0}
+.mark{width:64px;height:auto;max-height:64px;object-fit:contain;flex:none;display:block}
+.brand-name{font-size:17px;font-weight:800;letter-spacing:.01em;color:#10265a}
+.brand-section{font-size:13px;font-weight:650;color:#1768e8;margin:1px 0 0}
+.hbtns{display:flex;gap:7px;flex-wrap:wrap}
+.icon-btn{width:44px;height:44px;min-height:44px;padding:0;border:1px solid #dfe8fb;border-radius:13px;background:#f4f7ff;color:#123b91;display:inline-grid;place-items:center;text-decoration:none}
+.icon-btn svg{width:22px;height:22px}
+.tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;position:static;background:#fff;border:1px solid #dce7ff;border-radius:14px;padding:5px;box-shadow:0 4px 14px rgba(24,78,160,.04);width:100%;margin:0}
+.tabs-in{max-width:none;margin:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
+.tab{min-width:0;min-height:46px;border:0;background:#f4f7ff;color:#1749a4;font-weight:600;font-size:13px;border-radius:10px;display:flex;align-items:center;justify-content:center;gap:8px;padding:8px 10px;white-space:normal}
+.tab svg{width:19px;height:19px;flex:none}
+.tab[aria-current="page"]{color:#1768e8;background:#eaf2ff}
+#serviceView,#historyView,#settingsView{min-width:0;width:100%}
+.service-form-panel,.panel{background:#fff;border:1px solid #dce7ff;border-radius:16px;padding:15px;box-shadow:0 4px 16px rgba(24,78,160,.045);min-width:0}
+.panel h2{font-size:16px;font-weight:700;color:#10265a;margin:0 0 14px}
+label{font-size:13px;font-weight:600;color:#1c3975}
+input,textarea,select{font:inherit;font-size:16px!important;color:#10265a;background:#fff;border:1px solid #d7e2f7;border-radius:10px;padding:10px 12px;width:100%;min-width:0;min-height:44px}
+textarea{resize:vertical;line-height:1.4}
+button{font:inherit;cursor:pointer}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:0 0 14px}
+.stat{background:#fff;border:1px solid #dce7ff;border-radius:12px;padding:12px}
+.stat small{font-size:12px;color:#6872b5}.stat b{font-size:22px;color:#10265a}
+.job{border:1px solid #dce7ff;border-radius:12px;box-shadow:0 3px 12px rgba(24,78,160,.035)}
+.pill{background:#edf4ff;color:#1749a4}
+.form-actions{position:sticky;bottom:0;z-index:4;display:grid;grid-template-columns:1fr 1.45fr;gap:10px;margin:18px -15px -15px;padding:10px 15px calc(10px + env(safe-area-inset-bottom,0px));background:#fff;border-top:1px solid #dce7ff;border-radius:0 0 16px 16px}
+.form-actions>*{min-height:48px;display:flex;align-items:center;justify-content:center;gap:9px;border:0!important;border-radius:10px;font-size:14px;font-weight:700}
+.form-actions svg{width:22px;height:22px;flex:none}
+.form-actions .reset-action{background:#dce9ff!important;color:#1768e8!important}
+.form-actions .save-action{background:#1768e8!important;color:#fff!important}
+@media(min-width:960px){body{padding-block:22px 48px}#appShell.wrap{max-width:1120px}}
+@media(max-width:700px){body{padding:10px 10px 28px}.mark{width:56px}.brand-name{font-size:16px}.tabs{padding:4px}.tab{min-height:44px;font-size:12px;gap:5px;padding:7px 3px}.tab svg{width:17px;height:17px}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.service-form-panel,.panel{padding:12px}.form-actions{margin:16px -12px -12px;padding:9px 12px calc(9px + env(safe-area-inset-bottom,0px))}}
+@media(max-width:380px){.tab{font-size:11px}.tab svg{width:16px;height:16px}.brand-name{font-size:14px}.mark{width:48px}}
+/* Professional responsive report layout */
+:root{--bg:#f7f9fd;--surface:#fff;--surface2:#f4f7ff;--ink:#10265a;--muted:#687995;--line:#dce6f5;--accent:#1768e8;--accent-ink:#fff;--accent-soft:#edf4ff;color-scheme:light}
+body{background:#f7f9fd;color:var(--ink);padding:14px 20px 38px}
+.wrap{width:100%;max-width:900px;gap:14px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:14px;min-height:74px;padding:10px 14px;background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 3px 14px rgba(20,55,110,.045)}
+.brand{gap:12px}.mark{width:58px;max-height:48px;padding:0;border:0;object-fit:contain}
+.brand-name{font-size:17px;font-weight:800;letter-spacing:.015em;color:#10265a}
+.brand-section{font-size:13px;font-weight:650;color:#1768e8;margin:2px 0 0}
+.hbtns{margin-left:auto;justify-content:flex-end;align-items:center;gap:8px}
+.icon-btn{width:40px;height:40px;min-height:40px;border:1px solid #dce6f5;border-radius:11px;background:#f3f7ff;color:#1458c8;display:inline-grid;place-items:center}
+.icon-btn svg{width:20px;height:20px}
+.page-heading{display:flex;align-items:center;justify-content:center;gap:8px;margin:1px 0 0;color:#10265a;font-size:19px;font-weight:750;letter-spacing:-.02em}
+.page-heading-icon{display:inline-grid;place-items:center;width:25px;height:25px;color:#1768e8}.page-heading-icon svg{width:21px;height:21px}
+.tabs{position:static;width:100%;max-width:100%;padding:4px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 2px 9px rgba(20,55,110,.035)}
+.tabs-in{max-width:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
+.tab{min-height:39px;border:0;border-radius:9px;background:transparent;color:#536987;font-size:13px;font-weight:650}
+.tab[aria-current=page]{background:#1768e8;color:#fff;box-shadow:0 2px 7px rgba(23,104,232,.16)}
+.cols{display:block}.main{width:100%;max-width:760px;margin:0 auto}
+#form{display:grid;gap:12px}
+#form .form-shell{padding:20px;border:1px solid var(--line);border-radius:17px;background:#fff;box-shadow:0 4px 16px rgba(20,55,110,.045);gap:17px}
+#form .form-fields{display:grid;gap:14px}
+.form-field{display:grid;gap:6px;min-width:0}
+.field-label{display:flex;align-items:center;gap:9px;margin:0;color:#18366e;font-size:14px;font-weight:650;letter-spacing:0}
+.field-label svg{width:19px;height:19px;flex:none;color:#1768e8}
+.field-label em{font-style:normal;color:#e04458}
+#form input,#form textarea,#form select{width:100%;min-height:44px;padding:10px 12px;border:1px solid #d4e0f2;border-radius:10px;background:#fbfcff;color:#10265a;font-size:14px}
+#form textarea{min-height:82px;line-height:1.45}
+#form .sec-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:9px;align-items:center}
+#form .sec-head .job-label{grid-column:1/-1;font-size:14px;font-weight:650;text-transform:none;letter-spacing:0}
+#form .sec-head .job-label svg{width:19px;height:19px}
+#form .sec-head select{grid-column:1;min-width:0}
+#form .sec-head .mini{grid-column:2;min-height:40px}
+#form [data-sec]{padding:14px;border:1px solid #e0e8f5;border-radius:13px;background:#fff;box-shadow:none;gap:12px}
+#form .structured-item{padding:0;border:0;border-radius:0;background:transparent;box-shadow:none}
+#form .structured-item .item-top{display:none}
+#form .structured-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
+#form .item-field-label{font-size:14px;text-transform:none;letter-spacing:0;margin-bottom:6px}
+#form .item-extra{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;margin-top:10px}
+#form .item-extra>div{display:grid;gap:6px}
+#form .item-extra .lbl{font-size:13px;text-transform:none;letter-spacing:0;margin:0;color:#18366e}
+#form .item-actions{margin-top:0}
+#form .item-actions .btn{min-height:39px;font-size:13px}
+#form .form-note{display:grid;gap:7px}
+#form .attachment-panel{display:grid;gap:9px;padding:14px;border:1px dashed #adc4e8;border-radius:13px;background:#f9fbff}
+#form .attach-title{display:flex;align-items:center;gap:9px;font-size:14px;font-weight:650}
+#form .attach-title svg{width:20px;height:20px;color:#1768e8}
+#form .attach-title .hint{font-size:11px;font-weight:400;margin-left:auto}
+#form .attachment-pick{width:100%;min-height:42px;border-radius:10px;font-size:13px}
+#form #attachmentInput{min-height:40px;font-size:12px}
+#form .form-actions{display:grid;grid-template-columns:1fr 1.45fr;gap:10px;margin:0}
+#form .form-actions .btn{width:100%;min-height:46px;border-radius:11px;font-size:14px;font-weight:650}
+#form .form-actions .btn.ghost{background:#edf4ff;color:#1768e8;border:1px solid #dce7f8}
+#form .mini{min-height:36px;border-radius:9px;font-size:12px}
+#form .hint{font-size:12px}
+@media(min-width:960px){
+ body{padding:18px 26px 42px}.wrap{max-width:920px}.main{max-width:760px}
+ #form .form-shell{padding:22px}
+ #form .form-fields{gap:15px}
+}
+@media(max-width:600px){
+ body{padding:9px 11px 26px}
+ .wrap{gap:11px}
+ .top{min-height:62px;padding:8px 10px;border-radius:14px}
+ .mark{width:48px;max-height:40px}
+ .brand{gap:9px}.brand-name{font-size:14px}.brand-section{font-size:12px}
+ .hbtns{gap:6px}.icon-btn{width:36px;height:36px;min-height:36px;border-radius:10px}.icon-btn svg{width:18px;height:18px}
+ .page-heading{font-size:17px;margin:0}
+ .tabs{padding:3px}.tab{min-height:37px;font-size:12px;padding:0 3px}
+ .main{max-width:100%}
+ #form{gap:10px}
+ #form .form-shell{padding:14px;border-radius:14px;gap:14px}
+ #form .form-fields{gap:12px}
+ .field-label{font-size:13px;gap:8px}.field-label svg{width:18px;height:18px}
+ #form input,#form textarea,#form select{min-height:42px;font-size:14px;padding:9px 10px;border-radius:9px}
+ #form [data-sec]{padding:11px;border-radius:12px;gap:10px}
+ #form .sec-head{gap:7px}
+ #form .sec-head .mini{font-size:11px;padding:0 8px}
+ #form .attachment-panel{padding:11px}
+ #form .form-actions{gap:8px}
+ #form .form-actions .btn{min-height:44px;font-size:13px}
+}
+@media(max-width:360px){.brand-name{font-size:13px}.mark{width:42px}.icon-btn{width:34px;height:34px;min-height:34px}}
+
+
+/* Manajemen Servis memakai CSS acuan CCTV Report secara langsung */
+#appShell.wrap{max-width:920px!important;width:100%!important;gap:14px!important}
+#appShell .cols,#appShell .main{display:block!important;width:100%!important;max-width:100%!important;min-width:0!important}
+#appShell .service-form-panel,#appShell #historyView>.panel,#appShell #settingsView{
+ display:grid;gap:14px;padding:20px;border:1px solid #dce6f5;border-radius:17px;background:#fff;box-shadow:0 4px 16px rgba(20,55,110,.045)
+}
+#appShell .service-form-panel h2,#appShell #historyView h2,#appShell #settingsView h2{font-size:19px;line-height:1.3;font-weight:750;color:#10265a;margin:0 0 4px}
+#appShell form{display:grid;gap:14px;min-width:0}
+#appShell .fieldgrid{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;min-width:0}
+#appShell .field{display:grid;gap:6px;min-width:0}
+#appShell .field.full{grid-column:1/-1}
+#appShell .field label{display:block;margin:0;color:#18366e;font-size:14px;font-weight:650;letter-spacing:0}
+#appShell input,#appShell textarea,#appShell select{width:100%;min-width:0;min-height:44px;padding:10px 12px;border:1px solid #d4e0f2;border-radius:10px;background:#fbfcff;color:#10265a;font:inherit;font-size:14px}
+#appShell textarea{min-height:82px;line-height:1.45}
+#appShell .actions{display:grid;grid-template-columns:1fr 1.45fr;gap:10px;margin:0}
+#appShell .actions button,#appShell .form-actions button{width:100%;min-height:46px;border-radius:11px;font-size:14px;font-weight:650}
+#appShell .reset-action{background:#edf4ff!important;color:#1768e8!important;border:1px solid #dce7f8!important}
+#appShell .save-action{background:#1768e8!important;color:#fff!important;border:1px solid #1768e8!important}
+#appShell .reset-action svg,#appShell .save-action svg{width:20px;height:20px}
+#appShell .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;color:#687995}
+#appShell .stat{display:grid;gap:3px;padding:12px;border:1px solid #dce6f5;border-radius:12px;background:#fff}
+#appShell .stat small{font-size:12px;color:#687995}
+#appShell .stat b{font-size:22px;color:#10265a}
+#appShell .layout{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+#appShell .job{border:1px solid #dce6f5;border-radius:13px;background:#fff;padding:14px;margin:10px 0}
+#appShell .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+#appShell .toolbar>*{flex:1 1 180px;min-width:0}
+#appShell .sub{font-size:12px;color:#687995}
+#appShell .service-form-panel .form-actions{display:grid;grid-template-columns:1fr 1.45fr;gap:10px}
+#appShell .service-form-panel .form-actions button{display:flex;align-items:center;justify-content:center;gap:8px}
+#appShell .service-form-panel .form-actions button svg{flex:none}
+@media(min-width:960px){#appShell.wrap{max-width:920px!important}#appShell .service-form-panel,#appShell #historyView>.panel,#appShell #settingsView{padding:22px}}
+@media(max-width:600px){
+ body{padding:9px 11px 26px!important}
+ #appShell.wrap{gap:11px!important}
+ #appShell .top{min-height:62px;padding:8px 10px;border-radius:14px}
+ #appShell .mark{width:48px;max-height:40px}
+ #appShell .brand{gap:9px}.brand-name{font-size:14px}.brand-section{font-size:12px}
+ #appShell .hbtns{gap:6px}.icon-btn{width:36px;height:36px;min-height:36px;border-radius:10px}.icon-btn svg{width:18px;height:18px}
+ #appShell .tabs{padding:3px}.tabs-in{gap:5px}.tab{min-height:37px;font-size:12px;padding:0 3px}
+ #appShell .service-form-panel,#appShell #historyView>.panel,#appShell #settingsView{padding:14px;border-radius:14px;gap:12px}
+ #appShell .field label{font-size:13px}
+ #appShell input,#appShell textarea,#appShell select{min-height:42px;font-size:14px;padding:9px 10px;border-radius:9px}
+ #appShell .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #appShell .actions,#appShell .service-form-panel .form-actions{gap:8px}
+ #appShell .actions button,#appShell .service-form-panel .form-actions button{min-height:44px;font-size:13px}
+}
+@media(max-width:360px){#appShell .tab{font-size:11px}}
+
+
+/* Standar tombol panah kembali: ukuran seragam di semua menu */
+.hbtns button[aria-label="Kembali"]{width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important;padding:0!important;flex:0 0 44px!important;border-radius:12px!important;display:inline-grid!important;place-items:center!important;box-sizing:border-box!important;transition:background-color .15s ease,color .15s ease,border-color .15s ease!important}
+.hbtns button[aria-label="Kembali"] svg{width:22px!important;height:22px!important;flex:none!important}
+.hbtns button[aria-label="Kembali"]:active{background:#1768e8!important;border-color:#1768e8!important;color:#fff!important}
+
+</style><style>html.cc-gate-pending body{visibility:hidden}</style><script>(function(){'use strict';document.documentElement.classList.add('cc-gate-pending');var IDLE_LIMIT=5*60*1000,last=Number(localStorage.getItem('cc_last_activity'))||0;function expire(){sessionStorage.removeItem('cc_app_unlocked');localStorage.removeItem('cc_last_activity');location.replace('../')}function checkIdle(){last=Number(localStorage.getItem('cc_last_activity'))||0;if(sessionStorage.getItem('cc_app_unlocked')!=='1'||!last||Date.now()-last>=IDLE_LIMIT)expire()}if(sessionStorage.getItem('cc_app_unlocked')!=='1'||!last||Date.now()-last>=IDLE_LIMIT){expire();return}function touch(){var n=Date.now();if(n-last>900){last=n;localStorage.setItem('cc_last_activity',String(n))}}['pointerdown','keydown','touchstart','click','scroll'].forEach(function(e){document.addEventListener(e,touch,{passive:true})});setInterval(checkIdle,1000);document.addEventListener('visibilitychange',function(){if(!document.hidden)checkIdle()});document.documentElement.classList.remove('cc-gate-pending')})();</script><style id="iphone-viewport-fit">
+/* Keep native mobile pull-to-refresh and vertical scrolling available */
+html,body{overscroll-behavior-y:auto;touch-action:pan-y pinch-zoom;-webkit-overflow-scrolling:touch}
+
+html{width:100%;max-width:100%;overflow-x:hidden;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{width:100%;max-width:100%;min-width:0;overflow-x:hidden}
+.wrap,.layout,.panel,.fieldgrid,.field{min-width:0;max-width:100%}
+@media(max-width:850px){
+  header{padding-left:max(12px,env(safe-area-inset-left));padding-right:max(12px,env(safe-area-inset-right))}
+  .wrap{width:100%;max-width:100%;margin:16px auto;padding-left:12px;padding-right:12px}
+  .layout{grid-template-columns:minmax(0,1fr)}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .fieldgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  input,select,textarea{font-size:16px!important;min-width:0}
+}
+@media(max-width:480px){
+  header{gap:7px}
+  header img{width:44px;max-height:38px}
+  header .brand-copy strong{font-size:13px}
+  header .brand-copy small{font-size:10px}
+  header .nav-icon{width:36px;height:36px;min-width:36px}
+  header>button.secondary{padding:8px 9px;font-size:12px}
+  .wrap{padding-left:10px;padding-right:10px}
+  .top{align-items:flex-start}
+  .top .actions{width:100%;display:grid;grid-template-columns:1fr 1fr}
+  .top .actions button:last-child{grid-column:1/-1}
+  .fieldgrid{grid-template-columns:minmax(0,1fr)}
+  .stats{gap:8px}
+  .stat,.panel{padding:12px}
+}
+
+/* Compact screenshot layout: keep the complete service form visible without browser zoom */
+@media (min-width:601px){
+  body{padding-top:10px!important;padding-bottom:20px!important}
+  #appShell.wrap{gap:10px!important;max-width:860px!important}
+  #appShell .top{min-height:66px;padding:8px 12px;border-radius:16px}
+  #appShell .mark{width:66px;max-height:46px}
+  #appShell .brand{gap:11px}
+  #appShell .brand-name{font-size:19px}
+  #appShell .brand-section{font-size:14px}
+  #appShell .icon-btn{width:40px;height:40px;min-height:40px;border-radius:11px}
+  #appShell .icon-btn svg{width:20px;height:20px}
+  #appShell .tabs{padding:3px}
+  #appShell .tabs-in{gap:4px}
+  #appShell .tab{min-height:35px;border-radius:8px;font-size:12px}
+  #appShell .service-form-panel,#appShell #historyView>.panel,#appShell #settingsView{
+    gap:10px;padding:15px;border-radius:14px
+  }
+  #appShell .service-form-panel h2,#appShell #historyView h2,#appShell #settingsView h2{
+    font-size:17px;margin-bottom:2px
+  }
+  #appShell form{gap:10px}
+  #appShell .fieldgrid{gap:10px}
+  #appShell .field{gap:4px}
+  #appShell .field label{font-size:13px}
+  #appShell input,#appShell textarea,#appShell select{
+    min-height:40px;padding:8px 10px;border-radius:9px;font-size:13px
+  }
+  #appShell textarea{min-height:68px}
+  #appShell .actions{gap:8px}
+  #appShell .actions button,#appShell .form-actions button{
+    min-height:41px;border-radius:9px;font-size:13px
+  }
+  #appShell .stats{gap:8px}
+  #appShell .stat{padding:9px}
+  #appShell .stat b{font-size:19px}
+  #appShell .toolbar{margin:7px 0;gap:6px}
+  #appShell .job{padding:11px;margin:8px 0}
+}
+@media (max-width:600px){
+  #appShell .service-form-panel{gap:10px}
+  #appShell form{gap:11px}
+  #appShell .fieldgrid{gap:10px}
+  #appShell .field{gap:5px}
+  #appShell .field label{font-size:12px}
+  #appShell input,#appShell textarea,#appShell select{min-height:40px;padding:8px 10px}
+  #appShell textarea{min-height:72px}
+}
+
+
+/* Final navigation and form polish */
+#appShell nav.tabs{display:block!important;width:100%!important;max-width:100%!important;padding:4px!important}
+#appShell nav.tabs .tabs-in{display:grid!important;width:100%!important;max-width:none!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:5px!important;margin:0!important}
+#appShell nav.tabs .tab{width:100%!important;min-width:0!important;min-height:44px!important;display:flex!important;align-items:center;justify-content:center;gap:7px;padding:7px 10px!important;border:1px solid transparent!important;border-radius:10px!important;background:#edf4ff!important;color:#174a9c!important;transition:background-color .16s ease,color .16s ease,border-color .16s ease}
+#appShell nav.tabs .tab[aria-current="page"]{background:#1768e8!important;border-color:#1768e8!important;color:#fff!important;box-shadow:0 2px 7px rgba(23,104,232,.18)}
+#appShell nav.tabs .tab:hover{background:#dceaff!important;color:#1458c8!important}
+#appShell nav.tabs .tab[aria-current="page"]:hover{background:#145ed4!important;color:#fff!important}
+#appShell nav.tabs .tab:active{background:#145ed4!important;color:#fff!important}
+#appShell nav.tabs .tab:focus-visible{outline:2px solid #83b2ff;outline-offset:2px}
+#appShell .field label.field-label{display:flex!important;align-items:center;gap:8px;margin:0 0 1px;color:#18366e;font-size:13px;font-weight:650}
+#appShell .field-label svg{width:17px;height:17px;flex:none;fill:none;stroke:#1768e8;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+@media(max-width:600px){
+ #appShell nav.tabs{padding:3px!important}
+ #appShell nav.tabs .tabs-in{gap:4px!important}
+ #appShell nav.tabs .tab{min-height:42px!important;padding:6px 4px!important;gap:5px;font-size:12px}
+ #appShell nav.tabs .tab svg{width:17px;height:17px}
+ #appShell .field label.field-label{font-size:12px;gap:7px}
+ #appShell .field-label svg{width:16px;height:16px}
+}
+
+
+/* Match the actual CCTV Report page scale at the same browser zoom (75%) */
+body{padding:14px 20px 112px!important}
+#appShell.wrap{width:min(100%,1420px)!important;max-width:1420px!important;margin:0 auto!important;gap:18px!important}
+#appShell .top{
+ width:100%!important;min-height:104px!important;padding:12px 20px!important;
+ border:1px solid #dce7ff!important;border-radius:28px!important;
+ background:#fff!important;box-shadow:0 6px 20px rgba(24,78,160,.07)!important;
+ display:flex!important;align-items:center!important;justify-content:space-between!important
+}
+#appShell .brand{display:flex!important;align-items:center!important;gap:22px!important;min-width:0}
+#appShell .mark{
+ display:block!important;width:100px!important;height:auto!important;max-height:76px!important;
+ object-fit:contain!important;flex:0 0 auto!important;
+ padding-right:18px!important;border-right:2px solid #10265a!important
+}
+#appShell .brand-name{
+ font-size:clamp(20px,2.1vw,28px)!important;line-height:1.15!important;
+ color:#10265a!important;font-weight:800!important;letter-spacing:-.03em!important
+}
+#appShell .brand-section{
+ font-size:clamp(16px,1.7vw,22px)!important;line-height:1.2!important;
+ color:#1768e8!important;font-weight:750!important;margin:3px 0 0!important
+}
+#appShell .icon-btn{width:70px!important;height:70px!important;min-width:70px!important;min-height:70px!important;border-radius:22px!important}
+#appShell .icon-btn svg{width:30px!important;height:30px!important}
+#appShell nav.tabs{width:100%!important;max-width:100%!important;padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important}
+#appShell nav.tabs .tabs-in{width:100%!important;max-width:none!important;display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:12px!important}
+#appShell nav.tabs .tab{width:100%!important;min-height:72px!important;border:1px solid #dce7ff!important;border-radius:17px!important;font-size:17px!important;padding:12px 16px!important}
+#appShell nav.tabs .tab svg{width:22px!important;height:22px!important}
+#appShell .service-form-panel,#appShell #historyView>.panel,#appShell #settingsView{
+ width:100%!important;max-width:none!important;padding:24px!important;border-radius:22px!important;gap:18px!important
+}
+#appShell .service-form-panel h2,#appShell #historyView h2,#appShell #settingsView h2{font-size:24px!important;margin:0 0 5px!important}
+#appShell form{gap:16px!important}
+#appShell .fieldgrid{gap:16px!important}
+#appShell .field{gap:7px!important}
+#appShell .field label.field-label{font-size:16px!important;gap:10px!important}
+#appShell .field-label svg{width:21px!important;height:21px!important}
+#appShell input,#appShell select,#appShell textarea{min-height:56px!important;padding:12px 15px!important;font-size:16px!important;border-radius:12px!important}
+#appShell textarea{min-height:94px!important}
+#appShell .actions button,#appShell .service-form-panel .form-actions button{min-height:58px!important;font-size:16px!important;border-radius:13px!important}
+@media(max-width:700px){
+ body{padding:10px 10px 80px!important}
+ #appShell.wrap{width:100%!important;max-width:100%!important;gap:12px!important}
+ #appShell .top{min-height:76px!important;padding:9px 12px!important;border-radius:18px!important}
+ #appShell .brand{gap:12px!important}
+ #appShell .mark{width:62px!important;max-height:48px!important;padding-right:10px!important;border-right:1.5px solid #10265a!important}
+ #appShell .brand-name{font-size:16px!important}
+ #appShell .brand-section{font-size:14px!important}
+ #appShell .icon-btn{width:46px!important;height:46px!important;min-width:46px!important;min-height:46px!important;border-radius:14px!important}
+ #appShell .icon-btn svg{width:22px!important;height:22px!important}
+ #appShell nav.tabs .tabs-in{gap:6px!important}
+ #appShell nav.tabs .tab{min-height:50px!important;font-size:12px!important;padding:7px 4px!important;border-radius:11px!important}
+ #appShell nav.tabs .tab svg{width:18px!important;height:18px!important}
+ #appShell .service-form-panel,#appShell #historyView>.panel,#appShell #settingsView{padding:15px!important;border-radius:15px!important;gap:12px!important}
+ #appShell .service-form-panel h2,#appShell #historyView h2,#appShell #settingsView h2{font-size:18px!important}
+ #appShell form,#appShell .fieldgrid{gap:11px!important}
+ #appShell .field label.field-label{font-size:13px!important;gap:8px!important}
+ #appShell .field-label svg{width:17px!important;height:17px!important}
+ #appShell input,#appShell select,#appShell textarea{min-height:43px!important;padding:9px 11px!important;font-size:14px!important}
+ #appShell textarea{min-height:72px!important}
+ #appShell .actions button,#appShell .service-form-panel .form-actions button{min-height:45px!important;font-size:13px!important}
+}
+@media(max-width:380px){
+ #appShell .mark{width:52px!important;padding-right:8px!important}
+ #appShell .brand-name{font-size:14px!important}
+ #appShell .brand-section{font-size:12px!important}
+ #appShell nav.tabs .tab{font-size:11px!important}
+}
+
+.notify-btn.push-enabled{background:#e8f8ef!important;color:#16845b!important;border-color:#b8e8cc!important}.notify-btn.push-enabled:after{content:"";position:absolute;width:9px;height:9px;border-radius:50%;right:5px;top:5px;background:#16a34a;border:2px solid #fff}#serviceChatToast{position:fixed;right:18px;bottom:18px;z-index:100001;max-width:min(390px,calc(100vw - 36px));background:#10265a;color:#fff;padding:13px 16px;border-radius:13px;box-shadow:0 10px 32px #10265a35;font:600 13px/1.45 system-ui;opacity:0;transform:translateY(12px);transition:.2s;pointer-events:none}#serviceChatToast.show{opacity:1;transform:translateY(0)}
+</style>
+<style id="service-order-form-icons">
+#orderForm .field-label{display:flex;align-items:center;gap:9px;font-weight:700;color:#102b59}
+#orderForm .field-label svg{width:18px;height:18px;min-width:18px;color:#1768e8;display:block}
+#orderForm .field-label span{display:inline-block}
+</style>
+<style id="service-chat-unread-style">.jobactions .chat-action{position:relative;overflow:visible;padding-right:14px!important}.chat-unread-badge{display:inline-flex;align-items:center;justify-content:center;min-width:19px;height:19px;padding:0 5px;margin-left:7px;border-radius:999px;background:#e11d48;color:#fff;font-size:11px;font-weight:800;line-height:1;box-shadow:0 0 0 2px #fff}</style><style>
+
+/* FINAL RESPONSIVE MASTER: Manajemen Servis is the single UI standard */
+@media screen{
+ body{box-sizing:border-box!important;background:#f7f9fd!important;color:#10265a!important;font-family:system-ui,-apple-system,"Segoe UI",sans-serif!important;padding:14px 20px 38px!important}
+ #appShell.wrap,#appRoot.wrap,body>main.wrap,body>.wrap{box-sizing:border-box!important;width:100%!important;max-width:1420px!important;margin:0 auto!important}
+ #appShell.wrap,#appRoot.wrap{gap:14px!important}
+ #appShell .top,#appRoot .top,body>header{
+  box-sizing:border-box!important;display:flex!important;align-items:center!important;justify-content:space-between!important;
+  width:100%!important;min-height:104px!important;margin:0 auto 14px!important;padding:12px 20px!important;
+  gap:14px!important;border:1px solid #dce7ff!important;border-radius:28px!important;
+  background:#fff!important;box-shadow:0 6px 20px rgba(24,78,160,.07)!important
+ }
+ #appShell .brand,#appRoot .brand{display:flex!important;align-items:center!important;gap:22px!important;min-width:0!important}
+ #appShell .mark,#appRoot .mark,body>header>img{
+  display:block!important;flex:0 0 auto!important;width:100px!important;height:auto!important;max-height:76px!important;
+  padding:0 18px 0 0!important;border:0!important;border-right:2px solid #10265a!important;object-fit:contain!important
+ }
+ #appShell .brand-name,#appRoot .brand-name,body>header .brand-copy strong{
+  font-size:clamp(20px,2.1vw,28px)!important;line-height:1.15!important;font-weight:800!important;letter-spacing:.015em!important;color:#10265a!important
+ }
+ #appShell .brand-section,#appRoot .brand-section,body>header .brand-copy small{
+  display:block!important;margin:2px 0 0!important;font-size:clamp(16px,1.7vw,22px)!important;line-height:1.2!important;font-weight:750!important;color:#1768e8!important
+ }
+ #appShell .hbtns,#appRoot .hbtns{display:flex!important;align-items:center!important;justify-content:flex-end!important;gap:10px!important;margin-left:auto!important}
+ #appShell .icon-btn,#appRoot .icon-btn,body>header .nav-icon{
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;flex:0 0 auto!important;
+  width:70px!important;height:70px!important;min-width:70px!important;min-height:70px!important;padding:0!important;
+  border:1px solid #dce7ff!important;border-radius:22px!important;background:#1768e8!important;color:#fff!important
+ }
+ #appShell .icon-btn svg,#appRoot .icon-btn svg,body>header .nav-icon svg{width:30px!important;height:30px!important}
+ #appShell nav.tabs,#appRoot nav.tabs{display:block!important;width:100%!important;max-width:100%!important;margin:0!important;padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important}
+ #appShell nav.tabs .tabs-in,#appRoot nav.tabs .tabs-in{display:grid!important;width:100%!important;max-width:none!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:12px!important;margin:0!important}
+ #appShell nav.tabs .tab,#appRoot nav.tabs .tab{
+  display:flex!important;align-items:center!important;justify-content:center!important;gap:9px!important;
+  width:100%!important;min-width:0!important;min-height:72px!important;padding:12px 16px!important;
+  border:1px solid #dce7ff!important;border-radius:17px!important;background:#edf4ff!important;color:#1749a4!important;
+  font-size:17px!important;font-weight:700!important;white-space:normal!important
+ }
+ #appShell nav.tabs .tab[aria-current=page],#appRoot nav.tabs .tab.active,#appRoot nav.tabs .tab[aria-current=page]{
+  background:#1768e8!important;color:#fff!important;border-color:#1768e8!important;box-shadow:0 4px 12px rgba(23,104,232,.16)!important
+ }
+ #appShell nav.tabs .tab svg,#appRoot nav.tabs .tab svg{width:22px!important;height:22px!important;flex:0 0 22px!important}
+ #appShell .service-form-panel,#appShell #historyView>.panel,#appShell #settingsView,
+ #appRoot #form .form-shell,#appRoot #form .card,body>main.wrap .panel{
+  box-sizing:border-box!important;width:100%!important;padding:24px!important;border:1px solid #dce7ff!important;
+  border-radius:22px!important;background:#fff!important;box-shadow:0 4px 16px rgba(24,78,160,.05)!important
+ }
+ #appShell .service-form-panel h2,#appShell #historyView h2,#appShell #settingsView h2,
+ #appRoot #form .form-title h2,body>main.wrap .panel h2{
+  font-size:24px!important;line-height:1.25!important;font-weight:750!important;color:#10265a!important
+ }
+ #appShell .field label,#appRoot #form .field-label,#appRoot #form .job-label,body>main.wrap .field label{
+  font-size:16px!important;line-height:1.35!important;font-weight:650!important;color:#18366e!important
+ }
+ #appShell input,#appShell select,#appShell textarea,#appRoot #form input,#appRoot #form select,#appRoot #form textarea,
+ body>main.wrap input,body>main.wrap select,body>main.wrap textarea{
+  box-sizing:border-box!important;width:100%!important;min-width:0!important;min-height:56px!important;
+  padding:12px 15px!important;border:1px solid #d7e2f7!important;border-radius:12px!important;
+  background:#f7f9ff!important;color:#10265a!important;font-family:inherit!important;font-size:16px!important;line-height:1.4!important
+ }
+ #appShell textarea,#appRoot #form textarea,body>main.wrap textarea{min-height:94px!important}
+ #appShell button:not(.tab):not(.icon-btn),#appRoot button:not(.tab):not(.icon-btn),body>main.wrap button,body>main.wrap .btn{
+  min-height:58px!important;padding:12px 16px!important;border-radius:13px!important;font-family:inherit!important;font-size:16px!important;font-weight:700!important
+ }
+ #appShell .form-actions,#appRoot #form .form-actions{gap:12px!important}
+ body>main.wrap .top{gap:14px!important;margin:0 0 18px!important}
+ body>main.wrap h1{font-size:28px!important;line-height:1.2!important;font-weight:800!important;color:#10265a!important}
+ body>main.wrap .field{gap:7px!important;margin-bottom:12px!important}
+ body>main.wrap .row{gap:12px!important}
+}
+@media screen and (max-width:700px){
+ body{padding:10px 10px 80px!important}
+ #appShell.wrap,#appRoot.wrap,body>main.wrap,body>.wrap{width:100%!important;max-width:100%!important;margin:0 auto!important}
+ #appShell.wrap,#appRoot.wrap{gap:12px!important}
+ #appShell .top,#appRoot .top,body>header{min-height:76px!important;margin:0 auto 12px!important;padding:9px 12px!important;border-radius:18px!important;gap:10px!important}
+ #appShell .brand,#appRoot .brand{gap:12px!important}
+ #appShell .mark,#appRoot .mark,body>header>img{width:62px!important;max-height:48px!important;padding-right:10px!important}
+ #appShell .brand-name,#appRoot .brand-name,body>header .brand-copy strong{font-size:16px!important}
+ #appShell .brand-section,#appRoot .brand-section,body>header .brand-copy small{font-size:14px!important}
+ #appShell .hbtns,#appRoot .hbtns{gap:6px!important}
+ #appShell .icon-btn,#appRoot .icon-btn,body>header .nav-icon{width:46px!important;height:46px!important;min-width:46px!important;min-height:46px!important;border-radius:14px!important}
+ #appShell .icon-btn svg,#appRoot .icon-btn svg,body>header .nav-icon svg{width:22px!important;height:22px!important}
+ #appShell nav.tabs .tabs-in,#appRoot nav.tabs .tabs-in{gap:6px!important}
+ #appShell nav.tabs .tab,#appRoot nav.tabs .tab{min-height:50px!important;padding:7px 4px!important;border-radius:11px!important;font-size:12px!important;gap:5px!important}
+ #appShell nav.tabs .tab svg,#appRoot nav.tabs .tab svg{width:18px!important;height:18px!important;flex-basis:18px!important}
+ #appShell .service-form-panel,#appShell #historyView>.panel,#appShell #settingsView,
+ #appRoot #form .form-shell,#appRoot #form .card,body>main.wrap .panel{padding:15px!important;border-radius:15px!important}
+ #appShell .service-form-panel h2,#appShell #historyView h2,#appShell #settingsView h2,
+ #appRoot #form .form-title h2,body>main.wrap .panel h2{font-size:18px!important}
+ #appShell .field label,#appRoot #form .field-label,#appRoot #form .job-label,body>main.wrap .field label{font-size:13px!important}
+ #appShell input,#appShell select,#appShell textarea,#appRoot #form input,#appRoot #form select,#appRoot #form textarea,
+ body>main.wrap input,body>main.wrap select,body>main.wrap textarea{min-height:43px!important;padding:9px 11px!important;border-radius:10px!important;font-size:14px!important}
+ #appShell textarea,#appRoot #form textarea,body>main.wrap textarea{min-height:72px!important}
+ #appShell button:not(.tab):not(.icon-btn),#appRoot button:not(.tab):not(.icon-btn),body>main.wrap button,body>main.wrap .btn{min-height:45px!important;padding:9px 12px!important;border-radius:11px!important;font-size:13px!important}
+ #appShell .form-actions,#appRoot #form .form-actions{gap:8px!important}
+ body>main.wrap .top{gap:10px!important;margin-bottom:12px!important;flex-wrap:wrap}
+ body>main.wrap h1{font-size:22px!important}
+ body>main.wrap .panel{margin-bottom:12px!important}
+ body>main.wrap .field{gap:6px!important;margin-bottom:10px!important}
+ body>main.wrap .field label{font-size:13px!important}
+ body>main.wrap .row{gap:8px!important}
+ body>main.wrap .source-tabs{gap:6px!important}
+ body>main.wrap .source-tabs button{min-height:50px!important;font-size:12px!important}
+}
+@media screen and (max-width:390px){
+ #appShell .mark,#appRoot .mark,body>header>img{width:52px!important;padding-right:8px!important}
+ #appShell .brand-name,#appRoot .brand-name,body>header .brand-copy strong{font-size:14px!important}
+ #appShell .brand-section,#appRoot .brand-section,body>header .brand-copy small{font-size:12px!important}
+ #appShell .icon-btn,#appRoot .icon-btn,body>header .nav-icon{width:42px!important;height:42px!important;min-width:42px!important;min-height:42px!important}
+ #appShell nav.tabs .tab,#appRoot nav.tabs .tab{font-size:11px!important;padding:6px 3px!important}
+ #appShell .service-form-panel,#appRoot #form .form-shell,#appRoot #form .card,body>main.wrap .panel{padding:12px!important}
+}
+
+</style>
+</head>
+<body>
+
+<section id="serviceLogin" class="auth-screen" hidden></section>
+<main class="wrap" id="appShell" style="display:none">
 <header class="top">
 <div class="brand">
 <img class="mark" src="../logo-copy-computer.PNG" alt="Logo asli Copy Computer">
 <div><div class="brand-name">COPY COMPUTER</div><p class="brand-section">Manajemen Servis</p></div>
 </div>
-<div class="hbtns"><button type="button" class="icon-btn notify-btn" id="servicePushButton" onclick="enableServiceChatNotifications()" aria-label="Aktifkan notifikasi chat" title="Aktifkan notifikasi chat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg></button><button type="button" class="icon-btn" onclick="if(history.length>1)history.back();else location.href='../'" aria-label="Kembali" title="Kembali"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button></div>
+<div class="hbtns"><button type="button" class="icon-btn notify-btn" id="servicePushButton" onclick="enableServiceChatNotifications()" aria-label="Aktifkan notifikasi chat" title="Aktifkan notifikasi chat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg></button><button type="button" class="icon-btn" onclick="if(history.length>1)history.back();else location.href='../'" aria-label="Kembali" title="Kembali"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/><path d="M9 12h12"/></svg></button></div>
 </header>
 <nav class="tabs" aria-label="Menu Manajemen Servis"><div class="tabs-in">
 <button type="button" class="tab" id="receiveTab" aria-current="page" onclick="showServiceForm('receive')"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 5 4 4M4 20l4.2-.9L20 7.3 16.7 4 4.9 15.8 4 20Z"/></svg><span>Penerimaan Servis</span></button>
@@ -108,8 +669,7 @@ let editingOrder=null,editingOrderVersion=null;
 $('orderForm').addEventListener('submit',async e=>{e.preventDefault();const data={nama:$('orderNama').value.trim(),wa:$('orderWa').value.trim(),jenis:$('orderJenis').value.trim(),detail:$('orderDetail').value.trim(),jumlah:$('orderJumlah').value,catatan:$('orderCatatan').value.trim()};try{if(editingOrder!==null){const current=orders.find(o=>o.id===editingOrder);if(!current)throw new Error('Pesanan tidak ditemukan. Muat ulang History.');await persistRecord('order',{...current,...data,_cloudUpdatedAt:editingOrderVersion},false)}else{await persistRecord('order',{date:new Date().toLocaleString('id-ID'),status:'Menunggu pesanan',...data},true)}resetOrderForm();alert('Pesanan khusus berhasil disimpan dan disinkronkan online.')}catch(err){alert('Pesanan belum tersimpan: '+err.message)}});
 function editOrder(id){const o=orders.find(x=>String(x.id)===String(id));if(!o){alert('Data pesanan khusus tidak ditemukan. Muat ulang History lalu coba Edit kembali.');return}showServiceView();showServiceForm('order');editingOrder=id;editingOrderVersion=o._cloudUpdatedAt;['nama','wa','jenis','detail','jumlah','catatan'].forEach(k=>$('order'+k.charAt(0).toUpperCase()+k.slice(1)).value=o[k]||'');$('orderFormTitle').textContent='Edit '+o.ticket;$('orderSaveBtn').textContent='Simpan Perubahan';$('orderPanel').style.display='block';$('orderPanel').scrollIntoView({behavior:'smooth',block:'start'})}
 async function orderStatus(id){const o=orders.find(x=>String(x.id)===String(id));if(!o)return;const opts=['Menunggu pesanan','Menunggu konfirmasi','Sedang diproses','Barang tersedia','Pesanan selesai','Dibatalkan'];const v=prompt('Pilih nomor status pesanan:\n'+opts.map((x,i)=>(i+1)+'. '+x).join('\n'),String(Math.max(0,opts.indexOf(o.status))+1));if(v&&opts[Number(v)-1]){try{await persistRecord('order',{...o,status:opts[Number(v)-1]},false)}catch(err){alert('Status tidak tersimpan: '+err.message)}}}
-function printOrder(id){const o=orders.find(x=>x.id===id);if(!o)return;const w=window.open('','_blank');if(!w){alert('Izinkan pop-up untuk mencetak nota.');return}const row=(k,v)=>'<div class="row"><div class="label">'+esc(k)+'</div><div class="colon">:</div><div class="value">'+esc(v||'-')+'</div></div>';const logo=new URL('../logo-copy-computer.PNG',window.location.href).href;w.document.write('<!doctype html><html lang="id"><head><meta charset="utf-8"><title>'+esc(o.ticket)+'</title><style>body{font:14px Arial;padding:28px;color:#182335;max-width:760px;margin:auto}.brand{display:flex;align-items:center;gap:14px}.brand img{width:88px;height:72px;object-fit:contain}h2{margin:0 0 3px}hr{border:0;border-top:1px solid #bbb;margin:16px 0}.row{display:grid;grid-template-columns:190px 12px minmax(0,1fr);margin:0 0 9px;line-height:1.45}.label,.colon{font-weight:600}.colon{text-align:center}.value{overflow-wrap:anywhere}.thanks{text-align:center;margin-top:30px;font-weight:600;line-height:1.5}@media print{body{padding:12mm}}</style>
-</head><body><div class="brand"><img src="'+logo+'"><div><h2>COPY COMPUTER</h2><div class="muted">Jl. Sicengkir No. 3 Troso, Kec. Pecangaan Kab. Jepara 59462</div></div></div><hr><h3>'+esc(o.ticket)+'</h3>'+row('Tanggal',o.date)+row('Pelanggan',o.nama)+row('WhatsApp',o.wa)+row('Jenis pesanan',o.jenis)+row('Detail pemesanan',o.detail)+row('Jumlah',o.jumlah)+row('Status',o.status||'Menunggu pesanan')+row('Catatan',o.catatan)+'<hr><p class="thanks">Terima kasih telah mempercayakan kebutuhan Anda kepada Copy Computer. Kepuasan Anda adalah prioritas kami.</p></body></html>');w.document.close();w.onload=()=>w.print()}
+function printOrder(id){const o=orders.find(x=>x.id===id);if(!o)return;const w=window.open('','_blank');if(!w){alert('Izinkan pop-up untuk mencetak nota.');return}const row=(k,v)=>'<div class="row"><div class="label">'+esc(k)+'</div><div class="colon">:</div><div class="value">'+esc(v||'-')+'</div></div>';const logo=new URL('../logo-copy-computer.PNG',window.location.href).href;w.document.write('<!doctype html><html lang="id"><head><meta charset="utf-8"><title>'+esc(o.ticket)+'</title><style>body{font:14px Arial;padding:28px;color:#182335;max-width:760px;margin:auto}.brand{display:flex;align-items:center;gap:14px}.brand img{width:88px;height:72px;object-fit:contain}h2{margin:0 0 3px}hr{border:0;border-top:1px solid #bbb;margin:16px 0}.row{display:grid;grid-template-columns:190px 12px minmax(0,1fr);margin:0 0 9px;line-height:1.45}.label,.colon{font-weight:600}.colon{text-align:center}.value{overflow-wrap:anywhere}.thanks{text-align:center;margin-top:30px;font-weight:600;line-height:1.5}@media print{body{padding:12mm}}</style></head><body><div class="brand"><img src="'+logo+'"><div><h2>COPY COMPUTER</h2><div class="muted">Jl. Sicengkir No. 3 Troso, Kec. Pecangaan Kab. Jepara 59462</div></div></div><hr><h3>'+esc(o.ticket)+'</h3>'+row('Tanggal',o.date)+row('Pelanggan',o.nama)+row('WhatsApp',o.wa)+row('Jenis pesanan',o.jenis)+row('Detail pemesanan',o.detail)+row('Jumlah',o.jumlah)+row('Status',o.status||'Menunggu pesanan')+row('Catatan',o.catatan)+'<hr><p class="thanks">Terima kasih telah mempercayakan kebutuhan Anda kepada Copy Computer. Kepuasan Anda adalah prioritas kami.</p></body></html>');w.document.close();w.onload=()=>w.print()}
 function shareOrderWA(id){const o=orders.find(x=>x.id===id);if(!o)return;let phone=String(o.wa||'').replace(/[^0-9]/g,'');if(phone.startsWith('0'))phone='62'+phone.slice(1);else if(phone.startsWith('8'))phone='62'+phone;if(!phone){alert('Nomor WhatsApp belum diisi. Edit pesanan dan masukkan nomor WhatsApp.');return}const msg='Halo '+o.nama+', berikut informasi pesanan dari Copy Computer.\\n\\nNo. Pesanan : '+o.ticket+'\\nTanggal : '+o.date+'\\nJenis pesanan : '+o.jenis+'\\nDetail : '+o.detail+'\\nJumlah : '+o.jumlah+'\\nStatus : '+(o.status||'Menunggu pesanan')+(o.catatan?'\\nCatatan : '+o.catatan:'')+'\\n\\nTerima kasih telah mempercayakan kebutuhan Anda kepada Copy Computer. Kepuasan Anda adalah prioritas kami.';window.open('https://wa.me/'+phone+'?text='+encodeURIComponent(msg),'_blank','noopener,noreferrer')}
 function renderOrders(){const el=$('orderList');if(!orders.length){el.className='empty';el.textContent='Belum ada pesanan khusus.';return}el.className='';const sortedOrders=orders.slice().sort((a,b)=>(Number(b.id)||Date.parse(b.date||'')||0)-(Number(a.id)||Date.parse(a.date||'')||0));el.innerHTML=sortedOrders.map(o=>'<article class="job"><div class="jobhead"><div><div class="ticket">'+esc(o.ticket)+'</div><b>'+esc(o.nama)+'</b></div><span class="pill">'+esc(o.status||'Menunggu pesanan')+'</span></div><p><b>'+esc(o.jenis)+'</b> • Jumlah: '+esc(o.jumlah)+' • '+esc(o.date)+'</p><p>Detail: '+esc(o.detail)+'</p>'+(o.catatan?'<p>Catatan: '+esc(o.catatan)+'</p>':'')+'<div class="jobactions"><button class="secondary" onclick="showRecordDetail(&quot;order&quot;,'+o.id+')">Lihat laporan</button><button onclick="editOrder('+o.id+')">Edit</button><button class="secondary" onclick="orderStatus('+o.id+')">Ubah status</button><button class="dark" onclick="printOrder('+o.id+')">PDF/Print</button><button style="background:#e7f8ee;color:#116b43" onclick="shareOrderWA('+o.id+')"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="currentColor" style="vertical-align:-3px;margin-right:6px"><path d="M20.52 3.48A11.86 11.86 0 0 0 12.08 0C5.5 0 .15 5.34.15 11.92c0 2.1.55 4.15 1.6 5.96L.05 24l6.27-1.64a11.9 11.9 0 0 0 5.75 1.47h.01C18.66 23.83 24 18.49 24 11.91c0-3.18-1.24-6.17-3.48-8.43ZM12.08 21.8a9.88 9.88 0 0 1-5.03-1.37l-.36-.21-3.72.97.99-3.63-.24-.37a9.84 9.84 0 1 1 8.36 4.61Zm5.4-7.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.47-.89-.79-1.49-1.76-1.66-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.49s1.07 2.89 1.22 3.09c.15.2 2.1 3.2 5.08 4.49.71.31 1.27.5 1.7.64.71.23 1.36.2 1.87.12.57-.08 1.76-.72 2.01-1.42.25-.7.25-1.3.17-1.42-.08-.12-.27-.2-.57-.35Z"/></svg>WhatsApp</button><button style="background:#fee;color:#a22" onclick="deleteOrder('+o.id+')">Hapus</button></div></article>').join('')}
 async function deleteOrder(id){const item=orders.find(o=>o.id===id);if(!item||!confirm('Hapus pesanan ini?'))return;try{await deleteCloudRow('order',item);orders=orders.filter(o=>o.id!==id);localStorage.setItem(ORDER_KEY,JSON.stringify(orders));renderOrders()}catch(e){alert('Pesanan tidak dihapus: '+e.message)}}
@@ -260,6 +820,4 @@ function render(){let q=$('search').value.toLowerCase(),f=$('filter').value;let 
 function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 updateDeviceFields();renderStatusFilter();render();restoreServiceSession();
 setTimeout(syncServicePushButtonState,1200);
-</script><style>
-</style>
-</body></html>
+</script></body></html>
