@@ -232,17 +232,36 @@ main{margin:0 auto!important;padding-top:clamp(14px,3vh,34px);padding-bottom:max
  .login-view .welcome-login{margin-bottom:0}
 }
 </style>
+
+<style id="copy-computer-approved-design-fix">
+html{background:#eaf4ff!important}
+body{background:transparent!important;position:relative;isolation:isolate}
+body::before{z-index:0!important;opacity:1!important;background-image:url("./copycomputer-tech-bg.webp")!important;background-position:center center!important;background-size:cover!important;background-repeat:no-repeat!important}
+body>main{position:relative;z-index:1}
+body.app-menu-view::before{opacity:.22!important}
+.login-view main{padding-top:clamp(12px,2vh,24px)!important;padding-bottom:24px!important}
+.login-view .welcome-brand{width:min(520px,100%);margin:0 auto 15px!important;padding:0 10px}
+.login-view .welcome-brand .welcome-logo{width:270px;height:150px;margin:0 auto 10px!important;border-radius:0;background:transparent;box-shadow:none;overflow:visible}
+.login-view .welcome-brand .welcome-logo img{width:100%;height:100%;max-height:none;object-fit:contain}
+.login-view .welcome-info{width:min(420px,100%);margin:0 auto!important;display:block}
+.login-view .date-time-row{display:grid;grid-template-columns:1fr 1.35fr;gap:9px}
+.login-view .date-chip{background:rgba(255,255,255,.84);backdrop-filter:blur(9px);border-color:rgba(154,195,246,.6)}
+.login-view .welcome-login{width:min(440px,calc(100% - 4px));margin:0 auto!important}
+.app-menu-view .welcome-brand .welcome-logo{overflow:visible}
+@media(max-width:680px){
+ .login-view .welcome-brand{width:min(440px,100%);margin:0 auto 12px!important}
+ .login-view .welcome-brand .welcome-logo{width:220px;height:122px;margin-bottom:8px!important}
+ .login-view .welcome-info{width:min(390px,100%)}
+ .login-view .date-time-row{gap:7px}
+ .login-view .date-chip{padding:8px 7px;gap:6px}
+}
+</style>
 </head>
 <body class="login-view">
 <main>
-<section class="welcome-brand" aria-label="Informasi dan cuaca">
+<section class="welcome-brand" aria-label="Logo dan informasi waktu">
   <div class="welcome-logo"><img src="logo-copy-computer.PNG" alt="Logo Copy Computer"></div>
 <div class="welcome-info">
-  <div class="weather-tile">
-    <div class="weather-symbol" id="weatherIcon" aria-hidden="true">☀️</div>
-    <div class="weather-copy"><span class="weather-place">JEPARA, JAWA TENGAH</span><strong id="weatherTemp">--°C</strong><span id="weatherDesc">Memuat cuaca...</span></div>
-    <span class="weather-live"><i></i> LIVE</span>
-  </div>
   <div class="date-time-row">
     <div class="date-chip"><span class="mini-icon">◷</span><div><small>WAKTU JEPARA</small><strong id="welcomeTime">--:--:--</strong></div></div>
     <div class="date-chip date-chip-right"><span class="mini-icon">▦</span><div><small>HARI & TANGGAL</small><strong id="welcomeDate">Memuat...</strong></div></div>
