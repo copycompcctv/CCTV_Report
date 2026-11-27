@@ -255,6 +255,11 @@ body{background:#f7f9fd;color:var(--ink);padding:14px 20px 38px}
 }
 @media(max-width:360px){#appShell .tab{font-size:11px}}
 
+
+/* Standar tombol panah kembali: ukuran seragam di semua menu */
+.hbtns button[aria-label="Kembali"]{width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important;padding:0!important;flex:0 0 44px!important;border-radius:12px!important;display:inline-grid!important;place-items:center!important;box-sizing:border-box!important;transition:background-color .15s ease,color .15s ease,border-color .15s ease!important}
+.hbtns button[aria-label="Kembali"] svg{width:22px!important;height:22px!important;flex:none!important}
+.hbtns button[aria-label="Kembali"]:active{background:#1768e8!important;border-color:#1768e8!important;color:#fff!important}
 </style><style>html.cc-gate-pending body{visibility:hidden}</style><script>(function(){'use strict';document.documentElement.classList.add('cc-gate-pending');var IDLE_LIMIT=5*60*1000,last=Number(localStorage.getItem('cc_last_activity'))||0;function expire(){sessionStorage.removeItem('cc_app_unlocked');localStorage.removeItem('cc_last_activity');location.replace('../')}function checkIdle(){last=Number(localStorage.getItem('cc_last_activity'))||0;if(sessionStorage.getItem('cc_app_unlocked')!=='1'||!last||Date.now()-last>=IDLE_LIMIT)expire()}if(sessionStorage.getItem('cc_app_unlocked')!=='1'||!last||Date.now()-last>=IDLE_LIMIT){expire();return}function touch(){var n=Date.now();if(n-last>900){last=n;localStorage.setItem('cc_last_activity',String(n))}}['pointerdown','keydown','touchstart','click','scroll'].forEach(function(e){document.addEventListener(e,touch,{passive:true})});setInterval(checkIdle,1000);document.addEventListener('visibilitychange',function(){if(!document.hidden)checkIdle()});document.documentElement.classList.remove('cc-gate-pending')})();</script><style id="iphone-viewport-fit">
 /* Keep native mobile pull-to-refresh and vertical scrolling available */
 html,body{overscroll-behavior-y:auto;touch-action:pan-y pinch-zoom;-webkit-overflow-scrolling:touch}
