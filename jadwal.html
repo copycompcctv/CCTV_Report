@@ -238,6 +238,15 @@ input,select,textarea{font-size:16px!important;border:1px solid #d7e2f7;border-r
 .history-toolbar>.field>input#scheduleFilterDate::-webkit-datetime-edit{text-align:center!important;width:100%!important}
 .history-toolbar>button#allSchedules{flex:1 1 0!important;width:0!important;min-width:0!important;max-width:none!important;height:48px!important;min-height:48px!important;margin:0!important;padding:8px 4px!important;box-sizing:border-box!important;display:flex!important;align-items:center!important;justify-content:center!important;white-space:nowrap!important}
 @media(max-width:520px){.history-toolbar{gap:14px!important}.history-toolbar>.field>input#scheduleFilterDate,.history-toolbar>button#allSchedules{font-size:14px!important}}
+
+.time-picker-wrap{position:relative;display:flex;align-items:center;width:100%}
+.time-picker-wrap input{width:100%;padding-right:92px!important;cursor:pointer}
+.time-picker-trigger{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:38px;height:36px;border:0;border-radius:9px;background:transparent;color:var(--navy);display:grid;place-items:center;cursor:pointer}
+.time-picker-trigger svg{width:19px;height:19px}
+.time-picker-popup{position:absolute;z-index:50;top:calc(100% + 6px);left:0;min-width:260px;padding:12px;background:#fff;border:1px solid var(--line);border-radius:13px;box-shadow:0 10px 28px rgba(16,38,90,.16);display:flex;align-items:center;gap:8px}
+.time-picker-popup select{min-width:65px;height:42px;border:1px solid var(--line);border-radius:8px;background:#f7faff;color:var(--navy);font:600 16px system-ui;padding:0 8px}
+.time-picker-popup .time-wib{font-weight:700;color:var(--blue);padding:0 5px}
+.time-picker-popup button{height:40px;padding:0 12px;border:0;border-radius:8px;background:var(--blue);color:#fff;font-weight:700;cursor:pointer}
 </style></head><body>
 <header>
 <img class="brand-logo" src="logo-copy-computer.PNG" alt="Copy Computer">
@@ -254,7 +263,7 @@ input,select,textarea{font-size:16px!important;border:1px solid #d7e2f7;border-r
 <input type="hidden" id="editId">
 <div class="grid2">
 <div class="field"><label for="visitDate">Tanggal janji temu</label><input id="visitDate" type="date" required></div>
-<div class="field"><label for="visitTime">Jam kunjungan (WIB · 24 jam)</label><input id="visitTime" type="time" lang="en-GB" required></div>
+<div class="field"><label for="visitTime">Jam kunjungan</label><div class="time-picker-wrap"><input id="visitTime" type="text" inputmode="none" placeholder="Pilih jam" readonly required><button type="button" class="time-picker-trigger" aria-label="Pilih jam kunjungan" title="Pilih jam"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></button></div></div>
 <div class="field"><label for="customerName">Nama pelanggan</label><input id="customerName" required placeholder="Nama pelanggan"></div>
 <div class="field"><label for="jobType">Jenis pekerjaan</label><input id="jobType" required placeholder="Contoh: Pasang CCTV, servis laptop"></div>
 <div class="field full"><label for="customerAddress">Alamat kunjungan</label><textarea id="customerAddress" placeholder="Alamat lengkap pelanggan"></textarea></div>
@@ -297,6 +306,21 @@ const TECHS=['Huda','Arif','Hermanto','Yazid'];
 const $=id=>document.getElementById(id);
 // Satu tanggal untuk seluruh jadwal; setiap kartu berikutnya mengulang form tanpa tanggal.
 let scheduleEntryCount=1;
+function closeTimePickers(){document.querySelectorAll('.time-picker-popup').forEach(x=>x.remove());}
+function openTimePicker(input){
+ closeTimePickers();const wrap=input.closest('.time-picker-wrap');if(!wrap)return;
+ const current=/^\d{2}:\d{2}$/.test(input.value)?input.value:'09:00';const parts=current.split(':');
+ const popup=document.createElement('div');popup.className='time-picker-popup';
+ const hours=document.createElement('select'),minutes=document.createElement('select');
+ for(let i=0;i<24;i++){const v=String(i).padStart(2,'0'),o=document.createElement('option');o.value=v;o.textContent=v;if(v===parts[0])o.selected=true;hours.appendChild(o);}
+ for(let i=0;i<60;i++){const v=String(i).padStart(2,'0'),o=document.createElement('option');o.value=v;o.textContent=v;if(v===parts[1])o.selected=true;minutes.appendChild(o);}
+ const zone=document.createElement('span');zone.className='time-wib';zone.textContent='WIB';
+ const ok=document.createElement('button');ok.type='button';ok.textContent='Pilih';
+ ok.addEventListener('click',()=>{input.value=hours.value+':'+minutes.value;popup.remove();input.dispatchEvent(new Event('change',{bubbles:true}));});
+ popup.append(hours,minutes,zone,ok);wrap.appendChild(popup);
+}
+$('scheduleForm').addEventListener('click',e=>{const trigger=e.target.closest('.time-picker-trigger');if(trigger){const input=trigger.parentElement.querySelector('input[id^="visitTime"]');if(input)openTimePicker(input);return;}if(!e.target.closest('.time-picker-popup'))closeTimePickers();});
+document.addEventListener('click',e=>{if(!e.target.closest('.time-picker-wrap'))closeTimePickers();});
 function prepareMultiScheduleForm(){
  const form=$('scheduleForm'),dateField=$('visitDate').closest('.field'),grid=form.querySelector('.grid2');
  form.insertBefore(dateField,grid);
