@@ -317,11 +317,11 @@ window.showTab=function(tab){
  location.hash=schedule?'jadwal':'absensi';
  if(schedule)loadSchedules();else loadAttendance();
 };
-function resetSchedule(){
+window.resetSchedule=()=>{
  $('scheduleForm').reset();$('editId').value='';$('visitDate').value=today();$('visitTime').value='09:00';
  $('saveSchedule').innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>Simpan Jadwal>';
  $('technicianChecks').querySelectorAll('input').forEach(x=>x.checked=false);
-}
+};
 function selectedTechs(){return [...$('technicianChecks').querySelectorAll('input:checked')].map(x=>x.value)}
 function setTechs(names){$('technicianChecks').querySelectorAll('input').forEach(x=>x.checked=(names||[]).includes(x.value))}
 $('scheduleForm').addEventListener('submit',async e=>{
@@ -349,7 +349,9 @@ window.editSchedule=async id=>{
  const {data,error}=await sb.from('work_schedules').select('*').eq('id',id).single();if(error){alert(error.message);return}
  $('editId').value=data.id;$('visitDate').value=data.visit_date;$('visitTime').value=String(data.visit_time).slice(0,5);
  $('customerName').value=data.customer_name;$('customerAddress').value=data.customer_address||'';$('jobType').value=data.job_type;$('scheduleNotes').value=data.notes||'';setTechs(data.technicians);
- $('saveSchedule').textContent='Simpan Perubahan';window.scrollTo({top:0,behavior:'smooth'});
+ $('saveSchedule').textContent='Simpan Perubahan';
+ $('tabForm').click();
+ window.scrollTo({top:0,behavior:'smooth'});
 };
 window.deleteSchedule=async id=>{if(!confirm('Hapus jadwal pekerjaan ini?'))return;const {error}=await sb.from('work_schedules').delete().eq('id',id);if(error)alert('Gagal menghapus: '+error.message);else loadSchedules()};
 window.changeScheduleStatus=async(id,status)=>{const {error}=await sb.from('work_schedules').update({status}).eq('id',id);if(error)alert('Status gagal diperbarui: '+error.message);else loadSchedules()};
