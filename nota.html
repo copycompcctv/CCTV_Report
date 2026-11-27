@@ -1,24 +1,5 @@
 <header class="service-header"><div class="service-brand"><img src="logo-copy-computer.PNG" alt="Logo Copy Computer"><div><strong>COPY COMPUTER</strong><small>Buat Nota</small></div></div><button class="nav-icon" type="button" onclick="if(history.length>1)history.back();else location.href='../'" aria-label="Kembali" title="Kembali"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button></header>
-<style>
-/* Tombol kembali - mengikuti gambar acuan */
-header #backBtn,header > .nav-icon,header.service-header > .nav-icon,
-header .hbtns > button.icon-btn[aria-label="Kembali"]{
- width:80px!important;height:80px!important;min-width:80px!important;min-height:80px!important;
- flex:0 0 80px!important;padding:0!important;border:0!important;border-radius:25px!important;
- background:#1768e8!important;color:#fff!important;display:grid!important;place-items:center!important;
- box-shadow:none!important;box-sizing:border-box!important;
-}
-header #backBtn svg,header > .nav-icon svg,header.service-header > .nav-icon svg,
-header .hbtns > button.icon-btn[aria-label="Kembali"] svg{
- width:28px!important;height:28px!important;display:block!important;flex:none!important;
-}
-header #backBtn:hover,header #backBtn:active,header > .nav-icon:hover,header > .nav-icon:active,
-header.service-header > .nav-icon:hover,header.service-header > .nav-icon:active,
-header .hbtns > button.icon-btn[aria-label="Kembali"]:hover,
-header .hbtns > button.icon-btn[aria-label="Kembali"]:active{
- background:#1768e8!important;color:#fff!important;border:0!important;
-}
-</style>
+
 
 <main class="wrap">
 
@@ -153,5 +134,29 @@ $('cctvTab').onclick=()=>setSource('CCTV');$('orderTab').onclick=()=>setSource('
 $('sourceSelect').onchange=populate;$('addItem').onclick=()=>addItem('');$('downPayment').oninput=calc;$('extra').oninput=calc;['customer','address','invoiceDate','invoiceNo'].forEach(id=>$(id).addEventListener('input',calc));$('resetBtn').onclick=clearInvoiceForm;$('saveBtn').onclick=saveInvoice;
 loadData().catch(e=>note('Gagal memuat data: '+e.message,false));
 })();
-</script></body>
+</script><style>
+/* Tombol kembali - mengikuti gambar acuan */
+header #backBtn,header > .nav-icon,header.service-header > .nav-icon,
+header .hbtns > button.icon-btn[aria-label="Kembali"],
+#appRoot header .hbtns > button.icon-btn[aria-label="Kembali"]{
+ width:80px!important;height:80px!important;min-width:80px!important;min-height:80px!important;
+ flex:0 0 80px!important;padding:0!important;border:0!important;border-radius:25px!important;
+ background:#1768e8!important;color:#fff!important;display:grid!important;place-items:center!important;
+ box-shadow:none!important;box-sizing:border-box!important;
+}
+header #backBtn svg,header > .nav-icon svg,header.service-header > .nav-icon svg,
+header .hbtns > button.icon-btn[aria-label="Kembali"] svg,
+#appRoot header .hbtns > button.icon-btn[aria-label="Kembali"] svg{
+ width:28px!important;height:28px!important;display:block!important;flex:none!important;
+}
+header #backBtn:hover,header #backBtn:active,header > .nav-icon:hover,header > .nav-icon:active,
+header.service-header > .nav-icon:hover,header.service-header > .nav-icon:active,
+header .hbtns > button.icon-btn[aria-label="Kembali"]:hover,
+header .hbtns > button.icon-btn[aria-label="Kembali"]:active,
+#appRoot header .hbtns > button.icon-btn[aria-label="Kembali"]:hover,
+#appRoot header .hbtns > button.icon-btn[aria-label="Kembali"]:active{
+ background:#1768e8!important;color:#fff!important;border:0!important;
+}
+</style>
+</body>
 </html>
