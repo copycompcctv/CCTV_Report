@@ -229,6 +229,15 @@ input,select,textarea{font-size:16px!important;border:1px solid #d7e2f7;border-r
  .history-toolbar>.field>#scheduleFilterDate{font-size:14px!important}
  .history-toolbar>#allSchedules{font-size:14px!important}
 }
+
+/* FINAL OVERRIDE: visible gap and true center alignment on iOS Safari */
+.history-toolbar{display:flex!important;flex-flow:row nowrap!important;align-items:flex-end!important;gap:14px!important;width:100%!important;min-width:0!important;box-sizing:border-box!important}
+.history-toolbar>.field{flex:1 1 0!important;width:0!important;min-width:0!important;max-width:none!important;margin:0!important;padding:0!important;box-sizing:border-box!important}
+.history-toolbar>.field>input#scheduleFilterDate{display:block!important;width:100%!important;min-width:0!important;max-width:100%!important;height:48px!important;margin:0!important;padding:8px 4px!important;box-sizing:border-box!important;text-align:center!important;text-align-last:center!important}
+.history-toolbar>.field>input#scheduleFilterDate::-webkit-date-and-time-value{text-align:center!important;margin:0 auto!important;width:100%!important}
+.history-toolbar>.field>input#scheduleFilterDate::-webkit-datetime-edit{text-align:center!important;width:100%!important}
+.history-toolbar>button#allSchedules{flex:1 1 0!important;width:0!important;min-width:0!important;max-width:none!important;height:48px!important;min-height:48px!important;margin:0!important;padding:8px 4px!important;box-sizing:border-box!important;display:flex!important;align-items:center!important;justify-content:center!important;white-space:nowrap!important}
+@media(max-width:520px){.history-toolbar{gap:14px!important}.history-toolbar>.field>input#scheduleFilterDate,.history-toolbar>button#allSchedules{font-size:14px!important}}
 </style></head><body>
 <header>
 <img class="brand-logo" src="logo-copy-computer.PNG" alt="Copy Computer">
