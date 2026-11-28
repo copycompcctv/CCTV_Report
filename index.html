@@ -379,7 +379,7 @@ body.app-menu-view::before{background-image:url("./copycomputer-tech-bg.jpg?v=12
 <style id="copy-computer-mobile-wallpaper-render-fix">
 /* Render wallpaper above the page canvas on iOS Safari/PWA; keep app content above it. */
 html,body{background:transparent!important}
-body{position:relative!important;isolation:isolate!important}
+body{position:relative!important;isolation:isolate!important;min-height:100vh!important;min-height:100dvh!important}
 body::before{
   content:""!important;
   position:fixed!important;
@@ -387,7 +387,7 @@ body::before{
   z-index:0!important;
   display:block!important;
   pointer-events:none!important;
-  background-image:url("./copycomputer-tech-bg.jpg?v=130")!important;
+  background-image:url("./copycomputer-tech-bg.jpg?v=132")!important;
   background-position:center center!important;
   background-size:cover!important;
   background-repeat:no-repeat!important;
@@ -397,7 +397,7 @@ body>main{position:relative!important;z-index:1!important}
 @media(max-width:680px) and (orientation:portrait){
   body::before{
     background-position:50% 50%!important;
-    background-size:auto 100%!important;
+    background-size:cover!important;
     background-repeat:no-repeat!important;
   }
 }
